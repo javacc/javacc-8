@@ -41,8 +41,35 @@
 					<mainClass>Eg4</mainClass>
 					<arguments>
 						<argument>${project.basedir}/eg4.in</argument>
+						<argument>${project.basedir}/eg4.out</argument>
+						<argument>${project.basedir}/eg4.err</argument>
 					</arguments>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>compare-eg4</id>
+						<phase>test</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<target unless="maven.test.skip">
+								<available file="${project.basedir}/eg4.out" property="isActualAvailable" />
+								<fail unless="isActualAvailable" message="${project.basedir}/eg4.out does not exist!" />
+								<available file="${project.basedir}/eg4.ref" property="isExpectedAvailable" />
+								<fail unless="isExpectedAvailable" message="${project.basedir}/eg4.ref does not exist!" />
+								<condition property="files.match">
+									<filesmatch file1="${project.basedir}/eg4.out" file2="${project.basedir}/eg4.ref" />
+								</condition>
+								<fail unless="files.match" message="${project.basedir}/eg4.out does not match ${project.basedir}/eg4.ref!" />
+							</target>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>

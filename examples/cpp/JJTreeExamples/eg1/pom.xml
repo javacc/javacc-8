@@ -54,7 +54,6 @@
 					<libraries>
 						<library>
 							<type>executable</type>
-							<run>true</run>
 						</library>
 					</libraries>
 					<cpp>
