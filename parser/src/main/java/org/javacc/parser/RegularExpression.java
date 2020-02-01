@@ -22,9 +22,10 @@
  * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
  * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
- * THE POSSIBILITY OF SUCH DAMAGE.
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.javacc.parser;
 
 import java.util.ArrayList;
@@ -38,57 +39,54 @@ import java.util.Set;
 public abstract class RegularExpression extends Expansion {
 
   /**
-   * The label of the regular expression (if any).  If no label is
-   * present, this is set to "".
+   * The label of the regular expression (if any). If no label is present, this
+   * is set to "".
    */
-  public String label = "";
+  public String          label        = "";
 
   /**
-   * The ordinal value assigned to the regular expression.  It is
-   * used for internal processing and passing information between
-   * the parser and the lexical analyzer.
+   * The ordinal value assigned to the regular expression. It is used for
+   * internal processing and passing information between the parser and the
+   * lexical analyzer.
    */
-  public int ordinal;
+  public int             ordinal;
 
   /**
-   * The LHS to which the token value of the regular expression
-   * is assigned.  In case there is no LHS, then the list
-   * remains empty.
+   * The LHS to which the token value of the regular expression is assigned. In
+   * case there is no LHS, then the list remains empty.
    */
-  public List<Token> lhsTokens = new ArrayList<Token>();
+  public List<Token>     lhsTokens    = new ArrayList<>();
 
   /**
    * We now allow qualified access to token members. Store it here.
    */
-  public Token rhsToken;
+  public Token           rhsToken;
 
   /**
-   * This flag is set if the regular expression has a label prefixed
-   * with the # symbol - this indicates that the purpose of the regular
-   * expression is solely for defining other regular expressions.
+   * This flag is set if the regular expression has a label prefixed with the #
+   * symbol - this indicates that the purpose of the regular expression is
+   * solely for defining other regular expressions.
    */
-  public boolean private_rexp = false;
+  public boolean         private_rexp = false;
 
   /**
-   * If this is a top-level regular expression (nested directly
-   * within a TokenProduction), then this field point to that
-   * TokenProduction object.
+   * If this is a top-level regular expression (nested directly within a
+   * TokenProduction), then this field point to that TokenProduction object.
    */
-  public TokenProduction tpContext = null;
+  public TokenProduction tpContext    = null;
 
   public abstract Nfa GenerateNfa(boolean ignoreCase);
 
   public boolean CanMatchAnyChar() {
-     return false;
+    return false;
   }
 
   /**
-   * The following variable is used to maintain state information for the
-   * loop determination algorithm:  It is initialized to 0, and
-   * set to -1 if this node has been visited in a pre-order walk, and then
-   * it is set to 1 if the pre-order walk of the whole graph from this
-   * node has been traversed.  i.e., -1 indicates partially processed,
-   * and 1 indicates fully processed.
+   * The following variable is used to maintain state information for the loop
+   * determination algorithm: It is initialized to 0, and set to -1 if this node
+   * has been visited in a pre-order walk, and then it is set to 1 if the
+   * pre-order walk of the whole graph from this node has been traversed. i.e.,
+   * -1 indicates partially processed, and 1 indicates fully processed.
    */
   int walkStatus = 0;
 

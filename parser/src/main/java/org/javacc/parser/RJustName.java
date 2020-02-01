@@ -22,16 +22,15 @@
  * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
  * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
- * THE POSSIBILITY OF SUCH DAMAGE.
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
  */
 
 package org.javacc.parser;
 
 /**
- * Describes regular expressions which are referred to just by
- * their name.  This means that a regular expression with this
- * name has been declared earlier.
+ * Describes regular expressions which are referred to just by their name. This
+ * means that a regular expression with this name has been declared earlier.
  */
 
 public class RJustName extends RegularExpression {
@@ -42,17 +41,16 @@ public class RJustName extends RegularExpression {
   RegularExpression regexpr;
 
   @Override
-  public Nfa GenerateNfa(boolean ignoreCase)
-  {
-     return regexpr.GenerateNfa(ignoreCase);
+  public Nfa GenerateNfa(boolean ignoreCase) {
+    return regexpr.GenerateNfa(ignoreCase);
   }
 
-    public RJustName() {}
+  public RJustName() {}
 
-    RJustName(Token token, String image) {
-        this.setLine(token.beginLine);
-        this.setColumn(token.beginColumn);
-        this.label = image;
-    }
+  RJustName(Token token, String image) {
+    setLine(token.beginLine);
+    setColumn(token.beginColumn);
+    label = image;
+  }
 
 }

@@ -22,35 +22,36 @@
  * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
  * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
- * THE POSSIBILITY OF SUCH DAMAGE.
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.javacc.parser;
 
 import java.util.Set;
 
 /**
- * Describes expansions - entities that may occur on the
- * right hand sides of productions.  This is the base class of
- * a bunch of other more specific classes.
+ * Describes expansions - entities that may occur on the right hand sides of
+ * productions. This is the base class of a bunch of other more specific
+ * classes.
  */
 
 public class Expansion {
-  
+
   protected static final String eol = System.getProperty("line.separator", "\n");
 
   /**
-   * The line and column number of the construct that corresponds
-   * most closely to this node.
+   * The line and column number of the construct that corresponds most closely
+   * to this node.
    */
-  private int line;
-  private int column;
+  private int                   line;
+  private int                   column;
 
   /**
-   * A reimplementing of Object.hashCode() to be deterministic.  This uses
-   * the line and column fields to generate an arbitrary number - we assume
-   * that this method is called only after line and column are set to
-   * their actual values.
+   * A reimplementing of Object.hashCode() to be deterministic. This uses the
+   * line and column fields to generate an arbitrary number - we assume that
+   * this method is called only after line and column are set to their actual
+   * values.
    */
   @Override
   public int hashCode() {
@@ -58,38 +59,37 @@ public class Expansion {
   }
 
   /**
-   * The parent of this expansion node.  In case this is the top level
-   * expansion of the production it is a reference to the production node
-   * otherwise it is a reference to another Expansion node.  In case this
-   * is the top level of a lookahead expansion,then the parent is null.
+   * The parent of this expansion node. In case this is the top level expansion
+   * of the production it is a reference to the production node otherwise it is
+   * a reference to another Expansion node. In case this is the top level of a
+   * lookahead expansion,then the parent is null.
    */
-  public Object parent;
+  public Object  parent;
 
   /**
    * The ordinal of this node with respect to its parent.
    */
-  int ordinal;
+  int            ordinal;
 
   /**
-   * To avoid right-recursive loops when calculating follow sets, we use
-   * a generation number which indicates if this expansion was visited
-   * by LookaheadWalk.genFollowSet in the same generation.  New generations
-   * are obtained by incrementing the static counter below, and the current
+   * To avoid right-recursive loops when calculating follow sets, we use a
+   * generation number which indicates if this expansion was visited by
+   * LookaheadWalk.genFollowSet in the same generation. New generations are
+   * obtained by incrementing the static counter below, and the current
    * generation is stored in the non-static variable below.
    */
-  static long nextGenerationIndex = 1;
-  long myGeneration = 0;
+  static long    nextGenerationIndex = 1;
+  long           myGeneration        = 0;
 
   /**
    * This flag is used for bookkeeping by the minimumSize method in class
    * ParseEngine.
    */
-  public boolean     inMinimumSize       = false;
+  public boolean inMinimumSize       = false;
 
-   static void reInit()
-   {
-      nextGenerationIndex = 1;
-   }
+  static void reInit() {
+    Expansion.nextGenerationIndex = 1;
+  }
 
   /**
    * @return the line
@@ -121,8 +121,9 @@ public class Expansion {
 
   protected StringBuffer dumpPrefix(int indent) {
     StringBuffer buffer = new StringBuffer(128);
-    for (int i = 0; i < indent; i++)
+    for (int i = 0; i < indent; i++) {
       buffer.append("  ");
+    }
     return buffer;
   }
 
@@ -147,7 +148,7 @@ public class Expansion {
 
   private String getSimpleName() {
     String name = getClass().getName();
-    return name.substring(name.lastIndexOf(".")+1); // strip the package name
+    return name.substring(name.lastIndexOf(".") + 1); // strip the package name
   }
 
   @Override

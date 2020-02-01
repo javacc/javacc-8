@@ -1,8 +1,8 @@
 
 package org.javacc.parser;
 
-public interface TokenCodeGenerator
-{
+public interface TokenCodeGenerator {
+
   /**
    * The Token class generator.
    */

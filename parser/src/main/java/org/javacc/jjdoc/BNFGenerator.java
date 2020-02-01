@@ -25,6 +25,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.javacc.jjdoc;
 
 import org.javacc.parser.CppCodeProduction;
@@ -40,16 +41,15 @@ import org.javacc.parser.TokenProduction;
 import java.io.PrintWriter;
 
 public class BNFGenerator implements Generator {
+
   protected PrintWriter ostr;
-  private boolean printing = true;
+  private boolean       printing = true;
 
   protected PrintWriter create_output_stream() {
 
     if (JJDocOptions.getOutputFile().equals("")) {
       if (JJDocGlobals.input_file.equals("standard input")) {
-        return new java.io.PrintWriter(
-                                       new java.io.OutputStreamWriter(
-                                                                      System.out));
+        return new java.io.PrintWriter(new java.io.OutputStreamWriter(System.out));
       } else {
         String ext = ".bnf";
         int i = JJDocGlobals.input_file.lastIndexOf('.');
@@ -60,8 +60,7 @@ public class BNFGenerator implements Generator {
           if (suffix.equals(ext)) {
             JJDocGlobals.output_file = JJDocGlobals.input_file + ext;
           } else {
-            JJDocGlobals.output_file = JJDocGlobals.input_file.substring(0, i)
-                + ext;
+            JJDocGlobals.output_file = JJDocGlobals.input_file.substring(0, i) + ext;
           }
         }
       }
@@ -69,12 +68,9 @@ public class BNFGenerator implements Generator {
       JJDocGlobals.output_file = JJDocOptions.getOutputFile();
     }
     try {
-      ostr = new java.io.PrintWriter(
-                                     new java.io.FileWriter(
-                                                            JJDocGlobals.output_file));
+      ostr = new java.io.PrintWriter(new java.io.FileWriter(JJDocGlobals.output_file));
     } catch (java.io.IOException e) {
-      error("JJDoc: can't open output stream on file "
-          + JJDocGlobals.output_file + ".  Using standard output.");
+      error("JJDoc: can't open output stream on file " + JJDocGlobals.output_file + ".  Using standard output.");
       ostr = new java.io.PrintWriter(new java.io.OutputStreamWriter(System.out));
     }
 
@@ -91,6 +87,7 @@ public class BNFGenerator implements Generator {
       print(s);
     }
   }
+
   @Override
   public void print(String s) {
     ostr.print(s);
@@ -100,78 +97,105 @@ public class BNFGenerator implements Generator {
   public void documentStart() {
     ostr = create_output_stream();
   }
+
   @Override
   public void documentEnd() {
     ostr.close();
   }
+
   @Override
-  public void specialTokens(String s) {
-  }
-//  public void tokenStart(TokenProduction tp) {
-//    printing = false;
-//  }
-//  public void tokenEnd(TokenProduction tp) {
-//    printing = true;
-//  }
+  public void specialTokens(String s) {}
+
+  // public void tokenStart(TokenProduction tp) {
+  // printing = false;
+  // }
+  // public void tokenEnd(TokenProduction tp) {
+  // printing = true;
+  // }
   @Override
-  public void nonterminalsStart() { }
+  public void nonterminalsStart() {}
+
   @Override
-  public void nonterminalsEnd() { }
-  @Override public void tokensStart() {}
-  @Override public void tokensEnd() {}
+  public void nonterminalsEnd() {}
+
   @Override
-  public void javacode(JavaCodeProduction jp) { }
+  public void tokensStart() {}
+
   @Override
-  public void cppcode(CppCodeProduction cp) { }
+  public void tokensEnd() {}
+
   @Override
-  public void expansionEnd(Expansion e, boolean first) { }
+  public void javacode(JavaCodeProduction jp) {}
+
   @Override
-  public void nonTerminalStart(NonTerminal nt) { }
+  public void cppcode(CppCodeProduction cp) {}
+
   @Override
-  public void nonTerminalEnd(NonTerminal nt) { }
+  public void expansionEnd(Expansion e, boolean first) {}
+
+  @Override
+  public void nonTerminalStart(NonTerminal nt) {}
+
+  @Override
+  public void nonTerminalEnd(NonTerminal nt) {}
+
   @Override
   public void productionStart(NormalProduction np) {
-	  println("");
+    println("");
     print(np.getLhs() + " ::= ");
   }
+
   @Override
   public void productionEnd(NormalProduction np) {
-	  println("");
+    println("");
   }
+
   @Override
   public void expansionStart(Expansion e, boolean first) {
     if (!first) {
       print(" | ");
     }
   }
+
   @Override
   public void reStart(RegularExpression r) {
     if (r.getClass().equals(RJustName.class) || r.getClass().equals(RCharacterList.class)) {
       printing = false;
     }
   }
+
   @Override
   public void reEnd(RegularExpression r) {
     printing = true;
   }
 
   @Override
-  public void debug(String message) { System.err.println(message); }
-  @Override
-  public void info(String message) { System.err.println(message); }
-  @Override
-  public void warn(String message) { System.err.println(message); }
-  @Override
-  public void error(String message) { System.err.println(message); }
+  public void debug(String message) {
+    System.err.println(message);
+  }
 
-@Override
-public void handleTokenProduction(TokenProduction tp) {
+  @Override
+  public void info(String message) {
+    System.err.println(message);
+  }
+
+  @Override
+  public void warn(String message) {
+    System.err.println(message);
+  }
+
+  @Override
+  public void error(String message) {
+    System.err.println(message);
+  }
+
+  @Override
+  public void handleTokenProduction(TokenProduction tp) {
     printing = false;
     String text = JJDoc.getStandardTokenProductionText(tp);
     text(text);
     printing = true;
-}
-
+  }
 
 
 }

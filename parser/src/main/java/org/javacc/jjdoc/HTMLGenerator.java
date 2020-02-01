@@ -42,8 +42,9 @@ import java.util.Hashtable;
  * Output BNF in HTML 3.2 format.
  */
 public class HTMLGenerator extends TextGenerator implements Generator {
-  private Hashtable<String, String> id_map = new Hashtable<>();
-  private int id = 1;
+
+  private final Hashtable<String, String> id_map = new Hashtable<>();
+  private int                             id     = 1;
 
   public HTMLGenerator() {
     super();
@@ -67,13 +68,13 @@ public class HTMLGenerator extends TextGenerator implements Generator {
     String ss = "";
     for (int i = 0; i < s.length(); ++i) {
       if (s.charAt(i) == '<') {
-  ss += "&lt;";
+        ss += "&lt;";
       } else if (s.charAt(i) == '>') {
-  ss += "&gt;";
+        ss += "&gt;";
       } else if (s.charAt(i) == '&') {
-  ss += "&amp;";
+        ss += "&amp;";
       } else {
-  ss += s.charAt(i);
+        ss += s.charAt(i);
       }
     }
     print(ss);
@@ -111,8 +112,8 @@ public class HTMLGenerator extends TextGenerator implements Generator {
   }
 
   /**
-   * Prints out comments, used for tokens and non-terminals.
-   * {@inheritDoc}
+   * Prints out comments, used for tokens and non-terminals. {@inheritDoc}
+   * 
    * @see org.javacc.jjdoc.TextGenerator#specialTokens(java.lang.String)
    */
   @Override
@@ -130,15 +131,15 @@ public class HTMLGenerator extends TextGenerator implements Generator {
 
   @Override
   public void handleTokenProduction(TokenProduction tp) {
-      println(" <!-- Token -->");
-      println(" <TR>");
-      println("  <TD>");
-      println("   <PRE>");
-      String text = JJDoc.getStandardTokenProductionText(tp);
-      text(text);
-      println("   </PRE>");
-      println("  </TD>");
-      println(" </TR>");
+    println(" <!-- Token -->");
+    println(" <TR>");
+    println("  <TD>");
+    println("   <PRE>");
+    String text = JJDoc.getStandardTokenProductionText(tp);
+    text(text);
+    println("   </PRE>");
+    println("  </TD>");
+    println(" </TR>");
   }
 
 
@@ -149,6 +150,7 @@ public class HTMLGenerator extends TextGenerator implements Generator {
       println("<TABLE>");
     }
   }
+
   @Override
   public void nonterminalsEnd() {
     if (JJDocOptions.getOneTable()) {
@@ -161,6 +163,7 @@ public class HTMLGenerator extends TextGenerator implements Generator {
     println("<H2 ALIGN=CENTER>TOKENS</H2>");
     println("<TABLE>");
   }
+
   @Override
   public void tokensEnd() {
     println("</TABLE>");
@@ -168,17 +171,17 @@ public class HTMLGenerator extends TextGenerator implements Generator {
 
   @Override
   public void javacode(JavaCodeProduction jp) {
-	    productionStart(jp);
-	    println("<I>java code</I></TD></TR>");
-	    productionEnd(jp);
-	  }
+    productionStart(jp);
+    println("<I>java code</I></TD></TR>");
+    productionEnd(jp);
+  }
 
   @Override
   public void cppcode(CppCodeProduction cp) {
-	    productionStart(cp);
-	    println("<I>cpp code</I></TD></TR>");
-	    productionEnd(cp);
-	  }
+    productionStart(cp);
+    println("<I>cpp code</I></TD></TR>");
+    productionEnd(cp);
+  }
 
   @Override
   public void productionStart(NormalProduction np) {
@@ -192,6 +195,7 @@ public class HTMLGenerator extends TextGenerator implements Generator {
     println("<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>");
     print("<TD ALIGN=LEFT VALIGN=BASELINE>");
   }
+
   @Override
   public void productionEnd(NormalProduction np) {
     if (!JJDocOptions.getOneTable()) {
@@ -209,6 +213,7 @@ public class HTMLGenerator extends TextGenerator implements Generator {
       print("<TD ALIGN=LEFT VALIGN=BASELINE>");
     }
   }
+
   @Override
   public void expansionEnd(Expansion e, boolean first) {
     println("</TD>");
@@ -219,15 +224,15 @@ public class HTMLGenerator extends TextGenerator implements Generator {
   public void nonTerminalStart(NonTerminal nt) {
     print("<A HREF=\"#" + get_id(nt.getName()) + "\">");
   }
+
   @Override
   public void nonTerminalEnd(NonTerminal nt) {
     print("</A>");
   }
 
   @Override
-  public void reStart(RegularExpression r) {
-  }
+  public void reStart(RegularExpression r) {}
+
   @Override
-  public void reEnd(RegularExpression r) {
-  }
+  public void reEnd(RegularExpression r) {}
 }

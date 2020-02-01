@@ -22,8 +22,8 @@
  * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
  * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
- * THE POSSIBILITY OF SUCH DAMAGE.
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
  */
 
 package org.javacc.parser;
@@ -38,13 +38,13 @@ public abstract class JavaCCParserInternals extends JavaCCGlobals {
 
   static protected void initialize() {
     Integer i = Integer.valueOf(0);
-    lexstate_S2I.put("DEFAULT", i);
-    lexstate_I2S.put(i, "DEFAULT");
-    simple_tokens_table.put("DEFAULT", new Hashtable<String, Hashtable<String, RegularExpression>>());
+    JavaCCGlobals.lexstate_S2I.put("DEFAULT", i);
+    JavaCCGlobals.lexstate_I2S.put(i, "DEFAULT");
+    JavaCCGlobals.simple_tokens_table.put("DEFAULT", new Hashtable<String, Hashtable<String, RegularExpression>>());
   }
 
   static protected void addcuname(String id) {
-    cu_name = id;
+    JavaCCGlobals.cu_name = id;
   }
 
   static protected void compare(Token t, String id1, String id2) {
@@ -53,46 +53,46 @@ public abstract class JavaCCParserInternals extends JavaCCGlobals {
     }
   }
 
-  static private List<Token> add_cu_token_here = cu_to_insertion_point_1;
-  static private Token first_cu_token;
-  static private boolean insertionpoint1set = false;
-  static private boolean insertionpoint2set = false;
+  static private List<Token> add_cu_token_here  = JavaCCGlobals.cu_to_insertion_point_1;
+  static private Token       first_cu_token;
+  static private boolean     insertionpoint1set = false;
+  static private boolean     insertionpoint2set = false;
 
   static protected void setinsertionpoint(Token t, int no) {
     do {
-      add_cu_token_here.add(first_cu_token);
-      first_cu_token = first_cu_token.next;
-    } while (first_cu_token != t);
+      JavaCCParserInternals.add_cu_token_here.add(JavaCCParserInternals.first_cu_token);
+      JavaCCParserInternals.first_cu_token = JavaCCParserInternals.first_cu_token.next;
+    } while (JavaCCParserInternals.first_cu_token != t);
     if (no == 1) {
-      if (insertionpoint1set) {
+      if (JavaCCParserInternals.insertionpoint1set) {
         JavaCCErrors.parse_error(t, "Multiple declaration of parser class.");
       } else {
-        insertionpoint1set = true;
-        add_cu_token_here = cu_to_insertion_point_2;
+        JavaCCParserInternals.insertionpoint1set = true;
+        JavaCCParserInternals.add_cu_token_here = JavaCCGlobals.cu_to_insertion_point_2;
       }
     } else {
-      add_cu_token_here = cu_from_insertion_point_2;
-      insertionpoint2set = true;
+      JavaCCParserInternals.add_cu_token_here = JavaCCGlobals.cu_from_insertion_point_2;
+      JavaCCParserInternals.insertionpoint2set = true;
     }
-    first_cu_token = t;
+    JavaCCParserInternals.first_cu_token = t;
   }
 
   static protected void insertionpointerrors(Token t) {
-    while (first_cu_token != t) {
-      add_cu_token_here.add(first_cu_token);
-      first_cu_token = first_cu_token.next;
+    while (JavaCCParserInternals.first_cu_token != t) {
+      JavaCCParserInternals.add_cu_token_here.add(JavaCCParserInternals.first_cu_token);
+      JavaCCParserInternals.first_cu_token = JavaCCParserInternals.first_cu_token.next;
     }
-    if (!insertionpoint1set || !insertionpoint2set) {
+    if (!JavaCCParserInternals.insertionpoint1set || !JavaCCParserInternals.insertionpoint2set) {
       JavaCCErrors.parse_error(t, "Parser class has not been defined between PARSER_BEGIN and PARSER_END.");
     }
   }
 
   static protected void set_initial_cu_token(Token t) {
-    first_cu_token = t;
+    JavaCCParserInternals.first_cu_token = t;
   }
 
   static protected void addproduction(NormalProduction p) {
-    bnfproductions.add(p);
+    JavaCCGlobals.bnfproductions.add(p);
   }
 
   static protected void production_addexpansion(BNFProduction p, Expansion e) {
@@ -104,11 +104,11 @@ public abstract class JavaCCParserInternals extends JavaCCGlobals {
 
   static protected void addregexpr(TokenProduction p) {
     Integer ii;
-    rexprlist.add(p);
+    JavaCCGlobals.rexprlist.add(p);
     if (Options.getUserTokenManager()) {
       if (p.lexStates == null || p.lexStates.length != 1 || !p.lexStates[0].equals("DEFAULT")) {
-        JavaCCErrors.warning(p, "Ignoring lexical state specifications since option " +
-                                "USER_TOKEN_MANAGER has been set to true.");
+        JavaCCErrors.warning(p,
+            "Ignoring lexical state specifications since option " + "USER_TOKEN_MANAGER has been set to true.");
       }
     }
     if (p.lexStates == null) {
@@ -120,23 +120,23 @@ public abstract class JavaCCParserInternals extends JavaCCGlobals {
           JavaCCErrors.parse_error(p, "Multiple occurrence of \"" + p.lexStates[i] + "\" in lexical state list.");
         }
       }
-      if (lexstate_S2I.get(p.lexStates[i]) == null) {
-        ii = Integer.valueOf(nextFreeLexState++);
-        lexstate_S2I.put(p.lexStates[i], ii);
-        lexstate_I2S.put(ii, p.lexStates[i]);
-        simple_tokens_table.put(p.lexStates[i], new Hashtable<>());
+      if (JavaCCGlobals.lexstate_S2I.get(p.lexStates[i]) == null) {
+        ii = Integer.valueOf(JavaCCParserInternals.nextFreeLexState++);
+        JavaCCGlobals.lexstate_S2I.put(p.lexStates[i], ii);
+        JavaCCGlobals.lexstate_I2S.put(ii, p.lexStates[i]);
+        JavaCCGlobals.simple_tokens_table.put(p.lexStates[i], new Hashtable<>());
       }
     }
   }
 
   static protected void add_token_manager_decls(Token t, List<Token> decls) {
-    if (token_mgr_decls != null) {
+    if (JavaCCGlobals.token_mgr_decls != null) {
       JavaCCErrors.parse_error(t, "Multiple occurrence of \"TOKEN_MGR_DECLS\".");
     } else {
-      token_mgr_decls = decls;
+      JavaCCGlobals.token_mgr_decls = decls;
       if (Options.getUserTokenManager()) {
-        JavaCCErrors.warning(t, "Ignoring declarations in \"TOKEN_MGR_DECLS\" since option " +
-                                "USER_TOKEN_MANAGER has been set to true.");
+        JavaCCErrors.warning(t,
+            "Ignoring declarations in \"TOKEN_MGR_DECLS\" since option " + "USER_TOKEN_MANAGER has been set to true.");
       }
     }
   }
@@ -145,7 +145,7 @@ public abstract class JavaCCParserInternals extends JavaCCGlobals {
     if (!(r instanceof REndOfFile)) {
       TokenProduction p = new TokenProduction();
       p.isExplicit = false;
-      p.lexStates = new String[] {"DEFAULT"};
+      p.lexStates = new String[] { "DEFAULT" };
       p.kind = TokenProduction.TOKEN;
       RegExprSpec res = new RegExprSpec();
       res.rexp = r;
@@ -154,20 +154,30 @@ public abstract class JavaCCParserInternals extends JavaCCGlobals {
       res.nextState = null;
       res.nsTok = null;
       p.respecs.add(res);
-      rexprlist.add(p);
+      JavaCCGlobals.rexprlist.add(p);
     }
   }
 
   static private boolean hexchar(char ch) {
-    if (ch >= '0' && ch <= '9') return true;
-    if (ch >= 'A' && ch <= 'F') return true;
-    if (ch >= 'a' && ch <= 'f') return true;
+    if (ch >= '0' && ch <= '9') {
+      return true;
+    }
+    if (ch >= 'A' && ch <= 'F') {
+      return true;
+    }
+    if (ch >= 'a' && ch <= 'f') {
+      return true;
+    }
     return false;
   }
 
   static private int hexval(char ch) {
-    if (ch >= '0' && ch <= '9') return (ch) - ('0');
-    if (ch >= 'A' && ch <= 'F') return (ch) - ('A') + 10;
+    if (ch >= '0' && ch <= '9') {
+      return (ch) - ('0');
+    }
+    if (ch >= 'A' && ch <= 'F') {
+      return (ch) - ('A') + 10;
+    }
     return (ch) - ('a') + 10;
   }
 
@@ -176,84 +186,98 @@ public abstract class JavaCCParserInternals extends JavaCCGlobals {
     int index = 1;
     char ch, ch1;
     int ordinal;
-    while (index < str.length()-1) {
+    while (index < str.length() - 1) {
       if (str.charAt(index) != '\\') {
-        retval += str.charAt(index); index++;
+        retval += str.charAt(index);
+        index++;
         continue;
       }
       index++;
       ch = str.charAt(index);
       if (ch == 'b') {
-        retval += '\b'; index++;
+        retval += '\b';
+        index++;
         continue;
       }
       if (ch == 't') {
-        retval += '\t'; index++;
+        retval += '\t';
+        index++;
         continue;
       }
       if (ch == 'n') {
-        retval += '\n'; index++;
+        retval += '\n';
+        index++;
         continue;
       }
       if (ch == 'f') {
-        retval += '\f'; index++;
+        retval += '\f';
+        index++;
         continue;
       }
       if (ch == 'r') {
-        retval += '\r'; index++;
+        retval += '\r';
+        index++;
         continue;
       }
       if (ch == '"') {
-        retval += '\"'; index++;
+        retval += '\"';
+        index++;
         continue;
       }
       if (ch == '\'') {
-        retval += '\''; index++;
+        retval += '\'';
+        index++;
         continue;
       }
       if (ch == '\\') {
-        retval += '\\'; index++;
+        retval += '\\';
+        index++;
         continue;
       }
       if (ch >= '0' && ch <= '7') {
-        ordinal = (ch) - ('0'); index++;
+        ordinal = (ch) - ('0');
+        index++;
         ch1 = str.charAt(index);
         if (ch1 >= '0' && ch1 <= '7') {
-          ordinal = ordinal*8 + (ch1) - ('0'); index++;
+          ordinal = ordinal * 8 + (ch1) - ('0');
+          index++;
           ch1 = str.charAt(index);
           if (ch <= '3' && ch1 >= '0' && ch1 <= '7') {
-            ordinal = ordinal*8 + (ch1) - ('0'); index++;
+            ordinal = ordinal * 8 + (ch1) - ('0');
+            index++;
           }
         }
-        retval += (char)ordinal;
+        retval += (char) ordinal;
         continue;
       }
       if (ch == 'u') {
-        index++; ch = str.charAt(index);
-        if (hexchar(ch)) {
-          ordinal = hexval(ch);
-          index++; ch = str.charAt(index);
-          if (hexchar(ch)) {
-            ordinal = ordinal*16 + hexval(ch);
-            index++; ch = str.charAt(index);
-            if (hexchar(ch)) {
-              ordinal = ordinal*16 + hexval(ch);
-              index++; ch = str.charAt(index);
-              if (hexchar(ch)) {
-                ordinal = ordinal*16 + hexval(ch);
+        index++;
+        ch = str.charAt(index);
+        if (JavaCCParserInternals.hexchar(ch)) {
+          ordinal = JavaCCParserInternals.hexval(ch);
+          index++;
+          ch = str.charAt(index);
+          if (JavaCCParserInternals.hexchar(ch)) {
+            ordinal = ordinal * 16 + JavaCCParserInternals.hexval(ch);
+            index++;
+            ch = str.charAt(index);
+            if (JavaCCParserInternals.hexchar(ch)) {
+              ordinal = ordinal * 16 + JavaCCParserInternals.hexval(ch);
+              index++;
+              ch = str.charAt(index);
+              if (JavaCCParserInternals.hexchar(ch)) {
+                ordinal = ordinal * 16 + JavaCCParserInternals.hexval(ch);
                 index++;
                 continue;
               }
             }
           }
         }
-        JavaCCErrors.parse_error(t, "Encountered non-hex character '" + ch +
-                "' at position " + index + " of string " +
-                "- Unicode escape must have 4 hex digits after it.");
+        JavaCCErrors.parse_error(t, "Encountered non-hex character '" + ch + "' at position " + index + " of string "
+            + "- Unicode escape must have 4 hex digits after it.");
         return retval;
       }
-      JavaCCErrors.parse_error(t, "Illegal escape sequence '\\" + ch +
-              "' at position " + index + " of string.");
+      JavaCCErrors.parse_error(t, "Illegal escape sequence '\\" + ch + "' at position " + index + " of string.");
       return retval;
     }
     return retval;
@@ -273,24 +297,16 @@ public abstract class JavaCCParserInternals extends JavaCCGlobals {
       JavaCCErrors.parse_error(t, "String in character list may contain only one character.");
       return ' ';
     } else if ((left.charAt(0)) > (s.charAt(0))) {
-      JavaCCErrors.parse_error(t, "Right end of character range \'" + s +
-              "\' has a lower ordinal value than the left end of character range \'" + left + "\'.");
+      JavaCCErrors.parse_error(t, "Right end of character range \'" + s
+          + "\' has a lower ordinal value than the left end of character range \'" + left + "\'.");
       return left.charAt(0);
     } else {
       return s.charAt(0);
     }
   }
 
-  static protected void makeTryBlock(
-    Token tryLoc,
-    Container<TryBlock> result,
-    Container<Expansion> nestedExp,
-    List<List<Token>> types,
-    List<Token> ids,
-    List<List<Token>> catchblks,
-    List<Token> finallyblk
-  )
-  {
+  static protected void makeTryBlock(Token tryLoc, Container<TryBlock> result, Container<Expansion> nestedExp,
+      List<List<Token>> types, List<Token> ids, List<List<Token>> catchblks, List<Token> finallyblk) {
     if (catchblks.size() == 0 && finallyblk == null) {
       JavaCCErrors.parse_error(tryLoc, "Try block must contain at least one catch or finally block.");
       return;
@@ -307,23 +323,21 @@ public abstract class JavaCCParserInternals extends JavaCCGlobals {
     result.member = tblk;
   }
 
-  protected static boolean isJavaLanguage()
-  {
-    return getCodeGenerator() != null && "Java".equalsIgnoreCase(getCodeGenerator().getName());
+  protected static boolean isJavaLanguage() {
+    return JavaCCGlobals.getCodeGenerator() != null
+        && "Java".equalsIgnoreCase(JavaCCGlobals.getCodeGenerator().getName());
   }
 
-  protected static String getLanguageName()
-  {
-    return getCodeGenerator() == null ? null: getCodeGenerator().getName();
+  protected static String getLanguageName() {
+    return JavaCCGlobals.getCodeGenerator() == null ? null : JavaCCGlobals.getCodeGenerator().getName();
   }
 
-   static void reInit()
-   {
-      add_cu_token_here = cu_to_insertion_point_1;
-      first_cu_token = null;
-      insertionpoint1set = false;
-      insertionpoint2set = false;
-      nextFreeLexState = 1;
-   }
+  static void reInit() {
+    JavaCCParserInternals.add_cu_token_here = JavaCCGlobals.cu_to_insertion_point_1;
+    JavaCCParserInternals.first_cu_token = null;
+    JavaCCParserInternals.insertionpoint1set = false;
+    JavaCCParserInternals.insertionpoint2set = false;
+    JavaCCParserInternals.nextFreeLexState = 1;
+  }
 
 }

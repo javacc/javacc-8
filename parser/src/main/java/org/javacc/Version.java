@@ -60,8 +60,8 @@ public class Version {
     minor = props.getProperty("version.minor", "??");
     patch = props.getProperty("version.patch", "??");
 
-    version = major + "." + minor;
-    fullVersion = major + "." + minor + (patch.equals("") ? "" : "." + patch);
+    version = Version.major + "." + Version.minor;
+    fullVersion = Version.major + "." + Version.minor + (Version.patch.equals("") ? "" : "." + Version.patch);
   }
 
 

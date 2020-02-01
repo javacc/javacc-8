@@ -84,7 +84,7 @@ class OutputFile implements Closeable {
     this.options = options;
     this.compatibleVersion = compatibleVersion;
     this.toolName = toolName;
-    this.needToWrite = OutputFileDigest.check(file, toolName, compatibleVersion, options);
+    needToWrite = OutputFileDigest.check(file, toolName, compatibleVersion, options);
   }
 
   /**
@@ -103,16 +103,15 @@ class OutputFile implements Closeable {
   public final PrintWriter getPrintWriter() throws IOException {
     if (writer == null) {
       try {
-        String version = this.compatibleVersion == null ? Version.fullVersion : this.compatibleVersion;
+        String version = compatibleVersion == null ? Version.fullVersion : compatibleVersion;
         OutputStream ostream = new BufferedOutputStream(new FileOutputStream(file));
 
-        this.digestStream = OutputFileDigest.getDigestStream(ostream);
-        this.writer = new TrapClosePrintWriter(this.digestStream);
-        this.writer
-            .println("/* " + JavaCCGlobals.getIdString(this.toolName, file.getName()) + " Version " + version + " */");
-        if (!this.options.isEmpty()) {
-          this.writer.println(
-              "/* JavaCCOptions:" + Options.getOptionsString(this.options.toArray(new String[options.size()])) + " */");
+        digestStream = OutputFileDigest.getDigestStream(ostream);
+        writer = new TrapClosePrintWriter(digestStream);
+        writer.println("/* " + JavaCCGlobals.getIdString(toolName, file.getName()) + " Version " + version + " */");
+        if (!options.isEmpty()) {
+          writer.println(
+              "/* JavaCCOptions:" + Options.getOptionsString(options.toArray(new String[options.size()])) + " */");
         }
       } catch (NoSuchAlgorithmException e) {
         throw (IOException) new IOException("No MD5 implementation").initCause(e);
@@ -124,7 +123,7 @@ class OutputFile implements Closeable {
   /**
    * Close the OutputFile, writing any necessary trailer information (such as a
    * checksum).
-   * 
+   *
    * @throws IOException
    */
   @Override

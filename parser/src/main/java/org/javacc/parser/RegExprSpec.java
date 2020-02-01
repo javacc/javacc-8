@@ -22,9 +22,10 @@
  * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
  * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
- * THE POSSIBILITY OF SUCH DAMAGE.
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.javacc.parser;
 
 /**
@@ -42,20 +43,19 @@ public class RegExprSpec {
   /**
    * The action corresponding to this specification.
    */
-  Action act;
+  Action                   act;
 
   /**
-   * The next state corresponding to this specification.  If no
-   * next state has been specified, this field is set to "null".
+   * The next state corresponding to this specification. If no next state has
+   * been specified, this field is set to "null".
    */
-  String nextState;
+  String                   nextState;
 
   /**
-   * If the next state specification was explicit in the previous
-   * case, then this token is that of the identifier denoting
-   * the next state.  This is used for location information, etc.
-   * in error reporting.
+   * If the next state specification was explicit in the previous case, then
+   * this token is that of the identifier denoting the next state. This is used
+   * for location information, etc. in error reporting.
    */
-  public Token nsTok;
+  public Token             nsTok;
 
 }

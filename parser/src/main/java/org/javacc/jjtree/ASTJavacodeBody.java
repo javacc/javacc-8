@@ -22,12 +22,14 @@
  * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
  * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
- * THE POSSIBILITY OF SUCH DAMAGE.
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.javacc.jjtree;
 
-public class ASTJavacodeBody extends JJTreeNode{
+public class ASTJavacodeBody extends JJTreeNode {
+
   ASTJavacodeBody(int id) {
     super(id);
   }
@@ -40,4 +42,7 @@ public class ASTJavacodeBody extends JJTreeNode{
     return visitor.visit(this, data);
   }
 }
-/* JavaCC - OriginalChecksum=35919e1a4f2c8df8810b4becf429350e (do not edit this line) */
+/*
+ * JavaCC - OriginalChecksum=35919e1a4f2c8df8810b4becf429350e (do not edit this
+ * line)
+ */

@@ -39,8 +39,7 @@ public class ASTBNF extends ASTProduction{
   Token declBeginLoc;
 
   @Override
-  public String toString()
-  {
+  public String toString() {
     return super.toString() + ": " + name;
   }
 
@@ -50,4 +49,7 @@ public class ASTBNF extends ASTProduction{
     return visitor.visit(this, data);
   }
 }
-/* JavaCC - OriginalChecksum=e0c72f48f82f608478edf9776ddc8fbb (do not edit this line) */
+/*
+ * JavaCC - OriginalChecksum=e0c72f48f82f608478edf9776ddc8fbb (do not edit this
+ * line)
+ */

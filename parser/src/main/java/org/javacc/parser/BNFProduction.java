@@ -22,9 +22,10 @@
  * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
  * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
- * THE POSSIBILITY OF SUCH DAMAGE.
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.javacc.parser;
 
 import java.util.ArrayList;
@@ -39,14 +40,14 @@ public class BNFProduction extends NormalProduction {
   /**
    * The declarations of this production.
    */
-  private final List<Token> declaration_tokens = new ArrayList<Token>();
+  private final List<Token> declaration_tokens = new ArrayList<>();
 
   /**
-   * This flag keeps track of whether or not return and throw
-   * statements have been patched within this production's actions to
-   * include a preceding "if (true)".
+   * This flag keeps track of whether or not return and throw statements have
+   * been patched within this production's actions to include a preceding "if
+   * (true)".
    */
-  private boolean jumpPatched;
+  private boolean           jumpPatched;
 
   /**
    * @return the declaration_tokens

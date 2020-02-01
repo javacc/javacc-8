@@ -22,9 +22,10 @@
  * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
  * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
- * THE POSSIBILITY OF SUCH DAMAGE.
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.javacc.parser;
 
 /**
@@ -39,19 +40,18 @@ public class RZeroOrOne extends RegularExpression {
   public RegularExpression regexpr;
 
   @Override
-  public Nfa GenerateNfa(boolean ignoreCase)
-  {
-     Nfa retVal = new Nfa();
-     NfaState startState = retVal.start;
-     NfaState finalState = retVal.end;
+  public Nfa GenerateNfa(boolean ignoreCase) {
+    Nfa retVal = new Nfa();
+    NfaState startState = retVal.start;
+    NfaState finalState = retVal.end;
 
-     Nfa temp = regexpr.GenerateNfa(ignoreCase);
+    Nfa temp = regexpr.GenerateNfa(ignoreCase);
 
-     startState.AddMove(temp.start);
-     startState.AddMove(finalState);
-     temp.end.AddMove(finalState);
+    startState.AddMove(temp.start);
+    startState.AddMove(finalState);
+    temp.end.AddMove(finalState);
 
-     return retVal;
+    return retVal;
   }
 
 }

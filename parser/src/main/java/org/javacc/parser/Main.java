@@ -25,9 +25,10 @@
  * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
  * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
- * THE POSSIBILITY OF SUCH DAMAGE.
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.javacc.parser;
 
 import org.javacc.utils.CodeBuilder;
@@ -64,7 +65,7 @@ public class Main {
 
     // 2013/07/23 -- Changed this to auto-generate from metadata in Options so
     // that help is always in-sync with codebase
-    printOptions();
+    Main.printOptions();
 
     System.out.println("EXAMPLE:");
     System.out.println("    javacc -STATIC=false -LOOKAHEAD:2 -debug_parser mygrammar.jj");
@@ -99,7 +100,7 @@ public class Main {
       System.out.println("The integer valued options are:");
       System.out.println("");
       for (OptionInfo i : options) {
-        printOptionInfo(OptionType.INTEGER, i, maxLengthInt);
+        Main.printOptionInfo(OptionType.INTEGER, i, maxLengthInt);
       }
       System.out.println("");
     }
@@ -109,7 +110,7 @@ public class Main {
       System.out.println("The boolean valued options are:");
       System.out.println("");
       for (OptionInfo i : options) {
-        printOptionInfo(OptionType.BOOLEAN, i, maxLengthBool);
+        Main.printOptionInfo(OptionType.BOOLEAN, i, maxLengthBool);
       }
       System.out.println("");
     }
@@ -118,7 +119,7 @@ public class Main {
       System.out.println("The string valued options are:");
       System.out.println("");
       for (OptionInfo i : options) {
-        printOptionInfo(OptionType.STRING, i, maxLengthString);
+        Main.printOptionInfo(OptionType.STRING, i, maxLengthString);
       }
       System.out.println("");
     }
@@ -127,7 +128,7 @@ public class Main {
   private static void printOptionInfo(OptionType filter, OptionInfo optionInfo, int padLength) {
     if (optionInfo.getType() == filter) {
       Object default1 = optionInfo.getDefault();
-      System.out.println("    " + padRight(optionInfo.getName(), padLength + 1) + (default1 == null ? ""
+      System.out.println("    " + Main.padRight(optionInfo.getName(), padLength + 1) + (default1 == null ? ""
           : ("(default : " + (default1.toString().length() == 0 ? "<<empty>>" : default1) + ")")));
     }
   }
@@ -153,7 +154,7 @@ public class Main {
    * A main program that exercises the parser.
    */
   public static void main(String args[]) throws Exception {
-    int errorcode = mainProgram(args);
+    int errorcode = Main.mainProgram(args);
     System.exit(errorcode);
   }
 
@@ -164,14 +165,14 @@ public class Main {
   public static int mainProgram(String args[]) throws Exception {
 
     // Initialize all static state
-    reInitAll();
+    Main.reInitAll();
 
     JavaCCGlobals.bannerLine("Parser Generator", "");
 
     JavaCCParser parser = null;
     if (args.length == 0) {
       System.out.println("");
-      help_message();
+      Main.help_message();
       return 1;
     } else {
       System.out.println("(type \"javacc\" with no arguments for help)");
@@ -212,12 +213,13 @@ public class Main {
 
     try {
       System.out.println("Reading from file " + args[args.length - 1] + " . . .");
-      // JavaCCGlobals.fileName = JavaCCGlobals.origFileName = args[args.length - 1];
+      // JavaCCGlobals.fileName = JavaCCGlobals.origFileName = args[args.length
+      // - 1];
       JavaCCGlobals.jjtreeGenerated = JavaCCGlobals.isGeneratedBy("JJTree", args[args.length - 1]);
       JavaCCGlobals.toolNames = JavaCCGlobals.getToolNames(args[args.length - 1]);
       parser.javacc_input();
 
-      lg = new LexGen();
+      Main.lg = new LexGen();
 
       JavaCCGlobals.createOutputDir(Options.getOutputDirectory());
 
@@ -235,7 +237,7 @@ public class Main {
       if (codeGenerator != null) {
         ParserCodeGenerator parserCodeGenerator = codeGenerator.getParserCodeGenerator();
         if (isBuildParser && parserCodeGenerator != null) {
-          ParserData parserData = createParserData();
+          ParserData parserData = Main.createParserData();
           CodeGeneratorSettings settings = CodeGeneratorSettings.of(Options.getOptions());
           parserCodeGenerator.generateCode(settings, parserData);
           parserCodeGenerator.finish(settings, parserData);
@@ -248,8 +250,9 @@ public class Main {
 
         Options.setStringOption(Options.NONUSER_OPTION__PARSER_NAME, JavaCCGlobals.cu_name);
 
-        if (JavaCCErrors.get_error_count() != 0)
+        if (JavaCCErrors.get_error_count() != 0) {
           throw new MetaParseException();
+        }
         if (Options.isGenerateBoilerplateCode()) {
           if ((!codeGenerator.getTokenCodeGenerator()
               .generateCodeForToken(CodeGeneratorSettings.of(Options.getOptions())))

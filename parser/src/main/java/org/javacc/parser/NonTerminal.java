@@ -22,9 +22,10 @@
  * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
  * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
- * THE POSSIBILITY OF SUCH DAMAGE.
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.javacc.parser;
 
 import java.util.ArrayList;
@@ -38,23 +39,22 @@ import java.util.Set;
 public class NonTerminal extends Expansion {
 
   /**
-   * The LHS to which the return value of the non-terminal
-   * is assigned.  In case there is no LHS, then the vector
-   * remains empty.
+   * The LHS to which the return value of the non-terminal is assigned. In case
+   * there is no LHS, then the vector remains empty.
    */
-  private List<Token> lhsTokens = new ArrayList<Token>();
+  private List<Token>      lhsTokens                 = new ArrayList<>();
 
   /**
    * The name of the non-terminal.
    */
-  private String name;
+  private String           name;
 
   /**
    * The list of all tokens in the argument list.
    */
-  private List<Token> argument_tokens = new ArrayList<Token>();
+  private List<Token>      argument_tokens           = new ArrayList<>();
 
-  private List<Token> parametrized_type__tokens = new ArrayList<Token>();
+  private List<Token>      parametrized_type__tokens = new ArrayList<>();
   /**
    * The production this non-terminal corresponds to.
    */

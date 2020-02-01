@@ -22,23 +22,25 @@
  * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
  * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
- * THE POSSIBILITY OF SUCH DAMAGE.
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.javacc.parser;
+
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Describes regular expressions which are choices from
- * from among included regular expressions.
+ * Describes regular expressions which are choices from from among included
+ * regular expressions.
  */
 
 public class RChoice extends RegularExpression {
 
   /**
-   * The list of choices of this regular expression.  Each
-   * list component will narrow to RegularExpression.
+   * The list of choices of this regular expression. Each list component will
+   * narrow to RegularExpression.
    */
   private List<RegularExpression> choices = new ArrayList<>();
 
@@ -57,107 +59,102 @@ public class RChoice extends RegularExpression {
   }
 
   @Override
-  public Nfa GenerateNfa(boolean ignoreCase)
-  {
-     CompressCharLists();
+  public Nfa GenerateNfa(boolean ignoreCase) {
+    CompressCharLists();
 
-     if (getChoices().size() == 1)
-        return getChoices().get(0).GenerateNfa(ignoreCase);
+    if (getChoices().size() == 1) {
+      return getChoices().get(0).GenerateNfa(ignoreCase);
+    }
 
-     Nfa retVal = new Nfa();
-     NfaState startState = retVal.start;
-     NfaState finalState = retVal.end;
+    Nfa retVal = new Nfa();
+    NfaState startState = retVal.start;
+    NfaState finalState = retVal.end;
 
-     for (int i = 0; i < getChoices().size(); i++)
-     {
-        Nfa temp;
-        RegularExpression curRE = getChoices().get(i);
+    for (int i = 0; i < getChoices().size(); i++) {
+      Nfa temp;
+      RegularExpression curRE = getChoices().get(i);
 
-        temp = curRE.GenerateNfa(ignoreCase);
+      temp = curRE.GenerateNfa(ignoreCase);
 
-        startState.AddMove(temp.start);
-        temp.end.AddMove(finalState);
-     }
+      startState.AddMove(temp.start);
+      temp.end.AddMove(finalState);
+    }
 
-     return retVal;
+    return retVal;
   }
 
-  private void CompressCharLists()
-  {
-     CompressChoices(); // Unroll nested choices
-     RegularExpression curRE;
-     RCharacterList curCharList = null;
+  private void CompressCharLists() {
+    CompressChoices(); // Unroll nested choices
+    RegularExpression curRE;
+    RCharacterList curCharList = null;
 
-     for (int i = 0; i < getChoices().size(); i++)
-     {
-        curRE = getChoices().get(i);
+    for (int i = 0; i < getChoices().size(); i++) {
+      curRE = getChoices().get(i);
 
-        while (curRE instanceof RJustName)
-           curRE = ((RJustName)curRE).regexpr;
+      while (curRE instanceof RJustName) {
+        curRE = ((RJustName) curRE).regexpr;
+      }
 
-        if (curRE instanceof RStringLiteral &&
-            ((RStringLiteral)curRE).image.length() == 1)
-           getChoices().set(i, curRE = new RCharacterList(
-                      ((RStringLiteral)curRE).image.charAt(0)));
+      if (curRE instanceof RStringLiteral && ((RStringLiteral) curRE).image.length() == 1) {
+        getChoices().set(i, curRE = new RCharacterList(((RStringLiteral) curRE).image.charAt(0)));
+      }
 
-        if (curRE instanceof RCharacterList)
-        {
-           if (((RCharacterList)curRE).negated_list)
-              ((RCharacterList)curRE).RemoveNegation();
-
-           List<Expansion> tmp = ((RCharacterList)curRE).descriptors;
-
-           if (curCharList == null)
-              getChoices().set(i, curRE = curCharList = new RCharacterList());
-           else
-              getChoices().remove(i--);
-
-           for (int j = tmp.size(); j-- > 0;)
-              curCharList.descriptors.add(tmp.get(j));
-         }
-
-     }
-  }
-
-  private void CompressChoices()
-  {
-     RegularExpression curRE;
-
-     for (int i = 0; i < getChoices().size(); i++)
-     {
-        curRE = getChoices().get(i);
-
-        while (curRE instanceof RJustName)
-           curRE = ((RJustName)curRE).regexpr;
-
-        if (curRE instanceof RChoice)
-        {
-           getChoices().remove(i--);
-           for (int j = ((RChoice)curRE).getChoices().size(); j-- > 0;)
-              getChoices().add(((RChoice)curRE).getChoices().get(j));
+      if (curRE instanceof RCharacterList) {
+        if (((RCharacterList) curRE).negated_list) {
+          ((RCharacterList) curRE).RemoveNegation();
         }
-     }
+
+        List<Expansion> tmp = ((RCharacterList) curRE).descriptors;
+
+        if (curCharList == null) {
+          getChoices().set(i, curRE = curCharList = new RCharacterList());
+        } else {
+          getChoices().remove(i--);
+        }
+
+        for (int j = tmp.size(); j-- > 0;) {
+          curCharList.descriptors.add(tmp.get(j));
+        }
+      }
+
+    }
   }
 
-  void CheckUnmatchability()
-  {
-     RegularExpression curRE;
-     for (int i = 0; i < getChoices().size(); i++)
-     {
-        if (!(curRE = getChoices().get(i)).private_rexp &&
-            //curRE instanceof RJustName &&
-            curRE.ordinal > 0 && curRE.ordinal < ordinal &&
-            Main.lg.lexStates[curRE.ordinal] == Main.lg.lexStates[ordinal])
-        {
-           if (label != null)
-              JavaCCErrors.warning(this, "Regular Expression choice : " +
-                 curRE.label + " can never be matched as : " + label);
-           else
-              JavaCCErrors.warning(this, "Regular Expression choice : " +
-                 curRE.label + " can never be matched as token of kind : " +
-                                                                      ordinal);
+  private void CompressChoices() {
+    RegularExpression curRE;
+
+    for (int i = 0; i < getChoices().size(); i++) {
+      curRE = getChoices().get(i);
+
+      while (curRE instanceof RJustName) {
+        curRE = ((RJustName) curRE).regexpr;
+      }
+
+      if (curRE instanceof RChoice) {
+        getChoices().remove(i--);
+        for (int j = ((RChoice) curRE).getChoices().size(); j-- > 0;) {
+          getChoices().add(((RChoice) curRE).getChoices().get(j));
         }
-     }
+      }
+    }
+  }
+
+  void CheckUnmatchability() {
+    RegularExpression curRE;
+    for (int i = 0; i < getChoices().size(); i++) {
+      if (!(curRE = getChoices().get(i)).private_rexp &&
+      // curRE instanceof RJustName &&
+          curRE.ordinal > 0 && curRE.ordinal < ordinal
+          && LexGen.lexStates[curRE.ordinal] == LexGen.lexStates[ordinal]) {
+        if (label != null) {
+          JavaCCErrors.warning(this,
+              "Regular Expression choice : " + curRE.label + " can never be matched as : " + label);
+        } else {
+          JavaCCErrors.warning(this,
+              "Regular Expression choice : " + curRE.label + " can never be matched as token of kind : " + ordinal);
+        }
+      }
+    }
   }
 
 }

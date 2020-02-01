@@ -25,14 +25,15 @@
  * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
  * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
- * THE POSSIBILITY OF SUCH DAMAGE.
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
  */
 
 package org.javacc.jjtree;
 
 import org.javacc.parser.CodeGenerator;
 import org.javacc.parser.JavaCCGlobals;
+import org.javacc.parser.Options;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -42,13 +43,11 @@ public class JJTree {
 
   private IO io;
 
-  private void p(String s)
-  {
+  private void p(String s) {
     io.getMsg().println(s);
   }
 
-  private void help_message()
-  {
+  private void help_message() {
     p("Usage:");
     p("    jjtree option-settings inputfile");
     p("");
@@ -135,16 +134,16 @@ public class JJTree {
 
       String fn = args[args.length - 1];
 
-      if (JJTreeOptions.isOption(fn)) {
+      if (Options.isOption(fn)) {
         p("Last argument \"" + fn + "\" is not a filename");
         return 1;
       }
       for (int arg = 0; arg < args.length - 1; arg++) {
-        if (!JJTreeOptions.isOption(args[arg])) {
+        if (!Options.isOption(args[arg])) {
           p("Argument \"" + args[arg] + "\" must be an option setting.");
           return 1;
         }
-        JJTreeOptions.setCmdLineOption(args[arg]);
+        Options.setCmdLineOption(args[arg]);
       }
 
       JJTreeOptions.validate();
@@ -164,7 +163,7 @@ public class JJTree {
         JJTreeParser parser = new JJTreeParser(io.getIn());
         parser.javacc_input();
 
-        ASTGrammar root = (ASTGrammar)parser.jjtree.rootNode();
+        ASTGrammar root = (ASTGrammar) parser.jjtree.rootNode();
         if (Boolean.getBoolean("jjtree-dump")) {
           root.dump(" ");
         }
@@ -176,8 +175,7 @@ public class JJTree {
         }
         JJTree.generateIO(io, root);
         io.getOut().close();
-        p("Annotated grammar generated successfully in " +
-              io.getOutputFileName());
+        p("Annotated grammar generated successfully in " + io.getOutputFileName());
 
       } catch (ParseException pe) {
         p("Error parsing input: " + pe.toString());
@@ -205,17 +203,18 @@ public class JJTree {
   }
 
   private static void generateIO(IO io, ASTGrammar grammar) throws IOException {
-    // TODO :: CBA --  Require Unification of output language specific processing into a single Enum class
+    // TODO :: CBA -- Require Unification of output language specific processing
+    // into a single Enum class
     CodeGenerator codeGenerator = JavaCCGlobals.getCodeGenerator();
     if (codeGenerator != null) {
       codeGenerator.getJJTreeCodeGenerator().visit(grammar, io);
       codeGenerator.getJJTreeCodeGenerator().generateHelperFiles();
     } else {
       // Catch all to ensure we don't accidently do nothing
-      throw new RuntimeException("No valid CodeGenerator for JJTree : " + JJTreeOptions.getCodeGenerator());
+      throw new RuntimeException("No valid CodeGenerator for JJTree : " + Options.getCodeGenerator());
     }
   }
 
 }
 
-/*end*/
+/* end */

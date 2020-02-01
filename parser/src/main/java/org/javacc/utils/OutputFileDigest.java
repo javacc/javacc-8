@@ -42,13 +42,14 @@ abstract class OutputFileDigest {
    * @param digestStream
    */
   public static String getDigestLine(DigestOutputStream digestStream) {
-    return MD5_LINE_PART_1 + OutputFileDigest.toHexString(digestStream) + MD5_LINE_PART_2;
+    return OutputFileDigest.MD5_LINE_PART_1 + OutputFileDigest.toHexString(digestStream)
+        + OutputFileDigest.MD5_LINE_PART_2;
   }
 
   /**
    * Create an MD5 {@link DigestOutputStream} for the provided
    * {@link OutputStream}.
-   * 
+   *
    * @param stream
    * @throws NoSuchAlgorithmException
    */
@@ -79,11 +80,12 @@ abstract class OutputFileDigest {
     try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
       String line;
       String existingMD5 = null;
-      DigestOutputStream digestStream = getDigestStream(new NullOutputStream());
+      DigestOutputStream digestStream = OutputFileDigest.getDigestStream(new NullOutputStream());
       try (PrintWriter pw = new PrintWriter(digestStream)) {
         while ((line = reader.readLine()) != null) {
-          if (line.startsWith(MD5_LINE_PART_1)) {
-            existingMD5 = line.replaceAll(MD5_LINE_PART_1q, "").replaceAll(MD5_LINE_PART_2q, "");
+          if (line.startsWith(OutputFileDigest.MD5_LINE_PART_1)) {
+            existingMD5 = line.replaceAll(OutputFileDigest.MD5_LINE_PART_1q, "")
+                .replaceAll(OutputFileDigest.MD5_LINE_PART_2q, "");
           } else {
             pw.println(line);
           }
@@ -117,7 +119,7 @@ abstract class OutputFileDigest {
   /**
    * Output a warning if the file was created with an incompatible version of
    * JavaCC.
-   * 
+   *
    * @param file
    * @param toolName
    * @param versionId
@@ -178,7 +180,7 @@ abstract class OutputFileDigest {
   private static String toHexString(DigestOutputStream digestStream) {
     StringBuffer buffer = new StringBuffer(32);
     for (byte b : digestStream.getMessageDigest().digest()) {
-      buffer.append(HEX_DIGITS[(b & 0xF0) >> 4]).append(HEX_DIGITS[b & 0x0F]);
+      buffer.append(OutputFileDigest.HEX_DIGITS[(b & 0xF0) >> 4]).append(OutputFileDigest.HEX_DIGITS[b & 0x0F]);
     }
     return buffer.toString();
   }

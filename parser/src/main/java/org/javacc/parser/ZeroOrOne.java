@@ -57,11 +57,12 @@ public class ZeroOrOne extends Expansion {
   @Override
   public final StringBuffer dump(int indent, Set<Expansion> alreadyDumped) {
     StringBuffer buffer = super.dump(indent, alreadyDumped);
-    if (alreadyDumped.contains(this))
+    if (alreadyDumped.contains(this)) {
       return buffer;
+    }
 
     alreadyDumped.add(this);
-    buffer.append(eol).append(expansion.dump(indent + 1, alreadyDumped));
+    buffer.append(Expansion.eol).append(expansion.dump(indent + 1, alreadyDumped));
     return buffer;
   }
 }
