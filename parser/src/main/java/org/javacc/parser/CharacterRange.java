@@ -22,9 +22,10 @@
  * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
  * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
- * THE POSSIBILITY OF SUCH DAMAGE.
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.javacc.parser;
 
 /**
@@ -40,9 +41,10 @@ public class CharacterRange extends Expansion {
   CharacterRange() {}
 
   CharacterRange(char l, char r) {
-    if (l > r)
+    if (l > r) {
       JavaCCErrors.semantic_error(this, "Invalid range : \"" + (int) l + "\" - \"" + (int) r
           + "\". First character should be less than or equal to the second one in a range.");
+    }
 
     setLeft(l);
     setRight(r);

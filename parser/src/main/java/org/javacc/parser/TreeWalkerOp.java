@@ -22,26 +22,26 @@
  * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
  * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
- * THE POSSIBILITY OF SUCH DAMAGE.
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.javacc.parser;
 
 /**
- * Objects of this type are passed to the tree walker
- * routines in ExpansionTreeWalker.
+ * Objects of this type are passed to the tree walker routines in
+ * ExpansionTreeWalker.
  */
 interface TreeWalkerOp {
 
   /**
-   * When called at a particular node, this specifies to the
-   * tree walker if it should visit more nodes under this node.
+   * When called at a particular node, this specifies to the tree walker if it
+   * should visit more nodes under this node.
    */
   boolean goDeeper(Expansion e);
 
   /**
-   * When a node is visited, this method is invoked with the
-   * node as parameter.
+   * When a node is visited, this method is invoked with the node as parameter.
    */
   void action(Expansion e);
 }

@@ -34,7 +34,6 @@ import org.javacc.parser.Choice;
 import org.javacc.parser.CppCodeProduction;
 import org.javacc.parser.Expansion;
 import org.javacc.parser.JavaCCGlobals;
-import org.javacc.parser.JavaCCParserInternals;
 import org.javacc.parser.JavaCodeProduction;
 import org.javacc.parser.Lookahead;
 import org.javacc.parser.NonTerminal;
@@ -69,12 +68,13 @@ import java.util.List;
 public class JJDoc extends JJDocGlobals {
 
   static void start() {
-    generator = getGenerator();
-    generator.documentStart();
-    emitTokenProductions(generator, JavaCCGlobals.rexprlist);
-    emitNormalProductions(generator, JavaCCGlobals.bnfproductions);
-    generator.documentEnd();
+    JJDocGlobals.generator = JJDocGlobals.getGenerator();
+    JJDocGlobals.generator.documentStart();
+    JJDoc.emitTokenProductions(JJDocGlobals.generator, JavaCCGlobals.rexprlist);
+    JJDoc.emitNormalProductions(JJDocGlobals.generator, JavaCCGlobals.bnfproductions);
+    JJDocGlobals.generator.documentEnd();
   }
+
   private static Token getPrecedingSpecialToken(Token tok) {
     Token t = tok;
     while (t.specialToken != null) {
@@ -82,12 +82,13 @@ public class JJDoc extends JJDocGlobals {
     }
     return (t != tok) ? t : null;
   }
+
   private static void emitTopLevelSpecialTokens(Token tok, Generator gen) {
     if (tok == null) {
       // Strange ...
       return;
     }
-    tok = getPrecedingSpecialToken(tok);
+    tok = JJDoc.getPrecedingSpecialToken(tok);
     String s = "";
     if (tok != null) {
       JavaCCGlobals.cline = tok.beginLine;
@@ -97,8 +98,9 @@ public class JJDoc extends JJDocGlobals {
         tok = tok.next;
       }
     }
-    if (!s.equals(""))
+    if (!s.equals("")) {
       gen.specialTokens(s);
+    }
   }
 
   private static void emitTokenProductions(Generator gen, List<TokenProduction> prods) {
@@ -106,143 +108,148 @@ public class JJDoc extends JJDocGlobals {
     // FIXME there are many empty productions here
     for (Iterator<TokenProduction> it = prods.iterator(); it.hasNext();) {
       TokenProduction tp = it.next();
-      emitTopLevelSpecialTokens(tp.firstToken, gen);
+      JJDoc.emitTopLevelSpecialTokens(tp.firstToken, gen);
 
-      
-      
+
       gen.handleTokenProduction(tp);
     }
     gen.tokensEnd();
   }
-public static String getStandardTokenProductionText(TokenProduction tp) {
+
+  public static String getStandardTokenProductionText(TokenProduction tp) {
     String token = "";
-      if (tp.isExplicit) {
-        if (tp.lexStates == null) {
-         token += "<*> ";
-        } else {
-          token += "<";
-          for (int i = 0; i < tp.lexStates.length; ++i) {
-            token += tp.lexStates[i];
-            if (i < tp.lexStates.length - 1) {
-              token += ",";
-            }
-          }
-          token += "> ";
-        }
-        token += TokenProduction.kindImage[tp.kind];
-        if (tp.ignoreCase) {
-          token += " [IGNORE_CASE]";
-        }
-        token += " : {\n";
-        for (Iterator<RegExprSpec> it2 = tp.respecs.iterator(); it2.hasNext();) {
-          RegExprSpec res = it2.next();
-
-          token += emitRE(res.rexp);
-
-          if (res.nsTok != null) {
-            token += " : " + res.nsTok.image;
-          }
-
-          token += "\n";
-          if (it2.hasNext()) {
-            token += "| ";
+    if (tp.isExplicit) {
+      if (tp.lexStates == null) {
+        token += "<*> ";
+      } else {
+        token += "<";
+        for (int i = 0; i < tp.lexStates.length; ++i) {
+          token += tp.lexStates[i];
+          if (i < tp.lexStates.length - 1) {
+            token += ",";
           }
         }
-        token += "}\n\n";
+        token += "> ";
       }
+      token += TokenProduction.kindImage[tp.kind];
+      if (tp.ignoreCase) {
+        token += " [IGNORE_CASE]";
+      }
+      token += " : {\n";
+      for (Iterator<RegExprSpec> it2 = tp.respecs.iterator(); it2.hasNext();) {
+        RegExprSpec res = it2.next();
+
+        token += JJDoc.emitRE(res.rexp);
+
+        if (res.nsTok != null) {
+          token += " : " + res.nsTok.image;
+        }
+
+        token += "\n";
+        if (it2.hasNext()) {
+          token += "| ";
+        }
+      }
+      token += "}\n\n";
+    }
     return token;
-}
+  }
 
   private static void emitNormalProductions(Generator gen, List<NormalProduction> prods) {
     gen.nonterminalsStart();
     for (Iterator<NormalProduction> it = prods.iterator(); it.hasNext();) {
       NormalProduction np = it.next();
-      emitTopLevelSpecialTokens(np.getFirstToken(), gen);
+      JJDoc.emitTopLevelSpecialTokens(np.getFirstToken(), gen);
       if (np instanceof BNFProduction) {
         gen.productionStart(np);
         if (np.getExpansion() instanceof Choice) {
           boolean first = true;
-          Choice c = (Choice)np.getExpansion();
+          Choice c = (Choice) np.getExpansion();
           for (Iterator<Expansion> expansionsIterator = c.getChoices().iterator(); expansionsIterator.hasNext();) {
             Expansion e = expansionsIterator.next();
             gen.expansionStart(e, first);
-            emitExpansionTree(e, gen);
+            JJDoc.emitExpansionTree(e, gen);
             gen.expansionEnd(e, first);
             first = false;
           }
         } else {
           gen.expansionStart(np.getExpansion(), true);
-          emitExpansionTree(np.getExpansion(), gen);
+          JJDoc.emitExpansionTree(np.getExpansion(), gen);
           gen.expansionEnd(np.getExpansion(), true);
         }
         gen.productionEnd(np);
       } else if (np instanceof CppCodeProduction) {
-          gen.cppcode((CppCodeProduction)np);
+        gen.cppcode((CppCodeProduction) np);
       } else if (np instanceof JavaCodeProduction) {
-          gen.javacode((JavaCodeProduction)np);
+        gen.javacode((JavaCodeProduction) np);
       }
     }
     gen.nonterminalsEnd();
   }
+
   private static void emitExpansionTree(Expansion exp, Generator gen) {
-//     gen.text("[->" + exp.getClass().getName() + "]");
+    // gen.text("[->" + exp.getClass().getName() + "]");
     if (exp instanceof Action) {
-      emitExpansionAction((Action)exp, gen);
+      JJDoc.emitExpansionAction((Action) exp, gen);
     } else if (exp instanceof Choice) {
-      emitExpansionChoice((Choice)exp, gen);
+      JJDoc.emitExpansionChoice((Choice) exp, gen);
     } else if (exp instanceof Lookahead) {
-      emitExpansionLookahead((Lookahead)exp, gen);
+      JJDoc.emitExpansionLookahead((Lookahead) exp, gen);
     } else if (exp instanceof NonTerminal) {
-      emitExpansionNonTerminal((NonTerminal)exp, gen);
+      JJDoc.emitExpansionNonTerminal((NonTerminal) exp, gen);
     } else if (exp instanceof OneOrMore) {
-      emitExpansionOneOrMore((OneOrMore)exp, gen);
+      JJDoc.emitExpansionOneOrMore((OneOrMore) exp, gen);
     } else if (exp instanceof RegularExpression) {
-      emitExpansionRegularExpression((RegularExpression)exp, gen);
+      JJDoc.emitExpansionRegularExpression((RegularExpression) exp, gen);
     } else if (exp instanceof Sequence) {
-      emitExpansionSequence((Sequence)exp, gen);
+      JJDoc.emitExpansionSequence((Sequence) exp, gen);
     } else if (exp instanceof TryBlock) {
-      emitExpansionTryBlock((TryBlock)exp, gen);
+      JJDoc.emitExpansionTryBlock((TryBlock) exp, gen);
     } else if (exp instanceof ZeroOrMore) {
-      emitExpansionZeroOrMore((ZeroOrMore)exp, gen);
+      JJDoc.emitExpansionZeroOrMore((ZeroOrMore) exp, gen);
     } else if (exp instanceof ZeroOrOne) {
-      emitExpansionZeroOrOne((ZeroOrOne)exp, gen);
+      JJDoc.emitExpansionZeroOrOne((ZeroOrOne) exp, gen);
     } else {
-      error("Oops: Unknown expansion type.");
+      JJDocGlobals.error("Oops: Unknown expansion type.");
     }
-//     gen.text("[<-" + exp.getClass().getName() + "]");
+    // gen.text("[<-" + exp.getClass().getName() + "]");
   }
-  private static void emitExpansionAction(Action a, Generator gen) {
-  }
+
+  private static void emitExpansionAction(Action a, Generator gen) {}
+
   private static void emitExpansionChoice(Choice c, Generator gen) {
     for (Iterator<Expansion> it = c.getChoices().iterator(); it.hasNext();) {
       Expansion e = it.next();
-      emitExpansionTree(e, gen);
+      JJDoc.emitExpansionTree(e, gen);
       if (it.hasNext()) {
         gen.text(" | ");
       }
     }
   }
-  private static void emitExpansionLookahead(Lookahead l, Generator gen) {
-  }
+
+  private static void emitExpansionLookahead(Lookahead l, Generator gen) {}
+
   private static void emitExpansionNonTerminal(NonTerminal nt, Generator gen) {
     gen.nonTerminalStart(nt);
     gen.text(nt.getName());
     gen.nonTerminalEnd(nt);
   }
+
   private static void emitExpansionOneOrMore(OneOrMore o, Generator gen) {
     gen.text("( ");
-    emitExpansionTree(o.getExpansion(), gen);
+    JJDoc.emitExpansionTree(o.getExpansion(), gen);
     gen.text(" )+");
   }
-  private static void emitExpansionRegularExpression(RegularExpression r,
-      Generator gen) {
-    String reRendered = emitRE(r);
+
+  private static void emitExpansionRegularExpression(RegularExpression r, Generator gen) {
+    String reRendered = JJDoc.emitRE(r);
     if (!reRendered.equals("")) {
       gen.reStart(r);
       gen.text(reRendered);
       gen.reEnd(r);
     }
   }
+
   private static void emitExpansionSequence(Sequence s, Generator gen) {
     boolean firstUnit = true;
     for (Iterator<Expansion> it = s.units.iterator(); it.hasNext();) {
@@ -257,33 +264,37 @@ public static String getStandardTokenProductionText(TokenProduction tp) {
       if (needParens) {
         gen.text("( ");
       }
-      emitExpansionTree(e, gen);
+      JJDoc.emitExpansionTree(e, gen);
       if (needParens) {
         gen.text(" )");
       }
       firstUnit = false;
     }
   }
+
   private static void emitExpansionTryBlock(TryBlock t, Generator gen) {
     boolean needParens = t.exp instanceof Choice;
     if (needParens) {
       gen.text("( ");
     }
-    emitExpansionTree(t.exp, gen);
+    JJDoc.emitExpansionTree(t.exp, gen);
     if (needParens) {
       gen.text(" )");
     }
   }
+
   private static void emitExpansionZeroOrMore(ZeroOrMore z, Generator gen) {
     gen.text("( ");
-    emitExpansionTree(z.getExpansion(), gen);
+    JJDoc.emitExpansionTree(z.getExpansion(), gen);
     gen.text(" )*");
   }
+
   private static void emitExpansionZeroOrOne(ZeroOrOne z, Generator gen) {
     gen.text("( ");
-    emitExpansionTree(z.getExpansion(), gen);
+    JJDoc.emitExpansionTree(z.getExpansion(), gen);
     gen.text(" )?");
   }
+
   public static String emitRE(RegularExpression re) {
     String returnString = "";
     boolean hasLabel = !re.label.equals("");
@@ -291,8 +302,7 @@ public static String getStandardTokenProductionText(TokenProduction tp) {
     boolean eof = re instanceof REndOfFile;
     boolean isString = re instanceof RStringLiteral;
     boolean toplevelRE = (re.tpContext != null);
-    boolean needBrackets
-      = justName || eof || hasLabel || (!isString && toplevelRE);
+    boolean needBrackets = justName || eof || hasLabel || (!isString && toplevelRE);
     if (needBrackets) {
       returnString += "<";
       if (!justName) {
@@ -306,7 +316,7 @@ public static String getStandardTokenProductionText(TokenProduction tp) {
       }
     }
     if (re instanceof RCharacterList) {
-      RCharacterList cl = (RCharacterList)re;
+      RCharacterList cl = (RCharacterList) re;
       if (cl.negated_list) {
         returnString += "~";
       }
@@ -315,19 +325,19 @@ public static String getStandardTokenProductionText(TokenProduction tp) {
         Object o = it.next();
         if (o instanceof SingleCharacter) {
           returnString += "\"";
-          char s[] = { ((SingleCharacter)o).ch };
+          char s[] = { ((SingleCharacter) o).ch };
           returnString += JavaCCGlobals.add_escapes(new String(s));
           returnString += "\"";
         } else if (o instanceof CharacterRange) {
           returnString += "\"";
-          char s[] = { ((CharacterRange)o).getLeft() };
+          char s[] = { ((CharacterRange) o).getLeft() };
           returnString += JavaCCGlobals.add_escapes(new String(s));
           returnString += "\"-\"";
-          s[0] = ((CharacterRange)o).getRight();
+          s[0] = ((CharacterRange) o).getRight();
           returnString += JavaCCGlobals.add_escapes(new String(s));
           returnString += "\"";
         } else {
-          error("Oops: unknown character list element type.");
+          JJDocGlobals.error("Oops: unknown character list element type.");
         }
         if (it.hasNext()) {
           returnString += ",";
@@ -335,10 +345,10 @@ public static String getStandardTokenProductionText(TokenProduction tp) {
       }
       returnString += "]";
     } else if (re instanceof RChoice) {
-      RChoice c = (RChoice)re;
+      RChoice c = (RChoice) re;
       for (Iterator<RegularExpression> it = c.getChoices().iterator(); it.hasNext();) {
         RegularExpression sub = it.next();
-        returnString += emitRE(sub);
+        returnString += JJDoc.emitRE(sub);
         if (it.hasNext()) {
           returnString += " | ";
         }
@@ -346,15 +356,15 @@ public static String getStandardTokenProductionText(TokenProduction tp) {
     } else if (re instanceof REndOfFile) {
       returnString += "EOF";
     } else if (re instanceof RJustName) {
-      RJustName jn = (RJustName)re;
+      RJustName jn = (RJustName) re;
       returnString += jn.label;
     } else if (re instanceof ROneOrMore) {
-      ROneOrMore om = (ROneOrMore)re;
+      ROneOrMore om = (ROneOrMore) re;
       returnString += "(";
-      returnString += emitRE(om.regexpr);
+      returnString += JJDoc.emitRE(om.regexpr);
       returnString += ")+";
     } else if (re instanceof RSequence) {
-      RSequence s = (RSequence)re;
+      RSequence s = (RSequence) re;
       for (Iterator<RegularExpression> it = s.units.iterator(); it.hasNext();) {
         RegularExpression sub = it.next();
         boolean needParens = false;
@@ -364,7 +374,7 @@ public static String getStandardTokenProductionText(TokenProduction tp) {
         if (needParens) {
           returnString += "(";
         }
-        returnString += emitRE(sub);
+        returnString += JJDoc.emitRE(sub);
         if (needParens) {
           returnString += ")";
         }
@@ -373,34 +383,34 @@ public static String getStandardTokenProductionText(TokenProduction tp) {
         }
       }
     } else if (re instanceof RStringLiteral) {
-      RStringLiteral sl = (RStringLiteral)re;
-      returnString += ("\"" + JavaCCParserInternals.add_escapes(sl.image) + "\"");
+      RStringLiteral sl = (RStringLiteral) re;
+      returnString += ("\"" + JavaCCGlobals.add_escapes(sl.image) + "\"");
     } else if (re instanceof RZeroOrMore) {
-      RZeroOrMore zm = (RZeroOrMore)re;
+      RZeroOrMore zm = (RZeroOrMore) re;
       returnString += "(";
-      returnString += emitRE(zm.regexpr);
+      returnString += JJDoc.emitRE(zm.regexpr);
       returnString += ")*";
     } else if (re instanceof RZeroOrOne) {
-      RZeroOrOne zo = (RZeroOrOne)re;
+      RZeroOrOne zo = (RZeroOrOne) re;
       returnString += "(";
-      returnString += emitRE(zo.regexpr);
+      returnString += JJDoc.emitRE(zo.regexpr);
       returnString += ")?";
-	} else if (re instanceof RRepetitionRange) {
-	  RRepetitionRange zo = (RRepetitionRange)re;
-	  returnString += "(";
-	  returnString += emitRE(zo.regexpr);
-	  returnString += ")";
-	  returnString += "{";
-	  if (zo.hasMax) {
-		returnString += zo.min;
-		returnString += ",";
-		returnString += zo.max;
-	  } else {
-	    returnString += zo.min;
-	  }
-	  returnString += "}";
+    } else if (re instanceof RRepetitionRange) {
+      RRepetitionRange zo = (RRepetitionRange) re;
+      returnString += "(";
+      returnString += JJDoc.emitRE(zo.regexpr);
+      returnString += ")";
+      returnString += "{";
+      if (zo.hasMax) {
+        returnString += zo.min;
+        returnString += ",";
+        returnString += zo.max;
+      } else {
+        returnString += zo.min;
+      }
+      returnString += "}";
     } else {
-      error("Oops: Unknown regular expression type.");
+      JJDocGlobals.error("Oops: Unknown regular expression type.");
     }
     if (needBrackets) {
       returnString += ">";

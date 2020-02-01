@@ -25,21 +25,11 @@
  * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
  * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
- * THE POSSIBILITY OF SUCH DAMAGE.
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
  */
 
 package org.javacc.parser;
-
-import static org.javacc.parser.JavaCCGlobals.actForEof;
-import static org.javacc.parser.JavaCCGlobals.cu_name;
-import static org.javacc.parser.JavaCCGlobals.getCodeGenerator;
-import static org.javacc.parser.JavaCCGlobals.lexstate_I2S;
-import static org.javacc.parser.JavaCCGlobals.names_of_tokens;
-import static org.javacc.parser.JavaCCGlobals.nextStateForEof;
-import static org.javacc.parser.JavaCCGlobals.rexprlist;
-import static org.javacc.parser.JavaCCGlobals.rexps_of_tokens;
-import static org.javacc.parser.JavaCCGlobals.token_mgr_decls;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -52,246 +42,242 @@ import java.util.Map;
 /**
  * Generate lexer.
  */
-public class LexGen
-{
+public class LexGen {
+
   // Hashtable of vectors
   private static Hashtable<String, List<TokenProduction>> allTpsForState = new Hashtable<>();
 
-  private static int[] kinds;
-  private static int maxOrdinal = 1;
-  private static String[] newLexState;
-  private static Action[] actions;
-  private static Hashtable<String, NfaState> initStates = new Hashtable<>();
-  private static int stateSetSize;
-  private static int totalNumStates;
-  private static int maxLexStates;
+  private static int[]                                    kinds;
+  private static int                                      maxOrdinal     = 1;
+  private static String[]                                 newLexState;
+  private static Action[]                                 actions;
+  private static Hashtable<String, NfaState>              initStates     = new Hashtable<>();
+  private static int                                      stateSetSize;
+  private static int                                      totalNumStates;
+  private static int                                      maxLexStates;
 
-  private static NfaState[] singlesToSkip;
-  private static long[] toSkip;
-  private static long[] toSpecial;
-  private static long[] toMore;
-  private static long[] toToken;
-  private static int defaultLexState;
-  private static RegularExpression[] rexprs;
-  private static int[] initMatch;
-  private static boolean[] canLoop;
-  private static boolean[] canReachOnMore;
-  private static boolean[] hasNfa;
-  private static NfaState initialState;
+  private static NfaState[]                               singlesToSkip;
+  private static long[]                                   toSkip;
+  private static long[]                                   toSpecial;
+  private static long[]                                   toMore;
+  private static long[]                                   toToken;
+  private static int                                      defaultLexState;
+  private static RegularExpression[]                      rexprs;
+  private static int[]                                    initMatch;
+  private static boolean[]                                canLoop;
+  private static boolean[]                                canReachOnMore;
+  private static boolean[]                                hasNfa;
+  private static NfaState                                 initialState;
 
-  static int lexStateIndex = 0;
-  static int curKind;
-  static RegularExpression curRE;
-  static int[] lexStates;
-  static int[] canMatchAnyChar;
-  static boolean[] ignoreCase;
-  static boolean[] mixed;
+  static int                                              lexStateIndex  = 0;
+  static int                                              curKind;
+  static RegularExpression                                curRE;
+  static int[]                                            lexStates;
+  static int[]                                            canMatchAnyChar;
+  static boolean[]                                        ignoreCase;
+  static boolean[]                                        mixed;
 
-  public static String[] lexStateName;
-  public static TokenizerData tokenizerData;
-  public static boolean generateDataOnly;
+  public static String[]                                  lexStateName;
+  public static TokenizerData                             tokenizerData;
+  public static boolean                                   generateDataOnly;
 
   private static void BuildLexStatesTable() {
-    Iterator<TokenProduction> it = rexprlist.iterator();
+    Iterator<TokenProduction> it = JavaCCGlobals.rexprlist.iterator();
     TokenProduction tp;
     int i;
 
-    String[] tmpLexStateName = new String[lexstate_I2S.size()];
-    while (it.hasNext())
-    {
+    String[] tmpLexStateName = new String[JavaCCGlobals.lexstate_I2S.size()];
+    while (it.hasNext()) {
       tp = it.next();
       List<RegExprSpec> respecs = tp.respecs;
       List<TokenProduction> tps;
 
-      for (i = 0; i < tp.lexStates.length; i++)
-      {
-        if ((tps = allTpsForState.get(tp.lexStates[i])) == null)
-        {
-          tmpLexStateName[maxLexStates++] = tp.lexStates[i];
-          allTpsForState.put(tp.lexStates[i], tps = new ArrayList<>());
+      for (i = 0; i < tp.lexStates.length; i++) {
+        if ((tps = LexGen.allTpsForState.get(tp.lexStates[i])) == null) {
+          tmpLexStateName[LexGen.maxLexStates++] = tp.lexStates[i];
+          LexGen.allTpsForState.put(tp.lexStates[i], tps = new ArrayList<>());
         }
 
         tps.add(tp);
       }
 
-      if (respecs == null || respecs.size() == 0)
+      if (respecs == null || respecs.size() == 0) {
         continue;
+      }
 
       RegularExpression re;
-      for (i = 0; i < respecs.size(); i++)
-        if (maxOrdinal <= (re = respecs.get(i).rexp).ordinal)
-          maxOrdinal = re.ordinal + 1;
+      for (i = 0; i < respecs.size(); i++) {
+        if (LexGen.maxOrdinal <= (re = respecs.get(i).rexp).ordinal) {
+          LexGen.maxOrdinal = re.ordinal + 1;
+        }
+      }
     }
 
-    kinds = new int[maxOrdinal];
-    toSkip = new long[maxOrdinal / 64 + 1];
-    toSpecial = new long[maxOrdinal / 64 + 1];
-    toMore = new long[maxOrdinal / 64 + 1];
-    toToken = new long[maxOrdinal / 64 + 1];
-    toToken[0] = 1L;
-    actions = new Action[maxOrdinal];
-    actions[0] = actForEof;
-    initStates = new Hashtable<>();
-    canMatchAnyChar = new int[maxLexStates];
-    canLoop = new boolean[maxLexStates];
-    lexStateName = new String[maxLexStates];
-    singlesToSkip = new NfaState[maxLexStates];
-    //System.arraycopy(tmpLexStateName, 0, lexStateName, 0, maxLexStates);
+    LexGen.kinds = new int[LexGen.maxOrdinal];
+    LexGen.toSkip = new long[LexGen.maxOrdinal / 64 + 1];
+    LexGen.toSpecial = new long[LexGen.maxOrdinal / 64 + 1];
+    LexGen.toMore = new long[LexGen.maxOrdinal / 64 + 1];
+    LexGen.toToken = new long[LexGen.maxOrdinal / 64 + 1];
+    LexGen.toToken[0] = 1L;
+    LexGen.actions = new Action[LexGen.maxOrdinal];
+    LexGen.actions[0] = JavaCCGlobals.actForEof;
+    LexGen.initStates = new Hashtable<>();
+    LexGen.canMatchAnyChar = new int[LexGen.maxLexStates];
+    LexGen.canLoop = new boolean[LexGen.maxLexStates];
+    LexGen.lexStateName = new String[LexGen.maxLexStates];
+    LexGen.singlesToSkip = new NfaState[LexGen.maxLexStates];
+    // System.arraycopy(tmpLexStateName, 0, lexStateName, 0, maxLexStates);
 
-    for (int l: lexstate_I2S.keySet()) {
-      lexStateName[l] = lexstate_I2S.get(l);
+    for (int l : JavaCCGlobals.lexstate_I2S.keySet()) {
+      LexGen.lexStateName[l] = JavaCCGlobals.lexstate_I2S.get(l);
     }
 
-    for (i = 0; i < maxLexStates; i++)
-      canMatchAnyChar[i] = -1;
+    for (i = 0; i < LexGen.maxLexStates; i++) {
+      LexGen.canMatchAnyChar[i] = -1;
+    }
 
-    hasNfa = new boolean[maxLexStates];
-    mixed = new boolean[maxLexStates];
-    initMatch = new int[maxLexStates];
-    newLexState = new String[maxOrdinal];
-    newLexState[0] = nextStateForEof;
-    lexStates = new int[maxOrdinal];
-    ignoreCase = new boolean[maxOrdinal];
-    rexprs = new RegularExpression[maxOrdinal];
-    RStringLiteral.allImages = new String[maxOrdinal];
-    canReachOnMore = new boolean[maxLexStates];
+    LexGen.hasNfa = new boolean[LexGen.maxLexStates];
+    LexGen.mixed = new boolean[LexGen.maxLexStates];
+    LexGen.initMatch = new int[LexGen.maxLexStates];
+    LexGen.newLexState = new String[LexGen.maxOrdinal];
+    LexGen.newLexState[0] = JavaCCGlobals.nextStateForEof;
+    LexGen.lexStates = new int[LexGen.maxOrdinal];
+    LexGen.ignoreCase = new boolean[LexGen.maxOrdinal];
+    LexGen.rexprs = new RegularExpression[LexGen.maxOrdinal];
+    RStringLiteral.allImages = new String[LexGen.maxOrdinal];
+    LexGen.canReachOnMore = new boolean[LexGen.maxLexStates];
   }
 
   private static int GetIndex(String name) {
-    for (int i = 0; i < lexStateName.length; i++)
-      if (lexStateName[i] != null && lexStateName[i].equals(name))
+    for (int i = 0; i < LexGen.lexStateName.length; i++) {
+      if (LexGen.lexStateName[i] != null && LexGen.lexStateName[i].equals(name)) {
         return i;
+      }
+    }
 
     throw new Error(); // Should never come here
   }
 
   public void start() throws IOException {
-    if (!Options.getBuildTokenManager() ||
-        Options.getUserTokenManager() ||
-        JavaCCErrors.get_error_count() > 0)
+    if (!Options.getBuildTokenManager() || Options.getUserTokenManager() || JavaCCErrors.get_error_count() > 0) {
       return;
+    }
 
-    final CodeGenerator codeGenerator = getCodeGenerator();
+    final CodeGenerator codeGenerator = JavaCCGlobals.getCodeGenerator();
     List<RegularExpression> choices = new ArrayList<>();
     TokenProduction tp;
     int i, j;
 
-    BuildLexStatesTable();
+    LexGen.BuildLexStatesTable();
 
     boolean ignoring = false;
 
-    //while (e.hasMoreElements())
-    for (int k = 0; k < lexStateName.length; k++)
-    {
+    // while (e.hasMoreElements())
+    for (int k = 0; k < LexGen.lexStateName.length; k++) {
       int startState = -1;
       NfaState.ReInit();
       RStringLiteral.ReInit();
 
-      //String key = (String)e.nextElement();
-      String key = lexStateName[k];
+      // String key = (String)e.nextElement();
+      String key = LexGen.lexStateName[k];
 
-      lexStateIndex = GetIndex(key);
-      List<TokenProduction> allTps = allTpsForState.get(key);
-      initStates.put(key, initialState = new NfaState());
+      LexGen.lexStateIndex = LexGen.GetIndex(key);
+      List<TokenProduction> allTps = LexGen.allTpsForState.get(key);
+      LexGen.initStates.put(key, LexGen.initialState = new NfaState());
       ignoring = false;
 
-      singlesToSkip[lexStateIndex] = new NfaState();
+      LexGen.singlesToSkip[LexGen.lexStateIndex] = new NfaState();
 
-      if (key.equals("DEFAULT"))
-        defaultLexState = lexStateIndex;
+      if (key.equals("DEFAULT")) {
+        LexGen.defaultLexState = LexGen.lexStateIndex;
+      }
 
-      for (i = 0; i < allTps.size(); i++)
-      {
+      for (i = 0; i < allTps.size(); i++) {
         tp = allTps.get(i);
         int kind = tp.kind;
         boolean ignore = tp.ignoreCase;
         List<RegExprSpec> rexps = tp.respecs;
 
-        if (i == 0)
+        if (i == 0) {
           ignoring = ignore;
+        }
 
-        for (j = 0; j < rexps.size(); j++)
-        {
+        for (j = 0; j < rexps.size(); j++) {
           RegExprSpec respec = rexps.get(j);
-          curRE = respec.rexp;
+          LexGen.curRE = respec.rexp;
 
-          rexprs[curKind = curRE.ordinal] = curRE;
-          lexStates[curRE.ordinal] = lexStateIndex;
-          ignoreCase[curRE.ordinal] = ignore;
+          LexGen.rexprs[LexGen.curKind = LexGen.curRE.ordinal] = LexGen.curRE;
+          LexGen.lexStates[LexGen.curRE.ordinal] = LexGen.lexStateIndex;
+          LexGen.ignoreCase[LexGen.curRE.ordinal] = ignore;
 
-          if (curRE.private_rexp)
-          {
-            kinds[curRE.ordinal] = -1;
+          if (LexGen.curRE.private_rexp) {
+            LexGen.kinds[LexGen.curRE.ordinal] = -1;
             continue;
           }
 
-          if (!Options.getNoDfa() && curRE instanceof RStringLiteral &&
-              !((RStringLiteral)curRE).image.equals(""))
-          {
-            ((RStringLiteral)curRE).GenerateDfa(curRE.ordinal);
-            if (i != 0 && !mixed[lexStateIndex] && ignoring != ignore) {
-              mixed[lexStateIndex] = true;
+          if (!Options.getNoDfa() && LexGen.curRE instanceof RStringLiteral
+              && !((RStringLiteral) LexGen.curRE).image.equals("")) {
+            ((RStringLiteral) LexGen.curRE).GenerateDfa(LexGen.curRE.ordinal);
+            if (i != 0 && !LexGen.mixed[LexGen.lexStateIndex] && ignoring != ignore) {
+              LexGen.mixed[LexGen.lexStateIndex] = true;
             }
-          }
-          else if (curRE.CanMatchAnyChar())
-          {
-            if (canMatchAnyChar[lexStateIndex] == -1 ||
-                canMatchAnyChar[lexStateIndex] > curRE.ordinal)
-              canMatchAnyChar[lexStateIndex] = curRE.ordinal;
-          }
-          else
-          {
+          } else if (LexGen.curRE.CanMatchAnyChar()) {
+            if (LexGen.canMatchAnyChar[LexGen.lexStateIndex] == -1
+                || LexGen.canMatchAnyChar[LexGen.lexStateIndex] > LexGen.curRE.ordinal) {
+              LexGen.canMatchAnyChar[LexGen.lexStateIndex] = LexGen.curRE.ordinal;
+            }
+          } else {
             Nfa temp;
 
-            if (curRE instanceof RChoice)
-              choices.add(curRE);
+            if (LexGen.curRE instanceof RChoice) {
+              choices.add(LexGen.curRE);
+            }
 
-            temp = curRE.GenerateNfa(ignore);
+            temp = LexGen.curRE.GenerateNfa(ignore);
             temp.end.isFinal = true;
-            temp.end.kind = curRE.ordinal;
-            initialState.AddMove(temp.start);
+            temp.end.kind = LexGen.curRE.ordinal;
+            LexGen.initialState.AddMove(temp.start);
           }
 
-          if (kinds.length < curRE.ordinal)
-          {
-            int[] tmp = new int[curRE.ordinal + 1];
+          if (LexGen.kinds.length < LexGen.curRE.ordinal) {
+            int[] tmp = new int[LexGen.curRE.ordinal + 1];
 
-            System.arraycopy(kinds, 0, tmp, 0, kinds.length);
-            kinds = tmp;
+            System.arraycopy(LexGen.kinds, 0, tmp, 0, LexGen.kinds.length);
+            LexGen.kinds = tmp;
           }
-          //System.out.println("   ordina : " + curRE.ordinal);
+          // System.out.println(" ordina : " + curRE.ordinal);
 
-          kinds[curRE.ordinal] = kind;
+          LexGen.kinds[LexGen.curRE.ordinal] = kind;
 
-          if (respec.nextState != null &&
-              !respec.nextState.equals(lexStateName[lexStateIndex]))
-            newLexState[curRE.ordinal] = respec.nextState;
+          if (respec.nextState != null && !respec.nextState.equals(LexGen.lexStateName[LexGen.lexStateIndex])) {
+            LexGen.newLexState[LexGen.curRE.ordinal] = respec.nextState;
+          }
 
-          if (respec.act != null && respec.act.getActionTokens() != null &&
-              respec.act.getActionTokens().size() > 0)
-            actions[curRE.ordinal] = respec.act;
+          if (respec.act != null && respec.act.getActionTokens() != null && respec.act.getActionTokens().size() > 0) {
+            LexGen.actions[LexGen.curRE.ordinal] = respec.act;
+          }
 
-          switch(kind)
-          {
-          case TokenProduction.SPECIAL :
-            toSpecial[curRE.ordinal / 64] |= 1L << (curRE.ordinal % 64);
-            toSkip[curRE.ordinal / 64] |= 1L << (curRE.ordinal % 64);
-            break;
-          case TokenProduction.SKIP :
-            toSkip[curRE.ordinal / 64] |= 1L << (curRE.ordinal % 64);
-            break;
-          case TokenProduction.MORE :
-            toMore[curRE.ordinal / 64] |= 1L << (curRE.ordinal % 64);
+          switch (kind) {
+            case TokenProduction.SPECIAL:
+              LexGen.toSpecial[LexGen.curRE.ordinal / 64] |= 1L << (LexGen.curRE.ordinal % 64);
+              LexGen.toSkip[LexGen.curRE.ordinal / 64] |= 1L << (LexGen.curRE.ordinal % 64);
+              break;
+            case TokenProduction.SKIP:
+              LexGen.toSkip[LexGen.curRE.ordinal / 64] |= 1L << (LexGen.curRE.ordinal % 64);
+              break;
+            case TokenProduction.MORE:
+              LexGen.toMore[LexGen.curRE.ordinal / 64] |= 1L << (LexGen.curRE.ordinal % 64);
 
-            if (newLexState[curRE.ordinal] != null)
-              canReachOnMore[GetIndex(newLexState[curRE.ordinal])] = true;
-            else
-              canReachOnMore[lexStateIndex] = true;
+              if (LexGen.newLexState[LexGen.curRE.ordinal] != null) {
+                LexGen.canReachOnMore[LexGen.GetIndex(LexGen.newLexState[LexGen.curRE.ordinal])] = true;
+              } else {
+                LexGen.canReachOnMore[LexGen.lexStateIndex] = true;
+              }
 
-            break;
-          case TokenProduction.TOKEN :
-            toToken[curRE.ordinal / 64] |= 1L << (curRE.ordinal % 64);
-            break;
+              break;
+            case TokenProduction.TOKEN:
+              LexGen.toToken[LexGen.curRE.ordinal / 64] |= 1L << (LexGen.curRE.ordinal % 64);
+              break;
           }
         }
       }
@@ -299,205 +285,211 @@ public class LexGen
       // Generate a static block for initializing the nfa transitions
       NfaState.ComputeClosures();
 
-      for (i = 0; i < initialState.epsilonMoves.size(); i++)
-        initialState.epsilonMoves.elementAt(i).GenerateCode();
-
-      if (hasNfa[lexStateIndex] = (NfaState.generatedStates != 0))
-      {
-        initialState.GenerateCode();
-        startState = initialState.GenerateInitMoves();
+      for (i = 0; i < LexGen.initialState.epsilonMoves.size(); i++) {
+        LexGen.initialState.epsilonMoves.elementAt(i).GenerateCode();
       }
 
-      if (initialState.kind != Integer.MAX_VALUE && initialState.kind != 0)
-      {
-        if (initMatch[lexStateIndex] == 0 ||
-            initMatch[lexStateIndex] > initialState.kind)
-        {
-          initMatch[lexStateIndex] = initialState.kind;
+      if (LexGen.hasNfa[LexGen.lexStateIndex] = (NfaState.generatedStates != 0)) {
+        LexGen.initialState.GenerateCode();
+        startState = LexGen.initialState.GenerateInitMoves();
+      }
+
+      if (LexGen.initialState.kind != Integer.MAX_VALUE && LexGen.initialState.kind != 0) {
+        if (LexGen.initMatch[LexGen.lexStateIndex] == 0
+            || LexGen.initMatch[LexGen.lexStateIndex] > LexGen.initialState.kind) {
+          LexGen.initMatch[LexGen.lexStateIndex] = LexGen.initialState.kind;
         }
+      } else if (LexGen.initMatch[LexGen.lexStateIndex] == 0) {
+        LexGen.initMatch[LexGen.lexStateIndex] = Integer.MAX_VALUE;
       }
-      else if (initMatch[lexStateIndex] == 0)
-        initMatch[lexStateIndex] = Integer.MAX_VALUE;
 
       RStringLiteral.FillSubString();
 
-      if (hasNfa[lexStateIndex] && !mixed[lexStateIndex])
-        RStringLiteral.GenerateNfaStartStates(initialState);
+      if (LexGen.hasNfa[LexGen.lexStateIndex] && !LexGen.mixed[LexGen.lexStateIndex]) {
+        RStringLiteral.GenerateNfaStartStates(LexGen.initialState);
+      }
 
-      RStringLiteral.UpdateStringLiteralData(totalNumStates, lexStateIndex);
-      NfaState.UpdateNfaData(totalNumStates, startState, lexStateIndex,
-                             canMatchAnyChar[lexStateIndex]);
-      totalNumStates += NfaState.generatedStates;
-      if (stateSetSize < NfaState.generatedStates)
-        stateSetSize = NfaState.generatedStates;
+      RStringLiteral.UpdateStringLiteralData(LexGen.totalNumStates, LexGen.lexStateIndex);
+      NfaState.UpdateNfaData(LexGen.totalNumStates, startState, LexGen.lexStateIndex,
+          LexGen.canMatchAnyChar[LexGen.lexStateIndex]);
+      LexGen.totalNumStates += NfaState.generatedStates;
+      if (LexGen.stateSetSize < NfaState.generatedStates) {
+        LexGen.stateSetSize = NfaState.generatedStates;
+      }
     }
 
-    for (i = 0; i < choices.size(); i++)
-      ((RChoice)choices.get(i)).CheckUnmatchability();
+    for (i = 0; i < choices.size(); i++) {
+      ((RChoice) choices.get(i)).CheckUnmatchability();
+    }
 
-    CheckEmptyStringMatch();
+    LexGen.CheckEmptyStringMatch();
 
-      tokenizerData.setParserName(cu_name);
-      NfaState.BuildTokenizerData(tokenizerData);
-      RStringLiteral.BuildTokenizerData(tokenizerData);
+    LexGen.tokenizerData.setParserName(JavaCCGlobals.cu_name);
+    NfaState.BuildTokenizerData(LexGen.tokenizerData);
+    RStringLiteral.BuildTokenizerData(LexGen.tokenizerData);
 
-      int[] newLexStateIndices = new int[maxOrdinal];
-      StringBuilder tokenMgrDecls = new StringBuilder();
-      if (token_mgr_decls != null && token_mgr_decls.size() > 0) {
-        //Token t = token_mgr_decls.get(0);
-        for (j = 0; j < token_mgr_decls.size(); j++) {
-          tokenMgrDecls.append(token_mgr_decls.get(j).image + " ");
-        }
+    int[] newLexStateIndices = new int[LexGen.maxOrdinal];
+    StringBuilder tokenMgrDecls = new StringBuilder();
+    if (JavaCCGlobals.token_mgr_decls != null && JavaCCGlobals.token_mgr_decls.size() > 0) {
+      // Token t = token_mgr_decls.get(0);
+      for (j = 0; j < JavaCCGlobals.token_mgr_decls.size(); j++) {
+        tokenMgrDecls.append(JavaCCGlobals.token_mgr_decls.get(j).image + " ");
       }
-      tokenizerData.setDecls(tokenMgrDecls.toString());
-      Map<Integer, String> actionStrings = new HashMap<Integer, String>();
-      for (i = 0; i < maxOrdinal; i++) {
-        if (newLexState[i] == null) {
-          newLexStateIndices[i] = -1;
-        } else {
-          newLexStateIndices[i] = GetIndex(newLexState[i]);
-        }
-        // For java, we have this but for other languages, eventually we will
-        // simply have a string.
-        Action act = actions[i];
-        if (act == null) continue;
-        StringBuilder sb = new StringBuilder();
-        for (int k = 0; k < act.getActionTokens().size(); k++) {
-          sb.append(act.getActionTokens().get(k).image);
-          sb.append(" ");
-        }
-        actionStrings.put(i, sb.toString());
+    }
+    LexGen.tokenizerData.setDecls(tokenMgrDecls.toString());
+    Map<Integer, String> actionStrings = new HashMap<>();
+    for (i = 0; i < LexGen.maxOrdinal; i++) {
+      if (LexGen.newLexState[i] == null) {
+        newLexStateIndices[i] = -1;
+      } else {
+        newLexStateIndices[i] = LexGen.GetIndex(LexGen.newLexState[i]);
       }
-      tokenizerData.setDefaultLexState(defaultLexState);
-      tokenizerData.setLexStateNames(lexStateName);
-      tokenizerData.updateMatchInfo(
-          actionStrings, newLexStateIndices,
-          toSkip, toSpecial, toMore, toToken);
-      Map<Integer, String> labels = new HashMap<Integer, String>();
-      String[] images = new String[rexps_of_tokens.size() + 1];
-      for (Integer o: rexps_of_tokens.keySet()) {
-        RegularExpression re = rexps_of_tokens.get(o);
-        String label = re.label;
-        if (label != null && label.length() > 0) {
-          labels.put(o, label);
-        }
-        if (re instanceof RStringLiteral) {
-          images[o] = ((RStringLiteral)re).image;
-        }
+      // For java, we have this but for other languages, eventually we will
+      // simply have a string.
+      Action act = LexGen.actions[i];
+      if (act == null) {
+        continue;
       }
-      tokenizerData.setLabelsAndImages(names_of_tokens, images);
+      StringBuilder sb = new StringBuilder();
+      for (int k = 0; k < act.getActionTokens().size(); k++) {
+        sb.append(act.getActionTokens().get(k).image);
+        sb.append(" ");
+      }
+      actionStrings.put(i, sb.toString());
+    }
+    LexGen.tokenizerData.setDefaultLexState(LexGen.defaultLexState);
+    LexGen.tokenizerData.setLexStateNames(LexGen.lexStateName);
+    LexGen.tokenizerData.updateMatchInfo(actionStrings, newLexStateIndices, LexGen.toSkip, LexGen.toSpecial,
+        LexGen.toMore, LexGen.toToken);
+    Map<Integer, String> labels = new HashMap<>();
+    String[] images = new String[JavaCCGlobals.rexps_of_tokens.size() + 1];
+    for (Integer o : JavaCCGlobals.rexps_of_tokens.keySet()) {
+      RegularExpression re = JavaCCGlobals.rexps_of_tokens.get(o);
+      String label = re.label;
+      if (label != null && label.length() > 0) {
+        labels.put(o, label);
+      }
+      if (re instanceof RStringLiteral) {
+        images[o] = ((RStringLiteral) re).image;
+      }
+    }
+    LexGen.tokenizerData.setLabelsAndImages(JavaCCGlobals.names_of_tokens, images);
 
-      if (generateDataOnly) return;
+    if (LexGen.generateDataOnly) {
+      return;
+    }
 
-      TokenManagerCodeGenerator gen = codeGenerator.getTokenManagerCodeGenerator();
-      CodeGeneratorSettings settings = CodeGeneratorSettings.of(Options.getOptions());
-      gen.generateCode(settings, tokenizerData);
-      gen.finish(settings, tokenizerData);
+    TokenManagerCodeGenerator gen = codeGenerator.getTokenManagerCodeGenerator();
+    CodeGeneratorSettings settings = CodeGeneratorSettings.of(Options.getOptions());
+    gen.generateCode(settings, LexGen.tokenizerData);
+    gen.finish(settings, LexGen.tokenizerData);
   }
 
-  private static void CheckEmptyStringMatch()
-  {
+  private static void CheckEmptyStringMatch() {
     int i, j, k, len;
-    boolean[] seen = new boolean[maxLexStates];
-    boolean[] done = new boolean[maxLexStates];
+    boolean[] seen = new boolean[LexGen.maxLexStates];
+    boolean[] done = new boolean[LexGen.maxLexStates];
     String cycle;
     String reList;
 
     Outer:
-      for (i = 0; i < maxLexStates; i++)
-      {
-        if (done[i] || initMatch[i] == 0 || initMatch[i] == Integer.MAX_VALUE ||
-            canMatchAnyChar[i] != -1)
-          continue;
-
-        done[i] = true;
-        len = 0;
-        cycle = "";
-        reList = "";
-
-        for (k = 0; k < maxLexStates; k++)
-          seen[k] = false;
-
-        j = i;
-        seen[i] = true;
-        cycle += lexStateName[j] + "-->";
-        while (newLexState[initMatch[j]] != null)
-        {
-          cycle += newLexState[initMatch[j]];
-          if (seen[j = GetIndex(newLexState[initMatch[j]])])
-            break;
-
-          cycle += "-->";
-          done[j] = true;
-          seen[j] = true;
-          if (initMatch[j] == 0 || initMatch[j] == Integer.MAX_VALUE ||
-              canMatchAnyChar[j] != -1)
-            continue Outer;
-          if (len != 0)
-            reList += "; ";
-          reList += "line " + rexprs[initMatch[j]].getLine() + ", column " +
-          rexprs[initMatch[j]].getColumn();
-          len++;
-        }
-
-        if (newLexState[initMatch[j]] == null)
-          cycle += lexStateName[lexStates[initMatch[j]]];
-
-        for (k = 0; k < maxLexStates; k++)
-          canLoop[k] |= seen[k];
-
-        if (len == 0)
-          JavaCCErrors.warning(rexprs[initMatch[i]],
-              "Regular expression" + ((rexprs[initMatch[i]].label.equals(""))
-                  ? "" : (" for " + rexprs[initMatch[i]].label)) +
-                  " can be matched by the empty string (\"\") in lexical state " +
-                  lexStateName[i] + ". This can result in an endless loop of " +
-          "empty string matches.");
-        else
-        {
-          JavaCCErrors.warning(rexprs[initMatch[i]],
-              "Regular expression" + ((rexprs[initMatch[i]].label.equals(""))
-                  ? "" : (" for " + rexprs[initMatch[i]].label)) +
-                  " can be matched by the empty string (\"\") in lexical state " +
-                  lexStateName[i] + ". This regular expression along with the " +
-                  "regular expressions at " + reList + " forms the cycle \n   " +
-                  cycle + "\ncontaining regular expressions with empty matches." +
-          " This can result in an endless loop of empty string matches.");
-        }
+    for (i = 0; i < LexGen.maxLexStates; i++) {
+      if (done[i] || LexGen.initMatch[i] == 0 || LexGen.initMatch[i] == Integer.MAX_VALUE
+          || LexGen.canMatchAnyChar[i] != -1) {
+        continue;
       }
+
+      done[i] = true;
+      len = 0;
+      cycle = "";
+      reList = "";
+
+      for (k = 0; k < LexGen.maxLexStates; k++) {
+        seen[k] = false;
+      }
+
+      j = i;
+      seen[i] = true;
+      cycle += LexGen.lexStateName[j] + "-->";
+      while (LexGen.newLexState[LexGen.initMatch[j]] != null) {
+        cycle += LexGen.newLexState[LexGen.initMatch[j]];
+        if (seen[j = LexGen.GetIndex(LexGen.newLexState[LexGen.initMatch[j]])]) {
+          break;
+        }
+
+        cycle += "-->";
+        done[j] = true;
+        seen[j] = true;
+        if (LexGen.initMatch[j] == 0 || LexGen.initMatch[j] == Integer.MAX_VALUE || LexGen.canMatchAnyChar[j] != -1) {
+          continue Outer;
+        }
+        if (len != 0) {
+          reList += "; ";
+        }
+        reList += "line " + LexGen.rexprs[LexGen.initMatch[j]].getLine() + ", column "
+            + LexGen.rexprs[LexGen.initMatch[j]].getColumn();
+        len++;
+      }
+
+      if (LexGen.newLexState[LexGen.initMatch[j]] == null) {
+        cycle += LexGen.lexStateName[LexGen.lexStates[LexGen.initMatch[j]]];
+      }
+
+      for (k = 0; k < LexGen.maxLexStates; k++) {
+        LexGen.canLoop[k] |= seen[k];
+      }
+
+      if (len == 0) {
+        JavaCCErrors.warning(LexGen.rexprs[LexGen.initMatch[i]],
+            "Regular expression"
+                + ((LexGen.rexprs[LexGen.initMatch[i]].label.equals("")) ? ""
+                    : (" for " + LexGen.rexprs[LexGen.initMatch[i]].label))
+                + " can be matched by the empty string (\"\") in lexical state " + LexGen.lexStateName[i]
+                + ". This can result in an endless loop of " + "empty string matches.");
+      } else {
+        JavaCCErrors.warning(LexGen.rexprs[LexGen.initMatch[i]],
+            "Regular expression"
+                + ((LexGen.rexprs[LexGen.initMatch[i]].label.equals("")) ? ""
+                    : (" for " + LexGen.rexprs[LexGen.initMatch[i]].label))
+                + " can be matched by the empty string (\"\") in lexical state " + LexGen.lexStateName[i]
+                + ". This regular expression along with the " + "regular expressions at " + reList
+                + " forms the cycle \n   " + cycle + "\ncontaining regular expressions with empty matches."
+                + " This can result in an endless loop of empty string matches.");
+      }
+    }
   }
 
   static void reInit() {
-    actions = null;
-    allTpsForState = new Hashtable<>();
-    canLoop = null;
-    canMatchAnyChar = null;
-    canReachOnMore = null;
-    curKind = 0;
-    curRE = null;
-    defaultLexState = 0;
-    hasNfa = null;
-    ignoreCase = null;
-    initMatch = null;
-    initStates = new Hashtable<>();
-    initialState = null;
-    kinds = null;
-    lexStateIndex = 0;
-    lexStateName = null;
-    lexStates = null;
-    maxLexStates = 0;
-    maxOrdinal = 1;
-    mixed = null;
-    newLexState = null;
-    rexprs = null;
-    singlesToSkip = null;
-    stateSetSize = 0;
-    toMore = null;
-    toSkip = null;
-    toSpecial = null;
-    toToken = null;
-    tokenizerData = new TokenizerData();
-    totalNumStates = 0;
-    generateDataOnly = false;
+    LexGen.actions = null;
+    LexGen.allTpsForState = new Hashtable<>();
+    LexGen.canLoop = null;
+    LexGen.canMatchAnyChar = null;
+    LexGen.canReachOnMore = null;
+    LexGen.curKind = 0;
+    LexGen.curRE = null;
+    LexGen.defaultLexState = 0;
+    LexGen.hasNfa = null;
+    LexGen.ignoreCase = null;
+    LexGen.initMatch = null;
+    LexGen.initStates = new Hashtable<>();
+    LexGen.initialState = null;
+    LexGen.kinds = null;
+    LexGen.lexStateIndex = 0;
+    LexGen.lexStateName = null;
+    LexGen.lexStates = null;
+    LexGen.maxLexStates = 0;
+    LexGen.maxOrdinal = 1;
+    LexGen.mixed = null;
+    LexGen.newLexState = null;
+    LexGen.rexprs = null;
+    LexGen.singlesToSkip = null;
+    LexGen.stateSetSize = 0;
+    LexGen.toMore = null;
+    LexGen.toSkip = null;
+    LexGen.toSpecial = null;
+    LexGen.toToken = null;
+    LexGen.tokenizerData = new TokenizerData();
+    LexGen.totalNumStates = 0;
+    LexGen.generateDataOnly = false;
   }
 }

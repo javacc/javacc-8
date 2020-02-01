@@ -22,21 +22,22 @@
  * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
  * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
- * THE POSSIBILITY OF SUCH DAMAGE.
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.javacc.jjtree;
 
-public class ASTOptionBinding extends JJTreeNode{
+public class ASTOptionBinding extends JJTreeNode {
+
   ASTOptionBinding(int id) {
     super(id);
   }
 
   private boolean suppressed = false;
-  private String name;
+  private String  name;
 
-  void initialize(String n, String v)
-  {
+  void initialize(String n, String v) {
     name = n;
 
     // If an option is specific to JJTree it should not be written out
@@ -48,8 +49,7 @@ public class ASTOptionBinding extends JJTreeNode{
   }
 
   @Override
-  public String translateImage(Token t)
-  {
+  public String translateImage(Token t) {
     if (suppressed) {
       return whiteOut(t);
     } else {
@@ -63,4 +63,7 @@ public class ASTOptionBinding extends JJTreeNode{
     return visitor.visit(this, data);
   }
 }
-/* JavaCC - OriginalChecksum=bf79b0495b1046817c4eb85e79faf819 (do not edit this line) */
+/*
+ * JavaCC - OriginalChecksum=bf79b0495b1046817c4eb85e79faf819 (do not edit this
+ * line)
+ */

@@ -22,12 +22,14 @@
  * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
  * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
- * THE POSSIBILITY OF SUCH DAMAGE.
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.javacc.jjtree;
 
 import org.javacc.parser.JavaCCGlobals;
+import org.javacc.parser.Options;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -40,78 +42,71 @@ import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.Reader;
 
-public final class IO
-{
-  private String ifn;
-  private String ofn;
-  private Reader in;
-  private PrintWriter out;
-  private PrintStream msg;
-  private PrintStream err;
+public final class IO {
 
-  public IO()
-  {
+  private String            ifn;
+  private String            ofn;
+  private Reader            in;
+  private PrintWriter       out;
+  private final PrintStream msg;
+  private final PrintStream err;
+
+  public IO() {
     ifn = "<uninitialized input>";
     msg = System.out;
     err = System.err;
   }
 
-  public String getInputFileName()
-  {
+  public String getInputFileName() {
     return ifn;
   }
 
-  public Reader getIn()
-  {
+  public Reader getIn() {
     return in;
   }
 
-  public String getOutputFileName()
-  {
+  public String getOutputFileName() {
     return ofn;
   }
 
-  public PrintWriter getOut()
-  {
+  public PrintWriter getOut() {
     return out;
   }
 
-  public PrintStream getMsg()
-  {
+  public PrintStream getMsg() {
     return msg;
   }
 
-  public PrintStream getErr()
-  {
+  public PrintStream getErr() {
     return err;
   }
 
 
-  public void print(String s)
-  {
+  public void print(String s) {
     out.print(s);
   }
 
-  public void println(String s)
-  {
+  public void println(String s) {
     out.print(s);
     out.println();
   }
 
-  public void println()
-  {
+  public void println() {
     out.println();
   }
 
 
-  public void closeAll()
-  {
-    if (out != null) out.close();
-    if (msg != null) msg.flush();
-    if (err != null) err.flush();
+  public void closeAll() {
+    if (out != null) {
+      out.close();
+    }
+    if (msg != null) {
+      msg.flush();
+    }
+    if (err != null) {
+      err.flush();
+    }
   }
-
-
 
 
   private String create_output_file_name(String i) {
@@ -129,7 +124,7 @@ public final class IO
       } else {
         String suffix = i.substring(di);
         if (suffix.equals(".jj")) {
-          o  = i + ".jj";
+          o = i + ".jj";
         } else {
           o = i.substring(0, di) + ".jj";
         }
@@ -140,8 +135,7 @@ public final class IO
   }
 
 
-  public void setInput(String fn) throws JJTreeIOException
-  {
+  public void setInput(String fn) throws JJTreeIOException {
     try {
       File fp = new File(fn);
       if (!fp.exists()) {
@@ -155,7 +149,7 @@ public final class IO
       }
       ifn = fp.getPath();
 
-      in = new BufferedReader(new InputStreamReader(new FileInputStream(ifn), JJTreeOptions.getGrammarEncoding()));
+      in = new BufferedReader(new InputStreamReader(new FileInputStream(ifn), Options.getGrammarEncoding()));
 
     } catch (NullPointerException ne) { // Should never happen
       throw new JJTreeIOException(ne.toString());
@@ -168,17 +162,17 @@ public final class IO
     }
   }
 
-    void setOutput() throws JJTreeIOException {
-        try {
-          JavaCCGlobals.createOutputDir(JJTreeOptions.getJJTreeOutputDirectory());
-          File ofile = new File(JJTreeOptions.getJJTreeOutputDirectory(), create_output_file_name(ifn));
-          ofn = ofile.toString();
-          out = new PrintWriter(new FileWriter(ofile));
-        } catch (IOException ioe) {
-          throw new JJTreeIOException("Can't create output file " + ofn);
-        }
+  void setOutput() throws JJTreeIOException {
+    try {
+      JavaCCGlobals.createOutputDir(JJTreeOptions.getJJTreeOutputDirectory());
+      File ofile = new File(JJTreeOptions.getJJTreeOutputDirectory(), create_output_file_name(ifn));
+      ofn = ofile.toString();
+      out = new PrintWriter(new FileWriter(ofile));
+    } catch (IOException ioe) {
+      throw new JJTreeIOException("Can't create output file " + ofn);
     }
+  }
 
 }
 
-/*end*/
+/* end */

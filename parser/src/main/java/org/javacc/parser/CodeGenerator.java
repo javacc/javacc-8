@@ -1,12 +1,13 @@
+
 package org.javacc.parser;
 
-public interface CodeGenerator
-{
+public interface CodeGenerator {
+
   /**
    * Get the name of the code generator.
    */
   String getName();
-  
+
   /**
    * Generate any other support files you need.
    */
@@ -28,8 +29,8 @@ public interface CodeGenerator
   ParserCodeGenerator getParserCodeGenerator();
 
   /**
-   * TODO(sreeni): Fix this when we do tree annotations in the parser code generator.
-   * The JJTree preprocesor.
+   * TODO(sreeni): Fix this when we do tree annotations in the parser code
+   * generator. The JJTree preprocesor.
    */
   org.javacc.jjtree.DefaultJJTreeVisitor getJJTreeCodeGenerator();
 }

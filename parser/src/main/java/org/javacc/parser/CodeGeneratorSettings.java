@@ -23,7 +23,7 @@ public final class CodeGeneratorSettings extends HashMap<String, Object> {
 
   /**
    * Add another {@link CodeGeneratorSettings} to the current instance.
-   * 
+   *
    * @param options
    */
   public final CodeGeneratorSettings add(CodeGeneratorSettings options) {
@@ -42,7 +42,7 @@ public final class CodeGeneratorSettings extends HashMap<String, Object> {
   /**
    * Creates a new instance of {@link CodeGeneratorSettings} from another option
    * {@link Map}.
-   * 
+   *
    * @param options
    */
   public static CodeGeneratorSettings of(Map<String, Object> options) {

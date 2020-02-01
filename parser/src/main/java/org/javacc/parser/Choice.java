@@ -46,14 +46,14 @@ public class Choice extends Expansion {
   public Choice() {}
 
   public Choice(Token token) {
-    this.setLine(token.beginLine);
-    this.setColumn(token.beginColumn);
+    setLine(token.beginLine);
+    setColumn(token.beginColumn);
   }
 
   public Choice(Expansion expansion) {
-    this.setLine(expansion.getLine());
-    this.setColumn(expansion.getColumn());
-    this.getChoices().add(expansion);
+    setLine(expansion.getLine());
+    setColumn(expansion.getColumn());
+    getChoices().add(expansion);
   }
 
   /**
@@ -66,11 +66,12 @@ public class Choice extends Expansion {
   @Override
   public StringBuffer dump(int indent, Set<Expansion> alreadyDumped) {
     StringBuffer buffer = super.dump(indent, alreadyDumped);
-    if (alreadyDumped.contains(this))
+    if (alreadyDumped.contains(this)) {
       return buffer;
-    
+    }
+
     alreadyDumped.add(this);
-    getChoices().forEach(e -> buffer.append(eol).append(e.dump(indent + 1, alreadyDumped)));
+    getChoices().forEach(e -> buffer.append(Expansion.eol).append(e.dump(indent + 1, alreadyDumped)));
     return buffer;
   }
 }

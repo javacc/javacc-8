@@ -43,31 +43,30 @@ import java.util.Iterator;
  * Output BNF in HTML 3.2 format.
  */
 public class XTextGenerator extends TextGenerator implements Generator {
- 
+
   @Override
   public void handleTokenProduction(TokenProduction tp) {
 
-      StringBuilder sb = new StringBuilder();
+    StringBuilder sb = new StringBuilder();
 
-      for (Iterator<RegExprSpec> it2 = tp.respecs.iterator(); it2.hasNext();) {
-          RegExprSpec res = it2.next();
+    for (Iterator<RegExprSpec> it2 = tp.respecs.iterator(); it2.hasNext();) {
+      RegExprSpec res = it2.next();
 
-          String regularExpressionText = JJDoc.emitRE(res.rexp);
-          sb.append(regularExpressionText);
+      String regularExpressionText = JJDoc.emitRE(res.rexp);
+      sb.append(regularExpressionText);
 
-          if (res.nsTok != null) {
-              sb.append(" : " + res.nsTok.image);
-          }
+      if (res.nsTok != null) {
+        sb.append(" : " + res.nsTok.image);
+      }
 
-          sb.append("\n");
-//          if (it2.hasNext()) {
-//              sb.append("| ");
-//          }
-        }
+      sb.append("\n");
+      // if (it2.hasNext()) {
+      // sb.append("| ");
+      // }
+    }
 
-      //text(sb.toString());
+    // text(sb.toString());
   }
-
 
 
   private void println(String s) {
@@ -76,18 +75,18 @@ public class XTextGenerator extends TextGenerator implements Generator {
 
   @Override
   public void text(String s) {
-//    String ss = "";
-//    for (int i = 0; i < s.length(); ++i) {
-//      if (s.charAt(i) == '<') {
-//  ss += "&lt;";
-//      } else if (s.charAt(i) == '>') {
-//  ss += "&gt;";
-//      } else if (s.charAt(i) == '&') {
-//  ss += "&amp;";
-//      } else {
-//  ss += s.charAt(i);
-//      }
-//    }
+    // String ss = "";
+    // for (int i = 0; i < s.length(); ++i) {
+    // if (s.charAt(i) == '<') {
+    // ss += "&lt;";
+    // } else if (s.charAt(i) == '>') {
+    // ss += "&gt;";
+    // } else if (s.charAt(i) == '&') {
+    // ss += "&amp;";
+    // } else {
+    // ss += s.charAt(i);
+    // }
+    // }
     print(s);
   }
 
@@ -100,121 +99,127 @@ public class XTextGenerator extends TextGenerator implements Generator {
   @Override
   public void documentStart() {
     ostr = create_output_stream();
-    println("grammar "+JJDocGlobals.input_file+" with org.eclipse.xtext.common.Terminals");
+    println("grammar " + JJDocGlobals.input_file + " with org.eclipse.xtext.common.Terminals");
     println("import \"http://www.eclipse.org/emf/2002/Ecore\" as ecore");
     println("");
-//
-//
-//    println("<HTML>");
-//    println("<HEAD>");
-//    if (!"".equals(JJDocOptions.getCSS())) {
-//      println("<LINK REL=\"stylesheet\" type=\"text/css\" href=\"" + JJDocOptions.getCSS() + "\"/>");
-//    }
-//    if (JJDocGlobals.input_file != null) {
-//      println("<TITLE>BNF for " + JJDocGlobals.input_file + "</TITLE>");
-//    } else {
-//      println("<TITLE>A BNF grammar by JJDoc</TITLE>");
-//    }
-//    println("</HEAD>");
-//    println("<BODY>");
-//    println("<H1 ALIGN=CENTER>BNF for " + JJDocGlobals.input_file + "</H1>");
+    //
+    //
+    // println("<HTML>");
+    // println("<HEAD>");
+    // if (!"".equals(JJDocOptions.getCSS())) {
+    // println("<LINK REL=\"stylesheet\" type=\"text/css\" href=\"" +
+    // JJDocOptions.getCSS() + "\"/>");
+    // }
+    // if (JJDocGlobals.input_file != null) {
+    // println("<TITLE>BNF for " + JJDocGlobals.input_file + "</TITLE>");
+    // } else {
+    // println("<TITLE>A BNF grammar by JJDoc</TITLE>");
+    // }
+    // println("</HEAD>");
+    // println("<BODY>");
+    // println("<H1 ALIGN=CENTER>BNF for " + JJDocGlobals.input_file + "</H1>");
   }
 
   @Override
   public void documentEnd() {
-//    println("</BODY>");
-//    println("</HTML>");
+    // println("</BODY>");
+    // println("</HTML>");
     ostr.close();
   }
 
   /**
-   * Prints out comments, used for tokens and non-terminals.
-   * {@inheritDoc}
+   * Prints out comments, used for tokens and non-terminals. {@inheritDoc}
+   * 
    * @see org.javacc.jjdoc.TextGenerator#specialTokens(java.lang.String)
    */
   @Override
   public void specialTokens(String s) {
-//    println(" <!-- Special token -->");
-//    println(" <TR>");
-//    println("  <TD>");
-//    println("<PRE>");
+    // println(" <!-- Special token -->");
+    // println(" <TR>");
+    // println(" <TD>");
+    // println("<PRE>");
     print(s);
-//    println("</PRE>");
-//    println("  </TD>");
-//    println(" </TR>");
+    // println("</PRE>");
+    // println(" </TD>");
+    // println(" </TR>");
   }
 
 
   @Override
   public void nonterminalsStart() {
-//    println("<H2 ALIGN=CENTER>NON-TERMINALS</H2>");
-//    if (JJDocOptions.getOneTable()) {
-//      println("<TABLE>");
-//    }
+    // println("<H2 ALIGN=CENTER>NON-TERMINALS</H2>");
+    // if (JJDocOptions.getOneTable()) {
+    // println("<TABLE>");
+    // }
   }
+
   @Override
   public void nonterminalsEnd() {
-//    if (JJDocOptions.getOneTable()) {
-//      println("</TABLE>");
-//    }
+    // if (JJDocOptions.getOneTable()) {
+    // println("</TABLE>");
+    // }
   }
 
   @Override
   public void tokensStart() {
-//    println("<H2 ALIGN=CENTER>TOKENS</H2>");
-//    println("<TABLE>");
+    // println("<H2 ALIGN=CENTER>TOKENS</H2>");
+    // println("<TABLE>");
   }
+
   @Override
   public void tokensEnd() {
-//    println("</TABLE>");
+    // println("</TABLE>");
   }
 
   @Override
   public void javacode(JavaCodeProduction jp) {
-//    productionStart(jp);
-//    println("<I>java code</I></TD></TR>");
-//    productionEnd(jp);
+    // productionStart(jp);
+    // println("<I>java code</I></TD></TR>");
+    // productionEnd(jp);
   }
 
   @Override
   public void cppcode(CppCodeProduction cp) {
-//    productionStart(cp);
-//    println("<I>c++ code</I></TD></TR>");
-//    productionEnd(cp);
+    // productionStart(cp);
+    // println("<I>c++ code</I></TD></TR>");
+    // productionEnd(cp);
   }
 
   @Override
   public void productionStart(NormalProduction np) {
-//    if (!JJDocOptions.getOneTable()) {
-//      println("");
-//      println("<TABLE ALIGN=CENTER>");
-//      println("<CAPTION><STRONG>" + np.getLhs() + "</STRONG></CAPTION>");
-//    }
-//    println("<TR>");
-//    println("<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME=\"" + get_id(np.getLhs()) + "\">" + np.getLhs() + "</A></TD>");
-//    println("<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>");
-//    print("<TD ALIGN=LEFT VALIGN=BASELINE>");
+    // if (!JJDocOptions.getOneTable()) {
+    // println("");
+    // println("<TABLE ALIGN=CENTER>");
+    // println("<CAPTION><STRONG>" + np.getLhs() + "</STRONG></CAPTION>");
+    // }
+    // println("<TR>");
+    // println("<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME=\"" +
+    // get_id(np.getLhs()) + "\">" + np.getLhs() + "</A></TD>");
+    // println("<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>");
+    // print("<TD ALIGN=LEFT VALIGN=BASELINE>");
   }
+
   @Override
   public void productionEnd(NormalProduction np) {
-//    if (!JJDocOptions.getOneTable()) {
-//      println("</TABLE>");
-//      println("<HR>");
-//    }
+    // if (!JJDocOptions.getOneTable()) {
+    // println("</TABLE>");
+    // println("<HR>");
+    // }
   }
 
   @Override
   public void expansionStart(Expansion e, boolean first) {
-//
-//
-//
-//    if (!first) {
-//      println("<TR>");
-//      println("<TD ALIGN=RIGHT VALIGN=BASELINE></TD>");
-//      println("<TD ALIGN=CENTER VALIGN=BASELINE>|</TD>");
-//      print("<TD ALIGN=LEFT VALIGN=BASELINE>");
-//    }
+    //
+    //
+    //
+    // if (!first) {
+    // println("<TR>");
+    // println("<TD ALIGN=RIGHT VALIGN=BASELINE></TD>");
+    // println("<TD ALIGN=CENTER VALIGN=BASELINE>|</TD>");
+    // print("<TD ALIGN=LEFT VALIGN=BASELINE>");
+    // }
   }
+
   @Override
   public void expansionEnd(Expansion e, boolean first) {
     println(";");
@@ -224,18 +229,17 @@ public class XTextGenerator extends TextGenerator implements Generator {
   public void nonTerminalStart(NonTerminal nt) {
     print("terminal ");
   }
+
   @Override
   public void nonTerminalEnd(NonTerminal nt) {
     print(";");
   }
 
   @Override
-  public void reStart(RegularExpression r) {
-  }
-  @Override
-  public void reEnd(RegularExpression r) {
-  }
+  public void reStart(RegularExpression r) {}
 
+  @Override
+  public void reEnd(RegularExpression r) {}
 
 
 }

@@ -22,30 +22,30 @@
  * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
  * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
- * THE POSSIBILITY OF SUCH DAMAGE.
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.javacc.jjtree;
 
 import java.util.Hashtable;
 import java.util.Vector;
 
 
-public class ASTProduction extends JJTreeNode
-{
+public class ASTProduction extends JJTreeNode {
+
   ASTProduction(int id) {
     super(id);
   }
 
-  String name;
-  public Vector<String> throws_list = new Vector<>();
+  String                                      name;
+  public Vector<String>                       throws_list         = new Vector<>();
 
-  private Hashtable<NodeScope, Integer> scopes = new Hashtable<>();
-  private int nextNodeScopeNumber = 0;
+  private final Hashtable<NodeScope, Integer> scopes              = new Hashtable<>();
+  private int                                 nextNodeScopeNumber = 0;
 
 
-  int getNodeScopeNumber(NodeScope s)
-  {
+  int getNodeScopeNumber(NodeScope s) {
     Integer i = scopes.get(s);
     if (i == null) {
       i = Integer.valueOf(nextNodeScopeNumber++);
@@ -61,4 +61,4 @@ public class ASTProduction extends JJTreeNode
   }
 }
 
-/*end*/
+/* end */

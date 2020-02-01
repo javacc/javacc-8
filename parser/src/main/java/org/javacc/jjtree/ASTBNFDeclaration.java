@@ -25,9 +25,11 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.javacc.jjtree;
 
-public class ASTBNFDeclaration extends JJTreeNode{
+public class ASTBNFDeclaration extends JJTreeNode {
+
   ASTBNFDeclaration(int id) {
     super(id);
   }
@@ -40,4 +42,7 @@ public class ASTBNFDeclaration extends JJTreeNode{
     return visitor.visit(this, data);
   }
 }
-/* JavaCC - OriginalChecksum=648bf04b7ddff8fa55521f43f0f2bf2e (do not edit this line) */
+/*
+ * JavaCC - OriginalChecksum=648bf04b7ddff8fa55521f43f0f2bf2e (do not edit this
+ * line)
+ */

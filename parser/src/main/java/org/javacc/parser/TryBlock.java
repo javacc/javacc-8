@@ -25,6 +25,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.javacc.parser;
 
 import java.util.List;
@@ -39,7 +40,7 @@ public class TryBlock extends Expansion {
   /**
    * The expansion contained within the try block.
    */
-  public Expansion exp;
+  public Expansion         exp;
 
   /**
    * The types of each catch block.  Each list entry is itself a
@@ -57,15 +58,16 @@ public class TryBlock extends Expansion {
    * The block part of the finally block.  Each list entry is a token.
    * If there is no finally block, this is null.
    */
-  public List<Token> finallyblk;
+  public List<Token>       finallyblk;
 
   @Override
   public StringBuffer dump(int indent, Set<Expansion> alreadyDumped) {
     StringBuffer sb = super.dump(indent, alreadyDumped);
-    if (alreadyDumped.contains(this))
+    if (alreadyDumped.contains(this)) {
       return sb;
+    }
     alreadyDumped.add(this);
-    sb.append(eol).append(exp.dump(indent + 1, alreadyDumped));
+    sb.append(Expansion.eol).append(exp.dump(indent + 1, alreadyDumped));
     return sb;
   }
 

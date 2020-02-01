@@ -1,3 +1,4 @@
+
 package org.javacc.parser;
 
 import java.util.HashMap;
@@ -16,7 +17,7 @@ public class TokenizerData {
   public String decls;
 
   // A map of <LexState, first char> to a sequence of literals indexed by:
-  //      ((int0LexicalState << 16 | (int)c)
+  // ((int0LexicalState << 16 | (int)c)
   // The literals in the list are all guaranteed to start with the char and re
   // sorted by length so that the "longest-match" rule is done trivially by
   // just going through the sequence in the order.
@@ -37,19 +38,20 @@ public class TokenizerData {
 
   // Class representing NFA state.
   public static class NfaState {
+
     // Set of allowed characters.
     public Set<Character> characters;
     // Next state indices.
-    public Set<Integer> nextStates;
+    public Set<Integer>   nextStates;
     // Initial state needs to transition to multiple states so the NFA will try
     // all possibilities.
     // TODO(sreeni) : Try and get rid of it at some point.
-    public Set<Integer> compositeStates;
+    public Set<Integer>   compositeStates;
     // match kind if any. Integer.MAX_VALUE if this is not a final state.
-    public int kind;
+    public int            kind;
 
-    private NfaState(int index, Set<Character> characters,
-             Set<Integer> nextStates, Set<Integer> compositeStates, int kind) {
+    private NfaState(int index, Set<Character> characters, Set<Integer> nextStates, Set<Integer> compositeStates,
+        int kind) {
       this.characters = characters;
       this.nextStates = nextStates;
       this.kind = kind;
@@ -58,7 +60,7 @@ public class TokenizerData {
   }
 
   // The main nfa.
-  public final Map<Integer, NfaState> nfa = new HashMap<Integer, NfaState>();
+  public final Map<Integer, NfaState> nfa = new HashMap<>();
 
   public static enum MatchType {
     SKIP,
@@ -69,17 +71,17 @@ public class TokenizerData {
 
   // Match info.
   public static class MatchInfo {
+
     // String literal image in case this string literal token, null otherwise.
-    public String image;
+    public String    image;
     // Type of match.
     public MatchType matchType;
     // Any lexical state transition specified.
-    public int newLexState;
+    public int       newLexState;
     // Any lexical state transition specified.
-    public String action;
+    public String    action;
 
-    private MatchInfo(String image, int kind, MatchType matchType,
-                     int newLexState, String action) {
+    private MatchInfo(String image, int kind, MatchType matchType, int newLexState, String action) {
       this.image = image;
       this.matchType = matchType;
       this.newLexState = newLexState;
@@ -88,7 +90,7 @@ public class TokenizerData {
   }
 
   // On match info indexed by the match kind.
-  public Map<Integer, MatchInfo> allMatches = new HashMap<Integer, MatchInfo>();
+  public Map<Integer, MatchInfo> allMatches = new HashMap<>();
 
   // Initial nfa states indexed by lexical state.
   public Map<Integer, Integer> initialStates;
@@ -122,18 +124,14 @@ public class TokenizerData {
     this.ignoreCaseKinds = ignoreCaseKinds;
   }
 
-  public void setKindToNfaStartState(
-      Map<Integer, Integer> kindToNfaStartState) {
+  public void setKindToNfaStartState(Map<Integer, Integer> kindToNfaStartState) {
     this.kindToNfaStartState = kindToNfaStartState;
   }
 
-  void addNfaState(int index, Set<Character> characters,
-                          Set<Integer> nextStates,
-                          Set<Integer> compositeStates, int kind) {
-    NfaState nfaState =
-        new NfaState(index, characters, nextStates, compositeStates, kind);
-    if (nfa.put(index, nfaState) != null)
-    {
+  void addNfaState(int index, Set<Character> characters, Set<Integer> nextStates, Set<Integer> compositeStates,
+      int kind) {
+    NfaState nfaState = new NfaState(index, characters, nextStates, compositeStates, kind);
+    if (nfa.put(index, nfaState) != null) {
       throw new RuntimeException(parserName, new MetaParseException());
     }
   }
@@ -154,37 +152,31 @@ public class TokenizerData {
     this.defaultLexState = defaultLexState;
   }
 
-  void updateMatchInfo(Map<Integer, String> actions,
-                              int[] newLexStateIndices,
-                              long[] toSkip, long[] toSpecial,
-                              long[] toMore, long[] toToken) {
+  void updateMatchInfo(Map<Integer, String> actions, int[] newLexStateIndices, long[] toSkip, long[] toSpecial,
+      long[] toMore, long[] toToken) {
     for (int i = 0; i < newLexStateIndices.length; i++) {
       int vectorIndex = i >> 6;
       long bits = (1L << (i & 077));
       MatchType matchType = MatchType.TOKEN;
-      if (toSpecial.length > vectorIndex &&
-                 (toSpecial[vectorIndex] & bits) != 0L) {
+      if (toSpecial.length > vectorIndex && (toSpecial[vectorIndex] & bits) != 0L) {
         matchType = MatchType.SPECIAL_TOKEN;
       } else if (toSkip.length > vectorIndex && (toSkip[vectorIndex] & bits) != 0L) {
         matchType = MatchType.SKIP;
-      } else if (toMore.length > vectorIndex &&
-                 (toMore[vectorIndex] & bits) != 0L) {
+      } else if (toMore.length > vectorIndex && (toMore[vectorIndex] & bits) != 0L) {
         matchType = MatchType.MORE;
-      } else if (toToken.length > vectorIndex &&
-                 (toToken[vectorIndex] & bits) != 0L) {
+      } else if (toToken.length > vectorIndex && (toToken[vectorIndex] & bits) != 0L) {
         matchType = MatchType.TOKEN;
       }
-      MatchInfo matchInfo =
-          new MatchInfo(Options.getIgnoreCase()
-                            ? null : RStringLiteral.allImages[i], i, matchType,
-                        newLexStateIndices[i], actions.get(i));
+      MatchInfo matchInfo = new MatchInfo(Options.getIgnoreCase() ? null : RStringLiteral.allImages[i], i, matchType,
+          newLexStateIndices[i], actions.get(i));
       allMatches.put(i, matchInfo);
     }
   }
 
   // Labels.
   public Map<Integer, String> labels;
-  public String[] images;
+  public String[]             images;
+
   void setLabelsAndImages(Map<Integer, String> labels, String[] images) {
     this.labels = labels;
     this.images = images;

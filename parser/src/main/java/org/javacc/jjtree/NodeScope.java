@@ -22,23 +22,23 @@
  * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
  * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
- * THE POSSIBILITY OF SUCH DAMAGE.
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.javacc.jjtree;
 
-public class NodeScope
-{
-  public ASTProduction production;
+public class NodeScope {
+
+  public ASTProduction     production;
   public ASTNodeDescriptor node_descriptor;
 
-  public String closedVar;
-  public String exceptionVar;
-  public String nodeVar;
-  private int scopeNumber;
+  public String            closedVar;
+  public String            exceptionVar;
+  public String            nodeVar;
+  private final int        scopeNumber;
 
-  public NodeScope(ASTProduction p, ASTNodeDescriptor n)
-  {
+  public NodeScope(ASTProduction p, ASTNodeDescriptor n) {
     production = p;
 
     if (n == null) {
@@ -58,54 +58,47 @@ public class NodeScope
   }
 
 
-  public boolean isVoid()
-  {
+  public boolean isVoid() {
     return node_descriptor.isVoid();
   }
 
 
-  public ASTNodeDescriptor getNodeDescriptor()
-  {
+  public ASTNodeDescriptor getNodeDescriptor() {
     return node_descriptor;
   }
 
 
-  public String getNodeDescriptorText()
-  {
+  public String getNodeDescriptorText() {
     return node_descriptor.getDescriptor();
   }
 
 
-  public String getNodeVariable()
-  {
+  public String getNodeVariable() {
     return nodeVar;
   }
 
 
-  private String constructVariable(String id)
-  {
+  private String constructVariable(String id) {
     String s = "000" + scopeNumber;
     return "jjt" + id + s.substring(s.length() - 3, s.length());
   }
 
 
-  public boolean usesCloseNodeVar()
-  {
+  public boolean usesCloseNodeVar() {
     return true;
   }
 
-  public static NodeScope getEnclosingNodeScope(Node node)
-  {
+  public static NodeScope getEnclosingNodeScope(Node node) {
     if (node instanceof ASTBNFDeclaration) {
-      return ((ASTBNFDeclaration)node).node_scope;
+      return ((ASTBNFDeclaration) node).node_scope;
     }
     for (Node n = node.jjtGetParent(); n != null; n = n.jjtGetParent()) {
       if (n instanceof ASTBNFDeclaration) {
-        return ((ASTBNFDeclaration)n).node_scope;
+        return ((ASTBNFDeclaration) n).node_scope;
       } else if (n instanceof ASTBNFNodeScope) {
-        return ((ASTBNFNodeScope)n).node_scope;
+        return ((ASTBNFNodeScope) n).node_scope;
       } else if (n instanceof ASTExpansionNodeScope) {
-        return ((ASTExpansionNodeScope)n).node_scope;
+        return ((ASTExpansionNodeScope) n).node_scope;
       }
     }
     return null;
@@ -113,4 +106,4 @@ public class NodeScope
 
 }
 
-/*end*/
+/* end */

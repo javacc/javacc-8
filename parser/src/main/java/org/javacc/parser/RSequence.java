@@ -22,66 +22,63 @@
  * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
  * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
- * THE POSSIBILITY OF SUCH DAMAGE.
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.javacc.parser;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Describes regular expressions which are sequences of
- * other regular expressions.
+ * Describes regular expressions which are sequences of other regular
+ * expressions.
  */
 
 public class RSequence extends RegularExpression {
 
   /**
-   * The list of units in this regular expression sequence.  Each
-   * list component will narrow to RegularExpression.
+   * The list of units in this regular expression sequence. Each list component
+   * will narrow to RegularExpression.
    */
   public List<RegularExpression> units = new ArrayList<>();
 
   @Override
-  public Nfa GenerateNfa(boolean ignoreCase)
-  {
-     if (units.size() == 1)
-        return units.get(0).GenerateNfa(ignoreCase);
+  public Nfa GenerateNfa(boolean ignoreCase) {
+    if (units.size() == 1) {
+      return units.get(0).GenerateNfa(ignoreCase);
+    }
 
-     Nfa retVal = new Nfa();
-     NfaState startState = retVal.start;
-     NfaState finalState = retVal.end;
-     Nfa temp1;
-     Nfa temp2 = null;
+    Nfa retVal = new Nfa();
+    NfaState startState = retVal.start;
+    NfaState finalState = retVal.end;
+    Nfa temp1;
+    Nfa temp2 = null;
 
-     RegularExpression curRE;
+    RegularExpression curRE;
 
-     curRE = units.get(0);
-     temp1 = curRE.GenerateNfa(ignoreCase);
-     startState.AddMove(temp1.start);
+    curRE = units.get(0);
+    temp1 = curRE.GenerateNfa(ignoreCase);
+    startState.AddMove(temp1.start);
 
-     for (int i = 1; i < units.size(); i++)
-     {
-        curRE = units.get(i);
+    for (int i = 1; i < units.size(); i++) {
+      curRE = units.get(i);
 
-        temp2 = curRE.GenerateNfa(ignoreCase);
-        temp1.end.AddMove(temp2.start);
-        temp1 = temp2;
-     }
+      temp2 = curRE.GenerateNfa(ignoreCase);
+      temp1.end.AddMove(temp2.start);
+      temp1 = temp2;
+    }
 
-     temp2.end.AddMove(finalState);
+    temp2.end.AddMove(finalState);
 
-     return retVal;
+    return retVal;
   }
 
-  RSequence()
-  {
-  }
+  RSequence() {}
 
-  RSequence(List<RegularExpression> seq)
-  {
-     ordinal = Integer.MAX_VALUE;
-     units = seq;
+  RSequence(List<RegularExpression> seq) {
+    ordinal = Integer.MAX_VALUE;
+    units = seq;
   }
 }

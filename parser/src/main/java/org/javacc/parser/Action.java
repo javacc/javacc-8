@@ -22,9 +22,10 @@
  * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
  * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
- * THE POSSIBILITY OF SUCH DAMAGE.
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.javacc.parser;
 
 import java.util.ArrayList;
@@ -32,17 +33,16 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Describes actions that may occur on the right hand side
- * of productions.
+ * Describes actions that may occur on the right hand side of productions.
  */
 
 public class Action extends Expansion {
 
   /**
-   * Contains the list of tokens that make up the action.  This
-   * list does not include the surrounding braces.
+   * Contains the list of tokens that make up the action. This list does not
+   * include the surrounding braces.
    */
-  private final List<Token> action_tokens = new ArrayList<Token>();
+  private final List<Token> action_tokens = new ArrayList<>();
 
   /**
    * @return the action_tokens

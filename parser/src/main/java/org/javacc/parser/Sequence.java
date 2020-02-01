@@ -22,8 +22,8 @@
  * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
  * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
- * THE POSSIBILITY OF SUCH DAMAGE.
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
  */
 
 package org.javacc.parser;
@@ -34,40 +34,38 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Describes expansions that are sequences of expansion
- * units.  (c1 c2 ...)
+ * Describes expansions that are sequences of expansion units. (c1 c2 ...)
  */
 
 public class Sequence extends Expansion {
 
   /**
-   * The list of units in this expansion sequence.  Each
-   * List component will narrow to Expansion.
+   * The list of units in this expansion sequence. Each List component will
+   * narrow to Expansion.
    */
   public List<Expansion> units = new ArrayList<>();
 
-    public Sequence() {}
+  public Sequence() {}
 
-    Sequence(Token token, Lookahead lookahead) {
-        this.setLine(token.beginLine);
-        this.setColumn(token.beginColumn);
-        this.units.add(lookahead);
+  Sequence(Token token, Lookahead lookahead) {
+    setLine(token.beginLine);
+    setColumn(token.beginColumn);
+    units.add(lookahead);
+  }
+
+
+  @Override
+  public StringBuffer dump(int indent, Set<Expansion> alreadyDumped) {
+    if (alreadyDumped.contains(this)) {
+      return super.dump(0, alreadyDumped).insert(0, '[').append(']').insert(0, dumpPrefix(indent));
     }
 
-
-    @Override
-    public StringBuffer dump(int indent, Set<Expansion> alreadyDumped) {
-      if (alreadyDumped.contains(this))
-      {
-        return super.dump(0, alreadyDumped).insert(0, '[').append(']').insert(0, dumpPrefix(indent));
-      }
-
-      alreadyDumped.add(this);
-      final StringBuffer sb = super.dump(indent, alreadyDumped);
-      for (Iterator<Expansion> it = units.iterator(); it.hasNext(); ) {
-        Expansion next = it.next();
-        sb.append(eol).append(next.dump(indent + 1, alreadyDumped));
-      }
-      return sb;
+    alreadyDumped.add(this);
+    final StringBuffer sb = super.dump(indent, alreadyDumped);
+    for (Iterator<Expansion> it = units.iterator(); it.hasNext();) {
+      Expansion next = it.next();
+      sb.append(Expansion.eol).append(next.dump(indent + 1, alreadyDumped));
     }
+    return sb;
+  }
 }

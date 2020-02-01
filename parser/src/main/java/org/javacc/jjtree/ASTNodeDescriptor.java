@@ -25,24 +25,25 @@
  * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
  * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
- * THE POSSIBILITY OF SUCH DAMAGE.
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.javacc.jjtree;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 
-public class ASTNodeDescriptor extends JJTreeNode{
+public class ASTNodeDescriptor extends JJTreeNode {
+
   ASTNodeDescriptor(int id) {
     super(id);
   }
 
   private boolean faked = false;
 
-  static ASTNodeDescriptor indefinite(String s)
-  {
+  static ASTNodeDescriptor indefinite(String s) {
     ASTNodeDescriptor nd = new ASTNodeDescriptor(JJTreeParserTreeConstants.JJTNODEDESCRIPTOR);
     nd.name = s;
     nd.setNodeIdValue();
@@ -51,49 +52,43 @@ public class ASTNodeDescriptor extends JJTreeNode{
   }
 
 
-  static List<String> nodeIds = new ArrayList<String>();
-  static List<String> nodeNames = new ArrayList<String>();
-  static Hashtable<String, String> nodeSeen = new Hashtable<String, String>();
+  static List<String>              nodeIds   = new ArrayList<>();
+  static List<String>              nodeNames = new ArrayList<>();
+  static Hashtable<String, String> nodeSeen  = new Hashtable<>();
 
-  public static List<String> getNodeIds()
-  {
-    return nodeIds;
+  public static List<String> getNodeIds() {
+    return ASTNodeDescriptor.nodeIds;
   }
 
-  public static List<String> getNodeNames()
-  {
-    return nodeNames;
+  public static List<String> getNodeNames() {
+    return ASTNodeDescriptor.nodeNames;
   }
 
-  void setNodeIdValue()
-  {
+  void setNodeIdValue() {
     String k = getNodeId();
-    if (!nodeSeen.containsKey(k)) {
-      nodeSeen.put(k, k);
-      nodeNames.add(name);
-      nodeIds.add(k);
+    if (!ASTNodeDescriptor.nodeSeen.containsKey(k)) {
+      ASTNodeDescriptor.nodeSeen.put(k, k);
+      ASTNodeDescriptor.nodeNames.add(name);
+      ASTNodeDescriptor.nodeIds.add(k);
     }
   }
 
-  public String getNodeId()
-  {
+  public String getNodeId() {
     return "JJT" + name.toUpperCase().replace('.', '_');
   }
 
 
-  String name;
-  boolean isGT;
+  String                      name;
+  boolean                     isGT;
   ASTNodeDescriptorExpression expression;
 
 
-  public boolean isVoid()
-  {
+  public boolean isVoid() {
     return name.equals("void");
   }
 
   @Override
-  public String toString()
-  {
+  public String toString() {
     if (faked) {
       return "(faked) " + name;
     } else {
@@ -102,8 +97,7 @@ public class ASTNodeDescriptor extends JJTreeNode{
   }
 
 
-  public String getDescriptor()
-  {
+  public String getDescriptor() {
     if (expression == null) {
       return name;
     } else {
@@ -111,8 +105,7 @@ public class ASTNodeDescriptor extends JJTreeNode{
     }
   }
 
-  public String getNodeType()
-  {
+  public String getNodeType() {
     if (JJTreeOptions.getMulti()) {
       return JJTreeOptions.getNodePrefix() + name;
     } else {
@@ -121,55 +114,47 @@ public class ASTNodeDescriptor extends JJTreeNode{
   }
 
 
-  public String getNodeName()
-  {
+  public String getNodeName() {
     return name;
   }
 
 
-  public String openNode(String nodeVar)
-  {
+  public String openNode(String nodeVar) {
     return "jjtree.openNodeScope(" + nodeVar + ");";
   }
 
 
-  private String expression_text()
-  {
-    if (expression.getFirstToken().image.equals(")") &&
-      expression.getLastToken().image.equals("(")) {
+  private String expression_text() {
+    if (expression.getFirstToken().image.equals(")") && expression.getLastToken().image.equals("(")) {
       return "true";
     }
 
     String s = "";
     Token t = expression.getFirstToken();
     while (true) {
-       s += " " + t.image;
-       if (t == expression.getLastToken()) {
-         break;
-       }
-       t = t.next;
+      s += " " + t.image;
+      if (t == expression.getLastToken()) {
+        break;
+      }
+      t = t.next;
     }
     return s;
   }
 
 
-  public String closeNode(String nodeVar)
-  {
+  public String closeNode(String nodeVar) {
     if (expression == null) {
       return "jjtree.closeNodeScope(" + nodeVar + ", true);";
     } else if (isGT) {
-      return "jjtree.closeNodeScope(" + nodeVar + ", jjtree.nodeArity() >" +
-          expression_text() + ");";
+      return "jjtree.closeNodeScope(" + nodeVar + ", jjtree.nodeArity() >" + expression_text() + ");";
     } else {
-      return "jjtree.closeNodeScope(" + nodeVar + ", " +
-          expression_text() + ");";
+      return "jjtree.closeNodeScope(" + nodeVar + ", " + expression_text() + ");";
     }
   }
 
 
   @Override
-  public String translateImage(Token t)
-  {
+  public String translateImage(Token t) {
     return whiteOut(t);
   }
 
@@ -179,4 +164,7 @@ public class ASTNodeDescriptor extends JJTreeNode{
     return visitor.visit(this, data);
   }
 }
-/* JavaCC - OriginalChecksum=f2bf932eb272496d76c632cf95593422 (do not edit this line) */
+/*
+ * JavaCC - OriginalChecksum=f2bf932eb272496d76c632cf95593422 (do not edit this
+ * line)
+ */

@@ -26,13 +26,13 @@ public abstract class CodeBuilder<B extends CodeBuilder<?>> implements Closeable
   private final CodeGeneratorSettings options;
 
 
-  private File         file;
-  private String       version;
-  private Set<String>  tools  = new LinkedHashSet<>();
-  private List<String> option = new ArrayList<>();
+  private File               file;
+  private String             version;
+  private final Set<String>  tools  = new LinkedHashSet<>();
+  private final List<String> option = new ArrayList<>();
 
-  private int          cline;
-  private int          ccol;
+  private int                cline;
+  private int                ccol;
 
   /**
    * Constructs an instance of {@link CodeBuilder}.
@@ -57,7 +57,7 @@ public abstract class CodeBuilder<B extends CodeBuilder<?>> implements Closeable
 
   /**
    * Sets the target {@link File}.
-   * 
+   *
    * @param file
    */
   @SuppressWarnings("unchecked")
@@ -68,7 +68,7 @@ public abstract class CodeBuilder<B extends CodeBuilder<?>> implements Closeable
 
   /**
    * Sets the compatible version.
-   * 
+   *
    * @param version
    */
   @SuppressWarnings("unchecked")
@@ -79,25 +79,27 @@ public abstract class CodeBuilder<B extends CodeBuilder<?>> implements Closeable
 
   /**
    * Add a tool.
-   * 
+   *
    * @param tool
    */
   @SuppressWarnings("unchecked")
   public final B addTools(String... tools) {
-    for (String tool : tools)
+    for (String tool : tools) {
       this.tools.add(tool);
+    }
     return (B) this;
   }
 
   /**
    * Add a tool.
-   * 
+   *
    * @param tool
    */
   @SuppressWarnings("unchecked")
   public final B addOption(String... options) {
-    for (String option : options)
+    for (String option : options) {
       this.option.add(option);
+    }
     return (B) this;
   }
 
@@ -158,6 +160,7 @@ public abstract class CodeBuilder<B extends CodeBuilder<?>> implements Closeable
     store(getFile(), getBuffer());
   }
 
+  @Override
   public final void close() throws IOException {
     build();
   }
@@ -188,8 +191,9 @@ public abstract class CodeBuilder<B extends CodeBuilder<?>> implements Closeable
       printToken(t);
     }
 
-    if (t != null)
+    if (t != null) {
       printTrailingComments(t);
+    }
   }
 
   public final void printTokenOnly(Token t) {
@@ -205,10 +209,11 @@ public abstract class CodeBuilder<B extends CodeBuilder<?>> implements Closeable
     for (; ccol < t.beginColumn; ccol++) {
       retval += " ";
     }
-    if (t.kind == JavaCCParserConstants.STRING_LITERAL || t.kind == JavaCCParserConstants.CHARACTER_LITERAL)
+    if (t.kind == JavaCCParserConstants.STRING_LITERAL || t.kind == JavaCCParserConstants.CHARACTER_LITERAL) {
       retval += escapeToUnicode(t.image);
-    else
+    } else {
       retval += t.image;
+    }
     cline = t.endLine;
     ccol = t.endColumn + 1;
     if (t.image.length() > 0) {
@@ -236,11 +241,13 @@ public abstract class CodeBuilder<B extends CodeBuilder<?>> implements Closeable
 
   public final String getLeadingComments(Token t) {
     String retval = "";
-    if (t.specialToken == null)
+    if (t.specialToken == null) {
       return retval;
+    }
     Token tt = t.specialToken;
-    while (tt.specialToken != null)
+    while (tt.specialToken != null) {
       tt = tt.specialToken;
+    }
     while (tt != null) {
       retval += getStringForTokenOnly(tt);
       tt = tt.next;
@@ -259,8 +266,9 @@ public abstract class CodeBuilder<B extends CodeBuilder<?>> implements Closeable
   }
 
   public final String getTrailingComments(Token token) {
-    if (token.next == null)
+    if (token.next == null) {
       return "";
+    }
 
     return getLeadingComments(token.next);
   }
@@ -305,6 +313,7 @@ public abstract class CodeBuilder<B extends CodeBuilder<?>> implements Closeable
     /**
      * Get the {@link StringBuffer}
      */
+    @Override
     protected final StringBuffer getBuffer() {
       return buffer;
     }

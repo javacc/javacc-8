@@ -25,6 +25,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.javacc.jjtree;
 
 public class ASTBNFAction extends JJTreeNode{
@@ -35,7 +36,7 @@ public class ASTBNFAction extends JJTreeNode{
 
   public Node getScopingParent(NodeScope ns)
   {
-    for (Node n = this.jjtGetParent(); n != null; n = n.jjtGetParent()) {
+    for (Node n = jjtGetParent(); n != null; n = n.jjtGetParent()) {
       if (n instanceof ASTBNFNodeScope) {
         if (((ASTBNFNodeScope)n).node_scope == ns) {
           return n;
@@ -56,4 +57,7 @@ public class ASTBNFAction extends JJTreeNode{
     return visitor.visit(this, data);
   }
 }
-/* JavaCC - OriginalChecksum=fc1bdeb609eab6c1c9b7b660dec5baf0 (do not edit this line) */
+/*
+ * JavaCC - OriginalChecksum=fc1bdeb609eab6c1c9b7b660dec5baf0 (do not edit this
+ * line)
+ */

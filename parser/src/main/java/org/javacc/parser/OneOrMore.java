@@ -22,8 +22,8 @@
  * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
  * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
- * THE POSSIBILITY OF SUCH DAMAGE.
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
  */
 
 package org.javacc.parser;
@@ -58,11 +58,12 @@ public class OneOrMore extends Expansion {
   @Override
   public final StringBuffer dump(int indent, Set<Expansion> alreadyDumped) {
     StringBuffer buffer = super.dump(indent, alreadyDumped);
-    if (alreadyDumped.contains(this))
+    if (alreadyDumped.contains(this)) {
       return buffer;
+    }
 
     alreadyDumped.add(this);
-    buffer.append(eol).append(expansion.dump(indent + 1, alreadyDumped));
+    buffer.append(Expansion.eol).append(expansion.dump(indent + 1, alreadyDumped));
     return buffer;
   }
 }

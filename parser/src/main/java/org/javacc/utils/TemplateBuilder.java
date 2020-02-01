@@ -61,7 +61,7 @@ class TemplateBuilder {
 
   /**
    * Generate the output file.
-   * 
+   *
    * @param writer
    * @throws IOException
    */
@@ -76,8 +76,9 @@ class TemplateBuilder {
   }
 
   private String peekLine(BufferedReader in) throws IOException {
-    if (currentLine == null)
+    if (currentLine == null) {
       currentLine = in.readLine();
+    }
     return currentLine;
   }
 
@@ -85,8 +86,9 @@ class TemplateBuilder {
     String line = currentLine;
     currentLine = null;
 
-    if (line == null)
+    if (line == null) {
       in.readLine();
+    }
     return line;
   }
 
@@ -112,16 +114,18 @@ class TemplateBuilder {
     int endPos = startPos + 2;
 
     while (endPos < text.length() && braceDepth > 0) {
-      if (text.charAt(endPos) == '{')
+      if (text.charAt(endPos) == '{') {
         braceDepth++;
-      else if (text.charAt(endPos) == '}')
+      } else if (text.charAt(endPos) == '}') {
         braceDepth--;
+      }
 
       endPos++;
     }
 
-    if (braceDepth != 0)
+    if (braceDepth != 0) {
       throw new IOException("Mismatched \"{}\" in template string: " + text);
+    }
 
     final String variableExpression = text.substring(startPos + 2, endPos - 1);
 
@@ -159,13 +163,15 @@ class TemplateBuilder {
     // Split values into true and false values.
 
     int pos = values.indexOf(':');
-    if (pos == -1)
+    if (pos == -1) {
       throw new IOException("No ':' separator in " + values);
+    }
 
-    if (evaluate(variableName))
+    if (evaluate(variableName)) {
       return substitute(values.substring(0, pos));
-    else
+    } else {
       return substitute(values.substring(pos + 1));
+    }
   }
 
   /**
@@ -175,8 +181,9 @@ class TemplateBuilder {
    */
   private String substituteWithDefault(String variableName, String defaultValue) throws IOException {
     Object obj = options.get(variableName.trim());
-    if (obj == null || obj.toString().length() == 0)
+    if (obj == null || obj.toString().length() == 0) {
       return substitute(defaultValue);
+    }
 
     return obj.toString();
   }
@@ -204,8 +211,9 @@ class TemplateBuilder {
         break;
       } else {
         String line = getLine(in);
-        if (!ignoring)
+        if (!ignoring) {
           write(out, line);
+        }
       }
     }
 
@@ -222,8 +230,9 @@ class TemplateBuilder {
       process(in, out, ignoring || foundTrueCondition || !condition);
       foundTrueCondition |= condition;
 
-      if (peekLine(in) == null || !peekLine(in).trim().startsWith("#elif"))
+      if (peekLine(in) == null || !peekLine(in).trim().startsWith("#elif")) {
         break;
+      }
 
       condition = evaluate(getLine(in).trim().substring(5).trim());
     }
@@ -235,10 +244,12 @@ class TemplateBuilder {
 
     line = getLine(in);
 
-    if (line == null)
+    if (line == null) {
       throw new IOException("Missing \"#fi\"");
+    }
 
-    if (!line.trim().startsWith("#fi"))
+    if (!line.trim().startsWith("#fi")) {
       throw new IOException("Expected \"#fi\", got: " + line);
+    }
   }
 }
