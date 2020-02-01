@@ -32,9 +32,10 @@ options {
 	VISITOR_DATA_TYPE="void*";
 	VISITOR_RETURN_TYPE="void";
     MULTI=true;
-//    NODE_EXTENDS="MyNode";
+//  NODE_EXTENDS="MyNode";
     TRACK_TOKENS=true;
-//  DEBUG_PARSER=true;
+	DEBUG_PARSER=true;
+//	DEBUG_TOKEN_MANAGER=true;
 }
 
 PARSER_BEGIN(SPLParser)

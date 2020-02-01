@@ -25,54 +25,16 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
+
+
 options {
-  CODE_GENERATOR="Java";
+  MULTI=true;
+  NODE_DEFAULT_VOID=true;
+  NAMESPACE="EG3";
 }
 
-PARSER_BEGIN(Eg1)
-
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
-import java.io.PrintStream;
-
-/** An Arithmetic Grammar. */
-public class Eg1 {
-
-  /** Main entry point. */
-  public static void main(String args[]) throws FileNotFoundException {
-    InputStream input = System.in;
-    PrintStream output = System.out;
-    PrintStream error = System.err;
-    InputStream prevInput = null;
-    PrintStream prevOutput = null;
-    PrintStream prevError = null;
-    if (args.length == 3) {
-    	prevInput = input;   	input = new FileInputStream(args[0]);
-    	prevOutput = output;   	output = new PrintStream(args[1]);
-    	prevError = error;   	error  = new PrintStream(args[2]);
-       System.setIn(input);
-       System.setOut(output);
-       System.setErr(error);
-    }
-    Eg1 t = new Eg1(input);
-    try {
-      SimpleNode n = Eg1.Start();
-      n.dump("");
-      output.println("Thank you.");
-    } catch (Exception e) {
-      error.println("Oops.");
-      error.println(e.getMessage());
-      e.printStackTrace();
-    } finally {
-        if (prevInput != null)  System.setIn(prevInput);
-        if (prevOutput != null) System.setOut(prevOutput);
-        if (prevError != null)  System.setErr(prevError);
-    }
-  }
-}
-
-PARSER_END(Eg1)
+PARSER_BEGIN(Parser)
+PARSER_END(Parser)
 
 
 SKIP :
@@ -110,7 +72,7 @@ TOKEN : /* IDENTIFIERS */
 }
 
 /** Main production. */
-SimpleNode Start() : {}
+ASTStart* Start() #Start : {}
 {
   Expression() ";"
   { return jjtThis; }
@@ -125,13 +87,17 @@ void Expression() : {}
 /** An Additive Expression. */
 void AdditiveExpression() : {}
 {
-  MultiplicativeExpression() ( ( "+" | "-" ) MultiplicativeExpression() )*
+  (
+    MultiplicativeExpression() ( ( "+" | "-" ) MultiplicativeExpression() )*
+  ) #Add(>1)
 }
 
 /** A Multiplicative Expression. */
 void MultiplicativeExpression() : {}
 {
-  UnaryExpression() ( ( "*" | "/" | "%" ) UnaryExpression() )*
+  (
+    UnaryExpression() ( ( "*" | "/" | "%" ) UnaryExpression() )*
+  ) #Mult(>1)
 }
 
 /** A Unary Expression. */
@@ -141,13 +107,19 @@ void UnaryExpression() : {}
 }
 
 /** An Identifier. */
-void Identifier() : {}
+void Identifier() #MyID :
 {
-  <IDENTIFIER>
+  Token* t;
+}
+{
+  t=<IDENTIFIER>
+  {
+    jjtThis->setName(t->image);
+  }
 }
 
 /** An Integer. */
-void Integer() : {}
+void Integer() #Integer : {}
 {
   <INTEGER_LITERAL>
 }

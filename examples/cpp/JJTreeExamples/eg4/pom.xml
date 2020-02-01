@@ -41,7 +41,6 @@
 						</goals>
 						<configuration>
 							<codeGenerator>C++</codeGenerator>
-							<sourceDirectory>../../../examples/JJTreeExamples/cpp/eg4</sourceDirectory>
 							<outputDirectory>target/generated-sources/cpp</outputDirectory>
 							<nodeDirectory>src/main/cpp</nodeDirectory>
 						</configuration>
@@ -51,12 +50,12 @@
 			<plugin>
 				<groupId>com.github.maven-nar</groupId>
 				<artifactId>nar-maven-plugin</artifactId>
-				<version>3.9.1</version>
 				<extensions>true</extensions>
 				<configuration>
 					<libraries>
 						<library>
 							<type>executable</type>
+							<run>true</run>
 						</library>
 					</libraries>
 					<cpp>
@@ -73,23 +72,6 @@
 						</includePaths>
 					</cpp>
  				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>exec-maven-plugin</artifactId>
-				<executions>
-					<execution>
-						<phase>test</phase>
-						<goals>
-							<goal>exec</goal>
-						</goals>
-						<configuration>
-							<executable>target/eg4</executable>
-							<arguments>
-							</arguments>
-						</configuration>
-					</execution>
-				</executions>
 			</plugin>
 		</plugins>
 	</build>

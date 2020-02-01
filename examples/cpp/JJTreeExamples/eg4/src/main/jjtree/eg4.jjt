@@ -1,9 +1,9 @@
 /* Copyright (c) 2006, Sun Microsystems, Inc.
  * All rights reserved.
- *
+ * 
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- *
+ * 
  *     * Redistributions of source code must retain the above copyright notice,
  *       this list of conditions and the following disclaimer.
  *     * Redistributions in binary form must reproduce the above copyright
@@ -12,7 +12,7 @@
  *     * Neither the name of the Sun Microsystems, Inc. nor the names of its
  *       contributors may be used to endorse or promote products derived from
  *       this software without specific prior written permission.
- *
+ * 
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -29,13 +29,15 @@
 
 options {
   MULTI=true;
+  VISITOR=true;
   NODE_DEFAULT_VOID=true;
-  NAMESPACE="EG3";
+  VISITOR_DATA_TYPE="void*";
+  VISITOR_RETURN_TYPE="void*";
+  NAMESPACE="EG4";
 }
 
 PARSER_BEGIN(Parser)
-//package EG3;/////** An Arithmetic Grammar. *///public class Eg3 {//  /** Main entry point. *///  public static void main(String args[]) {//    System.out.println("Reading from standard input...");//    Eg3 t = new Eg3(System.in);//    try {//      ASTStart n = t.Start();//      n.dump("");//      System.out.println("Thank you.");//    } catch (Exception e) {//      System.out.println("Oops.");//      System.out.println(e.getMessage());//      e.printStackTrace();//    }//  }//}
-
+/** An Arithmetic Grammar. */
 PARSER_END(Parser)
 
 
@@ -80,6 +82,7 @@ ASTStart* Start() #Start : {}
   { return jjtThis; }
 }
 
+
 /** An Expression. */
 void Expression() : {}
 {
@@ -109,9 +112,9 @@ void UnaryExpression() : {}
 }
 
 /** An Identifier. */
-void Identifier() #MyID :
+void Identifier() #MyOtherID :
 {
-  Token* t;
+  Token* t = NULL;
 }
 {
   t=<IDENTIFIER>
