@@ -59,7 +59,7 @@ public class RChoice extends RegularExpression {
 
   @Override
   public Nfa GenerateNfa(boolean ignoreCase, LexerContext lexerContext) {
-    CompressCharLists();
+    CompressCharLists(lexerContext);
 
     if (getChoices().size() == 1) {
       return getChoices().get(0).GenerateNfa(ignoreCase, lexerContext);
@@ -82,7 +82,7 @@ public class RChoice extends RegularExpression {
     return retVal;
   }
 
-  private void CompressCharLists() {
+  private void CompressCharLists(LexerContext lexerContext) {
     CompressChoices(); // Unroll nested choices
     RegularExpression curRE;
     RCharacterList curCharList = null;
@@ -100,7 +100,7 @@ public class RChoice extends RegularExpression {
 
       if (curRE instanceof RCharacterList) {
         if (((RCharacterList) curRE).negated_list) {
-          ((RCharacterList) curRE).RemoveNegation();
+          ((RCharacterList) curRE).RemoveNegation(lexerContext);
         }
 
         List<Expansion> tmp = ((RCharacterList) curRE).descriptors;
@@ -141,10 +141,9 @@ public class RChoice extends RegularExpression {
   void CheckUnmatchability(int[] lexStates) {
     RegularExpression curRE;
     for (int i = 0; i < getChoices().size(); i++) {
-      if (!(curRE = getChoices().get(i)).private_rexp &&
-          (// curRE instanceof RJustName &&
-              curRE.ordinal > 0) && (curRE.ordinal < ordinal)
-          && (lexStates[curRE.ordinal] == lexStates[ordinal])) {
+      if (!(curRE = getChoices().get(i)).private_rexp && (// curRE instanceof
+          // RJustName &&
+          curRE.ordinal > 0) && (curRE.ordinal < ordinal) && (lexStates[curRE.ordinal] == lexStates[ordinal])) {
         if (label != null) {
           JavaCCErrors.warning(this,
               "Regular Expression choice : " + curRE.label + " can never be matched as : " + label);

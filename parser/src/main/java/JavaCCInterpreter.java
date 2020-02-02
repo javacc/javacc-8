@@ -71,7 +71,7 @@ public class JavaCCInterpreter {
       Options.set(Options.NONUSER_OPTION__INTERPRETER, true);
       Semanticize.start();
       LexGen lg = new LexGen();
-      TokenizerData tokenizerData = lg.generateTokenizerData(true);
+      TokenizerData tokenizerData = lg.generateTokenizerData(true, false);
       if (JavaCCErrors.get_error_count() == 0) {
         long l = System.currentTimeMillis();
         JavaCCInterpreter.tokenize(tokenizerData, input);

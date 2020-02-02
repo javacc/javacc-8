@@ -30,17 +30,17 @@ package org.javacc.parser;
 /**
  * Describes a match, within a given lookahead.
  */
-public class MatchInfo {
+class MatchInfo {
 
-  final int laLimit;
-  final int[]     match;
-  int       firstFreeLoc;
+  final int   laLimit;
+  final int[] match;
+  int         firstFreeLoc;
 
   /**
    * Constructs an instance of {@link MatchInfo}.
    *
    */
-  public MatchInfo(int laLimit) {
+  MatchInfo(int laLimit) {
     this.laLimit = laLimit;
     match = new int[laLimit];
   }

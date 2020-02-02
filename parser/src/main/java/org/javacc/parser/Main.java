@@ -1,20 +1,19 @@
 // Copyright 2011 Google Inc. All Rights Reserved.
 // Author: sreeni@google.com (Sreeni Viswanadha)
 
-/* Copyright (c) 2006, Sun Microsystems, Inc.
- * All rights reserved.
+/*
+ * Copyright (c) 2006, Sun Microsystems, Inc. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
  *
- *     * Redistributions of source code must retain the above copyright notice,
- *       this list of conditions and the following disclaimer.
- *     * Redistributions in binary form must reproduce the above copyright
- *       notice, this list of conditions and the following disclaimer in the
- *       documentation and/or other materials provided with the distribution.
- *     * Neither the name of the Sun Microsystems, Inc. nor the names of its
- *       contributors may be used to endorse or promote products derived from
- *       this software without specific prior written permission.
+ * * Redistributions of source code must retain the above copyright notice, this
+ * list of conditions and the following disclaimer. * Redistributions in binary
+ * form must reproduce the above copyright notice, this list of conditions and
+ * the following disclaimer in the documentation and/or other materials provided
+ * with the distribution. * Neither the name of the Sun Microsystems, Inc. nor
+ * the names of its contributors may be used to endorse or promote products
+ * derived from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -219,8 +218,10 @@ public class Main {
 
       JavaCCGlobals.createOutputDir(Options.getOutputDirectory());
 
+
+      boolean unicodeWarning = false;
       if (Options.getUnicodeInput()) {
-        NfaState.unicodeWarningGiven = true;
+        unicodeWarning = true;
         System.out.println("Note: UNICODE_INPUT option is specified. "
             + "Please make sure you create the parser/lexer using a Reader with the correct character encoding.");
       }
@@ -241,7 +242,7 @@ public class Main {
 
         // Must always create the lexer object even if not building a parser.
         LexGen lg = new LexGen();
-        TokenizerData tokenizerData = lg.generateTokenizerData(false);
+        TokenizerData tokenizerData = lg.generateTokenizerData(false, unicodeWarning);
 
         Options.setStringOption(Options.NONUSER_OPTION__PARSER_NAME, JavaCCGlobals.cu_name);
 
@@ -307,7 +308,5 @@ public class Main {
     org.javacc.parser.JavaCCErrors.reInit();
     org.javacc.parser.JavaCCGlobals.reInit();
     Options.init();
-    org.javacc.parser.RStringLiteral.reInit();
-    org.javacc.parser.NfaState.reInit();
   }
 }

@@ -1,20 +1,19 @@
 // Copyright 2011 Google Inc. All Rights Reserved.
 // Author: sreeni@google.com (Sreeni Viswanadha)
 
-/* Copyright (c) 2006, Sun Microsystems, Inc.
- * All rights reserved.
+/*
+ * Copyright (c) 2006, Sun Microsystems, Inc. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
  *
- *     * Redistributions of source code must retain the above copyright notice,
- *       this list of conditions and the following disclaimer.
- *     * Redistributions in binary form must reproduce the above copyright
- *       notice, this list of conditions and the following disclaimer in the
- *       documentation and/or other materials provided with the distribution.
- *     * Neither the name of the Sun Microsystems, Inc. nor the names of its
- *       contributors may be used to endorse or promote products derived from
- *       this software without specific prior written permission.
+ * * Redistributions of source code must retain the above copyright notice, this
+ * list of conditions and the following disclaimer. * Redistributions in binary
+ * form must reproduce the above copyright notice, this list of conditions and
+ * the following disclaimer in the documentation and/or other materials provided
+ * with the distribution. * Neither the name of the Sun Microsystems, Inc. nor
+ * the names of its contributors may be used to endorse or promote products
+ * derived from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -34,7 +33,6 @@ package org.javacc.parser;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
@@ -59,53 +57,22 @@ public class RStringLiteral extends RegularExpression {
     setColumn(token.beginColumn);
   }
 
-  private static int                         maxStrKind      = 0;
-  private static int                         maxLen          = 0;
-
-  private static int[]                       maxLenForActive = new int[100]; // 6400
-  // tokens
-  private static int[][]                     intermediateKinds;
-  private static int[][]                     intermediateMatchedPos;
-
-  private static boolean                     subString[];
-  private static boolean                     subStringAtPos[];
-  private static Hashtable<String, long[]>[] statesForPos;
-
-  static String[]                            allImages;
-
-  /**
-   * Initialize all the static variables, so that there is no interference
-   * between the various states of the lexer.
-   *
-   * Need to call this method after generating code for each lexical state.
-   */
-  static void ReInit() {
-    RStringLiteral.maxStrKind = 0;
-    RStringLiteral.maxLen = 0;
-    RStringLiteral.maxLenForActive = new int[100]; // 6400 tokens
-    RStringLiteral.intermediateKinds = null;
-    RStringLiteral.intermediateMatchedPos = null;
-    RStringLiteral.subString = null;
-    RStringLiteral.subStringAtPos = null;
-    RStringLiteral.statesForPos = null;
-  }
-
   /**
    * Used for top level string literals.
    */
-  void GenerateDfa(int kind) {
+  void GenerateDfa(int kind, LexerContext lexerContext) {
     int len;
 
-    if (RStringLiteral.maxStrKind <= ordinal) {
-      RStringLiteral.maxStrKind = ordinal + 1;
+    if (lexerContext.maxStrKind <= ordinal) {
+      lexerContext.maxStrKind = ordinal + 1;
     }
 
-    if ((len = image.length()) > RStringLiteral.maxLen) {
-      RStringLiteral.maxLen = len;
+    if ((len = image.length()) > lexerContext.maxLen) {
+      lexerContext.maxLen = len;
     }
 
-    RStringLiteral.maxLenForActive[ordinal / 64] = Math.max(RStringLiteral.maxLenForActive[ordinal / 64], len - 1);
-    RStringLiteral.allImages[ordinal] = image;
+    lexerContext.maxLenForActive[ordinal / 64] = Math.max(lexerContext.maxLenForActive[ordinal / 64], len - 1);
+    lexerContext.allImages[ordinal] = image;
   }
 
   @Override
@@ -143,11 +110,11 @@ public class RStringLiteral extends RegularExpression {
   }
 
   private static int GetStateSetForKind(int pos, int kind, LexerContext lexerContext) {
-    if (lexerContext.mixed[lexerContext.lexStateIndex] || (NfaState.generatedStates == 0)) {
+    if (lexerContext.mixed[lexerContext.lexStateIndex] || (lexerContext.generatedStates == 0)) {
       return -1;
     }
 
-    Hashtable<String, long[]> allStateSets = RStringLiteral.statesForPos[pos];
+    Hashtable<String, long[]> allStateSets = lexerContext.statesForPos[pos];
 
     if (allStateSets == null) {
       return -1;
@@ -195,33 +162,33 @@ public class RStringLiteral extends RegularExpression {
 
   static void FillSubString(LexerContext lexerContext) {
     String image;
-    RStringLiteral.subString = new boolean[RStringLiteral.maxStrKind + 1];
-    RStringLiteral.subStringAtPos = new boolean[RStringLiteral.maxLen];
+    lexerContext.subString = new boolean[lexerContext.maxStrKind + 1];
+    lexerContext.subStringAtPos = new boolean[lexerContext.maxLen];
 
-    for (int i = 0; i < RStringLiteral.maxStrKind; i++) {
-      RStringLiteral.subString[i] = false;
+    for (int i = 0; i < lexerContext.maxStrKind; i++) {
+      lexerContext.subString[i] = false;
 
-      if (((image = RStringLiteral.allImages[i]) == null) || (lexerContext.lexStates[i] != lexerContext.lexStateIndex)) {
+      if (((image = lexerContext.allImages[i]) == null) || (lexerContext.lexStates[i] != lexerContext.lexStateIndex)) {
         continue;
       }
 
       if (lexerContext.mixed[lexerContext.lexStateIndex]) {
         // We will not optimize for mixed case
-        RStringLiteral.subString[i] = true;
-        RStringLiteral.subStringAtPos[image.length() - 1] = true;
+        lexerContext.subString[i] = true;
+        lexerContext.subStringAtPos[image.length() - 1] = true;
         continue;
       }
 
-      for (int j = 0; j < RStringLiteral.maxStrKind; j++) {
-        if ((j != i) && (lexerContext.lexStates[j] == lexerContext.lexStateIndex) && ((RStringLiteral.allImages[j]) != null)) {
-          if (RStringLiteral.allImages[j].indexOf(image) == 0) {
-            RStringLiteral.subString[i] = true;
-            RStringLiteral.subStringAtPos[image.length() - 1] = true;
+      for (int j = 0; j < lexerContext.maxStrKind; j++) {
+        if ((j != i) && (lexerContext.lexStates[j] == lexerContext.lexStateIndex)
+            && ((lexerContext.allImages[j]) != null)) {
+          if (lexerContext.allImages[j].indexOf(image) == 0) {
+            lexerContext.subString[i] = true;
+            lexerContext.subStringAtPos[image.length() - 1] = true;
             break;
-          } else if (Options.getIgnoreCase()
-              && RStringLiteral.StartsWithIgnoreCase(RStringLiteral.allImages[j], image)) {
-            RStringLiteral.subString[i] = true;
-            RStringLiteral.subStringAtPos[image.length() - 1] = true;
+          } else if (Options.getIgnoreCase() && RStringLiteral.StartsWithIgnoreCase(lexerContext.allImages[j], image)) {
+            lexerContext.subString[i] = true;
+            lexerContext.subStringAtPos[image.length() - 1] = true;
             break;
           }
         }
@@ -230,12 +197,12 @@ public class RStringLiteral extends RegularExpression {
   }
 
   private static final int GetStrKind(String str, LexerContext lexerContext) {
-    for (int i = 0; i < RStringLiteral.maxStrKind; i++) {
+    for (int i = 0; i < lexerContext.maxStrKind; i++) {
       if (lexerContext.lexStates[i] != lexerContext.lexStateIndex) {
         continue;
       }
 
-      String image = RStringLiteral.allImages[i];
+      String image = lexerContext.allImages[i];
       if ((image != null) && image.equals(str)) {
         return i;
       }
@@ -245,25 +212,25 @@ public class RStringLiteral extends RegularExpression {
   }
 
   static void GenerateNfaStartStates(NfaState initialState, LexerContext lexerContext) {
-    boolean[] seen = new boolean[NfaState.generatedStates];
+    boolean[] seen = new boolean[lexerContext.generatedStates];
     Hashtable<String, String> stateSets = new Hashtable<>();
     String stateSetString = "";
     int i, j, kind, jjmatchedPos = 0;
-    int maxKindsReqd = (RStringLiteral.maxStrKind / 64) + 1;
+    int maxKindsReqd = (lexerContext.maxStrKind / 64) + 1;
     long[] actives;
     List<NfaState> newStates = new ArrayList<>();
     List<NfaState> oldStates = null, jjtmpStates;
 
-    RStringLiteral.statesForPos = new Hashtable[RStringLiteral.maxLen];
-    RStringLiteral.intermediateKinds = new int[RStringLiteral.maxStrKind + 1][];
-    RStringLiteral.intermediateMatchedPos = new int[RStringLiteral.maxStrKind + 1][];
+    lexerContext.statesForPos = new Hashtable[lexerContext.maxLen];
+    lexerContext.intermediateKinds = new int[lexerContext.maxStrKind + 1][];
+    lexerContext.intermediateMatchedPos = new int[lexerContext.maxStrKind + 1][];
 
-    for (i = 0; i < RStringLiteral.maxStrKind; i++) {
+    for (i = 0; i < lexerContext.maxStrKind; i++) {
       if (lexerContext.lexStates[i] != lexerContext.lexStateIndex) {
         continue;
       }
 
-      String image = RStringLiteral.allImages[i];
+      String image = lexerContext.allImages[i];
 
       if ((image == null) || (image.length() < 1)) {
         continue;
@@ -277,40 +244,40 @@ public class RStringLiteral extends RegularExpression {
         JavaCCErrors.semantic_error("Error cloning state vector");
       }
 
-      RStringLiteral.intermediateKinds[i] = new int[image.length()];
-      RStringLiteral.intermediateMatchedPos[i] = new int[image.length()];
+      lexerContext.intermediateKinds[i] = new int[image.length()];
+      lexerContext.intermediateMatchedPos[i] = new int[image.length()];
       jjmatchedPos = 0;
       kind = Integer.MAX_VALUE;
 
       for (j = 0; j < image.length(); j++) {
         if ((oldStates == null) || (oldStates.size() <= 0)) {
           // Here, j > 0
-          kind = RStringLiteral.intermediateKinds[i][j] = RStringLiteral.intermediateKinds[i][j - 1];
-          jjmatchedPos = RStringLiteral.intermediateMatchedPos[i][j] = RStringLiteral.intermediateMatchedPos[i][j - 1];
+          kind = lexerContext.intermediateKinds[i][j] = lexerContext.intermediateKinds[i][j - 1];
+          jjmatchedPos = lexerContext.intermediateMatchedPos[i][j] = lexerContext.intermediateMatchedPos[i][j - 1];
         } else {
           kind = NfaState.MoveFromSet(image.charAt(j), oldStates, newStates);
           oldStates.clear();
 
-          if ((j == 0) && (kind != Integer.MAX_VALUE) && (lexerContext.canMatchAnyChar[lexerContext.lexStateIndex] != -1)
+          if ((j == 0) && (kind != Integer.MAX_VALUE)
+              && (lexerContext.canMatchAnyChar[lexerContext.lexStateIndex] != -1)
               && (kind > lexerContext.canMatchAnyChar[lexerContext.lexStateIndex])) {
             kind = lexerContext.canMatchAnyChar[lexerContext.lexStateIndex];
           }
 
           if (RStringLiteral.GetStrKind(image.substring(0, j + 1), lexerContext) < kind) {
-            RStringLiteral.intermediateKinds[i][j] = kind = Integer.MAX_VALUE;
+            lexerContext.intermediateKinds[i][j] = kind = Integer.MAX_VALUE;
             jjmatchedPos = 0;
           } else if (kind != Integer.MAX_VALUE) {
-            RStringLiteral.intermediateKinds[i][j] = kind;
-            jjmatchedPos = RStringLiteral.intermediateMatchedPos[i][j] = j;
+            lexerContext.intermediateKinds[i][j] = kind;
+            jjmatchedPos = lexerContext.intermediateMatchedPos[i][j] = j;
           } else if (j == 0) {
-            kind = RStringLiteral.intermediateKinds[i][j] = Integer.MAX_VALUE;
+            kind = lexerContext.intermediateKinds[i][j] = Integer.MAX_VALUE;
           } else {
-            kind = RStringLiteral.intermediateKinds[i][j] = RStringLiteral.intermediateKinds[i][j - 1];
-            jjmatchedPos =
-                RStringLiteral.intermediateMatchedPos[i][j] = RStringLiteral.intermediateMatchedPos[i][j - 1];
+            kind = lexerContext.intermediateKinds[i][j] = lexerContext.intermediateKinds[i][j - 1];
+            jjmatchedPos = lexerContext.intermediateMatchedPos[i][j] = lexerContext.intermediateMatchedPos[i][j - 1];
           }
 
-          stateSetString = NfaState.GetStateSetString(newStates);
+          stateSetString = NfaState.GetStateSetString(newStates, lexerContext);
         }
 
         if ((kind == Integer.MAX_VALUE) && ((newStates == null) || (newStates.size() == 0))) {
@@ -337,34 +304,20 @@ public class RStringLiteral extends RegularExpression {
         oldStates = newStates;
         (newStates = jjtmpStates).clear();
 
-        if (RStringLiteral.statesForPos[j] == null) {
-          RStringLiteral.statesForPos[j] = new Hashtable<>();
+        if (lexerContext.statesForPos[j] == null) {
+          lexerContext.statesForPos[j] = new Hashtable<>();
         }
 
         if ((actives =
-            (RStringLiteral.statesForPos[j].get(kind + ", " + jjmatchedPos + ", " + stateSetString))) == null) {
+            (lexerContext.statesForPos[j].get(kind + ", " + jjmatchedPos + ", " + stateSetString))) == null) {
           actives = new long[maxKindsReqd];
-          RStringLiteral.statesForPos[j].put(kind + ", " + jjmatchedPos + ", " + stateSetString, actives);
+          lexerContext.statesForPos[j].put(kind + ", " + jjmatchedPos + ", " + stateSetString, actives);
         }
 
         actives[i / 64] |= 1L << (i % 64);
         // String name = NfaState.StoreStateSet(stateSetString);
       }
     }
-  }
-
-  /**
-   * Return to original state.
-   */
-  static void reInit() {
-    RStringLiteral.ReInit();
-
-    RStringLiteral.allImages = null;
-    RStringLiteral.literalsByLength.clear();
-    RStringLiteral.literalKinds.clear();
-    RStringLiteral.kindToLexicalState.clear();
-    RStringLiteral.kindToIgnoreCase.clear();
-    RStringLiteral.nfaStateMap.clear();
   }
 
   @Override
@@ -378,63 +331,57 @@ public class RStringLiteral extends RegularExpression {
     return super.toString() + " - " + image;
   }
 
-  private static final Map<Integer, List<String>>  literalsByLength   = new HashMap<>();
-  private static final Map<Integer, List<Integer>> literalKinds       = new HashMap<>();
-  private static final Map<Integer, Integer>       kindToLexicalState = new HashMap<>();
-  private static final Set<Integer>                kindToIgnoreCase   = new HashSet<>();
-  private static final Map<Integer, NfaState>      nfaStateMap        = new HashMap<>();
-
   static void UpdateStringLiteralData(int generatedNfaStates, LexerContext lexerContext) {
-    for (int kind = 0; kind < RStringLiteral.allImages.length; kind++) {
-      if ((RStringLiteral.allImages[kind] == null) || RStringLiteral.allImages[kind].equals("")
+    for (int kind = 0; kind < lexerContext.allImages.length; kind++) {
+      if ((lexerContext.allImages[kind] == null) || lexerContext.allImages[kind].equals("")
           || (lexerContext.lexStates[kind] != lexerContext.lexStateIndex)) {
         continue;
       }
-      String s = RStringLiteral.allImages[kind];
+      String s = lexerContext.allImages[kind];
       boolean ignoreCase = lexerContext.ignoreCase[kind];
       int actualKind;
-      if ((RStringLiteral.intermediateKinds != null)
-          && (RStringLiteral.intermediateKinds[kind][s.length() - 1] != Integer.MAX_VALUE)
-          && (RStringLiteral.intermediateKinds[kind][s.length() - 1] < kind)) {
+      if ((lexerContext.intermediateKinds != null)
+          && (lexerContext.intermediateKinds[kind][s.length() - 1] != Integer.MAX_VALUE)
+          && (lexerContext.intermediateKinds[kind][s.length() - 1] < kind)) {
         JavaCCErrors.warning("Token: " + s + " will not be matched as " + "specified. It will be matched as token "
-            + "of kind: " + RStringLiteral.intermediateKinds[kind][s.length() - 1] + " instead.");
-        actualKind = RStringLiteral.intermediateKinds[kind][s.length() - 1];
+            + "of kind: " + lexerContext.intermediateKinds[kind][s.length() - 1] + " instead.");
+        actualKind = lexerContext.intermediateKinds[kind][s.length() - 1];
       } else {
         actualKind = kind;
       }
-      RStringLiteral.kindToLexicalState.put(actualKind, lexerContext.lexStateIndex);
+      lexerContext.kindToLexicalState.put(actualKind, lexerContext.lexStateIndex);
       if (Options.getIgnoreCase() || ignoreCase) {
         s = s.toLowerCase();
       }
       char c = s.charAt(0);
       int key = (lexerContext.lexStateIndex << 16) | c;
-      RStringLiteral.UpdateStringLiteralDataForKey(key, actualKind, s);
+      RStringLiteral.UpdateStringLiteralDataForKey(key, actualKind, s, lexerContext);
 
       if (ignoreCase) {
-        RStringLiteral.kindToIgnoreCase.add(kind);
+        lexerContext.kindToIgnoreCase.add(kind);
         c = s.toUpperCase().charAt(0);
         key = (lexerContext.lexStateIndex << 16) | c;
-        RStringLiteral.UpdateStringLiteralDataForKey(key, actualKind, s);
+        RStringLiteral.UpdateStringLiteralDataForKey(key, actualKind, s, lexerContext);
       }
 
       int stateIndex = RStringLiteral.GetStateSetForKind(s.length() - 1, kind, lexerContext);
       if (stateIndex != -1) {
-        RStringLiteral.nfaStateMap.put(actualKind, NfaState.getNfaState(stateIndex));
+        lexerContext.nfaStateMap.put(actualKind, NfaState.getNfaState(stateIndex, lexerContext));
       } else {
-        RStringLiteral.nfaStateMap.put(actualKind, null);
+        lexerContext.nfaStateMap.put(actualKind, null);
       }
     }
   }
 
-  private static void UpdateStringLiteralDataForKey(int key, int actualKind, String s) {
-    List<String> l = RStringLiteral.literalsByLength.get(key);
-    List<Integer> kinds = RStringLiteral.literalKinds.get(key);
+  private static void UpdateStringLiteralDataForKey(int key, int actualKind, String s, LexerContext lexerContext) {
+    List<String> l = lexerContext.literalsByLength.get(key);
+    List<Integer> kinds = lexerContext.literalKinds.get(key);
     int j = 0;
     if (l == null) {
-      RStringLiteral.literalsByLength.put(key, l = new ArrayList<>());
+      lexerContext.literalsByLength.put(key, l = new ArrayList<>());
       assert (kinds == null);
       kinds = new ArrayList<>();
-      RStringLiteral.literalKinds.put(key, kinds = new ArrayList<>());
+      lexerContext.literalKinds.put(key, kinds = new ArrayList<>());
     }
     while ((j < l.size()) && (l.get(j).length() > s.length())) {
       j++;
@@ -443,20 +390,20 @@ public class RStringLiteral extends RegularExpression {
     kinds.add(j, actualKind);
   }
 
-  static void BuildTokenizerData(TokenizerData tokenizerData) {
+  static void BuildTokenizerData(TokenizerData tokenizerData, LexerContext lexerContext) {
     Map<Integer, Integer> nfaStateIndices = new HashMap<>();
-    for (int kind : RStringLiteral.nfaStateMap.keySet()) {
-      if (RStringLiteral.nfaStateMap.get(kind) != null) {
-        if (nfaStateIndices.put(kind, RStringLiteral.nfaStateMap.get(kind).stateName) != null) {
+    for (int kind : lexerContext.nfaStateMap.keySet()) {
+      if (lexerContext.nfaStateMap.get(kind) != null) {
+        if (nfaStateIndices.put(kind, lexerContext.nfaStateMap.get(kind).stateName) != null) {
           System.err.println("ERROR: Multiple start states for kind: " + kind);
         }
       } else {
         nfaStateIndices.put(kind, -1);
       }
     }
-    tokenizerData.setLiteralSequence(RStringLiteral.literalsByLength);
-    tokenizerData.setLiteralKinds(RStringLiteral.literalKinds);
-    tokenizerData.setIgnoreCaserKinds(RStringLiteral.kindToIgnoreCase);
+    tokenizerData.setLiteralSequence(lexerContext.literalsByLength);
+    tokenizerData.setLiteralKinds(lexerContext.literalKinds);
+    tokenizerData.setIgnoreCaserKinds(lexerContext.kindToIgnoreCase);
     tokenizerData.setKindToNfaStartState(nfaStateIndices);
   }
 }

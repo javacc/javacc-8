@@ -149,7 +149,7 @@ public class TokenizerData {
   }
 
   void updateMatchInfo(Map<Integer, String> actions, int[] newLexStateIndices, long[] toSkip, long[] toSpecial,
-      long[] toMore, long[] toToken) {
+      long[] toMore, long[] toToken, String[] allImages) {
     for (int i = 0; i < newLexStateIndices.length; i++) {
       int vectorIndex = i >> 6;
     long bits = (1L << (i & 077));
@@ -163,7 +163,7 @@ public class TokenizerData {
     } else if ((toToken.length > vectorIndex) && ((toToken[vectorIndex] & bits) != 0L)) {
       matchType = MatchType.TOKEN;
     }
-    MatchInfo matchInfo = new MatchInfo(Options.getIgnoreCase() ? null : RStringLiteral.allImages[i], i, matchType,
+    MatchInfo matchInfo = new MatchInfo(Options.getIgnoreCase() ? null : allImages[i], i, matchType,
         newLexStateIndices[i], actions.get(i));
     allMatches.put(i, matchInfo);
     }
