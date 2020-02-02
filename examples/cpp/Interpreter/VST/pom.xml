@@ -38,6 +38,12 @@
 						<library>
 							<type>executable</type>
 							<run>true</run>
+							<args>
+								<arg>spl/fact/fact.spl</arg>
+								<arg>spl/fact/fact.in</arg>
+								<arg>spl/fact/fact.out</arg>
+								<arg>spl/fact/fact.err</arg>
+							</args>
 						</library>
 					</libraries>
 					<cpp>

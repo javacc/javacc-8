@@ -16,7 +16,7 @@ using namespace std;
 #include "Integer.h"
 #include "SPLParserConstants.h"
 
-Interpret::Interpret() {
+Interpret::Interpret(istream& in, ostream& out, ostream& err) : in(in), out(out), err(err) {
 }
 
 Interpret::~Interpret() {
@@ -274,18 +274,18 @@ void Interpret::visit(const ASTFalseNode *node, void* data) {
 }
 void Interpret::visit(const ASTReadStatement *node, void* data) {
 	Integer* integer = new Integer();
-	cin >> *integer;
+	in >> *integer;
 	unique_ptr<Node> value(symtab[node->name]);
 	symtab[node->name] = integer;
 }
 void Interpret::visit(const ASTWriteStatement *node, void* data) {
 	const Node* value = symtab[node->name];
 	if (value == nullptr) {
-		cerr << "value is null" << endl;
+		err << "value is null" << endl;
 		return;
 	}
 	if (typeid(*value) == typeid(Integer)) {
 		const Integer& integer = *static_cast<const Integer*>(value);
-		cout << integer << endl;
+		out << integer << endl;
 	}
 }

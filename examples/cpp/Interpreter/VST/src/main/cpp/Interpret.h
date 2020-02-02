@@ -21,7 +21,7 @@ using std::map;
 
 class Interpret : public SPLParserVisitor {
 public:
-	Interpret();
+	Interpret(istream& in, ostream& out, ostream& err);
 	~Interpret();
 
 	void visit(const SimpleNode *node, void* data);
@@ -54,6 +54,10 @@ public:
 	void visit(const ASTWriteStatement *node, void* data);
 
 private:
+	istream&			in;
+	ostream&			out;
+	ostream&			err;
+
 	map<string, Node*>	symtab;
 	stack<Node*>		nodestack;
 };

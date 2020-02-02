@@ -40,8 +40,8 @@
 						</goals>
 						<configuration>
 							<codeGenerator>C++</codeGenerator>
-							<outputDirectory>target/generated-sources/cpp</outputDirectory>
-							<nodeDirectory>src/main/cpp</nodeDirectory>
+							<outputDirectory>${project.basedir}/target/generated-sources/cpp</outputDirectory>
+							<nodeDirectory>${project.basedir}/src/main/cpp</nodeDirectory>
 						</configuration>
 					</execution>
 				</executions>
@@ -60,13 +60,13 @@
 					<cpp>
 						<includePaths>
 							<includePath>
-								<path>src/main/cpp</path>
+								<path>${project.basedir}/src/main/cpp</path>
 							</includePath>
 							<includePath>
-								<path>target/generated-sources/cpp</path>
+								<path>${project.basedir}/target/generated-sources/cpp</path>
 							</includePath>
 							<includePath>
-								<path>target/generated-sources/jjtree</path>
+								<path>${project.basedir}/target/generated-sources/jjtree</path>
 							</includePath>
 						</includePaths>
 					</cpp>
