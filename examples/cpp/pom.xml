@@ -15,9 +15,11 @@
 		<module>CORBA-IDL</module> name clash withh c++ reserved keyword
 -->
 		<module>Interpreter</module>
-		<module>JavaCCGrammar</module>
+<!-- 
+ 		<module>JavaCCGrammar</module>
 		<module>MailProcessing</module>
-		<module>JJTreeExamples</module>
+ -->
+ 		<module>JJTreeExamples</module>
  	</modules>
 	<profiles>
 		<profile>

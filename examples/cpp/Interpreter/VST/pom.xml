@@ -23,8 +23,8 @@
 							<goal>jjtree-javacc</goal>
 						</goals>
 						<configuration>
-							<outputDirectory>target/generated-sources/cpp</outputDirectory>
-							<nodeDirectory>src/main/cpp</nodeDirectory>
+							<outputDirectory>${project.basedir}/target/generated-sources/cpp</outputDirectory>
+							<nodeDirectory>${project.basedir}/src/main/cpp</nodeDirectory>
 						</configuration>
 					</execution>
 				</executions>
@@ -38,24 +38,26 @@
 						<library>
 							<type>executable</type>
 							<run>true</run>
+<!-- 
 							<args>
-								<arg>spl/fact/fact.spl</arg>
-								<arg>spl/fact/fact.in</arg>
-								<arg>spl/fact/fact.out</arg>
-								<arg>spl/fact/fact.err</arg>
+								<arg>${project.basedir}/spl/fact/fact.spl</arg>
+								<arg>${project.basedir}/spl/fact/fact.in</arg>
+								<arg>${project.basedir}/spl/fact/fact.out</arg>
+								<arg>${project.basedir}/spl/fact/fact.err</arg>
 							</args>
-						</library>
+ -->
+ 						</library>
 					</libraries>
 					<cpp>
 						<includePaths>
 							<includePath>
-								<path>src/main/cpp</path>
+								<path>${project.basedir}/src/main/cpp</path>
 							</includePath>
 							<includePath>
-								<path>target/generated-sources/cpp</path>
+								<path>${project.basedir}/target/generated-sources/cpp</path>
 							</includePath>
 							<includePath>
-								<path>target/generated-sources/jjtree</path>
+								<path>${project.basedir}/target/generated-sources/jjtree</path>
 							</includePath>
 						</includePaths>
 					</cpp>

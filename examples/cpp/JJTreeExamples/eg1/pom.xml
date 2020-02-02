@@ -41,7 +41,7 @@
 						</goals>
 						<configuration>
 							<codeGenerator>C++</codeGenerator>
-							<outputDirectory>target/generated-sources/cpp</outputDirectory>
+							<outputDirectory>${project.basedir}/target/generated-sources/cpp</outputDirectory>
 						</configuration>
 					</execution>
 				</executions>
@@ -60,13 +60,13 @@
 					<cpp>
 						<includePaths>
 							<includePath>
-								<path>src/main/cpp</path>
+								<path>${project.basedir}/src/main/cpp</path>
 							</includePath>
 							<includePath>
-								<path>target/generated-sources/cpp</path>
+								<path>${project.basedir}/target/generated-sources/cpp</path>
 							</includePath>
 							<includePath>
-								<path>target/generated-sources/jjtree</path>
+								<path>${project.basedir}/target/generated-sources/jjtree</path>
 							</includePath>
 						</includePaths>
 					</cpp>
@@ -83,6 +83,7 @@
 							<goal>run</goal>
 						</goals>
 						<configuration>
+							<skip>true</skip>
 							<target unless="maven.test.skip">
 								<available file="${project.basedir}/eg1.out" property="isActualAvailable" />
 								<fail unless="isActualAvailable" message="${project.basedir}/eg1.out does not exist!" />
