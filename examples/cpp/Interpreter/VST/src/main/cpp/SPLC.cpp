@@ -16,7 +16,19 @@ using namespace std;
 
 JJString ReadFileFully() {
 	JJString code;
-	code = "int n;\nn = 3 + 4 * 5 + 6;\nwrite n;\n";
+	//code = "int foo;\nfoo = 3 + 4 * 5 + 6;\nwrite foo;\n";
+	code =
+		"int n;"
+		"int fact;"
+		"read n;"
+		"fact = 1;"
+		"while (n > 1)"
+		"{"
+		"		fact = fact * n;"
+		"		n = n - 1;"
+		"}"
+		"write fact;";
+
 	return code;
 }
 static void usage(int argc, char**argv) {

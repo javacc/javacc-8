@@ -6,6 +6,7 @@
  */
 
 #include <iostream>
+#include <sstream>
 #include <memory>
 #include <stdexcept>
 using namespace std;
@@ -274,6 +275,7 @@ void Interpret::visit(const ASTFalseNode *node, void* data) {
 }
 void Interpret::visit(const ASTReadStatement *node, void* data) {
 	Integer* integer = new Integer();
+//	istringstream iss(in);
 	in >> *integer;
 	unique_ptr<Node> value(symtab[node->name]);
 	symtab[node->name] = integer;
