@@ -28,6 +28,8 @@
 
 package org.javacc.parser;
 
+import org.javacc.parser.LexGen.LexData;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,12 +47,12 @@ public class RSequence extends RegularExpression {
   public List<RegularExpression> units = new ArrayList<>();
 
   @Override
-  public Nfa GenerateNfa(boolean ignoreCase) {
+  public Nfa GenerateNfa(boolean ignoreCase, LexData lexData) {
     if (units.size() == 1) {
-      return units.get(0).GenerateNfa(ignoreCase);
+      return units.get(0).GenerateNfa(ignoreCase, lexData);
     }
 
-    Nfa retVal = new Nfa();
+    Nfa retVal = new Nfa(lexData);
     NfaState startState = retVal.start;
     NfaState finalState = retVal.end;
     Nfa temp1;
@@ -59,13 +61,13 @@ public class RSequence extends RegularExpression {
     RegularExpression curRE;
 
     curRE = units.get(0);
-    temp1 = curRE.GenerateNfa(ignoreCase);
+    temp1 = curRE.GenerateNfa(ignoreCase, lexData);
     startState.AddMove(temp1.start);
 
     for (int i = 1; i < units.size(); i++) {
       curRE = units.get(i);
 
-      temp2 = curRE.GenerateNfa(ignoreCase);
+      temp2 = curRE.GenerateNfa(ignoreCase, lexData);
       temp1.end.AddMove(temp2.start);
       temp1 = temp2;
     }

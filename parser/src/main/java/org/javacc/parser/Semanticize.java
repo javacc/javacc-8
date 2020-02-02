@@ -1,17 +1,16 @@
-/* Copyright (c) 2006, Sun Microsystems, Inc.
- * All rights reserved.
+/*
+ * Copyright (c) 2006, Sun Microsystems, Inc. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
  *
- *     * Redistributions of source code must retain the above copyright notice,
- *       this list of conditions and the following disclaimer.
- *     * Redistributions in binary form must reproduce the above copyright
- *       notice, this list of conditions and the following disclaimer in the
- *       documentation and/or other materials provided with the distribution.
- *     * Neither the name of the Sun Microsystems, Inc. nor the names of its
- *       contributors may be used to endorse or promote products derived from
- *       this software without specific prior written permission.
+ * * Redistributions of source code must retain the above copyright notice, this
+ * list of conditions and the following disclaimer. * Redistributions in binary
+ * form must reproduce the above copyright notice, this list of conditions and
+ * the following disclaimer in the documentation and/or other materials provided
+ * with the distribution. * Neither the name of the Sun Microsystems, Inc. nor
+ * the names of its contributors may be used to endorse or promote products
+ * derived from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -36,30 +35,46 @@ import java.util.List;
 
 public class Semanticize extends JavaCCGlobals {
 
-  private static List<List<RegExprSpec>> removeList = new ArrayList<>();
-  private static List<RegExprSpec>       itemList   = new ArrayList<>();
+  private List<List<RegExprSpec>> removeList = new ArrayList<>();
+  private List<RegExprSpec>       itemList   = new ArrayList<>();
 
-  private static void prepareToRemove(List<RegExprSpec> vec, RegExprSpec item) {
-    Semanticize.removeList.add(vec);
-    Semanticize.itemList.add(item);
+
+  private long nextGenerationIndex;
+
+  private Semanticize() {
+    removeList = new ArrayList<>();
+    itemList = new ArrayList<>();
+    other = null;
+    loopString = null;
+    nextGenerationIndex = 1;
   }
 
-  private static void removePreparedItems() {
-    for (int i = 0; i < Semanticize.removeList.size(); i++) {
-      List<RegExprSpec> list = Semanticize.removeList.get(i);
-      list.remove(Semanticize.itemList.get(i));
+  private void prepareToRemove(List<RegExprSpec> vec, RegExprSpec item) {
+    removeList.add(vec);
+    itemList.add(item);
+  }
+
+  private void removePreparedItems() {
+    for (int i = 0; i < removeList.size(); i++) {
+      List<RegExprSpec> list = removeList.get(i);
+      list.remove(itemList.get(i));
     }
-    Semanticize.removeList.clear();
-    Semanticize.itemList.clear();
+    removeList.clear();
+    itemList.clear();
   }
 
-  static public void start() throws MetaParseException {
+  final long nextGenerationIndex() {
+    return nextGenerationIndex++;
+  }
+
+  public static void start() throws MetaParseException {
+    Semanticize semanticize = new Semanticize();
 
     if (JavaCCErrors.get_error_count() != 0) {
       throw new MetaParseException();
     }
 
-    if (Options.getLookahead() > 1 && !Options.getForceLaCheck() && Options.getSanityCheck()) {
+    if ((Options.getLookahead() > 1) && !Options.getForceLaCheck() && Options.getSanityCheck()) {
       JavaCCErrors.warning("Lookahead adequacy checking not being performed since option LOOKAHEAD "
           + "is more than 1.  Set option FORCE_LA_CHECK to true to force checking.");
     }
@@ -121,19 +136,19 @@ public class Semanticize extends JavaCCGlobals {
             JavaCCErrors.semantic_error(res.rexp,
                 "EOF action/state change can be specified only in a " + "TOKEN specification.");
           }
-          if (JavaCCGlobals.nextStateForEof != null || JavaCCGlobals.actForEof != null) {
+          if ((JavaCCGlobals.nextStateForEof != null) || (JavaCCGlobals.actForEof != null)) {
             JavaCCErrors.semantic_error(res.rexp, "Duplicate action/state change specification for <EOF>.");
           }
           JavaCCGlobals.actForEof = res.act;
           JavaCCGlobals.nextStateForEof = res.nextState;
-          Semanticize.prepareToRemove(respecs, res);
+          semanticize.prepareToRemove(respecs, res);
         } else if (tp.isExplicit && Options.getUserTokenManager()) {
           JavaCCErrors.warning(res.rexp,
               "Ignoring regular expression specification since " + "option USER_TOKEN_MANAGER has been set to true.");
-        } else if (tp.isExplicit && !Options.getUserTokenManager() && res.rexp instanceof RJustName) {
+        } else if (tp.isExplicit && !Options.getUserTokenManager() && (res.rexp instanceof RJustName)) {
           JavaCCErrors.warning(res.rexp, "Ignoring free-standing regular expression reference.  "
               + "If you really want this, you must give it a different label as <NEWLABEL:<" + res.rexp.label + ">>.");
-          Semanticize.prepareToRemove(respecs, res);
+          semanticize.prepareToRemove(respecs, res);
         } else if (!tp.isExplicit && res.rexp.private_rexp) {
           JavaCCErrors.semantic_error(res.rexp,
               "Private (#) regular expression cannot be defined within " + "grammar productions.");
@@ -141,7 +156,7 @@ public class Semanticize extends JavaCCGlobals {
       }
     }
 
-    Semanticize.removePreparedItems();
+    semanticize.removePreparedItems();
 
     /*
      * The following loop inserts all names of regular expressions into
@@ -214,12 +229,12 @@ public class Semanticize extends JavaCCGlobals {
               table2 = new Hashtable<>();
               table2.put(sl.image, sl);
               table[i].put(sl.image.toUpperCase(), table2);
-            } else if (Semanticize.hasIgnoreCase(table2, sl.image)) { // hasIgnoreCase
-                                                                      // sets
-                                                                      // "other"
-                                                                      // if it
-                                                                      // is
-                                                                      // found.
+            } else if (hasIgnoreCase(table2, sl.image)) { // hasIgnoreCase
+              // sets
+              // "other"
+              // if it
+              // is
+              // found.
               // Since IGNORE_CASE version exists, current one is useless and
               // bad.
               if (!sl.tpContext.isExplicit) {
@@ -227,7 +242,7 @@ public class Semanticize extends JavaCCGlobals {
                 JavaCCErrors.semantic_error(sl,
                     "String \"" + sl.image + "\" can never be matched "
                         + "due to presence of more general (IGNORE_CASE) regular expression " + "at line "
-                        + Semanticize.other.getLine() + ", column " + Semanticize.other.getColumn() + ".");
+                        + other.getLine() + ", column " + other.getColumn() + ".");
               } else {
                 // give the standard error message.
                 JavaCCErrors.semantic_error(sl,
@@ -294,7 +309,7 @@ public class Semanticize extends JavaCCGlobals {
                 // BNF. Hence, it belongs to only one lexical state - namely
                 // "DEFAULT".
                 sl.ordinal = re.ordinal;
-                Semanticize.prepareToRemove(respecs, res);
+                semanticize.prepareToRemove(respecs, res);
               }
             }
           }
@@ -310,7 +325,7 @@ public class Semanticize extends JavaCCGlobals {
       }
     }
 
-    Semanticize.removePreparedItems();
+    semanticize.removePreparedItems();
 
     /*
      * The following code performs a tree walk on all regular expressions
@@ -332,13 +347,13 @@ public class Semanticize extends JavaCCGlobals {
           frjn.root = res.rexp;
           ExpansionTreeWalker.preOrderWalk(res.rexp, frjn);
           if (res.rexp instanceof RJustName) {
-            Semanticize.prepareToRemove(respecs, res);
+            semanticize.prepareToRemove(respecs, res);
           }
         }
       }
     }
 
-    Semanticize.removePreparedItems();
+    semanticize.removePreparedItems();
 
     /*
      * The following code is executed only if Options.getUserTokenManager() is
@@ -368,14 +383,14 @@ public class Semanticize extends JavaCCGlobals {
               JavaCCGlobals.names_of_tokens.put(Integer.valueOf(jn.ordinal), jn.label);
             } else {
               jn.ordinal = rexp.ordinal;
-              Semanticize.prepareToRemove(respecs, res);
+              semanticize.prepareToRemove(respecs, res);
             }
           }
         }
       }
     }
 
-    Semanticize.removePreparedItems();
+    semanticize.removePreparedItems();
 
     /*
      * The following code is executed only if Options.getUserTokenManager() is
@@ -413,7 +428,7 @@ public class Semanticize extends JavaCCGlobals {
       emptyUpdate = false;
       for (Iterator<NormalProduction> it = JavaCCGlobals.bnfproductions.iterator(); it.hasNext();) {
         NormalProduction prod = it.next();
-        if (Semanticize.emptyExpansionExists(prod.getExpansion())) {
+        if (emptyExpansionExists(prod.getExpansion())) {
           if (!prod.isEmptyPossible()) {
             emptyUpdate = prod.setEmptyPossible(true);
           }
@@ -421,7 +436,7 @@ public class Semanticize extends JavaCCGlobals {
       }
     }
 
-    if (Options.getSanityCheck() && JavaCCErrors.get_error_count() == 0) {
+    if (Options.getSanityCheck() && (JavaCCErrors.get_error_count() == 0)) {
 
       // The following code checks that all ZeroOrMore, ZeroOrOne, and OneOrMore
       // nodes
@@ -437,7 +452,7 @@ public class Semanticize extends JavaCCGlobals {
       // done, a left-recursion check can be performed.
       for (Iterator<NormalProduction> it = JavaCCGlobals.bnfproductions.iterator(); it.hasNext();) {
         NormalProduction prod = it.next();
-        Semanticize.addLeftMost(prod, prod.getExpansion());
+        addLeftMost(prod, prod.getExpansion());
       }
 
       // Now the following loop calls a recursive walk routine that searches for
@@ -448,7 +463,7 @@ public class Semanticize extends JavaCCGlobals {
       for (Iterator<NormalProduction> it = JavaCCGlobals.bnfproductions.iterator(); it.hasNext();) {
         NormalProduction prod = it.next();
         if (prod.getWalkStatus() == 0) {
-          Semanticize.prodWalk(prod);
+          prodWalk(prod);
         }
       }
 
@@ -467,10 +482,10 @@ public class Semanticize extends JavaCCGlobals {
             RegularExpression rexp = res.rexp;
             if (rexp.walkStatus == 0) {
               rexp.walkStatus = -1;
-              if (Semanticize.rexpWalk(rexp)) {
-                Semanticize.loopString = "..." + rexp.label + "... --> " + Semanticize.loopString;
+              if (rexpWalk(rexp)) {
+                loopString = "..." + rexp.label + "... --> " + loopString;
                 JavaCCErrors.semantic_error(rexp,
-                    "Loop in regular expression detected: \"" + Semanticize.loopString + "\"");
+                    "Loop in regular expression detected: \"" + loopString + "\"");
               }
               rexp.walkStatus = 1;
             }
@@ -483,7 +498,7 @@ public class Semanticize extends JavaCCGlobals {
        */
       if (JavaCCErrors.get_error_count() == 0) {
         for (Iterator<NormalProduction> it = JavaCCGlobals.bnfproductions.iterator(); it.hasNext();) {
-          ExpansionTreeWalker.preOrderWalk(it.next().getExpansion(), new LookaheadChecker());
+          ExpansionTreeWalker.preOrderWalk(it.next().getExpansion(), new LookaheadChecker(semanticize));
         }
       }
 
@@ -503,13 +518,13 @@ public class Semanticize extends JavaCCGlobals {
   private static boolean hasIgnoreCase(Hashtable<String, RegularExpression> table, String str) {
     RegularExpression rexp;
     rexp = table.get(str);
-    if (rexp != null && !rexp.tpContext.ignoreCase) {
+    if ((rexp != null) && !rexp.tpContext.ignoreCase) {
       return false;
     }
     for (Enumeration<RegularExpression> enumeration = table.elements(); enumeration.hasMoreElements();) {
       rexp = enumeration.nextElement();
       if (rexp.tpContext.ignoreCase) {
-        Semanticize.other = rexp;
+        other = rexp;
         return true;
       }
     }
@@ -526,27 +541,27 @@ public class Semanticize extends JavaCCGlobals {
     } else if (exp instanceof RegularExpression) {
       return false;
     } else if (exp instanceof OneOrMore) {
-      return Semanticize.emptyExpansionExists(((OneOrMore) exp).getExpansion());
-    } else if (exp instanceof ZeroOrMore || exp instanceof ZeroOrOne) {
+      return emptyExpansionExists(((OneOrMore) exp).getExpansion());
+    } else if ((exp instanceof ZeroOrMore) || (exp instanceof ZeroOrOne)) {
       return true;
     } else if (exp instanceof Lookahead) {
       return true;
     } else if (exp instanceof Choice) {
       for (Iterator<Expansion> it = ((Choice) exp).getChoices().iterator(); it.hasNext();) {
-        if (Semanticize.emptyExpansionExists(it.next())) {
+        if (emptyExpansionExists(it.next())) {
           return true;
         }
       }
       return false;
     } else if (exp instanceof Sequence) {
       for (Iterator<Expansion> it = ((Sequence) exp).units.iterator(); it.hasNext();) {
-        if (!Semanticize.emptyExpansionExists(it.next())) {
+        if (!emptyExpansionExists(it.next())) {
           return false;
         }
       }
       return true;
     } else if (exp instanceof TryBlock) {
-      return Semanticize.emptyExpansionExists(((TryBlock) exp).exp);
+      return emptyExpansionExists(((TryBlock) exp).exp);
     } else {
       return false; // This should be dead code.
     }
@@ -567,25 +582,25 @@ public class Semanticize extends JavaCCGlobals {
       }
       prod.getLeftExpansions()[prod.leIndex++] = ((NonTerminal) exp).getProd();
     } else if (exp instanceof OneOrMore) {
-      Semanticize.addLeftMost(prod, ((OneOrMore) exp).getExpansion());
+      addLeftMost(prod, ((OneOrMore) exp).getExpansion());
     } else if (exp instanceof ZeroOrMore) {
-      Semanticize.addLeftMost(prod, ((ZeroOrMore) exp).getExpansion());
+      addLeftMost(prod, ((ZeroOrMore) exp).getExpansion());
     } else if (exp instanceof ZeroOrOne) {
-      Semanticize.addLeftMost(prod, ((ZeroOrOne) exp).getExpansion());
+      addLeftMost(prod, ((ZeroOrOne) exp).getExpansion());
     } else if (exp instanceof Choice) {
       for (Iterator<Expansion> it = ((Choice) exp).getChoices().iterator(); it.hasNext();) {
-        Semanticize.addLeftMost(prod, it.next());
+        addLeftMost(prod, it.next());
       }
     } else if (exp instanceof Sequence) {
       for (Iterator<Expansion> it = ((Sequence) exp).units.iterator(); it.hasNext();) {
         Expansion e = it.next();
-        Semanticize.addLeftMost(prod, e);
-        if (!Semanticize.emptyExpansionExists(e)) {
+        addLeftMost(prod, e);
+        if (!emptyExpansionExists(e)) {
           break;
         }
       }
     } else if (exp instanceof TryBlock) {
-      Semanticize.addLeftMost(prod, ((TryBlock) exp).exp);
+      addLeftMost(prod, ((TryBlock) exp).exp);
     }
   }
 
@@ -599,21 +614,21 @@ public class Semanticize extends JavaCCGlobals {
     for (int i = 0; i < prod.leIndex; i++) {
       if (prod.getLeftExpansions()[i].getWalkStatus() == -1) {
         prod.getLeftExpansions()[i].setWalkStatus(-2);
-        Semanticize.loopString = prod.getLhs() + "... --> " + prod.getLeftExpansions()[i].getLhs() + "...";
+        loopString = prod.getLhs() + "... --> " + prod.getLeftExpansions()[i].getLhs() + "...";
         if (prod.getWalkStatus() == -2) {
           prod.setWalkStatus(1);
-          JavaCCErrors.semantic_error(prod, "Left recursion detected: \"" + Semanticize.loopString + "\"");
+          JavaCCErrors.semantic_error(prod, "Left recursion detected: \"" + loopString + "\"");
           return false;
         } else {
           prod.setWalkStatus(1);
           return true;
         }
       } else if (prod.getLeftExpansions()[i].getWalkStatus() == 0) {
-        if (Semanticize.prodWalk(prod.getLeftExpansions()[i])) {
-          Semanticize.loopString = prod.getLhs() + "... --> " + Semanticize.loopString;
+        if (prodWalk(prod.getLeftExpansions()[i])) {
+          loopString = prod.getLhs() + "... --> " + loopString;
           if (prod.getWalkStatus() == -2) {
             prod.setWalkStatus(1);
-            JavaCCErrors.semantic_error(prod, "Left recursion detected: \"" + Semanticize.loopString + "\"");
+            JavaCCErrors.semantic_error(prod, "Left recursion detected: \"" + loopString + "\"");
             return false;
           } else {
             prod.setWalkStatus(1);
@@ -633,19 +648,19 @@ public class Semanticize extends JavaCCGlobals {
       RJustName jn = (RJustName) rexp;
       if (jn.regexpr.walkStatus == -1) {
         jn.regexpr.walkStatus = -2;
-        Semanticize.loopString = "..." + jn.regexpr.label + "...";
+        loopString = "..." + jn.regexpr.label + "...";
         // Note: Only the regexpr's of RJustName nodes and the top leve
         // regexpr's can have labels. Hence it is only in these cases that
         // the labels are checked for to be added to the loopString.
         return true;
       } else if (jn.regexpr.walkStatus == 0) {
         jn.regexpr.walkStatus = -1;
-        if (Semanticize.rexpWalk(jn.regexpr)) {
-          Semanticize.loopString = "..." + jn.regexpr.label + "... --> " + Semanticize.loopString;
+        if (rexpWalk(jn.regexpr)) {
+          loopString = "..." + jn.regexpr.label + "... --> " + loopString;
           if (jn.regexpr.walkStatus == -2) {
             jn.regexpr.walkStatus = 1;
             JavaCCErrors.semantic_error(jn.regexpr,
-                "Loop in regular expression detected: \"" + Semanticize.loopString + "\"");
+                "Loop in regular expression detected: \"" + loopString + "\"");
             return false;
           } else {
             jn.regexpr.walkStatus = 1;
@@ -658,26 +673,26 @@ public class Semanticize extends JavaCCGlobals {
       }
     } else if (rexp instanceof RChoice) {
       for (Iterator<RegularExpression> it = ((RChoice) rexp).getChoices().iterator(); it.hasNext();) {
-        if (Semanticize.rexpWalk(it.next())) {
+        if (rexpWalk(it.next())) {
           return true;
         }
       }
       return false;
     } else if (rexp instanceof RSequence) {
       for (Iterator<RegularExpression> it = ((RSequence) rexp).units.iterator(); it.hasNext();) {
-        if (Semanticize.rexpWalk(it.next())) {
+        if (rexpWalk(it.next())) {
           return true;
         }
       }
       return false;
     } else if (rexp instanceof ROneOrMore) {
-      return Semanticize.rexpWalk(((ROneOrMore) rexp).regexpr);
+      return rexpWalk(((ROneOrMore) rexp).regexpr);
     } else if (rexp instanceof RZeroOrMore) {
-      return Semanticize.rexpWalk(((RZeroOrMore) rexp).regexpr);
+      return rexpWalk(((RZeroOrMore) rexp).regexpr);
     } else if (rexp instanceof RZeroOrOne) {
-      return Semanticize.rexpWalk(((RZeroOrOne) rexp).regexpr);
+      return rexpWalk(((RZeroOrOne) rexp).regexpr);
     } else if (rexp instanceof RRepetitionRange) {
-      return Semanticize.rexpWalk(((RRepetitionRange) rexp).regexpr);
+      return rexpWalk(((RRepetitionRange) rexp).regexpr);
     }
     return false;
   }
@@ -702,10 +717,10 @@ public class Semanticize extends JavaCCGlobals {
         RegularExpression rexp = JavaCCGlobals.named_tokens_table.get(jn.label);
         if (rexp == null) {
           JavaCCErrors.semantic_error(e, "Undefined lexical token name \"" + jn.label + "\".");
-        } else if (jn == root && !jn.tpContext.isExplicit && rexp.private_rexp) {
+        } else if ((jn == root) && !jn.tpContext.isExplicit && rexp.private_rexp) {
           JavaCCErrors.semantic_error(e,
               "Token name \"" + jn.label + "\" refers to a private " + "(with a #) regular expression.");
-        } else if (jn == root && !jn.tpContext.isExplicit && rexp.tpContext.kind != TokenProduction.TOKEN) {
+        } else if ((jn == root) && !jn.tpContext.isExplicit && (rexp.tpContext.kind != TokenProduction.TOKEN)) {
           JavaCCErrors.semantic_error(e, "Token name \"" + jn.label + "\" refers to a non-token "
               + "(SKIP, MORE, IGNORE_IN_BNF) regular expression.");
         } else {
@@ -731,8 +746,8 @@ public class Semanticize extends JavaCCGlobals {
     @Override
     public void action(Expansion e) {
       if (e instanceof Sequence) {
-        if (e.parent instanceof Choice || e.parent instanceof ZeroOrMore || e.parent instanceof OneOrMore
-            || e.parent instanceof ZeroOrOne) {
+        if ((e.parent instanceof Choice) || (e.parent instanceof ZeroOrMore) || (e.parent instanceof OneOrMore)
+            || (e.parent instanceof ZeroOrOne)) {
           return;
         }
         Sequence seq = (Sequence) e;
@@ -823,15 +838,15 @@ public class Semanticize extends JavaCCGlobals {
     @Override
     public void action(Expansion e) {
       if (e instanceof OneOrMore) {
-        if (Semanticize.emptyExpansionExists(((OneOrMore) e).getExpansion())) {
+        if (emptyExpansionExists(((OneOrMore) e).getExpansion())) {
           JavaCCErrors.semantic_error(e, "Expansion within \"(...)+\" can be matched by empty string.");
         }
       } else if (e instanceof ZeroOrMore) {
-        if (Semanticize.emptyExpansionExists(((ZeroOrMore) e).getExpansion())) {
+        if (emptyExpansionExists(((ZeroOrMore) e).getExpansion())) {
           JavaCCErrors.semantic_error(e, "Expansion within \"(...)*\" can be matched by empty string.");
         }
       } else if (e instanceof ZeroOrOne) {
-        if (Semanticize.emptyExpansionExists(((ZeroOrOne) e).getExpansion())) {
+        if (emptyExpansionExists(((ZeroOrOne) e).getExpansion())) {
           JavaCCErrors.semantic_error(e, "Expansion within \"(...)?\" can be matched by empty string.");
         }
       }
@@ -839,6 +854,12 @@ public class Semanticize extends JavaCCGlobals {
   }
 
   private static class LookaheadChecker implements TreeWalkerOp {
+
+    private final Semanticize semanticize;
+
+    private LookaheadChecker(Semanticize semanticize) {
+      this.semanticize = semanticize;
+    }
 
     @Override
     public boolean goDeeper(Expansion e) {
@@ -854,26 +875,26 @@ public class Semanticize extends JavaCCGlobals {
     @Override
     public void action(Expansion e) {
       if (e instanceof Choice) {
-        if (Options.getLookahead() == 1 || Options.getForceLaCheck()) {
+        if ((Options.getLookahead() == 1) || Options.getForceLaCheck()) {
           LookaheadCalc.choiceCalc((Choice) e);
         }
       } else if (e instanceof OneOrMore) {
         OneOrMore exp = (OneOrMore) e;
         if (Options.getForceLaCheck()
-            || LookaheadChecker.implicitLA(exp.getExpansion()) && Options.getLookahead() == 1) {
-          LookaheadCalc.ebnfCalc(exp, exp.getExpansion());
+            || (LookaheadChecker.implicitLA(exp.getExpansion()) && (Options.getLookahead() == 1))) {
+          LookaheadCalc.ebnfCalc(exp, exp.getExpansion(), semanticize);
         }
       } else if (e instanceof ZeroOrMore) {
         ZeroOrMore exp = (ZeroOrMore) e;
         if (Options.getForceLaCheck()
-            || LookaheadChecker.implicitLA(exp.getExpansion()) && Options.getLookahead() == 1) {
-          LookaheadCalc.ebnfCalc(exp, exp.getExpansion());
+            || (LookaheadChecker.implicitLA(exp.getExpansion()) && (Options.getLookahead() == 1))) {
+          LookaheadCalc.ebnfCalc(exp, exp.getExpansion(), semanticize);
         }
       } else if (e instanceof ZeroOrOne) {
         ZeroOrOne exp = (ZeroOrOne) e;
         if (Options.getForceLaCheck()
-            || LookaheadChecker.implicitLA(exp.getExpansion()) && Options.getLookahead() == 1) {
-          LookaheadCalc.ebnfCalc(exp, exp.getExpansion());
+            || (LookaheadChecker.implicitLA(exp.getExpansion()) && (Options.getLookahead() == 1))) {
+          LookaheadCalc.ebnfCalc(exp, exp.getExpansion(), semanticize);
         }
       }
     }
@@ -890,13 +911,5 @@ public class Semanticize extends JavaCCGlobals {
       Lookahead la = (Lookahead) obj;
       return !la.isExplicit();
     }
-
-  }
-
-  static void reInit() {
-    Semanticize.removeList = new ArrayList<>();
-    Semanticize.itemList = new ArrayList<>();
-    Semanticize.other = null;
-    Semanticize.loopString = null;
   }
 }

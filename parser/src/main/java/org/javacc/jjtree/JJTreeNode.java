@@ -90,7 +90,7 @@ public class JJTreeNode extends SimpleNode {
 
     for (int i = 0; i < t.image.length(); ++i) {
       char ch = t.image.charAt(i);
-      if (ch != '\t' && ch != '\n' && ch != '\r' && ch != '\f') {
+      if ((ch != '\t') && (ch != '\n') && (ch != '\r') && (ch != '\f')) {
         sb.append(' ');
       } else {
         sb.append(ch);
@@ -120,10 +120,10 @@ public class JJTreeNode extends SimpleNode {
 
     /*
      * If we're within a node scope we modify the source in the following ways:
-     * 
+     *
      * 1) we rename all references to `jjtThis' to be references to the actual
      * node variable.
-     * 
+     *
      * 2) we replace all calls to `jjtree.currentNode()' with references to the
      * node variable.
      */

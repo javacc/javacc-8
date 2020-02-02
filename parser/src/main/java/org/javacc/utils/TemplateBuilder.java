@@ -113,7 +113,7 @@ class TemplateBuilder {
     int braceDepth = 1;
     int endPos = startPos + 2;
 
-    while (endPos < text.length() && braceDepth > 0) {
+    while ((endPos < text.length()) && (braceDepth > 0)) {
       if (text.charAt(endPos) == '{') {
         braceDepth++;
       } else if (text.charAt(endPos) == '}') {
@@ -135,13 +135,13 @@ class TemplateBuilder {
     for (int i = 0; i < variableExpression.length(); i++) {
       char ch = variableExpression.charAt(i);
 
-      if (ch == ':' && i < variableExpression.length() - 1 && variableExpression.charAt(i + 1) == '-') {
+      if ((ch == ':') && (i < (variableExpression.length() - 1)) && (variableExpression.charAt(i + 1) == '-')) {
         value = substituteWithDefault(variableExpression.substring(0, i), variableExpression.substring(i + 2));
         break;
       } else if (ch == '?') {
         value = substituteWithConditional(variableExpression.substring(0, i), variableExpression.substring(i + 1));
         break;
-      } else if (ch != '_' && !Character.isJavaIdentifierPart(ch)) {
+      } else if ((ch != '_') && !Character.isJavaIdentifierPart(ch)) {
         throw new IOException("Invalid variable in " + text);
       }
     }
@@ -181,7 +181,7 @@ class TemplateBuilder {
    */
   private String substituteWithDefault(String variableName, String defaultValue) throws IOException {
     Object obj = options.get(variableName.trim());
-    if (obj == null || obj.toString().length() == 0) {
+    if ((obj == null) || (obj.toString().length() == 0)) {
       return substitute(defaultValue);
     }
 
@@ -230,14 +230,14 @@ class TemplateBuilder {
       process(in, out, ignoring || foundTrueCondition || !condition);
       foundTrueCondition |= condition;
 
-      if (peekLine(in) == null || !peekLine(in).trim().startsWith("#elif")) {
+      if ((peekLine(in) == null) || !peekLine(in).trim().startsWith("#elif")) {
         break;
       }
 
       condition = evaluate(getLine(in).trim().substring(5).trim());
     }
 
-    if (peekLine(in) != null && peekLine(in).trim().startsWith("#else")) {
+    if ((peekLine(in) != null) && peekLine(in).trim().startsWith("#else")) {
       getLine(in); // Discard the #else line
       process(in, out, ignoring || foundTrueCondition);
     }

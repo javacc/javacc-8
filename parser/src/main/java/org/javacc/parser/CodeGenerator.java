@@ -11,7 +11,7 @@ public interface CodeGenerator {
   /**
    * Generate any other support files you need.
    */
-  boolean generateHelpers(CodeGeneratorSettings settings);
+  boolean generateHelpers(CodeGeneratorSettings settings, TokenizerData tokenizerData);
 
   /**
    * The Token class generator.

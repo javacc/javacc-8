@@ -83,7 +83,7 @@ public class BNFGenerator implements Generator {
 
   @Override
   public void text(String s) {
-    if (printing && !(s.length() == 1 && (s.charAt(0) == '\n' || s.charAt(0) == '\r'))) {
+    if (printing && !((s.length() == 1) && ((s.charAt(0) == '\n') || (s.charAt(0) == '\r')))) {
       print(s);
     }
   }

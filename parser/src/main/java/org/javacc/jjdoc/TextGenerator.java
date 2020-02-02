@@ -50,7 +50,7 @@ public class TextGenerator implements Generator {
 
   /**
    * {@inheritDoc}
-   * 
+   *
    * @see org.javacc.jjdoc.Generator#text(java.lang.String)
    */
   @Override
@@ -60,7 +60,7 @@ public class TextGenerator implements Generator {
 
   /**
    * {@inheritDoc}
-   * 
+   *
    * @see org.javacc.jjdoc.Generator#print(java.lang.String)
    */
   @Override
@@ -70,7 +70,7 @@ public class TextGenerator implements Generator {
 
   /**
    * {@inheritDoc}
-   * 
+   *
    * @see org.javacc.jjdoc.Generator#documentStart()
    */
   @Override
@@ -81,7 +81,7 @@ public class TextGenerator implements Generator {
 
   /**
    * {@inheritDoc}
-   * 
+   *
    * @see org.javacc.jjdoc.Generator#documentEnd()
    */
   @Override
@@ -92,7 +92,7 @@ public class TextGenerator implements Generator {
 
   /**
    * {@inheritDoc}
-   * 
+   *
    * @see org.javacc.jjdoc.Generator#specialTokens(java.lang.String)
    */
   @Override
@@ -103,7 +103,7 @@ public class TextGenerator implements Generator {
 
   /**
    * {@inheritDoc}
-   * 
+   *
    * @see org.javacc.jjdoc.Generator#nonterminalsStart()
    */
   @Override
@@ -113,7 +113,7 @@ public class TextGenerator implements Generator {
 
   /**
    * {@inheritDoc}
-   * 
+   *
    * @see org.javacc.jjdoc.Generator#nonterminalsEnd()
    */
   @Override
@@ -121,7 +121,7 @@ public class TextGenerator implements Generator {
 
   /**
    * {@inheritDoc}
-   * 
+   *
    * @see org.javacc.jjdoc.Generator#tokensStart()
    */
   @Override
@@ -138,7 +138,7 @@ public class TextGenerator implements Generator {
 
   /**
    * {@inheritDoc}
-   * 
+   *
    * @see org.javacc.jjdoc.Generator#tokensEnd()
    */
   @Override
@@ -146,7 +146,7 @@ public class TextGenerator implements Generator {
 
   /**
    * {@inheritDoc}
-   * 
+   *
    * @see org.javacc.jjdoc.Generator#javacode(org.javacc.parser.JavaCodeProduction)
    */
   @Override
@@ -158,7 +158,7 @@ public class TextGenerator implements Generator {
 
   /**
    * {@inheritDoc}
-   * 
+   *
    * @see org.javacc.jjdoc.Generator#cppcode(org.javacc.parser.CppCodeProduction)
    */
   @Override
@@ -170,7 +170,7 @@ public class TextGenerator implements Generator {
 
   /**
    * {@inheritDoc}
-   * 
+   *
    * @see org.javacc.jjdoc.Generator#productionStart(org.javacc.parser.NormalProduction)
    */
   @Override
@@ -180,7 +180,7 @@ public class TextGenerator implements Generator {
 
   /**
    * {@inheritDoc}
-   * 
+   *
    * @see org.javacc.jjdoc.Generator#productionEnd(org.javacc.parser.NormalProduction)
    */
   @Override
@@ -190,7 +190,7 @@ public class TextGenerator implements Generator {
 
   /**
    * {@inheritDoc}
-   * 
+   *
    * @see org.javacc.jjdoc.Generator#expansionStart(org.javacc.parser.Expansion,
    *      boolean)
    */
@@ -203,7 +203,7 @@ public class TextGenerator implements Generator {
 
   /**
    * {@inheritDoc}
-   * 
+   *
    * @see org.javacc.jjdoc.Generator#expansionEnd(org.javacc.parser.Expansion,
    *      boolean)
    */
@@ -212,7 +212,7 @@ public class TextGenerator implements Generator {
 
   /**
    * {@inheritDoc}
-   * 
+   *
    * @see org.javacc.jjdoc.Generator#nonTerminalStart(org.javacc.parser.NonTerminal)
    */
   @Override
@@ -220,7 +220,7 @@ public class TextGenerator implements Generator {
 
   /**
    * {@inheritDoc}
-   * 
+   *
    * @see org.javacc.jjdoc.Generator#nonTerminalEnd(org.javacc.parser.NonTerminal)
    */
   @Override
@@ -228,7 +228,7 @@ public class TextGenerator implements Generator {
 
   /**
    * {@inheritDoc}
-   * 
+   *
    * @see org.javacc.jjdoc.Generator#reStart(org.javacc.parser.RegularExpression)
    */
   @Override
@@ -236,7 +236,7 @@ public class TextGenerator implements Generator {
 
   /**
    * {@inheritDoc}
-   * 
+   *
    * @see org.javacc.jjdoc.Generator#reEnd(org.javacc.parser.RegularExpression)
    */
   @Override
@@ -289,7 +289,7 @@ public class TextGenerator implements Generator {
 
   /**
    * {@inheritDoc}
-   * 
+   *
    * @see org.javacc.jjdoc.Generator#debug(java.lang.String)
    */
   @Override
@@ -299,7 +299,7 @@ public class TextGenerator implements Generator {
 
   /**
    * {@inheritDoc}
-   * 
+   *
    * @see org.javacc.jjdoc.Generator#info(java.lang.String)
    */
   @Override
@@ -309,7 +309,7 @@ public class TextGenerator implements Generator {
 
   /**
    * {@inheritDoc}
-   * 
+   *
    * @see org.javacc.jjdoc.Generator#warn(java.lang.String)
    */
   @Override
@@ -319,7 +319,7 @@ public class TextGenerator implements Generator {
 
   /**
    * {@inheritDoc}
-   * 
+   *
    * @see org.javacc.jjdoc.Generator#error(java.lang.String)
    */
   @Override

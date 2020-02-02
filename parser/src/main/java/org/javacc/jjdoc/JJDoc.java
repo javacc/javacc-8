@@ -125,7 +125,7 @@ public class JJDoc extends JJDocGlobals {
         token += "<";
         for (int i = 0; i < tp.lexStates.length; ++i) {
           token += tp.lexStates[i];
-          if (i < tp.lexStates.length - 1) {
+          if (i < (tp.lexStates.length - 1)) {
             token += ",";
           }
         }
@@ -254,7 +254,7 @@ public class JJDoc extends JJDocGlobals {
     boolean firstUnit = true;
     for (Iterator<Expansion> it = s.units.iterator(); it.hasNext();) {
       Expansion e = it.next();
-      if (e instanceof Lookahead || e instanceof Action) {
+      if ((e instanceof Lookahead) || (e instanceof Action)) {
         continue;
       }
       if (!firstUnit) {

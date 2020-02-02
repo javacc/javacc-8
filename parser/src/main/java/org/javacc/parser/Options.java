@@ -245,7 +245,7 @@ public class Options {
    */
   public static boolean booleanValue(final String option) {
     Object o = Options.optionValues.get(option);
-    return o != null && ((Boolean) o).booleanValue();
+    return (o != null) && ((Boolean) o).booleanValue();
   }
 
   /**
@@ -298,7 +298,7 @@ public class Options {
       sb.append(key);
       sb.append('=');
       sb.append(Options.optionValues.get(key));
-      if (i != interestingOptions.length - 1) {
+      if (i != (interestingOptions.length - 1)) {
         sb.append(',');
       }
     }
@@ -314,7 +314,7 @@ public class Options {
    * @return True when the argument looks like an option flag.
    */
   public static boolean isOption(final String opt) {
-    return opt != null && opt.length() > 1 && opt.charAt(0) == '-';
+    return (opt != null) && (opt.length() > 1) && (opt.charAt(0) == '-');
   }
 
   /**
@@ -327,7 +327,7 @@ public class Options {
    * @return The upgraded value.
    */
   private static Object upgradeValue(final String name, Object value) {
-    if (name.equalsIgnoreCase("NODE_FACTORY") && value.getClass() == Boolean.class) {
+    if (name.equalsIgnoreCase("NODE_FACTORY") && (value.getClass() == Boolean.class)) {
       if (((Boolean) value).booleanValue()) {
         value = "*";
       } else {
@@ -358,8 +358,8 @@ public class Options {
       } else {
         object = value;
       }
-      boolean isValidInteger = object instanceof Integer && ((Integer) value).intValue() <= 0;
-      if (isIndirectProperty || existingValue.getClass() != object.getClass() || isValidInteger) {
+      boolean isValidInteger = (object instanceof Integer) && (((Integer) value).intValue() <= 0);
+      if (isIndirectProperty || (existingValue.getClass() != object.getClass()) || isValidInteger) {
         JavaCCErrors.warning(valueloc,
             "Bad option value \"" + value + "\" for \"" + name + "\".  Option setting will be ignored.");
         return;
@@ -443,7 +443,7 @@ public class Options {
       name = s.toUpperCase();
       if (Options.optionValues.containsKey(name)) {
         Val = Boolean.TRUE;
-      } else if (name.length() > 2 && name.charAt(0) == 'N' && name.charAt(1) == 'O') {
+      } else if ((name.length() > 2) && (name.charAt(0) == 'N') && (name.charAt(1) == 'O')) {
         Val = Boolean.FALSE;
         name = name.substring(2);
       } else {
@@ -466,9 +466,9 @@ public class Options {
           Val = Integer.valueOf(i);
         } catch (NumberFormatException e) {
           Val = s.substring(index + 1);
-          if (s.length() > index + 2) {
+          if (s.length() > (index + 2)) {
             // i.e., there is space for two '"'s in value
-            if (s.charAt(index + 1) == '"' && s.charAt(s.length() - 1) == '"') {
+            if ((s.charAt(index + 1) == '"') && (s.charAt(s.length() - 1) == '"')) {
               // remove the two '"'s.
               Val = s.substring(index + 2, s.length() - 1);
             }
@@ -505,7 +505,7 @@ public class Options {
       if (Options.cmdLineSetting.contains(Options.USEROPTION__DEBUG_PARSER)
           || Options.inputFileSetting.contains(Options.USEROPTION__DEBUG_PARSER)) {
         JavaCCErrors
-            .warning("True setting of option DEBUG_LOOKAHEAD overrides " + "false setting of option DEBUG_PARSER.");
+        .warning("True setting of option DEBUG_LOOKAHEAD overrides " + "false setting of option DEBUG_PARSER.");
       }
       Options.optionValues.put(Options.USEROPTION__DEBUG_PARSER, Boolean.TRUE);
     }
@@ -960,7 +960,7 @@ public class Options {
 
   /**
    * Gets all the user options (in order)
-   * 
+   *
    * @return
    */
   static Set<OptionInfo> getUserOptions() {

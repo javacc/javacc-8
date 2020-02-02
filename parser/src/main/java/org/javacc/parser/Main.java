@@ -44,8 +44,6 @@ public class Main {
 
   protected Main() {}
 
-  static LexGen lg;
-
   private static void help_message() {
     System.out.println("Usage:");
     System.out.println("    javacc option-settings inputfile");
@@ -182,7 +180,7 @@ public class Main {
       System.out.println("Last argument \"" + args[args.length - 1] + "\" is not a filename.");
       return 1;
     }
-    for (int arg = 0; arg < args.length - 1; arg++) {
+    for (int arg = 0; arg < (args.length - 1); arg++) {
       if (!Options.isOption(args[arg])) {
         System.out.println("Argument \"" + args[arg] + "\" must be an option setting.");
         return 1;
@@ -219,8 +217,6 @@ public class Main {
       JavaCCGlobals.toolNames = JavaCCGlobals.getToolNames(args[args.length - 1]);
       parser.javacc_input();
 
-      Main.lg = new LexGen();
-
       JavaCCGlobals.createOutputDir(Options.getOutputDirectory());
 
       if (Options.getUnicodeInput()) {
@@ -236,7 +232,7 @@ public class Main {
       CodeGenerator codeGenerator = JavaCCGlobals.getCodeGenerator();
       if (codeGenerator != null) {
         ParserCodeGenerator parserCodeGenerator = codeGenerator.getParserCodeGenerator();
-        if (isBuildParser && parserCodeGenerator != null) {
+        if (isBuildParser && (parserCodeGenerator != null)) {
           ParserData parserData = Main.createParserData();
           CodeGeneratorSettings settings = CodeGeneratorSettings.of(Options.getOptions());
           parserCodeGenerator.generateCode(settings, parserData);
@@ -244,9 +240,8 @@ public class Main {
         }
 
         // Must always create the lexer object even if not building a parser.
-        if (Options.getBuildTokenManager() && !Options.getUserTokenManager() && JavaCCErrors.get_error_count() == 0) {
-          new LexGen().start();
-        }
+        LexGen lg = new LexGen();
+        TokenizerData tokenizerData = lg.generateTokenizerData(false);
 
         Options.setStringOption(Options.NONUSER_OPTION__PARSER_NAME, JavaCCGlobals.cu_name);
 
@@ -256,7 +251,7 @@ public class Main {
         if (Options.isGenerateBoilerplateCode()) {
           if ((!codeGenerator.getTokenCodeGenerator()
               .generateCodeForToken(CodeGeneratorSettings.of(Options.getOptions())))
-              || (!codeGenerator.generateHelpers(CodeGeneratorSettings.of(Options.getOptions())))) {
+              || (!codeGenerator.generateHelpers(CodeGeneratorSettings.of(Options.getOptions()), tokenizerData))) {
             JavaCCErrors.semantic_error("Could not generate the code for Token or helper classes.");
           }
         }
@@ -309,16 +304,11 @@ public class Main {
   }
 
   public static void reInitAll() {
-    org.javacc.parser.Expansion.reInit();
     org.javacc.parser.JavaCCErrors.reInit();
     org.javacc.parser.JavaCCGlobals.reInit();
     Options.init();
     org.javacc.parser.JavaCCParserInternals.reInit();
     org.javacc.parser.RStringLiteral.reInit();
     org.javacc.parser.NfaState.reInit();
-    org.javacc.parser.MatchInfo.reInit();
-    org.javacc.parser.LookaheadWalk.reInit();
-    org.javacc.parser.Semanticize.reInit();
-    org.javacc.parser.LexGen.reInit();
   }
 }

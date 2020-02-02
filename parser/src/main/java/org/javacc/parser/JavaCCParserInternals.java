@@ -106,7 +106,7 @@ public abstract class JavaCCParserInternals extends JavaCCGlobals {
     Integer ii;
     JavaCCGlobals.rexprlist.add(p);
     if (Options.getUserTokenManager()) {
-      if (p.lexStates == null || p.lexStates.length != 1 || !p.lexStates[0].equals("DEFAULT")) {
+      if ((p.lexStates == null) || (p.lexStates.length != 1) || !p.lexStates[0].equals("DEFAULT")) {
         JavaCCErrors.warning(p,
             "Ignoring lexical state specifications since option " + "USER_TOKEN_MANAGER has been set to true.");
       }
@@ -159,26 +159,26 @@ public abstract class JavaCCParserInternals extends JavaCCGlobals {
   }
 
   static private boolean hexchar(char ch) {
-    if (ch >= '0' && ch <= '9') {
+    if ((ch >= '0') && (ch <= '9')) {
       return true;
     }
-    if (ch >= 'A' && ch <= 'F') {
+    if ((ch >= 'A') && (ch <= 'F')) {
       return true;
     }
-    if (ch >= 'a' && ch <= 'f') {
+    if ((ch >= 'a') && (ch <= 'f')) {
       return true;
     }
     return false;
   }
 
   static private int hexval(char ch) {
-    if (ch >= '0' && ch <= '9') {
+    if ((ch >= '0') && (ch <= '9')) {
       return (ch) - ('0');
     }
-    if (ch >= 'A' && ch <= 'F') {
-      return (ch) - ('A') + 10;
+    if ((ch >= 'A') && (ch <= 'F')) {
+      return ((ch) - ('A')) + 10;
     }
-    return (ch) - ('a') + 10;
+    return ((ch) - ('a')) + 10;
   }
 
   static protected String remove_escapes_and_quotes(Token t, String str) {
@@ -186,7 +186,7 @@ public abstract class JavaCCParserInternals extends JavaCCGlobals {
     int index = 1;
     char ch, ch1;
     int ordinal;
-    while (index < str.length() - 1) {
+    while (index < (str.length() - 1)) {
       if (str.charAt(index) != '\\') {
         retval += str.charAt(index);
         index++;
@@ -234,16 +234,16 @@ public abstract class JavaCCParserInternals extends JavaCCGlobals {
         index++;
         continue;
       }
-      if (ch >= '0' && ch <= '7') {
+      if ((ch >= '0') && (ch <= '7')) {
         ordinal = (ch) - ('0');
         index++;
         ch1 = str.charAt(index);
-        if (ch1 >= '0' && ch1 <= '7') {
-          ordinal = ordinal * 8 + (ch1) - ('0');
+        if ((ch1 >= '0') && (ch1 <= '7')) {
+          ordinal = ((ordinal * 8) + (ch1)) - ('0');
           index++;
           ch1 = str.charAt(index);
-          if (ch <= '3' && ch1 >= '0' && ch1 <= '7') {
-            ordinal = ordinal * 8 + (ch1) - ('0');
+          if ((ch <= '3') && (ch1 >= '0') && (ch1 <= '7')) {
+            ordinal = ((ordinal * 8) + (ch1)) - ('0');
             index++;
           }
         }
@@ -258,15 +258,15 @@ public abstract class JavaCCParserInternals extends JavaCCGlobals {
           index++;
           ch = str.charAt(index);
           if (JavaCCParserInternals.hexchar(ch)) {
-            ordinal = ordinal * 16 + JavaCCParserInternals.hexval(ch);
+            ordinal = (ordinal * 16) + JavaCCParserInternals.hexval(ch);
             index++;
             ch = str.charAt(index);
             if (JavaCCParserInternals.hexchar(ch)) {
-              ordinal = ordinal * 16 + JavaCCParserInternals.hexval(ch);
+              ordinal = (ordinal * 16) + JavaCCParserInternals.hexval(ch);
               index++;
               ch = str.charAt(index);
               if (JavaCCParserInternals.hexchar(ch)) {
-                ordinal = ordinal * 16 + JavaCCParserInternals.hexval(ch);
+                ordinal = (ordinal * 16) + JavaCCParserInternals.hexval(ch);
                 index++;
                 continue;
               }
@@ -307,7 +307,7 @@ public abstract class JavaCCParserInternals extends JavaCCGlobals {
 
   static protected void makeTryBlock(Token tryLoc, Container<TryBlock> result, Container<Expansion> nestedExp,
       List<List<Token>> types, List<Token> ids, List<List<Token>> catchblks, List<Token> finallyblk) {
-    if (catchblks.size() == 0 && finallyblk == null) {
+    if ((catchblks.size() == 0) && (finallyblk == null)) {
       JavaCCErrors.parse_error(tryLoc, "Try block must contain at least one catch or finally block.");
       return;
     }
@@ -324,7 +324,7 @@ public abstract class JavaCCParserInternals extends JavaCCGlobals {
   }
 
   protected static boolean isJavaLanguage() {
-    return JavaCCGlobals.getCodeGenerator() != null
+    return (JavaCCGlobals.getCodeGenerator() != null)
         && "Java".equalsIgnoreCase(JavaCCGlobals.getCodeGenerator().getName());
   }
 

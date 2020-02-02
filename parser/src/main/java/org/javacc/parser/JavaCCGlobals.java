@@ -283,7 +283,7 @@ public class JavaCCGlobals {
 
     int i = 0, j = 0;
 
-    while (j < tmp.length() && (i = tmp.indexOf('&', j)) != -1) {
+    while ((j < tmp.length()) && ((i = tmp.indexOf('&', j)) != -1)) {
       retVal.add(tmp.substring(j, i));
       j = i + 1;
     }
@@ -407,7 +407,7 @@ public class JavaCCGlobals {
         retval += "\\\'";
       } else if (ch == '\\') {
         retval += "\\\\";
-      } else if (ch < 0x20 || ch > 0x7e) {
+      } else if ((ch < 0x20) || (ch > 0x7e)) {
         String s = "0000" + Integer.toString(ch, 16);
         retval += "\\u" + s.substring(s.length() - 4, s.length());
       } else {
@@ -422,8 +422,8 @@ public class JavaCCGlobals {
     char ch;
     for (int i = 0; i < str.length(); i++) {
       ch = str.charAt(i);
-      if (ch < 0x20
-          || ch > 0x7e /* || ch == '\\' -- cba commented out 20140305 */ ) {
+      if ((ch < 0x20)
+          || (ch > 0x7e /* || ch == '\\' -- cba commented out 20140305 */) ) {
         String s = "0000" + Integer.toString(ch, 16);
         retval += "\\u" + s.substring(s.length() - 4, s.length());
       } else {
@@ -445,7 +445,7 @@ public class JavaCCGlobals {
     for (; JavaCCGlobals.ccol < t.beginColumn; JavaCCGlobals.ccol++) {
       retval += " ";
     }
-    if (t.kind == JavaCCParserConstants.STRING_LITERAL || t.kind == JavaCCParserConstants.CHARACTER_LITERAL) {
+    if ((t.kind == JavaCCParserConstants.STRING_LITERAL) || (t.kind == JavaCCParserConstants.CHARACTER_LITERAL)) {
       retval += escape ? JavaCCGlobals.addUnicodeEscapes(t.image) : t.image;
     } else {
       retval += t.image;
@@ -453,7 +453,7 @@ public class JavaCCGlobals {
     JavaCCGlobals.cline = t.endLine;
     JavaCCGlobals.ccol = t.endColumn + 1;
     char last = t.image.charAt(t.image.length() - 1);
-    if (last == '\n' || last == '\r') {
+    if ((last == '\n') || (last == '\r')) {
       JavaCCGlobals.cline++;
       JavaCCGlobals.ccol = 1;
     }

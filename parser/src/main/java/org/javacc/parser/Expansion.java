@@ -64,12 +64,12 @@ public class Expansion {
    * a reference to another Expansion node. In case this is the top level of a
    * lookahead expansion,then the parent is null.
    */
-  public Object  parent;
+  public Object       parent;
 
   /**
    * The ordinal of this node with respect to its parent.
    */
-  int            ordinal;
+  int                 ordinal;
 
   /**
    * To avoid right-recursive loops when calculating follow sets, we use a
@@ -78,18 +78,13 @@ public class Expansion {
    * obtained by incrementing the static counter below, and the current
    * generation is stored in the non-static variable below.
    */
-  static long    nextGenerationIndex = 1;
-  long           myGeneration        = 0;
+  long                myGeneration        = 0;
 
   /**
    * This flag is used for bookkeeping by the minimumSize method in class
    * ParseEngine.
    */
-  public boolean inMinimumSize       = false;
-
-  static void reInit() {
-    Expansion.nextGenerationIndex = 1;
-  }
+  public boolean      inMinimumSize       = false;
 
   /**
    * @return the line
@@ -134,7 +129,7 @@ public class Expansion {
   public String getProductionName() {
     Object next = this;
     // Limit the number of iterations in case there's a cycle
-    for (int i = 0; i < 42 && next != null; i++) {
+    for (int i = 0; (i < 42) && (next != null); i++) {
       if (next instanceof BNFProduction) {
         return ((BNFProduction) next).getLhs();
       } else if (next instanceof Expansion) {

@@ -209,7 +209,7 @@ public abstract class CodeBuilder<B extends CodeBuilder<?>> implements Closeable
     for (; ccol < t.beginColumn; ccol++) {
       retval += " ";
     }
-    if (t.kind == JavaCCParserConstants.STRING_LITERAL || t.kind == JavaCCParserConstants.CHARACTER_LITERAL) {
+    if ((t.kind == JavaCCParserConstants.STRING_LITERAL) || (t.kind == JavaCCParserConstants.CHARACTER_LITERAL)) {
       retval += escapeToUnicode(t.image);
     } else {
       retval += t.image;
@@ -218,7 +218,7 @@ public abstract class CodeBuilder<B extends CodeBuilder<?>> implements Closeable
     ccol = t.endColumn + 1;
     if (t.image.length() > 0) {
       char last = t.image.charAt(t.image.length() - 1);
-      if (last == '\n' || last == '\r') {
+      if ((last == '\n') || (last == '\r')) {
         cline++;
         ccol = 1;
       }
@@ -252,7 +252,7 @@ public abstract class CodeBuilder<B extends CodeBuilder<?>> implements Closeable
       retval += getStringForTokenOnly(tt);
       tt = tt.next;
     }
-    if (ccol != 1 && cline != t.beginLine) {
+    if ((ccol != 1) && (cline != t.beginLine)) {
       retval += "\n";
       cline++;
       ccol = 1;

@@ -120,7 +120,7 @@ public final class JJDocMain extends JJDocGlobals {
       JJDocGlobals.error("Last argument \"" + args[args.length - 1] + "\" is not a filename or \"-\".  ");
       return 1;
     }
-    for (int arg = 0; arg < args.length - 1; arg++) {
+    for (int arg = 0; arg < (args.length - 1); arg++) {
       if (!Options.isOption(args[arg])) {
         JJDocGlobals.error("Argument \"" + args[arg] + "\" must be an option setting.  ");
         return 1;

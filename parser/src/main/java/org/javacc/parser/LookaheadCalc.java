@@ -84,7 +84,7 @@ class LookaheadCalc {
         RegularExpression re = JavaCCGlobals.rexps_of_tokens.get(Integer.valueOf(m.match[i]));
         if (re instanceof RStringLiteral) {
           ret += " \"" + JavaCCGlobals.add_escapes(((RStringLiteral) re).image) + "\"";
-        } else if (re.label != null && !re.label.equals("")) {
+        } else if ((re.label != null) && !re.label.equals("")) {
           ret += " <" + re.label + ">";
         } else {
           ret += " <token of kind " + i + ">";
@@ -112,29 +112,27 @@ class LookaheadCalc {
     List<MatchInfo> v;
     boolean overlapDetected;
     for (int la = 1; la <= Options.getChoiceAmbiguityCheck(); la++) {
-      MatchInfo.laLimit = la;
-      LookaheadWalk.considerSemanticLA = !Options.getForceLaCheck();
-      for (int i = first; i < ch.getChoices().size() - 1; i++) {
-        LookaheadWalk.sizeLimitedMatches = new ArrayList<>();
-        m = new MatchInfo();
+      boolean forceLaCheck = !Options.getForceLaCheck();
+      for (int i = first; i < (ch.getChoices().size() - 1); i++) {
+        LookaheadWalk lookahead = new LookaheadWalk(forceLaCheck);
+        m = new MatchInfo(la);
         m.firstFreeLoc = 0;
         v = new ArrayList<>();
         v.add(m);
-        LookaheadWalk.genFirstSet(v, ch.getChoices().get(i));
-        dbl[i] = LookaheadWalk.sizeLimitedMatches;
+        lookahead.genFirstSet(v, ch.getChoices().get(i));
+        dbl[i] = lookahead.getSizeLimitedMatches();
       }
-      LookaheadWalk.considerSemanticLA = false;
       for (int i = first + 1; i < ch.getChoices().size(); i++) {
-        LookaheadWalk.sizeLimitedMatches = new ArrayList<>();
-        m = new MatchInfo();
+        LookaheadWalk lookahead = new LookaheadWalk(false);
+        m = new MatchInfo(la);
         m.firstFreeLoc = 0;
         v = new ArrayList<>();
         v.add(m);
-        LookaheadWalk.genFirstSet(v, ch.getChoices().get(i));
-        dbr[i] = LookaheadWalk.sizeLimitedMatches;
+        lookahead.genFirstSet(v, ch.getChoices().get(i));
+        dbr[i] = lookahead.getSizeLimitedMatches();
       }
       if (la == 1) {
-        for (int i = first; i < ch.getChoices().size() - 1; i++) {
+        for (int i = first; i < (ch.getChoices().size() - 1); i++) {
           Expansion exp = ch.getChoices().get(i);
           if (Semanticize.emptyExpansionExists(exp)) {
             JavaCCErrors.warning(exp, "This choice can expand to the empty token sequence "
@@ -148,7 +146,7 @@ class LookaheadCalc {
         }
       }
       overlapDetected = false;
-      for (int i = first; i < ch.getChoices().size() - 1; i++) {
+      for (int i = first; i < (ch.getChoices().size() - 1); i++) {
         for (int j = i + 1; j < ch.getChoices().size(); j++) {
           if ((m = LookaheadCalc.overlap(dbl[i], dbr[j])) != null) {
             minLA[i] = la + 1;
@@ -163,7 +161,7 @@ class LookaheadCalc {
         break;
       }
     }
-    for (int i = first; i < ch.getChoices().size() - 1; i++) {
+    for (int i = first; i < (ch.getChoices().size() - 1); i++) {
       if (LookaheadCalc.explicitLA(ch.getChoices().get(i)) && !Options.getForceLaCheck()) {
         continue;
       }
@@ -224,32 +222,30 @@ class LookaheadCalc {
     }
   }
 
-  static void ebnfCalc(Expansion exp, Expansion nested) {
+  static void ebnfCalc(Expansion exp, Expansion nested, Semanticize semanticize) {
     // exp is one of OneOrMore, ZeroOrMore, ZeroOrOne
     MatchInfo m, m1 = null;
     List<MatchInfo> v;
     List<MatchInfo> first, follow;
     int la;
     for (la = 1; la <= Options.getOtherAmbiguityCheck(); la++) {
-      MatchInfo.laLimit = la;
-      LookaheadWalk.sizeLimitedMatches = new ArrayList<>();
-      m = new MatchInfo();
+      m = new MatchInfo(la);
       m.firstFreeLoc = 0;
       v = new ArrayList<>();
       v.add(m);
-      LookaheadWalk.considerSemanticLA = !Options.getForceLaCheck();
-      LookaheadWalk.genFirstSet(v, nested);
-      first = LookaheadWalk.sizeLimitedMatches;
-      LookaheadWalk.sizeLimitedMatches = new ArrayList<>();
-      LookaheadWalk.considerSemanticLA = false;
-      LookaheadWalk.genFollowSet(v, exp, Expansion.nextGenerationIndex++);
-      follow = LookaheadWalk.sizeLimitedMatches;
+      LookaheadWalk walk = new LookaheadWalk(!Options.getForceLaCheck());
+      walk.genFirstSet(v, nested);
+      first = walk.getSizeLimitedMatches();
+
+      walk = new LookaheadWalk(false);
+      walk.genFollowSet(v, exp, semanticize.nextGenerationIndex(), semanticize);
+      follow = walk.getSizeLimitedMatches();
       if (la == 1) {
         if (LookaheadCalc.javaCodeCheck(first)) {
           JavaCCErrors.warning(nested,
               "JAVACODE non-terminal within " + LookaheadCalc.image(exp)
-                  + " construct will force this construct to be entered in favor of "
-                  + "expansions occurring after construct.");
+              + " construct will force this construct to be entered in favor of "
+              + "expansions occurring after construct.");
         }
       }
       if ((m = LookaheadCalc.overlap(first, follow)) == null) {
@@ -259,13 +255,13 @@ class LookaheadCalc {
     }
     if (la > Options.getOtherAmbiguityCheck()) {
       JavaCCErrors.warning("Choice conflict in " + LookaheadCalc.image(exp) + " construct " + "at line " + exp.getLine()
-          + ", column " + exp.getColumn() + ".");
+      + ", column " + exp.getColumn() + ".");
       System.err.println("         Expansion nested within construct and expansion following construct");
       System.err.println("         have common prefixes, one of which is: " + LookaheadCalc.image(m1));
       System.err.println("         Consider using a lookahead of " + la + " or more for nested expansion.");
     } else if (la > 1) {
       JavaCCErrors.warning("Choice conflict in " + LookaheadCalc.image(exp) + " construct " + "at line " + exp.getLine()
-          + ", column " + exp.getColumn() + ".");
+      + ", column " + exp.getColumn() + ".");
       System.err.println("         Expansion nested within construct and expansion following construct");
       System.err.println("         have common prefixes, one of which is: " + LookaheadCalc.image(m1));
       System.err.println("         Consider using a lookahead of " + la + " for nested expansion.");
