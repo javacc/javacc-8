@@ -28,8 +28,6 @@
 
 package org.javacc.parser;
 
-import org.javacc.parser.LexGen.LexData;
-
 /**
  * Describes zero-or-more regular expressions (<foo*>).
  */
@@ -42,12 +40,12 @@ public class RZeroOrMore extends RegularExpression {
   public RegularExpression regexpr;
 
   @Override
-  public Nfa GenerateNfa(boolean ignoreCase, LexData lexData) {
-    Nfa retVal = new Nfa(lexData);
+  public Nfa GenerateNfa(boolean ignoreCase, LexerContext lexerContext) {
+    Nfa retVal = new Nfa(lexerContext);
     NfaState startState = retVal.start;
     NfaState finalState = retVal.end;
 
-    Nfa temp = regexpr.GenerateNfa(ignoreCase, lexData);
+    Nfa temp = regexpr.GenerateNfa(ignoreCase, lexerContext);
 
     startState.AddMove(temp.start);
     startState.AddMove(finalState);

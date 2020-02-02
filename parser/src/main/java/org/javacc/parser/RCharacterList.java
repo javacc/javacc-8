@@ -28,8 +28,6 @@
 
 package org.javacc.parser;
 
-import org.javacc.parser.LexGen.LexData;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -270,7 +268,7 @@ public class RCharacterList extends RegularExpression {
   private boolean transformed = false;
 
   @Override
-  public Nfa GenerateNfa(boolean ignoreCase, LexData lexData) {
+  public Nfa GenerateNfa(boolean ignoreCase, LexerContext lexerContext) {
     if (!transformed) {
       if (Options.getIgnoreCase() || ignoreCase) {
         /*
@@ -309,11 +307,11 @@ public class RCharacterList extends RegularExpression {
 
     if ((descriptors.size() == 0) && !negated_list) {
       JavaCCErrors.semantic_error(this, "Empty character set is not allowed as it will not match any character.");
-      return new Nfa(lexData);
+      return new Nfa(lexerContext);
     }
 
     transformed = true;
-    Nfa retVal = new Nfa(lexData);
+    Nfa retVal = new Nfa(lexerContext);
     NfaState startState = retVal.start;
     NfaState finalState = retVal.end;
     int i;

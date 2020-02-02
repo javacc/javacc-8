@@ -27,8 +27,6 @@
 
 package org.javacc.parser;
 
-import org.javacc.parser.LexGen.LexData;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,14 +58,14 @@ public class RChoice extends RegularExpression {
   }
 
   @Override
-  public Nfa GenerateNfa(boolean ignoreCase, LexData lexData) {
+  public Nfa GenerateNfa(boolean ignoreCase, LexerContext lexerContext) {
     CompressCharLists();
 
     if (getChoices().size() == 1) {
-      return getChoices().get(0).GenerateNfa(ignoreCase, lexData);
+      return getChoices().get(0).GenerateNfa(ignoreCase, lexerContext);
     }
 
-    Nfa retVal = new Nfa(lexData);
+    Nfa retVal = new Nfa(lexerContext);
     NfaState startState = retVal.start;
     NfaState finalState = retVal.end;
 
@@ -75,7 +73,7 @@ public class RChoice extends RegularExpression {
       Nfa temp;
       RegularExpression curRE = getChoices().get(i);
 
-      temp = curRE.GenerateNfa(ignoreCase, lexData);
+      temp = curRE.GenerateNfa(ignoreCase, lexerContext);
 
       startState.AddMove(temp.start);
       temp.end.AddMove(finalState);

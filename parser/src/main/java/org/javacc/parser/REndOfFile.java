@@ -28,8 +28,6 @@
 
 package org.javacc.parser;
 
-import org.javacc.parser.LexGen.LexData;
-
 /**
  * Describes the EOF regular expression
  */
@@ -37,7 +35,7 @@ import org.javacc.parser.LexGen.LexData;
 public class REndOfFile extends RegularExpression {
 
   @Override
-  public Nfa GenerateNfa(boolean ignoreCase, LexData lexData) {
+  public Nfa GenerateNfa(boolean ignoreCase, LexerContext lexerContext) {
     return null;
   }
 }

@@ -31,8 +31,6 @@
 
 package org.javacc.parser;
 
-import org.javacc.parser.LexGen.LexData;
-
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -84,41 +82,43 @@ class NfaState {
   }
 
   private final long[]        asciiMoves         = new long[2];
-  char[]                      charMoves          = null;
   private char[]              rangeMoves         = null;
-  NfaState                    next               = null;
-  Vector<NfaState>            epsilonMoves       = new Vector<>();
   private String              epsilonMovesString;
   private NfaState[]          epsilonMoveArray;
 
   private final int           id;
-  private final LexData     lexData;
-  int                         stateName          = -1;
-  int                         kind               = Integer.MAX_VALUE;
+  private final LexerContext       lexerContext;
   private int                 lookingFor;
   private int                 usefulEpsilonMoves = 0;
-  int                         inNextOf;
   private int                 lexState;
   private int                 kindToPrint        = Integer.MAX_VALUE;
 
   private boolean             isComposite        = false;
   private int[]               compositeStates    = null;
   private final Set<NfaState> compositeStateSet  = new HashSet<>();
-  boolean                     isFinal            = false;
   // private int round = 0;
   private int                 onlyChar           = 0;
   private char                matchSingleChar;
 
-  public NfaState(LexData lexData) {
+  char[]                      charMoves          = null;
+  NfaState                    next               = null;
+  Vector<NfaState>            epsilonMoves       = new Vector<>();
+  int                         stateName          = -1;
+  int                         kind               = Integer.MAX_VALUE;
+  int                         inNextOf;
+  boolean                     isFinal            = false;
+
+
+  public NfaState(LexerContext lexerContext) {
     id = NfaState.idCnt++;
     NfaState.allStates.add(this);
-    this.lexData = lexData;
-    lexState = lexData.lexStateIndex;
-    lookingFor = lexData.curKind;
+    this.lexerContext = lexerContext;
+    lexState = lexerContext.lexStateIndex;
+    lookingFor = lexerContext.curKind;
   }
 
   private NfaState CreateClone() {
-    NfaState retVal = new NfaState(lexData);
+    NfaState retVal = new NfaState(lexerContext);
 
     retVal.isFinal = isFinal;
     retVal.kind = kind;
@@ -191,9 +191,10 @@ class NfaState {
       }
     }
 
-    if (!NfaState.unicodeWarningGiven && (c > 0xff) && !Options.getJavaUnicodeEscape() && !Options.getUserCharStream()) {
+    if (!NfaState.unicodeWarningGiven && (c > 0xff) && !Options.getJavaUnicodeEscape()
+        && !Options.getUserCharStream()) {
       NfaState.unicodeWarningGiven = true;
-      JavaCCErrors.warning(lexData.curRE,
+      JavaCCErrors.warning(lexerContext.curRE,
           "Non-ASCII characters used in regular expression.\n"
               + "Please make sure you use the correct Reader when you create the parser, "
               + "one that can handle your character set.");
@@ -235,7 +236,7 @@ class NfaState {
     if (!NfaState.unicodeWarningGiven && ((left > 0xff) || (right > 0xff)) && !Options.getJavaUnicodeEscape()
         && !Options.getUserCharStream()) {
       NfaState.unicodeWarningGiven = true;
-      JavaCCErrors.warning(lexData.curRE,
+      JavaCCErrors.warning(lexerContext.curRE,
           "Non-ASCII characters used in regular expression.\n"
               + "Please make sure you use the correct Reader when you create the parser, "
               + "one that can handle your character set.");
@@ -404,7 +405,7 @@ class NfaState {
   private NfaState CreateEquivState(List<NfaState> states) {
     NfaState newState = states.get(0).CreateClone();
 
-    newState.next = new NfaState(lexData);
+    newState.next = new NfaState(lexerContext);
 
     NfaState.InsertInOrder(newState.next.epsilonMoves, states.get(0).next);
 
@@ -734,11 +735,11 @@ class NfaState {
    */
 
 
-  static int AddStartStateSet(String stateSetString, LexData lexData) {
-    return NfaState.AddCompositeStateSet(stateSetString, lexData, true);
+  static int AddStartStateSet(String stateSetString, LexerContext lexerContext) {
+    return NfaState.AddCompositeStateSet(stateSetString, lexerContext, true);
   }
 
-  private static int AddCompositeStateSet(String stateSetString, LexData lexData, boolean starts) {
+  private static int AddCompositeStateSet(String stateSetString, LexerContext lexerContext, boolean starts) {
     Integer stateNameToReturn;
 
     if ((stateNameToReturn = NfaState.stateNameForComposite.get(stateSetString)) != null) {
@@ -805,7 +806,7 @@ class NfaState {
       }
 
       if ((JavaCCGlobals.getCodeGenerator() != null) || Options.booleanValue(Options.NONUSER_OPTION__INTERPRETER)) {
-        NfaState dummyState = new NfaState(lexData);
+        NfaState dummyState = new NfaState(lexerContext);
         dummyState.isComposite = true;
         dummyState.compositeStates = nameSet;
         dummyState.stateName = tmp;
@@ -840,7 +841,7 @@ class NfaState {
       epsilonMovesString = "null;";
     }
 
-    return NfaState.AddStartStateSet(epsilonMovesString, lexData);
+    return NfaState.AddStartStateSet(epsilonMovesString, lexerContext);
   }
 
 

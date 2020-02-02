@@ -33,7 +33,7 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 
-public class Semanticize extends JavaCCGlobals {
+public class Semanticize {
 
   private List<List<RegExprSpec>> removeList = new ArrayList<>();
   private List<RegExprSpec>       itemList   = new ArrayList<>();
@@ -484,8 +484,7 @@ public class Semanticize extends JavaCCGlobals {
               rexp.walkStatus = -1;
               if (rexpWalk(rexp)) {
                 loopString = "..." + rexp.label + "... --> " + loopString;
-                JavaCCErrors.semantic_error(rexp,
-                    "Loop in regular expression detected: \"" + loopString + "\"");
+                JavaCCErrors.semantic_error(rexp, "Loop in regular expression detected: \"" + loopString + "\"");
               }
               rexp.walkStatus = 1;
             }
@@ -659,8 +658,7 @@ public class Semanticize extends JavaCCGlobals {
           loopString = "..." + jn.regexpr.label + "... --> " + loopString;
           if (jn.regexpr.walkStatus == -2) {
             jn.regexpr.walkStatus = 1;
-            JavaCCErrors.semantic_error(jn.regexpr,
-                "Loop in regular expression detected: \"" + loopString + "\"");
+            JavaCCErrors.semantic_error(jn.regexpr, "Loop in regular expression detected: \"" + loopString + "\"");
             return false;
           } else {
             jn.regexpr.walkStatus = 1;
