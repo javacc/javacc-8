@@ -12,16 +12,6 @@
 	<packaging>pom</packaging>
 	<properties>
 	</properties>
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>com.github.maven-nar</groupId>
-				<artifactId>nar-maven-plugin</artifactId>
-				<version>3.9.3-SNAPSHOT</version>
-				<type>maven-plugin</type>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
 	<modules>
 		<module>eg1</module>
 		<module>eg2</module>
@@ -29,15 +19,6 @@
 		<module>eg4</module>
 	</modules>
 	<build>
-		<pluginManagement>
-			<plugins>
-				<plugin>
-				<groupId>com.github.maven-nar</groupId>
-				<artifactId>nar-maven-plugin</artifactId>
-				<version>3.9.3-SNAPSHOT</version>
-				</plugin>
-			</plugins>
-		</pluginManagement>
 		<plugins>
 			<plugin>
 				<groupId>com.github.maven-nar</groupId>
