@@ -1,20 +1,19 @@
 // Copyright 2011 Google Inc. All Rights Reserved.
 // Author: sreeni@google.com (Sreeni Viswanadha)
 
-/* Copyright (c) 2006, Sun Microsystems, Inc.
- * All rights reserved.
+/*
+ * Copyright (c) 2006, Sun Microsystems, Inc. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
  *
- *     * Redistributions of source code must retain the above copyright notice,
- *       this list of conditions and the following disclaimer.
- *     * Redistributions in binary form must reproduce the above copyright
- *       notice, this list of conditions and the following disclaimer in the
- *       documentation and/or other materials provided with the distribution.
- *     * Neither the name of the Sun Microsystems, Inc. nor the names of its
- *       contributors may be used to endorse or promote products derived from
- *       this software without specific prior written permission.
+ * * Redistributions of source code must retain the above copyright notice, this
+ * list of conditions and the following disclaimer. * Redistributions in binary
+ * form must reproduce the above copyright notice, this list of conditions and
+ * the following disclaimer in the documentation and/or other materials provided
+ * with the distribution. * Neither the name of the Sun Microsystems, Inc. nor
+ * the names of its contributors may be used to endorse or promote products
+ * derived from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -43,8 +42,6 @@ import java.util.Set;
 public class Main {
 
   protected Main() {}
-
-  static LexGen lg;
 
   private static void help_message() {
     System.out.println("Usage:");
@@ -182,7 +179,7 @@ public class Main {
       System.out.println("Last argument \"" + args[args.length - 1] + "\" is not a filename.");
       return 1;
     }
-    for (int arg = 0; arg < args.length - 1; arg++) {
+    for (int arg = 0; arg < (args.length - 1); arg++) {
       if (!Options.isOption(args[arg])) {
         System.out.println("Argument \"" + args[arg] + "\" must be an option setting.");
         return 1;
@@ -219,12 +216,12 @@ public class Main {
       JavaCCGlobals.toolNames = JavaCCGlobals.getToolNames(args[args.length - 1]);
       parser.javacc_input();
 
-      Main.lg = new LexGen();
-
       JavaCCGlobals.createOutputDir(Options.getOutputDirectory());
 
+
+      boolean unicodeWarning = false;
       if (Options.getUnicodeInput()) {
-        NfaState.unicodeWarningGiven = true;
+        unicodeWarning = true;
         System.out.println("Note: UNICODE_INPUT option is specified. "
             + "Please make sure you create the parser/lexer using a Reader with the correct character encoding.");
       }
@@ -236,7 +233,7 @@ public class Main {
       CodeGenerator codeGenerator = JavaCCGlobals.getCodeGenerator();
       if (codeGenerator != null) {
         ParserCodeGenerator parserCodeGenerator = codeGenerator.getParserCodeGenerator();
-        if (isBuildParser && parserCodeGenerator != null) {
+        if (isBuildParser && (parserCodeGenerator != null)) {
           ParserData parserData = Main.createParserData();
           CodeGeneratorSettings settings = CodeGeneratorSettings.of(Options.getOptions());
           parserCodeGenerator.generateCode(settings, parserData);
@@ -244,9 +241,8 @@ public class Main {
         }
 
         // Must always create the lexer object even if not building a parser.
-        if (Options.getBuildTokenManager() && !Options.getUserTokenManager() && JavaCCErrors.get_error_count() == 0) {
-          new LexGen().start();
-        }
+        LexGen lg = new LexGen();
+        TokenizerData tokenizerData = lg.generateTokenizerData(false, unicodeWarning);
 
         Options.setStringOption(Options.NONUSER_OPTION__PARSER_NAME, JavaCCGlobals.cu_name);
 
@@ -256,7 +252,7 @@ public class Main {
         if (Options.isGenerateBoilerplateCode()) {
           if ((!codeGenerator.getTokenCodeGenerator()
               .generateCodeForToken(CodeGeneratorSettings.of(Options.getOptions())))
-              || (!codeGenerator.generateHelpers(CodeGeneratorSettings.of(Options.getOptions())))) {
+              || (!codeGenerator.generateHelpers(CodeGeneratorSettings.of(Options.getOptions()), tokenizerData))) {
             JavaCCErrors.semantic_error("Could not generate the code for Token or helper classes.");
           }
         }
@@ -309,16 +305,8 @@ public class Main {
   }
 
   public static void reInitAll() {
-    org.javacc.parser.Expansion.reInit();
     org.javacc.parser.JavaCCErrors.reInit();
     org.javacc.parser.JavaCCGlobals.reInit();
     Options.init();
-    org.javacc.parser.JavaCCParserInternals.reInit();
-    org.javacc.parser.RStringLiteral.reInit();
-    org.javacc.parser.NfaState.reInit();
-    org.javacc.parser.MatchInfo.reInit();
-    org.javacc.parser.LookaheadWalk.reInit();
-    org.javacc.parser.Semanticize.reInit();
-    org.javacc.parser.LexGen.reInit();
   }
 }

@@ -43,7 +43,7 @@ abstract class OutputFileDigest {
    */
   public static String getDigestLine(DigestOutputStream digestStream) {
     return OutputFileDigest.MD5_LINE_PART_1 + OutputFileDigest.toHexString(digestStream)
-        + OutputFileDigest.MD5_LINE_PART_2;
+    + OutputFileDigest.MD5_LINE_PART_2;
   }
 
   /**
@@ -93,7 +93,7 @@ abstract class OutputFileDigest {
       }
 
       String calculatedDigest = OutputFileDigest.toHexString(digestStream);
-      if (existingMD5 == null || !existingMD5.equals(calculatedDigest)) {
+      if ((existingMD5 == null) || !existingMD5.equals(calculatedDigest)) {
         if (compatibleVersion != null) {
           OutputFileDigest.checkVersion(file, toolName, compatibleVersion);
         }
@@ -163,8 +163,8 @@ abstract class OutputFileDigest {
           String currentOptions = Options.getOptionsString(options);
           if (line.indexOf(currentOptions) == -1) {
             JavaCCErrors
-                .warning(file.getName() + ": Generated using incompatible options. Please rename or delete this file so"
-                    + " that a new one can be generated for you.");
+            .warning(file.getName() + ": Generated using incompatible options. Please rename or delete this file so"
+                + " that a new one can be generated for you.");
           }
           return;
         }

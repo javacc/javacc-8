@@ -129,7 +129,7 @@ public class XTextGenerator extends TextGenerator implements Generator {
 
   /**
    * Prints out comments, used for tokens and non-terminals. {@inheritDoc}
-   * 
+   *
    * @see org.javacc.jjdoc.TextGenerator#specialTokens(java.lang.String)
    */
   @Override

@@ -41,8 +41,8 @@ public class RJustName extends RegularExpression {
   RegularExpression regexpr;
 
   @Override
-  public Nfa GenerateNfa(boolean ignoreCase) {
-    return regexpr.GenerateNfa(ignoreCase);
+  public Nfa GenerateNfa(boolean ignoreCase, LexerContext lexerContext) {
+    return regexpr.GenerateNfa(ignoreCase, lexerContext);
   }
 
   public RJustName() {}

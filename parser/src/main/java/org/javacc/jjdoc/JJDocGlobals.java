@@ -85,7 +85,7 @@ public class JJDocGlobals {
 
   /**
    * Log informational messages.
-   * 
+   *
    * @param message the message to log
    */
   public static void info(String message) {
@@ -94,7 +94,7 @@ public class JJDocGlobals {
 
   /**
    * Log error messages.
-   * 
+   *
    * @param message the message to log
    */
   public static void error(String message) {

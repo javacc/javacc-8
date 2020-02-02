@@ -144,32 +144,28 @@ public class TokenizerData {
     this.wildcardKind = wildcardKind;
   }
 
-  public void setLexStateNames(String[] lexStateNames) {
-    this.lexStateNames = lexStateNames;
-  }
-
   public void setDefaultLexState(int defaultLexState) {
     this.defaultLexState = defaultLexState;
   }
 
   void updateMatchInfo(Map<Integer, String> actions, int[] newLexStateIndices, long[] toSkip, long[] toSpecial,
-      long[] toMore, long[] toToken) {
+      long[] toMore, long[] toToken, String[] allImages) {
     for (int i = 0; i < newLexStateIndices.length; i++) {
       int vectorIndex = i >> 6;
-      long bits = (1L << (i & 077));
-      MatchType matchType = MatchType.TOKEN;
-      if (toSpecial.length > vectorIndex && (toSpecial[vectorIndex] & bits) != 0L) {
-        matchType = MatchType.SPECIAL_TOKEN;
-      } else if (toSkip.length > vectorIndex && (toSkip[vectorIndex] & bits) != 0L) {
-        matchType = MatchType.SKIP;
-      } else if (toMore.length > vectorIndex && (toMore[vectorIndex] & bits) != 0L) {
-        matchType = MatchType.MORE;
-      } else if (toToken.length > vectorIndex && (toToken[vectorIndex] & bits) != 0L) {
-        matchType = MatchType.TOKEN;
-      }
-      MatchInfo matchInfo = new MatchInfo(Options.getIgnoreCase() ? null : RStringLiteral.allImages[i], i, matchType,
-          newLexStateIndices[i], actions.get(i));
-      allMatches.put(i, matchInfo);
+    long bits = (1L << (i & 077));
+    MatchType matchType = MatchType.TOKEN;
+    if ((toSpecial.length > vectorIndex) && ((toSpecial[vectorIndex] & bits) != 0L)) {
+      matchType = MatchType.SPECIAL_TOKEN;
+    } else if ((toSkip.length > vectorIndex) && ((toSkip[vectorIndex] & bits) != 0L)) {
+      matchType = MatchType.SKIP;
+    } else if ((toMore.length > vectorIndex) && ((toMore[vectorIndex] & bits) != 0L)) {
+      matchType = MatchType.MORE;
+    } else if ((toToken.length > vectorIndex) && ((toToken[vectorIndex] & bits) != 0L)) {
+      matchType = MatchType.TOKEN;
+    }
+    MatchInfo matchInfo = new MatchInfo(Options.getIgnoreCase() ? null : allImages[i], i, matchType,
+        newLexStateIndices[i], actions.get(i));
+    allMatches.put(i, matchInfo);
     }
   }
 

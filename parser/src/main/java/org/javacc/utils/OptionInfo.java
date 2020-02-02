@@ -36,9 +36,9 @@ public class OptionInfo implements Comparable<OptionInfo> {
   public int hashCode() {
     final int prime = 31;
     int result = 1;
-    result = prime * result + ((_default == null) ? 0 : _default.hashCode());
-    result = prime * result + ((_name == null) ? 0 : _name.hashCode());
-    result = prime * result + ((_type == null) ? 0 : _type.hashCode());
+    result = (prime * result) + ((_default == null) ? 0 : _default.hashCode());
+    result = (prime * result) + ((_name == null) ? 0 : _name.hashCode());
+    result = (prime * result) + ((_type == null) ? 0 : _type.hashCode());
     return result;
   }
 

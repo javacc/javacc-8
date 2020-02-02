@@ -28,7 +28,7 @@ public class JavaCCInterpreter {
     Options.set(Options.NONUSER_OPTION__INTERPRETER, true);
     Options.set("STATIC", false);
     // TODO JavaCCParser parser = null;
-    for (int arg = 0; arg < args.length - 2; arg++) {
+    for (int arg = 0; arg < (args.length - 2); arg++) {
       if (!Options.isOption(args[arg])) {
         System.out.println("Argument \"" + args[arg] + "\" must be an option setting.");
         System.exit(1);
@@ -71,9 +71,7 @@ public class JavaCCInterpreter {
       Options.set(Options.NONUSER_OPTION__INTERPRETER, true);
       Semanticize.start();
       LexGen lg = new LexGen();
-      LexGen.generateDataOnly = true;
-      lg.start();
-      TokenizerData tokenizerData = LexGen.tokenizerData;
+      TokenizerData tokenizerData = lg.generateTokenizerData(true, false);
       if (JavaCCErrors.get_error_count() == 0) {
         long l = System.currentTimeMillis();
         JavaCCInterpreter.tokenize(tokenizerData, input);
@@ -111,7 +109,7 @@ public class JavaCCInterpreter {
       return;
     }
     JavaCCInterpreter.maxpos = pos;
-    if (c == '\r' || (c == '\n' && !JavaCCInterpreter.prevCR)) {
+    if ((c == '\r') || ((c == '\n') && !JavaCCInterpreter.prevCR)) {
       JavaCCInterpreter.line++;
       JavaCCInterpreter.col = 0;
       JavaCCInterpreter.prevCR = c == '\r';
@@ -143,7 +141,7 @@ public class JavaCCInterpreter {
       if (Options.getIgnoreCase()) {
         c = Character.toLowerCase(c);
       }
-      int key = curLexState << 16 | c;
+      int key = (curLexState << 16) | c;
       final List<String> literals = tokenizerData.literalSequence.get(key);
       tokline = JavaCCInterpreter.getLine(curPos);
       tokcol = JavaCCInterpreter.col;
@@ -154,7 +152,7 @@ public class JavaCCInterpreter {
           String s = literals.get(litIndex);
           int charIndex = 1;
           // See which literal matches.
-          while (charIndex < s.length() && curPos + charIndex < input_size) {
+          while ((charIndex < s.length()) && ((curPos + charIndex) < input_size)) {
             c = input.charAt(curPos + charIndex);
             JavaCCInterpreter.updateLineCol(curPos + charIndex, c);
             if (Options.getIgnoreCase()) {
@@ -168,7 +166,7 @@ public class JavaCCInterpreter {
           if (charIndex == s.length()) {
             // Found a string literal match.
             matchedKind = tokenizerData.literalKinds.get(key).get(litIndex);
-            matchedPos = curPos + charIndex - 1;
+            matchedPos = (curPos + charIndex) - 1;
             nfaStartState = tokenizerData.kindToNfaStartState.get(matchedKind);
             curPos += charIndex;
             break;
@@ -207,10 +205,10 @@ public class JavaCCInterpreter {
             matchedKind = kind;
             matchedPos = curPos;
           }
-        } while (!curStates.isEmpty() && ++curPos < input_size);
+        } while (!curStates.isEmpty() && (++curPos < input_size));
       }
 
-      if (matchedPos == beg && matchedKind > tokenizerData.wildcardKind.get(curLexState)) {
+      if ((matchedPos == beg) && (matchedKind > tokenizerData.wildcardKind.get(curLexState))) {
         matchedKind = tokenizerData.wildcardKind.get(curLexState);
       }
       if (matchedKind != Integer.MAX_VALUE) {

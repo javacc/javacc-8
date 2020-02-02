@@ -49,7 +49,7 @@ public final class TokenUtils {
       }
     }
     String i = t.image;
-    if (in != null && i.equals(in)) {
+    if ((in != null) && i.equals(in)) {
       i = out;
     }
     io.print(TokenUtils.addUnicodeEscapes(i));
@@ -60,7 +60,7 @@ public final class TokenUtils {
     char ch;
     for (int i = 0; i < str.length(); i++) {
       ch = str.charAt(i);
-      if ((ch < 0x20 || ch > 0x7e) && ch != '\t' && ch != '\n' && ch != '\r' && ch != '\f') {
+      if (((ch < 0x20) || (ch > 0x7e)) && (ch != '\t') && (ch != '\n') && (ch != '\r') && (ch != '\f')) {
         String s = "0000" + Integer.toString(ch, 16);
         buff.append("\\u" + s.substring(s.length() - 4, s.length()));
       } else {
@@ -84,7 +84,7 @@ public final class TokenUtils {
     int index = 1;
     char ch, ch1;
     int ordinal;
-    while (index < str.length() - 1) {
+    while (index < (str.length() - 1)) {
       if (str.charAt(index) != '\\') {
         retval += str.charAt(index);
         index++;
@@ -132,16 +132,16 @@ public final class TokenUtils {
         index++;
         continue;
       }
-      if (ch >= '0' && ch <= '7') {
+      if ((ch >= '0') && (ch <= '7')) {
         ordinal = (ch) - ('0');
         index++;
         ch1 = str.charAt(index);
-        if (ch1 >= '0' && ch1 <= '7') {
-          ordinal = ordinal * 8 + (ch1) - ('0');
+        if ((ch1 >= '0') && (ch1 <= '7')) {
+          ordinal = ((ordinal * 8) + (ch1)) - ('0');
           index++;
           ch1 = str.charAt(index);
-          if (ch <= '3' && ch1 >= '0' && ch1 <= '7') {
-            ordinal = ordinal * 8 + (ch1) - ('0');
+          if ((ch <= '3') && (ch1 >= '0') && (ch1 <= '7')) {
+            ordinal = ((ordinal * 8) + (ch1)) - ('0');
             index++;
           }
         }
@@ -156,15 +156,15 @@ public final class TokenUtils {
           index++;
           ch = str.charAt(index);
           if (TokenUtils.hexchar(ch)) {
-            ordinal = ordinal * 16 + TokenUtils.hexval(ch);
+            ordinal = (ordinal * 16) + TokenUtils.hexval(ch);
             index++;
             ch = str.charAt(index);
             if (TokenUtils.hexchar(ch)) {
-              ordinal = ordinal * 16 + TokenUtils.hexval(ch);
+              ordinal = (ordinal * 16) + TokenUtils.hexval(ch);
               index++;
               ch = str.charAt(index);
               if (TokenUtils.hexchar(ch)) {
-                ordinal = ordinal * 16 + TokenUtils.hexval(ch);
+                ordinal = (ordinal * 16) + TokenUtils.hexval(ch);
                 index++;
                 continue;
               }
@@ -182,26 +182,26 @@ public final class TokenUtils {
   }
 
   private static boolean hexchar(char ch) {
-    if (ch >= '0' && ch <= '9') {
+    if ((ch >= '0') && (ch <= '9')) {
       return true;
     }
-    if (ch >= 'A' && ch <= 'F') {
+    if ((ch >= 'A') && (ch <= 'F')) {
       return true;
     }
-    if (ch >= 'a' && ch <= 'f') {
+    if ((ch >= 'a') && (ch <= 'f')) {
       return true;
     }
     return false;
   }
 
   private static int hexval(char ch) {
-    if (ch >= '0' && ch <= '9') {
+    if ((ch >= '0') && (ch <= '9')) {
       return (ch) - ('0');
     }
-    if (ch >= 'A' && ch <= 'F') {
-      return (ch) - ('A') + 10;
+    if ((ch >= 'A') && (ch <= 'F')) {
+      return ((ch) - ('A')) + 10;
     }
-    return (ch) - ('a') + 10;
+    return ((ch) - ('a')) + 10;
   }
 
 }

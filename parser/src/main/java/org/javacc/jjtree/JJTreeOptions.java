@@ -100,7 +100,7 @@ public class JJTreeOptions extends Options {
       if (JJTreeOptions.getVisitorDataType().length() > 0) {
         JavaCCErrors.warning("VISITOR_DATA_TYPE option will be ignored since VISITOR is false");
       }
-      if (JJTreeOptions.getVisitorReturnType().length() > 0 && !JJTreeOptions.getVisitorReturnType().equals("Object")) {
+      if ((JJTreeOptions.getVisitorReturnType().length() > 0) && !JJTreeOptions.getVisitorReturnType().equals("Object")) {
         JavaCCErrors.warning("VISITOR_RETURN_TYPE option will be ignored since VISITOR is false");
       }
       if (JJTreeOptions.getVisitorException().length() > 0) {
@@ -276,7 +276,7 @@ public class JJTreeOptions extends Options {
 
   /**
    * Compute where are located the ASTNodes is any are defined
-   * 
+   *
    * @return the requested NODE_DIRECTORY directory
    */
   public static File getASTNodeDirectory() {

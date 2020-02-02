@@ -138,7 +138,7 @@ public class JJTree {
         p("Last argument \"" + fn + "\" is not a filename");
         return 1;
       }
-      for (int arg = 0; arg < args.length - 1; arg++) {
+      for (int arg = 0; arg < (args.length - 1); arg++) {
         if (!Options.isOption(args[arg])) {
           p("Argument \"" + args[arg] + "\" must be an option setting.");
           return 1;
