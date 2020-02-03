@@ -21,10 +21,8 @@ StreamReader::~StreamReader() {
 
 }
 size_t StreamReader::read(JJChar * buffer, int offset, size_t len) {
-	streampos before = is.tellg();
 	is.read(buffer + offset, len);
-	streampos after = is.tellg();
-	return after - before;
+	return is.gcount();
 }
 bool StreamReader::endOfInput() {
 	return is.eof();

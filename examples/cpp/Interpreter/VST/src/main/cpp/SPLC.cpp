@@ -54,14 +54,17 @@ int main(int argc, char**argv) {
 			ifs.open(argv[2]);
 			ofs.open(argv[3]);
 			efs.open(argv[4]);
-			input = &ifs;
-			output = &ofs;
-			error = &efs;
-
-			sr = new StreamReader(spl);
-			cs = new CharStream(sr);
-
-		} else if (argc == 1) {
+			if (ifs.is_open() && ofs.is_open() && efs.is_open() && spl.is_open()) {
+				input = &ifs;	output = &ofs;	error = &efs;
+				sr = new StreamReader(spl);
+				cs = new CharStream(sr);
+			}
+			else {
+				cerr << "cannot open spl or in or out or err file" << endl;
+				return 8;
+			}
+		} else
+		if (argc == 1) {
 			JJString s = ReadFileFully();
 			cout << s << endl;
 			cs = new CharStream(s.c_str(), s.size() - 1, 1, 1);
