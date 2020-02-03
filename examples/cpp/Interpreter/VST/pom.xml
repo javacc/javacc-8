@@ -38,15 +38,21 @@
 						<library>
 							<type>executable</type>
 							<run>true</run>
+							<args>
+								<arg>${project.basedir}/spl/calc/calc.spl</arg>
+								<arg>${project.basedir}/spl/calc/calc.in</arg>
+								<arg>${project.basedir}/spl/calc/calc.out</arg>
+								<arg>${project.basedir}/spl/calc/calc.err</arg>
+							</args>
 <!-- 
 							<args>
-								<arg>${project.basedir}/spl/fact/fact.spl</arg>
-								<arg>${project.basedir}/spl/fact/fact.in</arg>
-								<arg>${project.basedir}/spl/fact/fact.out</arg>
-								<arg>${project.basedir}/spl/fact/fact.err</arg>
+								<arg>${project.basedir}/spl/odd/odd.spl</arg>
+								<arg>${project.basedir}/spl/odd/odd.in</arg>
+								<arg>${project.basedir}/spl/odd/odd.out</arg>
+								<arg>${project.basedir}/spl/odd/odd.err</arg>
 							</args>
  -->
- 						</library>
+  						</library>
 					</libraries>
 					<cpp>
 						<includePaths>
@@ -62,6 +68,31 @@
 						</includePaths>
 					</cpp>
  				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>compare-calc</id>
+						<phase>test</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<target unless="maven.test.skip">
+								<available file="${project.basedir}/spl/calc/calc.out" property="isActualAvailable" />
+								<fail unless="isActualAvailable" message="${project.basedir}/spl/calc/calc.out does not exist!" />
+								<available file="${project.basedir}/spl/calc/calc.ref" property="isExpectedAvailable" />
+								<fail unless="isExpectedAvailable" message="${project.basedir}/spl/calc/calc.ref does not exist!" />
+								<condition property="files.match">
+									<filesmatch file1="${project.basedir}/spl/calc/calc.out" file2="${project.basedir}/spl/calc/calc.ref" />
+								</condition>
+								<fail unless="files.match" message="${project.basedir}/spl/calc/calc.out does not match ${project.basedir}/spl/calc/calc.ref!" />
+							</target>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
