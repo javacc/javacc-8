@@ -23,6 +23,7 @@
 		<module>Lookahead</module>
 		<module>Transformer</module>
 		<module>VTransformer</module>
+		<module>Obfuscator</module>
 	</modules>
 	<build>
 		<pluginManagement>
