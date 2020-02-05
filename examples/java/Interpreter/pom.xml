@@ -43,9 +43,6 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>exec-maven-plugin</artifactId>
-				<configuration>
-					<skip>false</skip>
-				</configuration>
 				<executions>
 					<execution>
 						<id>fact</id>
@@ -58,6 +55,8 @@
 							<arguments>
 								<argument>${project.basedir}/spl/fact.spl</argument>
 								<argument>${project.basedir}/spl/fact.in</argument>
+								<argument>${project.basedir}/spl/fact.out</argument>
+								<argument>${project.basedir}/spl/fact.err</argument>
 							</arguments>
 						</configuration>
 					</execution>
@@ -72,6 +71,8 @@
 							<arguments>
 								<argument>${project.basedir}/spl/odd.spl</argument>
 								<argument>${project.basedir}/spl/odd.in</argument>
+								<argument>${project.basedir}/spl/odd.out</argument>
+								<argument>${project.basedir}/spl/odd.err</argument>
 							</arguments>
 						</configuration>
 					</execution>
@@ -86,11 +87,76 @@
 							<arguments>
 								<argument>${project.basedir}/spl/sqrt.spl</argument>
 								<argument>${project.basedir}/spl/sqrt.in</argument>
+								<argument>${project.basedir}/spl/sqrt.out</argument>
+								<argument>${project.basedir}/spl/sqrt.err</argument>
 							</arguments>
 						</configuration>
 					</execution>
 				</executions>
 			</plugin>
-		</plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>compare-fact</id>
+						<phase>test</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<target>
+								<available file="${project.basedir}/spl/fact.out" property="isActualAvailable" />
+								<fail unless="isActualAvailable" message="${project.basedir}/spl/fact.out does not exist!" />
+								<available file="${project.basedir}/spl/fact.ref" property="isExpectedAvailable" />
+								<fail unless="isExpectedAvailable" message="${project.basedir}/spl/fact.ref does not exist!" />
+								<condition property="files.match">
+									<filesmatch file1="${project.basedir}/spl/fact.out" file2="${project.basedir}/spl/fact.ref" />
+								</condition>
+								<fail unless="files.match" message="${project.basedir}/spl/fact.out does not match ${project.basedir}/spl/fact.ref!" />
+							</target>
+						</configuration>
+					</execution>
+					<execution>
+						<id>compare-odd</id>
+						<phase>test</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<target>
+								<available file="${project.basedir}/spl/odd.out" property="isActualAvailable" />
+								<fail unless="isActualAvailable" message="${project.basedir}/spl/odd.out does not exist!" />
+								<available file="${project.basedir}/spl/odd.ref" property="isExpectedAvailable" />
+								<fail unless="isExpectedAvailable" message="${project.basedir}/spl/odd.ref does not exist!" />
+								<condition property="files.match">
+									<filesmatch file1="${project.basedir}/spl/odd.out" file2="${project.basedir}/spl/odd.ref" />
+								</condition>
+								<fail unless="files.match" message="${project.basedir}/spl/odd.out does not match ${project.basedir}/spl/odd.ref!" />
+							</target>
+						</configuration>
+					</execution>
+					<execution>
+						<id>compare-sqrt</id>
+						<phase>test</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<target>
+								<available file="${project.basedir}/spl/sqrt.out" property="isActualAvailable" />
+								<fail unless="isActualAvailable" message="${project.basedir}/spl/sqrt.out does not exist!" />
+								<available file="${project.basedir}/spl/sqrt.ref" property="isExpectedAvailable" />
+								<fail unless="isExpectedAvailable" message="${project.basedir}/spl/sqrt.ref does not exist!" />
+								<condition property="files.match">
+									<filesmatch file1="${project.basedir}/spl/sqrt.out" file2="${project.basedir}/spl/sqrt.ref" />
+								</condition>
+								<fail unless="files.match" message="${project.basedir}/spl/sqrt.out does not match ${project.basedir}/spl/sqrt.ref!" />
+							</target>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+ 		</plugins>
 	</build>
 </project>

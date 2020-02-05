@@ -1,0 +1,7 @@
+Executing: int n
+Executing: int fact
+Executing: read n
+Enter a value for 'n' (int) : Executing: fact = 1 ;
+Executing: while ( n > 1 ) { fact = fact * n ; n = n - 1 ; }
+Executing: write fact
+Value of fact : 24

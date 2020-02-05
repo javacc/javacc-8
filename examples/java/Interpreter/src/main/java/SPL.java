@@ -1,5 +1,8 @@
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintStream;
 
 /* Copyright (c) 2006, Sun Microsystems, Inc.
  * All rights reserved.
@@ -36,35 +39,57 @@ public class SPL {
 
 	/** Main entry point. */
 	public static void main(String args[]) {
+		InputStream spl = null;
+		InputStream input = System.in;
+		PrintStream output = System.out;
+		PrintStream error = System.err;
+		InputStream prevInput = null;
+		PrintStream prevOutput = null;
+		PrintStream prevError = null;
 
 		SPLParser parser;
-		if (args.length >= 1) {
-			System.out.println(	"Simple Programming Language Interpreter Version 0.1:  Reading from file " + args[0] + " . . .");
-			try {
-				parser = new SPLParser(new java.io.FileInputStream(args[0]));
-			} catch (java.io.FileNotFoundException e) {
-				System.out.println("Simple Programming Language Interpreter Version 0.1:  File " + args[0] + " not found.");
-				return;
-			}
-		} else {
-			System.out.println("Simple Programming Language Interpreter Version 0.1:  Usage :");
-			System.out.println("         java SPL inputfile");
-			return;
-		}
 		try {
-			InputStream input = null;
-			if (args.length == 2) {
-				input = new FileInputStream(args[1]);
-				System.setIn(input);
+			switch (args.length) {
+			case 1:
+				output.println("Simple Programming Language Interpreter Version 0.1:  Reading from file " + args[0]
+						+ " . . .");
+				try {
+					parser = new SPLParser(new FileInputStream(args[0]));
+				} catch (FileNotFoundException e) {
+					error.println(
+							"Simple Programming Language Interpreter Version 0.1:  File " + args[0] + " not found.");
+					return;
+				}
+				break;
+			case 4:
+				spl = new FileInputStream(args[0]);	
+				prevInput = input;	input = new FileInputStream(args[1]);	System.setIn(input);
+				prevOutput = output;output = new PrintStream(args[2]);		System.setOut(output);
+				prevError = error;	error = new PrintStream(args[3]);		System.setErr(error);
+				parser = new SPLParser(spl);
+				break;
+			default:
+				output.println("Simple Programming Language Interpreter Version 0.1:  Usage :");
+				output.println("         java SPL spl [in out err]");
+				return;
 			}
 			parser.CompilationUnit();
 			parser.jjtree.rootNode().interpret();
 		} catch (ParseException e) {
-			System.out.println("Simple Programming Language Interpreter Version 0.1:  Encountered errors during parse.");
+			error.println("Simple Programming Language Interpreter Version 0.1:  Encountered errors during parse.");
 			e.printStackTrace();
 		} catch (Exception e1) {
-			System.out.println("Simple Programming Language Interpreter Version 0.1:  Encountered errors during interpretation/tree building.");
+			error.println(
+					"Simple Programming Language Interpreter Version 0.1:  Encountered errors during interpretation/tree building.");
 			e1.printStackTrace();
+		} finally {
+			try {
+				input.close();output.close();error.close();
+			} catch (IOException e) {
+			}
+			if (prevInput != null) System.setIn(prevInput);
+			if (prevOutput != null) System.setOut(prevOutput);
+			if (prevError != null) System.setErr(prevError);
 		}
 	}
 }
