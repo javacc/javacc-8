@@ -1,3 +1,3 @@
 setlocal
-%M2_HOME%\bin\mvn %*
+"%M2_HOME%\bin\mvn" %*
 endlocal
