@@ -1,4 +1,5 @@
 package org.javacc.tests.java.exceptions;
+
 import static org.fest.reflect.core.Reflection.constructor;
 import static org.fest.reflect.core.Reflection.type;
 import static org.fest.reflect.core.Reflection.method;
@@ -6,6 +7,8 @@ import static org.fest.reflect.core.Reflection.method;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -25,7 +28,9 @@ public class TestExceptions {
 	private static final String SRC = "src";
 	private static final String MAIN = "main";
 	private static final String TEST = "test";
-	private static final String TARGET = "target";
+	private static final String TARGET = "targetbis";
+	private static final String CLASSES = "classes";
+
 	private static final String GENERATED_SOURCES = "generated-sources";
 	private static final String JAVACC = "javacc";
 	private static File source_directory = new File(".");
@@ -34,7 +39,7 @@ public class TestExceptions {
 
 	static {
 		output_classes = new File(output_classes, TARGET);
-		output_classes = new File(output_classes, "foo");
+		output_classes = new File(output_classes, CLASSES);
 
 		source_directory = new File(source_directory, SRC);
 		source_directory = new File(source_directory, MAIN);
@@ -51,7 +56,7 @@ public class TestExceptions {
 				search(pattern, f, result);
 			}
 			if (f.isFile()) {
-				if (f.getName().matches(pattern)) {
+				if (f.getName().endsWith(pattern)) {
 					result.add(f);
 				}
 			}
@@ -78,8 +83,16 @@ public class TestExceptions {
 		List<File> files = javacc();
 
 		JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
+		output_classes.mkdirs();
+		String[] args = new String[7];
+		args[0] = "-s";
+		args[1] = output_directory.getCanonicalPath();
+		args[2] = "-cp";
+		args[3] = output_classes.getCanonicalPath();
+		args[4] = "-d";
+		args[5] = output_classes.getCanonicalPath();
 		for (File file : files) {
-			String[] args = { "-d", output_classes.getPath(), file.getPath() };
+			args[6] = file.getCanonicalPath();
 			compiler.run(System.in, System.out, System.err, args);
 		}
 	}
@@ -93,22 +106,34 @@ public class TestExceptions {
 	public void tearDown() throws Exception {
 	}
 
-	@Test
-	public void test() {
+	// @Test
+	// public void test() {
+	public static void main(String[] args) throws Exception {
+		TestExceptions te = new TestExceptions();
+		te.java();
 		URLClassLoader classLoader = null;
 		try {
-			URL[] url = {  output_classes.toURI().toURL() };
+			URL[] url = { output_classes.toURI().toURL() };
 
 			classLoader = new URLClassLoader(url);
-			Class<?> parserClass = type("Parser").load();
-			Object parser = constructor().withParameterTypes(InputStream.class).in(parserClass).newInstance(System.in);
-			
-			String[] args = new String[0];
-			method("main").withParameterTypes(String[].class).in(parser).invoke(new Object[] { args });	
+			Class<?> parserClass = classLoader.loadClass("Parser");
+			Method meth = parserClass.getMethod("main", String[].class);
+			String[] params = new String[0]; // init params accordingly
+			meth.invoke(null, (Object) params); // static method doesn't have an instance
 
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		} catch (SecurityException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (NoSuchMethodException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
 			e.printStackTrace();
 		} finally {
 			if (classLoader != null)

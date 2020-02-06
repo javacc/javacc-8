@@ -32,15 +32,40 @@ PARSER_BEGIN(Parser)
 
 import java.util.Map;
 import java.util.HashMap;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.PrintStream;
 
 public class Parser {
 
-  public static void main(String args[]) {
-    try {
-    	Parser t = new Parser(System.in);
+  public static void main(String args[])  throws FileNotFoundException {
+    InputStream input = System.in;
+    PrintStream output = System.out;
+    PrintStream error = System.err;
+    InputStream prevInput = null;
+    PrintStream prevOutput = null;
+    PrintStream prevError = null;
+    if (args.length == 3) {
+    	prevInput = input;   	input = new FileInputStream(args[0]);
+    	prevOutput = output;   	output = new PrintStream(args[1]);
+    	prevError = error;   	error  = new PrintStream(args[2]);
+       System.setIn(input);
+       System.setOut(output);
+       System.setErr(error);
+    }
+   try {
+    	Parser t = new Parser(input);
     	t.CompilationUnit();
-    	System.out.println("Parser ran sucessfully");
+    	output.println("Parser ran sucessfully");
     } catch (Exception e) {
+      error.println("Oops.");
+      error.println(e.getMessage());
+ 	  e.printStackTrace(error);
+   } finally {
+        if (prevInput != null)  System.setIn(prevInput);
+        if (prevOutput != null) System.setOut(prevOutput);
+        if (prevError != null)  System.setErr(prevError);
     }
   }
 }

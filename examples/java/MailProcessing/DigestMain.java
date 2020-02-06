@@ -1,6 +1,7 @@
 
 
-import java.io.*;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 
 public class DigestMain {
 
@@ -8,8 +9,8 @@ public class DigestMain {
 
 	static String buffer = "";
 
-	public static void main(String args[]) throws ParseException {
-		Digest parser = new Digest(System.in);
+	public static void main(String args[]) throws ParseException, FileNotFoundException {
+		Digest parser = new Digest(new FileInputStream(args[0]));
 		System.out.println("DIGEST OF RECENT MESSAGES FROM THE JAVACC MAILING LIST");
 		System.out.println("----------------------------------------------------------------------");
 		System.out.println("");
