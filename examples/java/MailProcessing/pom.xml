@@ -32,18 +32,34 @@
 				<artifactId>exec-maven-plugin</artifactId>
 				<executions>
 					<execution>
+						<id>Digest</id>
 						<phase>test</phase>
 						<goals>
 							<goal>java</goal>
 						</goals>
+						<configuration>
+							<mainClass>Digest</mainClass>
+							<arguments>
+								<argument>${project.basedir}/sampleMailFile</argument>
+								<argument>${project.basedir}/digestFile</argument>
+							</arguments>
+						</configuration>
+					</execution>
+					<execution>
+						<id>Faq</id>
+						<phase>test</phase>
+						<goals>
+							<goal>java</goal>
+						</goals>
+						<configuration>
+							<mainClass>Faq</mainClass>
+							<arguments>
+								<argument>1</argument>
+								<argument>${project.basedir}/sampleMailFile</argument>
+							</arguments>
+						</configuration>
 					</execution>
 				</executions>
-				<configuration>
-					<mainClass>Digest</mainClass>
-					<arguments>
-						<argument>sampleMailFile</argument>
-					</arguments>
-				</configuration>
 			</plugin>
 		</plugins>
 	</build>
