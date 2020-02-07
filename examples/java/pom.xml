@@ -53,14 +53,9 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>javacc-maven-plugin</artifactId>
-				<executions>
-					<execution>
-						<configuration>
-							<codeGenerator>Java</codeGenerator>
-						</configuration>
-					</execution>
-
-				</executions>
+				<configuration>
+					<codeGenerator>Java</codeGenerator>
+				</configuration>
 			</plugin>
 			<plugin>
 				<artifactId>maven-antrun-plugin</artifactId><inherited>false</inherited>

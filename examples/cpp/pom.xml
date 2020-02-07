@@ -11,9 +11,7 @@
 	<artifactId>cpp</artifactId>
 	<packaging>pom</packaging>
 	<modules>
-<!--
-		<module>CORBA-IDL</module> name clash withh c++ reserved keyword
--->
+		<module>CORBA-IDL</module> 
 		<module>Interpreter</module>
 <!-- 
  		<module>JavaCCGrammar</module>
