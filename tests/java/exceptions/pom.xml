@@ -9,6 +9,22 @@
 	<groupId>org.javacc.tests.java</groupId>
 	<artifactId>exceptions</artifactId>
 	<name>exceptions</name>
+	<dependencies>
+		<dependency>
+			<groupId>org.easytesting</groupId>
+			<artifactId>fest-reflect</artifactId>
+			<version>1.4.1</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.javacc</groupId>
+			<artifactId>parser</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.javacc.codegen</groupId>
+			<artifactId>java</artifactId>
+		</dependency>
+	</dependencies>
 	<build>
 		<plugins>
 			<plugin>
@@ -38,26 +54,10 @@
 						</goals>
 					</execution>
 				</executions>
-				<configuration>
+				<configuration><skip>true</skip>
 					<mainClass>Parser</mainClass>
 				</configuration>
 			</plugin>
 		</plugins>
 	</build>
-	<dependencies>
-		<dependency>
-			<groupId>org.easytesting</groupId>
-			<artifactId>fest-reflect</artifactId>
-			<version>1.4.1</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.javacc</groupId>
-			<artifactId>parser</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.javacc.codegen</groupId>
-			<artifactId>java</artifactId>
-		</dependency>
-	</dependencies>
 </project>
