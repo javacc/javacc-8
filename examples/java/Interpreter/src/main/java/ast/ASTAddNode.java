@@ -1,3 +1,6 @@
+package ast;
+import ast.SimpleNode;
+
 /* Copyright (c) 2006, Sun Microsystems, Inc.
  * All rights reserved.
  *

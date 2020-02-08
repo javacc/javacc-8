@@ -1,3 +1,4 @@
+package ast;
 /* Copyright (c) 2006, Sun Microsystems, Inc.
  * All rights reserved.
  *

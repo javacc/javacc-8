@@ -51,7 +51,7 @@
 							<goal>java</goal>
 						</goals>
 						<configuration>
-							<mainClass>SPL</mainClass>
+							<mainClass>ast.SPL</mainClass>
 							<arguments>
 								<argument>${project.basedir}/spl/fact.spl</argument>
 								<argument>${project.basedir}/spl/fact.in</argument>
@@ -67,7 +67,7 @@
 							<goal>java</goal>
 						</goals>
 						<configuration>
-							<mainClass>SPL</mainClass>
+							<mainClass>ast.SPL</mainClass>
 							<arguments>
 								<argument>${project.basedir}/spl/odd.spl</argument>
 								<argument>${project.basedir}/spl/odd.in</argument>
@@ -83,7 +83,7 @@
 							<goal>java</goal>
 						</goals>
 						<configuration>
-							<mainClass>SPL</mainClass>
+							<mainClass>ast.SPL</mainClass>
 							<arguments>
 								<argument>${project.basedir}/spl/sqrt.spl</argument>
 								<argument>${project.basedir}/spl/sqrt.in</argument>

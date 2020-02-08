@@ -1,3 +1,4 @@
+package ast;
 /* Copyright (c) 2006, Sreenivasa Viswanadha <sreeni@viswanadha.net>
  * All rights reserved.
  *

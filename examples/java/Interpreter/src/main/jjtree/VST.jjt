@@ -27,14 +27,20 @@
  */
 
 options {
+	VISITOR=true;
+	NODE_DEFAULT_VOID=true;
+	VISITOR_DATA_TYPE="Object";
+	VISITOR_RETURN_TYPE="void";
     MULTI=true;
-    NODE_EXTENDS="MyNode";
+//  NODE_EXTENDS="MyNode";
     TRACK_TOKENS=true;
-    NODE_PACKAGE="ast";
+	DEBUG_PARSER=true;
+//	DEBUG_TOKEN_MANAGER=true;
+    NODE_PACKAGE="vst";
 }
 
 PARSER_BEGIN(SPLParser)
-package ast;
+package vst;
 
 class SPLParser {
 }
