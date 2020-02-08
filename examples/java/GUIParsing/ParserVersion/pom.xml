@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.javacc.examples.java</groupId>
 		<artifactId>GUIParsing</artifactId>
-		<version>8.0.0</version>
+		<version>${javacc.parser}</version>
 	</parent>
 	<name>JavaCC examples Java GUIParsing ParserVersion</name>
 	<groupId>org.javacc.examples.java.guiparsing</groupId>

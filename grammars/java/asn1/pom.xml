@@ -3,7 +3,7 @@
   <parent>
     <groupId>org.javacc.grammars</groupId>
     <artifactId>java</artifactId>
-    <version>8.0.0</version>
+    <version>${javacc.parser}</version>
   </parent>
   <groupId>org.javacc.grammars.java</groupId>
   <artifactId>asn1</artifactId>

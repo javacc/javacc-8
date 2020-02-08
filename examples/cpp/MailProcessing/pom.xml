@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.javacc.examples</groupId>
 		<artifactId>cpp</artifactId>
-		<version>8.0.0</version>
+		<version>${javacc.parser}</version>
 	</parent>
 	<groupId>org.javacc.examples.cpp</groupId>
 	<artifactId>MailProcessing</artifactId>
@@ -18,17 +18,17 @@
 					<dependency>
 						<groupId>org.javacc</groupId>
 						<artifactId>parser</artifactId>
-						<version>8.0.0</version>
+						<version>${javacc.parser}</version>
 					</dependency>
 					<dependency>
 						<groupId>org.javacc.codegen</groupId>
 						<artifactId>java</artifactId>
-						<version>8.0.0</version>
+						<version>${javacc.parser}</version>
 					</dependency>
 					<dependency>
 						<groupId>org.javacc.codegen</groupId>
 						<artifactId>cpp</artifactId>
-						<version>8.0.0</version>
+						<version>${javacc.parser}</version>
 					</dependency>
 				</dependencies>
 				<executions>

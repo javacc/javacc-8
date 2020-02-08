@@ -125,6 +125,11 @@
 -->
 		<javacc-maven-plugin>3.0.0-SNAPSHOT</javacc-maven-plugin>
 		<exec-maven-plugin>1.6.0</exec-maven-plugin>
+		<javacc.parser>8.0.0</javacc.parser>
+		<javacc.java>8.0.0</javacc.java>
+		<javacc.cpp>8.0.0</javacc.cpp>
+		<javacc.java>8.0.0</javacc.java>
+		<javacc.csharp>8.0.0</javacc.csharp>
 	</properties>
 
 	<dependencyManagement>
@@ -132,22 +137,22 @@
 			<dependency>
 				<groupId>org.javacc</groupId>
 				<artifactId>parser</artifactId>
-				<version>8.0.0</version>
+				<version>${javacc.parser}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.javacc.codegen</groupId>
 				<artifactId>csharp</artifactId>
-				<version>8.0.0</version>
+				<version>${javacc.csharp}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.javacc.codegen</groupId>
 				<artifactId>cpp</artifactId>
-				<version>8.0.0</version>
+				<version>${javacc.cpp}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.javacc.codegen</groupId>
 				<artifactId>java</artifactId>
-				<version>8.0.0</version>
+				<version>${javacc.java}</version>
 			</dependency>
 			<dependency>
 				<groupId>junit</groupId>
