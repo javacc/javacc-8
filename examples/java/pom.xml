@@ -24,6 +24,7 @@
 		<module>Transformer</module>
 		<module>VTransformer</module>
 		<module>Obfuscator</module>
+		<module>Simple</module>
 	</modules>
 	<build>
 		<pluginManagement>
