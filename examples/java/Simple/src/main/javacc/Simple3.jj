@@ -26,22 +26,50 @@
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+PARSER_BEGIN(Simple3)
+package simple3;
 
-PARSER_BEGIN(IdList)
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.PrintStream;
 
-/** ID lister. */
-public class IdList {
+/** Simple brace matcher. */
+public class Simple3 {
 
   /** Main entry point. */
-  public static void main(String args[]) throws ParseException {
-    IdList parser = new IdList(System.in);
-    parser.Input();
+  public static void main(String args[]) throws ParseException, FileNotFoundException {
+    InputStream input = System.in;
+    PrintStream output = System.out;
+    PrintStream error = System.err;
+    InputStream prevInput = null;
+    PrintStream prevOutput = null;
+    PrintStream prevError = null;
+    if (args.length == 3) {
+    	prevInput = input;   	input = new FileInputStream(args[0]);
+    	prevOutput = output;   	output = new PrintStream(args[1]);
+    	prevError = error;   	error  = new PrintStream(args[2]);
+       	System.setIn(input);
+       	System.setOut(output);
+       	System.setErr(error);
+    }
+    try {
+	    Simple3 parser = new Simple3(System.in);
+    	parser.Input();
+    	output.println("matched");
+    } catch (Exception e) {
+      	error.println(e.getMessage());
+    } finally {
+        if (prevInput != null)  System.setIn(prevInput);
+        if (prevOutput != null) System.setOut(prevOutput);
+        if (prevError != null)  System.setErr(prevError);
+    }
   }
 
 }
 
-PARSER_END(IdList)
+PARSER_END(Simple3)
 
 SKIP :
 {
@@ -53,12 +81,22 @@ SKIP :
 
 TOKEN :
 {
-  < Id: ["a"-"z","A"-"Z"] ( ["a"-"z","A"-"Z","0"-"9"] )* >
+  <LBRACE: "{">
+| <RBRACE: "}">
 }
 
-/** Top level production. */
+/** Root production. */
 void Input() :
-{}
+{ int count; }
 {
-  ( <Id> )+ <EOF>
+  count=MatchedBraces() <EOF>
+  { System.out.println("The levels of nesting is " + count); }
+}
+
+/** Brace counting production. */
+int MatchedBraces() :
+{ int nested_count=0; }
+{
+  <LBRACE> [ nested_count=MatchedBraces() ] <RBRACE>
+  { return ++nested_count; }
 }
