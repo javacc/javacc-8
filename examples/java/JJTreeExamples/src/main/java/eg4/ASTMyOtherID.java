@@ -1,3 +1,8 @@
+package eg4;
+import eg4.Eg4;
+import eg4.Eg4Visitor;
+import eg4.SimpleNode;
+
 public
 class ASTMyOtherID extends SimpleNode {
   private String name;

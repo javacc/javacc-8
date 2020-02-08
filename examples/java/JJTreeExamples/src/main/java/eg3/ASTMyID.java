@@ -1,3 +1,7 @@
+package eg3;
+import eg3.SimpleNode;
+import eg3.ASTMyID;
+
 /* Copyright (c) 2006, Sun Microsystems, Inc.
  * All rights reserved.
  *

@@ -30,10 +30,12 @@
 options {
   MULTI=true;
   NODE_DEFAULT_VOID=true;
-  CODE_GENERATOR="Java";
+  NODE_PACKAGE="eg3";
 }
 
 PARSER_BEGIN(Eg3)
+package eg3;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;

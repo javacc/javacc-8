@@ -1,3 +1,11 @@
+package eg4;
+import eg4.ASTAdd;
+import eg4.ASTInteger;
+import eg4.ASTMult;
+import eg4.ASTStart;
+import eg4.Eg4Visitor;
+import eg4.SimpleNode;
+
 /* Copyright (c) 2006, Sun Microsystems, Inc.
  * All rights reserved.
  *

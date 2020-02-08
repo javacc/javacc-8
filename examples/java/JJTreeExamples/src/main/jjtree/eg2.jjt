@@ -30,10 +30,12 @@
 options {
   MULTI=true;
   KEEP_LINE_COLUMN = false;
-  CODE_GENERATOR="Java";
+  NODE_PACKAGE="eg2";
 }
 
 PARSER_BEGIN(Eg2)
+package eg2;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;

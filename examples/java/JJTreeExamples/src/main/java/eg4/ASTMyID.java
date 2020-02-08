@@ -1,3 +1,6 @@
+package eg4;
+import eg4.SimpleNode;
+
 /* Copyright (c) 2006, Sun Microsystems, Inc.
  * All rights reserved.
  *
