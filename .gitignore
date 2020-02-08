@@ -41,3 +41,8 @@ test/**/*.jjt
 Debug/
 Release/
 .vs/
+vs2017/
+/1.html
+/2.html
+/3.html
+/index.html
