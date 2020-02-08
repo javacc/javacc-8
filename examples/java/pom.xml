@@ -14,7 +14,7 @@
 	<modules>
 		<module>CORBA-IDL</module>
 <!-- 
-		<module>GUIParsing</module>
+		<module>GUIParsing</module> Use an applet
 -->
 		<module>Interpreter</module>
 		<module>JavaCCGrammar</module>
