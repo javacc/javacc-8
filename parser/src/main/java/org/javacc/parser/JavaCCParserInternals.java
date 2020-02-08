@@ -40,15 +40,15 @@ public abstract class JavaCCParserInternals {
     first_cu_token = null;
     insertionpoint1set = false;
     insertionpoint2set = false;
-    nextFreeLexState = 1;
+    nextFreeLexState = 0;
     System.out.println("");
   }
 
   static protected void initialize() {
-    Integer i = Integer.valueOf(0);
-    JavaCCGlobals.lexstate_S2I.put("DEFAULT", i);
-    JavaCCGlobals.lexstate_I2S.put(i, "DEFAULT");
-    JavaCCGlobals.simple_tokens_table.put("DEFAULT", new Hashtable<String, Hashtable<String, RegularExpression>>());
+//    Integer i = Integer.valueOf(0);
+//    JavaCCGlobals.lexstate_S2I.put("DEFAULT", i);
+//    JavaCCGlobals.lexstate_I2S.put(i, "DEFAULT");
+//    JavaCCGlobals.simple_tokens_table.put("DEFAULT", new Hashtable<String, Hashtable<String, RegularExpression>>());
   }
 
   static protected void addcuname(String id) {
