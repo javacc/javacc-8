@@ -7,8 +7,8 @@
 		<artifactId>java</artifactId>
 	</parent>
 	<groupId>org.javacc.examples.java</groupId>
-	<artifactId>jjtreeexamples</artifactId>
-	<name>JavaCC examples Java JJTreeExamples EG1</name>
+	<artifactId>JJTreeExamples</artifactId>
+	<name>JavaCC examples Java JJTreeExamples</name>
 	<build>
 		<plugins>
 			<plugin>
