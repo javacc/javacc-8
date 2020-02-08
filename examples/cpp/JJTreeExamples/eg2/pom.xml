@@ -39,7 +39,6 @@
 							<goal>jjtree-javacc</goal>
 						</goals>
 						<configuration>
-							<codeGenerator>C++</codeGenerator>
 							<outputDirectory>${project.basedir}/target/generated-sources/cpp</outputDirectory>
 							<nodeDirectory>${project.basedir}/src/main/cpp</nodeDirectory>
 						</configuration>
