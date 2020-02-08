@@ -368,7 +368,7 @@ public class LexGen {
       StringBuilder sb = new StringBuilder();
       for (int k = 0; k < act.getActionTokens().size(); k++) {
         sb.append(act.getActionTokens().get(k).image);
-        sb.append(" ");
+//        sb.append(" ");
       }
       actionStrings.put(i, sb.toString());
     }
