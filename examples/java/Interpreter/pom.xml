@@ -53,10 +53,10 @@
 						<configuration>
 							<mainClass>ast.SPL</mainClass>
 							<arguments>
-								<argument>${project.basedir}/spl/fact.spl</argument>
-								<argument>${project.basedir}/spl/fact.in</argument>
-								<argument>${project.basedir}/spl/fact.out</argument>
-								<argument>${project.basedir}/spl/fact.err</argument>
+								<argument>${project.basedir}/spl/fact/fact.spl</argument>
+								<argument>${project.basedir}/spl/fact/fact.in</argument>
+								<argument>${project.basedir}/spl/fact/fact.out</argument>
+								<argument>${project.basedir}/spl/fact/fact.err</argument>
 							</arguments>
 						</configuration>
 					</execution>
@@ -69,10 +69,10 @@
 						<configuration>
 							<mainClass>ast.SPL</mainClass>
 							<arguments>
-								<argument>${project.basedir}/spl/odd.spl</argument>
-								<argument>${project.basedir}/spl/odd.in</argument>
-								<argument>${project.basedir}/spl/odd.out</argument>
-								<argument>${project.basedir}/spl/odd.err</argument>
+								<argument>${project.basedir}/spl/odd/odd.spl</argument>
+								<argument>${project.basedir}/spl/odd/odd.in</argument>
+								<argument>${project.basedir}/spl/odd/odd.out</argument>
+								<argument>${project.basedir}/spl/odd/odd.err</argument>
 							</arguments>
 						</configuration>
 					</execution>
@@ -85,10 +85,10 @@
 						<configuration>
 							<mainClass>ast.SPL</mainClass>
 							<arguments>
-								<argument>${project.basedir}/spl/sqrt.spl</argument>
-								<argument>${project.basedir}/spl/sqrt.in</argument>
-								<argument>${project.basedir}/spl/sqrt.out</argument>
-								<argument>${project.basedir}/spl/sqrt.err</argument>
+								<argument>${project.basedir}/spl/sqrt/sqrt.spl</argument>
+								<argument>${project.basedir}/spl/sqrt/sqrt.in</argument>
+								<argument>${project.basedir}/spl/sqrt/sqrt.out</argument>
+								<argument>${project.basedir}/spl/sqrt/sqrt.err</argument>
 							</arguments>
 						</configuration>
 					</execution>
@@ -106,14 +106,14 @@
 						</goals>
 						<configuration>
 							<target>
-								<available file="${project.basedir}/spl/fact.out" property="isActualAvailable" />
-								<fail unless="isActualAvailable" message="${project.basedir}/spl/fact.out does not exist!" />
-								<available file="${project.basedir}/spl/fact.ref" property="isExpectedAvailable" />
-								<fail unless="isExpectedAvailable" message="${project.basedir}/spl/fact.ref does not exist!" />
+								<available file="${project.basedir}/spl/fact/fact.out" property="isActualAvailable" />
+								<fail unless="isActualAvailable" message="${project.basedir}/spl/fact/fact.out does not exist!" />
+								<available file="${project.basedir}/spl/fact/fact.ref" property="isExpectedAvailable" />
+								<fail unless="isExpectedAvailable" message="${project.basedir}/spl/fact/fact.ref does not exist!" />
 								<condition property="files.match">
-									<filesmatch file1="${project.basedir}/spl/fact.out" file2="${project.basedir}/spl/fact.ref" />
+									<filesmatch file1="${project.basedir}/spl/fact/fact.out" file2="${project.basedir}/spl/fact/fact.ref" />
 								</condition>
-								<fail unless="files.match" message="${project.basedir}/spl/fact.out does not match ${project.basedir}/spl/fact.ref!" />
+								<fail unless="files.match" message="${project.basedir}/spl/fact/fact.out does not match ${project.basedir}/spl/fact/fact.ref!" />
 							</target>
 						</configuration>
 					</execution>
@@ -125,14 +125,14 @@
 						</goals>
 						<configuration>
 							<target>
-								<available file="${project.basedir}/spl/odd.out" property="isActualAvailable" />
-								<fail unless="isActualAvailable" message="${project.basedir}/spl/odd.out does not exist!" />
-								<available file="${project.basedir}/spl/odd.ref" property="isExpectedAvailable" />
-								<fail unless="isExpectedAvailable" message="${project.basedir}/spl/odd.ref does not exist!" />
+								<available file="${project.basedir}/spl/odd/odd.out" property="isActualAvailable" />
+								<fail unless="isActualAvailable" message="${project.basedir}/spl/odd/odd.out does not exist!" />
+								<available file="${project.basedir}/spl/odd/odd.ref" property="isExpectedAvailable" />
+								<fail unless="isExpectedAvailable" message="${project.basedir}/spl/odd/odd.ref does not exist!" />
 								<condition property="files.match">
-									<filesmatch file1="${project.basedir}/spl/odd.out" file2="${project.basedir}/spl/odd.ref" />
+									<filesmatch file1="${project.basedir}/spl/odd/odd.out" file2="${project.basedir}/spl/odd/odd.ref" />
 								</condition>
-								<fail unless="files.match" message="${project.basedir}/spl/odd.out does not match ${project.basedir}/spl/odd.ref!" />
+								<fail unless="files.match" message="${project.basedir}/spl/odd/odd.out does not match ${project.basedir}/spl/odd/odd.ref!" />
 							</target>
 						</configuration>
 					</execution>
@@ -144,14 +144,14 @@
 						</goals>
 						<configuration>
 							<target>
-								<available file="${project.basedir}/spl/sqrt.out" property="isActualAvailable" />
-								<fail unless="isActualAvailable" message="${project.basedir}/spl/sqrt.out does not exist!" />
-								<available file="${project.basedir}/spl/sqrt.ref" property="isExpectedAvailable" />
-								<fail unless="isExpectedAvailable" message="${project.basedir}/spl/sqrt.ref does not exist!" />
+								<available file="${project.basedir}/spl/sqrt/sqrt.out" property="isActualAvailable" />
+								<fail unless="isActualAvailable" message="${project.basedir}/spl/sqrt/sqrt.out does not exist!" />
+								<available file="${project.basedir}/spl/sqrt/sqrt.ref" property="isExpectedAvailable" />
+								<fail unless="isExpectedAvailable" message="${project.basedir}/spl/sqrt/sqrt.ref does not exist!" />
 								<condition property="files.match">
-									<filesmatch file1="${project.basedir}/spl/sqrt.out" file2="${project.basedir}/spl/sqrt.ref" />
+									<filesmatch file1="${project.basedir}/spl/sqrt/sqrt.out" file2="${project.basedir}/spl/sqrt/sqrt.ref" />
 								</condition>
-								<fail unless="files.match" message="${project.basedir}/spl/sqrt.out does not match ${project.basedir}/spl/sqrt.ref!" />
+								<fail unless="files.match" message="${project.basedir}/spl/sqrt/sqrt.out does not match ${project.basedir}/spl/sqrt/sqrt.ref!" />
 							</target>
 						</configuration>
 					</execution>
