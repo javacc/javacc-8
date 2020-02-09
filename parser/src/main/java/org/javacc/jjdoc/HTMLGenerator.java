@@ -41,13 +41,13 @@ import java.util.Hashtable;
 /**
  * Output BNF in HTML 3.2 format.
  */
-public class HTMLGenerator extends TextGenerator implements Generator {
+public class HTMLGenerator extends TextGenerator {
 
   private final Hashtable<String, String> id_map = new Hashtable<>();
   private int                             id     = 1;
 
-  public HTMLGenerator() {
-    super();
+  public HTMLGenerator(JJDocContext context) {
+    super(context);
   }
 
   protected String get_id(String nt) {
@@ -91,8 +91,8 @@ public class HTMLGenerator extends TextGenerator implements Generator {
     println("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 3.2//EN\">");
     println("<HTML>");
     println("<HEAD>");
-    if (!"".equals(JJDocOptions.getCSS())) {
-      println("<LINK REL=\"stylesheet\" type=\"text/css\" href=\"" + JJDocOptions.getCSS() + "\"/>");
+    if (!"".equals(context.getCSS())) {
+      println("<LINK REL=\"stylesheet\" type=\"text/css\" href=\"" + context.getCSS() + "\"/>");
     }
     if (JJDocGlobals.input_file != null) {
       println("<TITLE>BNF for " + JJDocGlobals.input_file + "</TITLE>");
@@ -135,7 +135,7 @@ public class HTMLGenerator extends TextGenerator implements Generator {
     println(" <TR>");
     println("  <TD>");
     println("   <PRE>");
-    String text = JJDoc.getStandardTokenProductionText(tp);
+    String text = JJDoc.getStandardTokenProductionText(tp, context);
     text(text);
     println("   </PRE>");
     println("  </TD>");
@@ -146,14 +146,14 @@ public class HTMLGenerator extends TextGenerator implements Generator {
   @Override
   public void nonterminalsStart() {
     println("<H2 ALIGN=CENTER>NON-TERMINALS</H2>");
-    if (JJDocOptions.getOneTable()) {
+    if (context.getOneTable()) {
       println("<TABLE>");
     }
   }
 
   @Override
   public void nonterminalsEnd() {
-    if (JJDocOptions.getOneTable()) {
+    if (context.getOneTable()) {
       println("</TABLE>");
     }
   }
@@ -185,7 +185,7 @@ public class HTMLGenerator extends TextGenerator implements Generator {
 
   @Override
   public void productionStart(NormalProduction np) {
-    if (!JJDocOptions.getOneTable()) {
+    if (!context.getOneTable()) {
       println("");
       println("<TABLE ALIGN=CENTER>");
       println("<CAPTION><STRONG>" + np.getLhs() + "</STRONG></CAPTION>");
@@ -198,7 +198,7 @@ public class HTMLGenerator extends TextGenerator implements Generator {
 
   @Override
   public void productionEnd(NormalProduction np) {
-    if (!JJDocOptions.getOneTable()) {
+    if (!context.getOneTable()) {
       println("</TABLE>");
       println("<HR>");
     }

@@ -42,7 +42,12 @@ import java.util.Iterator;
 /**
  * Output BNF in HTML 3.2 format.
  */
-public class XTextGenerator extends TextGenerator implements Generator {
+public class XTextGenerator extends TextGenerator {
+
+  public XTextGenerator(JJDocContext context) {
+    super(context);
+  }
+
 
   @Override
   public void handleTokenProduction(TokenProduction tp) {
@@ -52,7 +57,7 @@ public class XTextGenerator extends TextGenerator implements Generator {
     for (Iterator<RegExprSpec> it2 = tp.respecs.iterator(); it2.hasNext();) {
       RegExprSpec res = it2.next();
 
-      String regularExpressionText = JJDoc.emitRE(res.rexp);
+      String regularExpressionText = JJDoc.emitRE(res.rexp, context);
       sb.append(regularExpressionText);
 
       if (res.nsTok != null) {

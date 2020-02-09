@@ -54,29 +54,29 @@ public class JJDocGlobals {
    *
    * @return the generator configured in options or set by setter.
    */
-  public static Generator getGenerator() {
+  public static Generator getGenerator(JJDocContext context) {
     if (JJDocGlobals.generator == null) {
-      if (JJDocOptions.getText()) {
-        JJDocGlobals.generator = new TextGenerator();
-      } else if (JJDocOptions.getBNF()) {
-        JJDocGlobals.generator = new BNFGenerator();
-      } else if (JJDocOptions.getXText()) {
-        JJDocGlobals.generator = new XTextGenerator();
+      if (context.getText()) {
+        JJDocGlobals.generator = new TextGenerator(context);
+      } else if (context.getBNF()) {
+        JJDocGlobals.generator = new BNFGenerator(context);
+      } else if (context.getXText()) {
+        JJDocGlobals.generator = new XTextGenerator(context);
       } else {
-        JJDocGlobals.generator = new HTMLGenerator();
+        JJDocGlobals.generator = new HTMLGenerator(context);
       }
     } else {
-      if (JJDocOptions.getText()) {
+      if (context.getText()) {
         if (JJDocGlobals.generator instanceof HTMLGenerator) {
-          JJDocGlobals.generator = new TextGenerator();
+          JJDocGlobals.generator = new TextGenerator(context);
         }
-      } else if (JJDocOptions.getBNF()) {
-        JJDocGlobals.generator = new BNFGenerator();
-      } else if (JJDocOptions.getXText()) {
-        JJDocGlobals.generator = new XTextGenerator();
+      } else if (context.getBNF()) {
+        JJDocGlobals.generator = new BNFGenerator(context);
+      } else if (context.getXText()) {
+        JJDocGlobals.generator = new XTextGenerator(context);
       } else {
         if (JJDocGlobals.generator instanceof TextGenerator) {
-          JJDocGlobals.generator = new HTMLGenerator();
+          JJDocGlobals.generator = new HTMLGenerator(context);
         }
       }
     }
@@ -88,8 +88,8 @@ public class JJDocGlobals {
    *
    * @param message the message to log
    */
-  public static void info(String message) {
-    JJDocGlobals.getGenerator().info(message);
+  public static void info(JJDocContext context, String message) {
+    JJDocGlobals.getGenerator(context).info(message);
   }
 
   /**
@@ -97,8 +97,8 @@ public class JJDocGlobals {
    *
    * @param message the message to log
    */
-  public static void error(String message) {
-    JJDocGlobals.getGenerator().error(message);
+  public static void error(JJDocContext context, String message) {
+    JJDocGlobals.getGenerator(context).error(message);
   }
 
 

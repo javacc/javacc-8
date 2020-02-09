@@ -252,7 +252,8 @@ public class Main {
         if (Options.isGenerateBoilerplateCode()) {
           if ((!codeGenerator.getTokenCodeGenerator(context)
               .generateCodeForToken(CodeGeneratorSettings.of(Options.getOptions())))
-              || (!codeGenerator.generateHelpers(context, CodeGeneratorSettings.of(Options.getOptions()), tokenizerData))) {
+              || (!codeGenerator.generateHelpers(context, CodeGeneratorSettings.of(Options.getOptions()),
+                  tokenizerData))) {
             context.errors().semantic_error("Could not generate the code for Token or helper classes.");
           }
         }
@@ -265,7 +266,8 @@ public class Main {
             System.out.println("Parser generated successfully.");
           }
         } else {
-          System.out.println("Parser generated with 0 errors and " + context.errors().get_warning_count() + " warnings.");
+          System.out
+              .println("Parser generated with 0 errors and " + context.errors().get_warning_count() + " warnings.");
         }
         return 0;
       } else {
@@ -305,8 +307,6 @@ public class Main {
   }
 
   public static JavaCCContext reInitAll() {
-    JavaCCContext context = new JavaCCContext();
-    Options.init();
-    return context;
+    return new JavaCCContext();
   }
 }

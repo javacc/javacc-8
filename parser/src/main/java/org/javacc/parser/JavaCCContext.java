@@ -31,12 +31,19 @@ package org.javacc.parser;
  * The JavaCC context provides all environment variables for the code generation
  * process.
  */
-public final class JavaCCContext {
+public class JavaCCContext {
 
   private final JavaCCErrors  errors;
   private final JavaCCGlobals globals;
+  private final Options       options;
 
   public JavaCCContext() {
+    this(new Options());
+    Options.init();
+  }
+
+  public JavaCCContext(Options options) {
+    this.options = options;
     this.errors = new JavaCCErrors();
     this.globals = new JavaCCGlobals();
   }
@@ -53,5 +60,12 @@ public final class JavaCCContext {
    */
   public final JavaCCGlobals globals() {
     return globals;
+  }
+
+  /**
+   * Get the options.
+   */
+  public final Options options() {
+    return options;
   }
 }

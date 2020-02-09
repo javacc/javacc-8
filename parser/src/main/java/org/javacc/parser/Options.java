@@ -53,7 +53,7 @@ public class Options {
   /**
    * Limit subclassing to derived classes.
    */
-  protected Options() {}
+  public Options() {}
 
   /**
    * These are options that are not settable by the user themselves, and that
@@ -216,7 +216,7 @@ public class Options {
    * of legal options. Its initial values define the default option values, and
    * the option types can be determined from these values too.
    */
-  protected static Map<String, Object> optionValues = null;
+  public static Map<String, Object> optionValues = null;
 
   /**
    * Initialize for JavaCC
