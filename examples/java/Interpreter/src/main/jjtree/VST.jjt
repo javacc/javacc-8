@@ -28,7 +28,7 @@
 
 options {
 	VISITOR=true;
-	NODE_DEFAULT_VOID=true;
+	NODE_DEFAULT_VOID=false;
 	VISITOR_DATA_TYPE="Object";
 	VISITOR_RETURN_TYPE="void";
     MULTI=true;

@@ -1,13 +1,13 @@
 package vst;
 
-class ASTReadStatement extends SimpleNode {
-	String name;
+public class ASTId extends SimpleNode {
+	 String name;
 
-	public ASTReadStatement(int id) {
+	public ASTId(int id) {
 		super(id);
 	}
 
-	public ASTReadStatement(SPLParser p, int id) {
+	public ASTId(SPLParser p, int id) {
 		super(p, id);
 	}
 
