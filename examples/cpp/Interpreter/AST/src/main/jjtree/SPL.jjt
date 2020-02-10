@@ -31,7 +31,6 @@ options {
     NODE_EXTENDS="MyNode";
     TRACK_TOKENS=true;
 	DEBUG_PARSER=true;
-	DEBUG_TOKEN_MANAGER=true;
 }
 
 PARSER_BEGIN(SPLParser)

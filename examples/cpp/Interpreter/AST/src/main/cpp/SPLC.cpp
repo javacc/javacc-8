@@ -19,12 +19,29 @@ using namespace std;
 #include "SPLParserTokenManager.h"
 #include "ParseException.h"
 
-JAVACC_STRING_TYPE ReadFileFully(char *file_name) {
-	return "(1 + 2) * (a + b);\n";
+JJString ReadFileFully(char *file_name) {
+	JJString code;
+#if 0
+	code =
+		"int n;\n"
+		"int fact;\n"
+		"read n;\n"
+		"fact = 1;\n"
+		"while (n > 1)\n"
+		"{\n"
+		"		fact = fact * n;\n"
+		"		n = n - 1;\n"
+		"}\n"
+		"write fact;\n";
+#else
+	code = "int foo;\nfoo = 3 + 4 * 5 + 6;\nwrite foo;\n";
+#endif
+
+	return code;
 }
 
 int main(int argc, char**argv) {
-	JAVACC_STRING_TYPE s = ReadFileFully(argv[1]);
+	JJString s = ReadFileFully(argv[1]);
 	try {
 		CharStream *stream = new CharStream(s.c_str(), s.size() - 1, 1, 1);
 		SPLParserTokenManager *scanner = new SPLParserTokenManager(stream);
