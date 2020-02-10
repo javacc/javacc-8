@@ -1,6 +1,8 @@
 
 package org.javacc.parser;
 
+import org.javacc.jjtree.JJTreeContext;
+
 public interface CodeGenerator {
 
   /**
@@ -32,5 +34,5 @@ public interface CodeGenerator {
    * TODO(sreeni): Fix this when we do tree annotations in the parser code
    * generator. The JJTree preprocesor.
    */
-  org.javacc.jjtree.DefaultJJTreeVisitor getJJTreeCodeGenerator();
+  org.javacc.jjtree.DefaultJJTreeVisitor getJJTreeCodeGenerator(JJTreeContext context);
 }

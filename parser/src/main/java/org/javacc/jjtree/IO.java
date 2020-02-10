@@ -28,7 +28,6 @@
 
 package org.javacc.jjtree;
 
-import org.javacc.parser.JavaCCContext;
 import org.javacc.parser.JavaCCGlobals;
 import org.javacc.parser.Options;
 
@@ -110,8 +109,8 @@ public final class IO {
   }
 
 
-  private String create_output_file_name(String i) {
-    String o = JJTreeOptions.getOutputFile();
+  private String create_output_file_name(String i,JJTreeContext context) {
+    String o = context.treeOptions().getOutputFile();
 
     if (o.equals("")) {
       int s = i.lastIndexOf(File.separatorChar);
@@ -163,17 +162,16 @@ public final class IO {
     }
   }
 
-  void setOutput(JavaCCContext context) throws JJTreeIOException {
+  void setOutput(JJTreeContext context) throws JJTreeIOException {
     try {
-      JavaCCGlobals.createOutputDir(JJTreeOptions.getJJTreeOutputDirectory(), context);
-      File ofile = new File(JJTreeOptions.getJJTreeOutputDirectory(), create_output_file_name(ifn));
+      JavaCCGlobals.createOutputDir(context.treeOptions().getJJTreeOutputDirectory(), context);
+      File ofile = new File(context.treeOptions().getJJTreeOutputDirectory(), create_output_file_name(ifn, context));
       ofn = ofile.toString();
       out = new PrintWriter(new FileWriter(ofile));
     } catch (IOException ioe) {
       throw new JJTreeIOException("Can't create output file " + ofn);
     }
   }
-
 }
 
 /* end */

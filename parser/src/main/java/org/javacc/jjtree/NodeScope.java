@@ -36,14 +36,15 @@ public class NodeScope {
   public String            closedVar;
   public String            exceptionVar;
   public String            nodeVar;
+  
   private final int        scopeNumber;
 
-  public NodeScope(ASTProduction p, ASTNodeDescriptor n) {
+  public NodeScope(ASTProduction p, ASTNodeDescriptor n, JJTreeContext context) {
     production = p;
 
     if (n == null) {
       String nm = production.name;
-      if (JJTreeOptions.getNodeDefaultVoid()) {
+      if (context.treeOptions().getNodeDefaultVoid()) {
         nm = "void";
       }
       node_descriptor = ASTNodeDescriptor.indefinite(nm);

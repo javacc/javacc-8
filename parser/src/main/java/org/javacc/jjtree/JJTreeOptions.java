@@ -31,7 +31,6 @@
 
 package org.javacc.jjtree;
 
-import org.javacc.parser.JavaCCContext;
 import org.javacc.parser.Options;
 
 import java.io.File;
@@ -49,70 +48,11 @@ public class JJTreeOptions extends Options {
   protected JJTreeOptions() {}
 
   /**
-   * Initialize the JJTree-specific options.
-   */
-  public static void init() {
-    Options.init();
-    Options.optionValues.put("MULTI", Boolean.FALSE);
-    Options.optionValues.put("NODE_DEFAULT_VOID", Boolean.FALSE);
-    Options.optionValues.put("NODE_SCOPE_HOOK", Boolean.FALSE);
-    Options.optionValues.put("NODE_USES_PARSER", Boolean.FALSE);
-    Options.optionValues.put("BUILD_NODE_FILES", Boolean.TRUE);
-    Options.optionValues.put("VISITOR", Boolean.FALSE);
-    Options.optionValues.put("VISITOR_METHOD_NAME_INCLUDES_TYPE_NAME", Boolean.FALSE);
-    Options.optionValues.put("TRACK_TOKENS", Boolean.FALSE);
-
-    Options.optionValues.put("NODE_PREFIX", "AST");
-    Options.optionValues.put("NODE_PACKAGE", "");
-    Options.optionValues.put("NODE_EXTENDS", "");
-    Options.optionValues.put("NODE_CLASS", "");
-    Options.optionValues.put("NODE_FACTORY", "");
-    Options.optionValues.put("NODE_INCLUDES", "");
-    Options.optionValues.put("OUTPUT_FILE", "");
-    Options.optionValues.put("VISITOR_DATA_TYPE", "");
-    Options.optionValues.put("VISITOR_RETURN_TYPE", "Object");
-    Options.optionValues.put("VISITOR_EXCEPTION", "");
-
-    Options.optionValues.put("NODE_DIRECTORY", "");
-    Options.optionValues.put("JJTREE_OUTPUT_DIRECTORY", "");
-
-
-    // TODO :: 2013/07/23 -- This appears to be a duplicate from the parent
-    // class
-    Options.optionValues.put(Options.USEROPTION__JDK_VERSION, "1.5");
-
-    // Also appears to be a duplicate
-    Options.optionValues.put(Options.USEROPTION__NAMESPACE, "");
-
-    // Also appears to be a duplicate
-    Options.optionValues.put(Options.USEROPTION__IGNORE_ACTIONS, Boolean.FALSE);
-  }
-
-  /**
-   * Check options for consistency
-   */
-  static void validate(JavaCCContext context) {
-    if (!JJTreeOptions.getVisitor()) {
-      if (JJTreeOptions.getVisitorDataType().length() > 0) {
-        context.errors().warning("VISITOR_DATA_TYPE option will be ignored since VISITOR is false");
-      }
-      if ((JJTreeOptions.getVisitorReturnType().length() > 0)
-          && !JJTreeOptions.getVisitorReturnType().equals("Object")) {
-        context.errors().warning("VISITOR_RETURN_TYPE option will be ignored since VISITOR is false");
-      }
-      if (JJTreeOptions.getVisitorException().length() > 0) {
-        context.errors().warning("VISITOR_EXCEPTION option will be ignored since VISITOR is false");
-      }
-    }
-  }
-
-
-  /**
    * Find the multi value.
    *
    * @return The requested multi value.
    */
-  public static boolean getMulti() {
+  public final boolean getMulti() {
     return Options.booleanValue("MULTI");
   }
 
@@ -121,7 +61,7 @@ public class JJTreeOptions extends Options {
    *
    * @return The requested node default void value.
    */
-  public static boolean getNodeDefaultVoid() {
+  public final boolean getNodeDefaultVoid() {
     return Options.booleanValue("NODE_DEFAULT_VOID");
   }
 
@@ -130,7 +70,7 @@ public class JJTreeOptions extends Options {
    *
    * @return The requested node scope hook value.
    */
-  public static boolean getNodeScopeHook() {
+  public final boolean getNodeScopeHook() {
     return Options.booleanValue("NODE_SCOPE_HOOK");
   }
 
@@ -139,7 +79,7 @@ public class JJTreeOptions extends Options {
    *
    * @return The requested node factory value.
    */
-  public static String getNodeFactory() {
+  public final String getNodeFactory() {
     return Options.stringValue("NODE_FACTORY");
   }
 
@@ -148,7 +88,7 @@ public class JJTreeOptions extends Options {
    *
    * @return The requested node uses parser value.
    */
-  public static boolean getNodeUsesParser() {
+  public final boolean getNodeUsesParser() {
     return Options.booleanValue("NODE_USES_PARSER");
   }
 
@@ -157,7 +97,7 @@ public class JJTreeOptions extends Options {
    *
    * @return The requested build node files value.
    */
-  public static boolean getBuildNodeFiles() {
+  public final boolean getBuildNodeFiles() {
     return Options.booleanValue("BUILD_NODE_FILES");
   }
 
@@ -166,7 +106,7 @@ public class JJTreeOptions extends Options {
    *
    * @return The requested visitor value.
    */
-  public static boolean getVisitor() {
+  public final boolean getVisitor() {
     return Options.booleanValue("VISITOR");
   }
 
@@ -175,7 +115,7 @@ public class JJTreeOptions extends Options {
    *
    * @return The requested trackTokens value.
    */
-  public static boolean getTrackTokens() {
+  public final boolean getTrackTokens() {
     return Options.booleanValue("TRACK_TOKENS");
   }
 
@@ -184,7 +124,7 @@ public class JJTreeOptions extends Options {
    *
    * @return The requested node prefix value.
    */
-  public static String getNodePrefix() {
+  public final String getNodePrefix() {
     return Options.stringValue("NODE_PREFIX");
   }
 
@@ -193,7 +133,7 @@ public class JJTreeOptions extends Options {
    *
    * @return The requested node super class
    */
-  public static String getNodeExtends() {
+  public final String getNodeExtends() {
     return Options.stringValue("NODE_EXTENDS");
   }
 
@@ -202,7 +142,7 @@ public class JJTreeOptions extends Options {
    *
    * @return The requested node class
    */
-  public static String getNodeClass() {
+  public final String getNodeClass() {
     return Options.stringValue("NODE_CLASS");
   }
 
@@ -211,7 +151,7 @@ public class JJTreeOptions extends Options {
    *
    * @return The requested node package value.
    */
-  public static String getNodePackage() {
+  public final String getNodePackage() {
     return Options.stringValue("NODE_PACKAGE");
   }
 
@@ -220,7 +160,7 @@ public class JJTreeOptions extends Options {
    *
    * @return The requested output file value.
    */
-  public static String getOutputFile() {
+  public final String getOutputFile() {
     return Options.stringValue("OUTPUT_FILE");
   }
 
@@ -229,7 +169,7 @@ public class JJTreeOptions extends Options {
    *
    * @return The requested visitor exception value.
    */
-  public static String getVisitorException() {
+  public final String getVisitorException() {
     return Options.stringValue("VISITOR_EXCEPTION");
   }
 
@@ -238,7 +178,7 @@ public class JJTreeOptions extends Options {
    *
    * @return The requested visitor data type value.
    */
-  public static String getVisitorDataType() {
+  public final String getVisitorDataType() {
     return Options.stringValue("VISITOR_DATA_TYPE");
   }
 
@@ -247,7 +187,7 @@ public class JJTreeOptions extends Options {
    *
    * @return The requested visitor return type value.
    */
-  public static String getVisitorReturnType() {
+  public final String getVisitorReturnType() {
     return Options.stringValue("VISITOR_RETURN_TYPE");
   }
 
@@ -258,7 +198,7 @@ public class JJTreeOptions extends Options {
    *
    * @return The requested JJTree output directory
    */
-  public static File getJJTreeOutputDirectory() {
+  public final File getJJTreeOutputDirectory() {
     final String dirName = Options.stringValue("JJTREE_OUTPUT_DIRECTORY");
     File dir = null;
 
@@ -276,16 +216,15 @@ public class JJTreeOptions extends Options {
    *
    * @return the requested NODE_DIRECTORY directory
    */
-  public static File getASTNodeDirectory() {
+  public final File getASTNodeDirectory() {
     final String dirName = Options.stringValue("NODE_DIRECTORY");
     File dir = null;
 
     if ("".equals(dirName)) {
-      dir = JJTreeOptions.getJJTreeOutputDirectory();
+      dir = getJJTreeOutputDirectory();
     } else {
       dir = new File(dirName);
     }
-
     return dir;
   }
 }

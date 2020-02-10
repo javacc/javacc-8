@@ -32,7 +32,6 @@
 package org.javacc.jjtree;
 
 import org.javacc.parser.CodeGenerator;
-import org.javacc.parser.JavaCCContext;
 import org.javacc.parser.JavaCCGlobals;
 import org.javacc.parser.Options;
 
@@ -123,8 +122,7 @@ public class JJTree {
     io = new IO();
 
     try {
-      JavaCCContext context = new JavaCCContext();
-      JJTreeOptions.init();
+      JJTreeContext context = new JJTreeContext();
       JJTreeGlobals.initialize();
 
       if (args.length == 0) {
@@ -149,7 +147,7 @@ public class JJTree {
         Options.setCmdLineOption(args[arg]);
       }
 
-      JJTreeOptions.validate(context);
+      context.validate();
 
       try {
         io.setInput(fn);
@@ -196,13 +194,13 @@ public class JJTree {
     }
   }
 
-  private static void generateIO(IO io, ASTGrammar grammar, JavaCCContext context) throws IOException {
+  private static void generateIO(IO io, ASTGrammar grammar, JJTreeContext context) throws IOException {
     // TODO :: CBA -- Require Unification of output language specific processing
     // into a single Enum class
     CodeGenerator codeGenerator = context.globals().getCodeGenerator(context);
     if (codeGenerator != null) {
-      codeGenerator.getJJTreeCodeGenerator().visit(grammar, io);
-      codeGenerator.getJJTreeCodeGenerator().generateHelperFiles(context);
+      codeGenerator.getJJTreeCodeGenerator(context).visit(grammar, io);
+      codeGenerator.getJJTreeCodeGenerator(context).generateHelperFiles();
     } else {
       // Catch all to ensure we don't accidently do nothing
       throw new RuntimeException("No valid CodeGenerator for JJTree : " + Options.getCodeGenerator());

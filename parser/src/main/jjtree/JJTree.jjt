@@ -40,11 +40,11 @@ PARSER_BEGIN(JJTreeParser)
 
 package org.javacc.jjtree;
 
-import org.javacc.parser.JavaCCContext;
+import org.javacc.jjtree.JJTreeContext;
 
 public class JJTreeParser {
 
-  private JavaCCContext context;
+  private JJTreeContext context;
 
   void jjtreeOpenNodeScope(Node n)
   {
@@ -366,7 +366,7 @@ TOKEN :
  * THE JAVACC GRAMMAR SPECIFICATION STARTS HERE *
  ************************************************/
 
-void javacc_input(JavaCCContext context) #Grammar :
+void javacc_input(JJTreeContext context) #Grammar :
 	{
 	  Token t;
 	  this.context = context;
@@ -391,10 +391,10 @@ void javacc_input(JavaCCContext context) #Grammar :
     CompilationUnit()
     "PARSER_END" "(" identifier() ")"
 	{
-	  if (JJTreeOptions.getNodePackage().equals("")) {
+	  if (context.treeOptions().getNodePackage().equals("")) {
 	    JJTreeGlobals.nodePackageName = JJTreeGlobals.packageName;
 	  } else {
-	    JJTreeGlobals.nodePackageName = JJTreeOptions.getNodePackage();
+	    JJTreeGlobals.nodePackageName = context.treeOptions().getNodePackage();
 	  }
 	}
   ) #CompilationUnit(true)
@@ -518,7 +518,7 @@ void javacode_production() #Javacode :
     (
       ( BlockStatement() )*
         {
-	  jjtThis.node_scope = new NodeScope(prod, nd);
+	  jjtThis.node_scope = new NodeScope(prod, nd, context);
 	}
     ) #JavacodeBody
     "}"
@@ -560,7 +560,7 @@ void bnf_production() #BNF :
         {
 	  prod.name = t1.image;
 	  prod.declBeginLoc = t2;
-	  ns = new NodeScope(prod, nd);
+	  ns = new NodeScope(prod, nd, context);
           if (!isJavaLanguage) {
             eatUptoCloseBrace();
           }
@@ -669,7 +669,7 @@ void expansion(ASTProduction p) #BNFSequence(>1) :
      [ nd=node_descriptor() ]
         {
 	  if (jjtree.nodeCreated()) {
-	    jjtThis.node_scope = new NodeScope(p, nd);
+	    jjtThis.node_scope = new NodeScope(p, nd, context);
 	    jjtThis.expansion_unit = eu;
 	  }
 	}

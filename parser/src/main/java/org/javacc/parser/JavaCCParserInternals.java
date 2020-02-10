@@ -48,18 +48,18 @@ public abstract class JavaCCParserInternals {
   protected void initialize(JavaCCContext context) {
     this.context = context;
     add_cu_token_here = context.globals().cu_to_insertion_point_1;
-    Integer i = Integer.valueOf(0);
-    context.globals().lexstate_S2I.put("DEFAULT", i);
-    context.globals().lexstate_I2S.put(i, "DEFAULT");
-    context.globals().simple_tokens_table.put("DEFAULT", new Hashtable<String, Hashtable<String, RegularExpression>>());
+//    Integer i = Integer.valueOf(0);
+//    context.globals().lexstate_S2I.put("DEFAULT", i);
+//    context.globals().lexstate_I2S.put(i, "DEFAULT");
+//    context.globals().simple_tokens_table.put("DEFAULT", new Hashtable<String, Hashtable<String, RegularExpression>>());
   }
   
   protected void checkDefaultState() {
-    if(!JavaCCGlobals.simple_tokens_table.containsKey(LexGen.DEFAULT_STATE)) {
+    if(!context.globals().simple_tokens_table.containsKey(LexGen.DEFAULT_STATE)) {
       Integer i = Integer.valueOf(nextFreeLexState++);
-      JavaCCGlobals.lexstate_S2I.put(LexGen.DEFAULT_STATE, i);
-      JavaCCGlobals.lexstate_I2S.put(i, LexGen.DEFAULT_STATE);
-      JavaCCGlobals.simple_tokens_table.put(LexGen.DEFAULT_STATE, new Hashtable<String, Hashtable<String, RegularExpression>>());
+      context.globals().lexstate_S2I.put(LexGen.DEFAULT_STATE, i);
+      context.globals().lexstate_I2S.put(i, LexGen.DEFAULT_STATE);
+      context.globals().simple_tokens_table.put(LexGen.DEFAULT_STATE, new Hashtable<String, Hashtable<String, RegularExpression>>());
     }
   }
 
