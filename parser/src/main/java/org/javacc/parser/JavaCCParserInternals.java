@@ -44,11 +44,20 @@ public abstract class JavaCCParserInternals {
     System.out.println("");
   }
 
-  static protected void initialize() {
-    Integer i = Integer.valueOf(0);
-    JavaCCGlobals.lexstate_S2I.put("DEFAULT", i);
-    JavaCCGlobals.lexstate_I2S.put(i, "DEFAULT");
-    JavaCCGlobals.simple_tokens_table.put("DEFAULT", new Hashtable<String, Hashtable<String, RegularExpression>>());
+  protected void initialize() {
+//    Integer i = Integer.valueOf(0);
+//    JavaCCGlobals.lexstate_S2I.put(LexGen.DEFAULT_STATE, i);
+//    JavaCCGlobals.lexstate_I2S.put(i, LexGen.DEFAULT_STATE);
+//    JavaCCGlobals.simple_tokens_table.put(LexGen.DEFAULT_STATE, new Hashtable<String, Hashtable<String, RegularExpression>>());
+  }
+  
+  protected void checkDefaultState() {
+    if(!JavaCCGlobals.simple_tokens_table.containsKey(LexGen.DEFAULT_STATE)) {
+      Integer i = Integer.valueOf(nextFreeLexState++);
+      JavaCCGlobals.lexstate_S2I.put(LexGen.DEFAULT_STATE, i);
+      JavaCCGlobals.lexstate_I2S.put(i, LexGen.DEFAULT_STATE);
+      JavaCCGlobals.simple_tokens_table.put(LexGen.DEFAULT_STATE, new Hashtable<String, Hashtable<String, RegularExpression>>());
+    }
   }
 
   static protected void addcuname(String id) {
@@ -153,7 +162,8 @@ public abstract class JavaCCParserInternals {
     if (!(r instanceof REndOfFile)) {
       TokenProduction p = new TokenProduction();
       p.isExplicit = false;
-      p.lexStates = new String[] { "DEFAULT" };
+      p.lexStates = new String[] { LexGen.DEFAULT_STATE };
+      checkDefaultState();
       p.kind = TokenProduction.TOKEN;
       RegExprSpec res = new RegExprSpec();
       res.rexp = r;

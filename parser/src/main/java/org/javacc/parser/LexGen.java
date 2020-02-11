@@ -43,6 +43,7 @@ import java.util.Map;
  */
 public class LexGen {
 
+  public static final String   DEFAULT_STATE    = "DEFAULT";
   // Hashtable of vectors
   private Hashtable<String, List<TokenProduction>> allTpsForState = new Hashtable<>();
 
@@ -201,7 +202,7 @@ public class LexGen {
 
       singlesToSkip[lexerContext.lexStateIndex] = new NfaState(lexerContext);
 
-      if (key.equals("DEFAULT")) {
+      if (key.equals(LexGen.DEFAULT_STATE)) {
         defaultLexState = lexerContext.lexStateIndex;
       }
 

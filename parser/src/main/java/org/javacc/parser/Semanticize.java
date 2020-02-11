@@ -285,7 +285,7 @@ public class Semanticize {
                 table2.put(sl.image, sl);
               } else if (tp.isExplicit) {
                 // This is an error even if the first occurrence was implicit.
-                if (tp.lexStates[i].equals("DEFAULT")) {
+                if (tp.lexStates[i].equals(LexGen.DEFAULT_STATE)) {
                   JavaCCErrors.semantic_error(sl, "Duplicate definition of string token \"" + sl.image + "\".");
                 } else {
                   JavaCCErrors.semantic_error(sl, "Duplicate definition of string token \"" + sl.image
