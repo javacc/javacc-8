@@ -7,6 +7,7 @@
   </parent>
   <groupId>org.javacc.examples.cpp.interpreter</groupId>
   <artifactId>AST</artifactId>
+  <name>JavaCC examples C++ Interpreter AST</name>
   <packaging>nar</packaging>
 	<build>
 		<plugins>
@@ -21,7 +22,6 @@
 							<goal>jjtree-javacc</goal>
 						</goals>
 						<configuration>
-							<codeGenerator>C++</codeGenerator>
 							<outputDirectory>target/generated-sources/cpp</outputDirectory>
 							<nodeDirectory>src/main/cpp</nodeDirectory>
 						</configuration>
@@ -55,5 +55,4 @@
 			</plugin>
 		</plugins>
 	</build>
-	<name>JavaCC examples C++ Interpreter AST</name>
 </project>

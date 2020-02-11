@@ -51,5 +51,5 @@ int main(int argc, char**argv) {
 	} catch (const ParseException& e) {
 
 	}
-return 0;
+	return 0;
 }

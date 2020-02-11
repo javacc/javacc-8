@@ -20,9 +20,6 @@
 						<goals>
 							<goal>javacc</goal>
 						</goals>
-						<configuration>
-							<codeGenerator>Java</codeGenerator>
-						</configuration>
 					</execution>
 				</executions>
 			</plugin>
@@ -40,7 +37,7 @@
 				<configuration>
 					<mainClass>JavaCCParser</mainClass>
 					<arguments>
-						<argument>${project.basedir}/JavaGrammars/1.5/Java1.5.jj</argument>
+						<argument>${project.basedir}/Java1.5.jj</argument>
 					</arguments>
 				</configuration>
 			</plugin>
