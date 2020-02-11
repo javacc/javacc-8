@@ -207,4 +207,5 @@
 			</plugin>
 		</plugins>
 	</build>
+	<name>JavaCC examples Java Simple</name>
 </project>
