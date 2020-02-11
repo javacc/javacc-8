@@ -43,13 +43,14 @@ import java.util.Set;
  */
 class LexerContext {
 
-  int               lexStateIndex;
-  int               curKind;
-  RegularExpression curRE;
-  int[]             lexStates;
-  int[]             canMatchAnyChar;
-  boolean[]         ignoreCase;
-  boolean[]         mixed;
+  final JavaCCContext context;
+  int                 lexStateIndex;
+  int                 curKind;
+  RegularExpression   curRE;
+  int[]               lexStates;
+  int[]               canMatchAnyChar;
+  boolean[]           ignoreCase;
+  boolean[]           mixed;
 
 
   // NFAState variables
@@ -97,7 +98,8 @@ class LexerContext {
   final Set<Integer>                kindToIgnoreCase   = new HashSet<>();
   final Map<Integer, NfaState>      nfaStateMap        = new HashMap<>();
 
-  LexerContext() {
+  LexerContext(JavaCCContext context) {
+    this.context = context;
     canMatchAnyChar = null;
     curKind = 0;
     curRE = null;

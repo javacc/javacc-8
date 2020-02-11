@@ -29,7 +29,7 @@
 
 package org.javacc.jjdoc;
 
-import org.javacc.parser.JavaCCErrors;
+import org.javacc.parser.JavaCCContext;
 import org.javacc.parser.JavaCCGlobals;
 import org.javacc.parser.JavaCCParser;
 import org.javacc.parser.Main;
@@ -102,7 +102,7 @@ public final class JJDocMain extends JJDocGlobals {
    */
   public static int mainProgram(String args[]) throws Exception {
 
-    Main.reInitAll();
+    JavaCCContext context = Main.reInitAll();
     JJDocOptions.init();
 
     JavaCCGlobals.bannerLine("Documentation Generator", "0.1.4");
@@ -158,31 +158,31 @@ public final class JJDocMain extends JJDocGlobals {
     }
     try {
 
-      parser.javacc_input();
+      parser.javacc_input(context);
       JJDoc.start();
 
-      if (JavaCCErrors.get_error_count() == 0) {
-        if (JavaCCErrors.get_warning_count() == 0) {
+      if (context.errors().get_error_count() == 0) {
+        if (context.errors().get_warning_count() == 0) {
           JJDocGlobals.info("Grammar documentation generated successfully in " + JJDocGlobals.output_file);
         } else {
           JJDocGlobals.info(
-              "Grammar documentation generated with 0 errors and " + JavaCCErrors.get_warning_count() + " warnings.");
+              "Grammar documentation generated with 0 errors and " + context.errors().get_warning_count() + " warnings.");
         }
         return 0;
       } else {
-        JJDocGlobals.error("Detected " + JavaCCErrors.get_error_count() + " errors and "
-            + JavaCCErrors.get_warning_count() + " warnings.");
-        return JavaCCErrors.get_error_count() == 0 ? 0 : 1;
+        JJDocGlobals.error("Detected " + context.errors().get_error_count() + " errors and "
+            + context.errors().get_warning_count() + " warnings.");
+        return context.errors().get_error_count() == 0 ? 0 : 1;
       }
     } catch (org.javacc.parser.MetaParseException e) {
       JJDocGlobals.error(e.toString());
-      JJDocGlobals.error("Detected " + JavaCCErrors.get_error_count() + " errors and "
-          + JavaCCErrors.get_warning_count() + " warnings.");
+      JJDocGlobals.error("Detected " + context.errors().get_error_count() + " errors and "
+          + context.errors().get_warning_count() + " warnings.");
       return 1;
     } catch (org.javacc.parser.ParseException e) {
       JJDocGlobals.error(e.toString());
-      JJDocGlobals.error("Detected " + (JavaCCErrors.get_error_count() + 1) + " errors and "
-          + JavaCCErrors.get_warning_count() + " warnings.");
+      JJDocGlobals.error("Detected " + (context.errors().get_error_count() + 1) + " errors and "
+          + context.errors().get_warning_count() + " warnings.");
       return 1;
     }
   }

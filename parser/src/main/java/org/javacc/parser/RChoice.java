@@ -138,17 +138,17 @@ public class RChoice extends RegularExpression {
     }
   }
 
-  void CheckUnmatchability(int[] lexStates) {
+  void CheckUnmatchability(int[] lexStates, JavaCCContext context) {
     RegularExpression curRE;
     for (int i = 0; i < getChoices().size(); i++) {
       if (!(curRE = getChoices().get(i)).private_rexp && (// curRE instanceof
           // RJustName &&
           curRE.ordinal > 0) && (curRE.ordinal < ordinal) && (lexStates[curRE.ordinal] == lexStates[ordinal])) {
         if (label != null) {
-          JavaCCErrors.warning(this,
+          context.errors().warning(this,
               "Regular Expression choice : " + curRE.label + " can never be matched as : " + label);
         } else {
-          JavaCCErrors.warning(this,
+          context.errors().warning(this,
               "Regular Expression choice : " + curRE.label + " can never be matched as token of kind : " + ordinal);
         }
       }

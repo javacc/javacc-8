@@ -28,6 +28,7 @@
 
 package org.javacc.jjtree;
 
+import org.javacc.parser.JavaCCContext;
 import org.javacc.parser.JavaCCGlobals;
 import org.javacc.parser.Options;
 
@@ -162,9 +163,9 @@ public final class IO {
     }
   }
 
-  void setOutput() throws JJTreeIOException {
+  void setOutput(JavaCCContext context) throws JJTreeIOException {
     try {
-      JavaCCGlobals.createOutputDir(JJTreeOptions.getJJTreeOutputDirectory());
+      JavaCCGlobals.createOutputDir(JJTreeOptions.getJJTreeOutputDirectory(), context);
       File ofile = new File(JJTreeOptions.getJJTreeOutputDirectory(), create_output_file_name(ifn));
       ofn = ofile.toString();
       out = new PrintWriter(new FileWriter(ofile));

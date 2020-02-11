@@ -48,8 +48,6 @@ public class JJDocOptions extends Options {
    * Initialize the options.
    */
   public static void init() {
-    Options.init();
-
     Options.optionValues.put("ONE_TABLE", Boolean.TRUE);
     Options.optionValues.put("TEXT", Boolean.FALSE);
     Options.optionValues.put("XTEXT", Boolean.FALSE);

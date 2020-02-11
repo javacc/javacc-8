@@ -32,6 +32,7 @@
 package org.javacc.jjtree;
 
 import org.javacc.parser.CodeGenerator;
+import org.javacc.parser.JavaCCContext;
 import org.javacc.parser.JavaCCGlobals;
 import org.javacc.parser.Options;
 
@@ -122,8 +123,10 @@ public class JJTree {
     io = new IO();
 
     try {
+      JavaCCContext context = new JavaCCContext();
+      JJTreeOptions.init();
+      JJTreeGlobals.initialize();
 
-      initializeOptions();
       if (args.length == 0) {
         p("");
         help_message();
@@ -146,7 +149,7 @@ public class JJTree {
         Options.setCmdLineOption(args[arg]);
       }
 
-      JJTreeOptions.validate();
+      JJTreeOptions.validate(context);
 
       try {
         io.setInput(fn);
@@ -161,19 +164,19 @@ public class JJTree {
 
       try {
         JJTreeParser parser = new JJTreeParser(io.getIn());
-        parser.javacc_input();
+        parser.javacc_input(context);
 
         ASTGrammar root = (ASTGrammar) parser.jjtree.rootNode();
         if (Boolean.getBoolean("jjtree-dump")) {
           root.dump(" ");
         }
         try {
-          io.setOutput();
+          io.setOutput(context);
         } catch (JJTreeIOException ioe) {
           p("Error setting output: " + ioe.getMessage());
           return 1;
         }
-        JJTree.generateIO(io, root);
+        JJTree.generateIO(io, root, context);
         io.getOut().close();
         p("Annotated grammar generated successfully in " + io.getOutputFileName());
 
@@ -193,22 +196,13 @@ public class JJTree {
     }
   }
 
-
-  /**
-   * Initialize for JJTree
-   */
-  private void initializeOptions() {
-    JJTreeOptions.init();
-    JJTreeGlobals.initialize();
-  }
-
-  private static void generateIO(IO io, ASTGrammar grammar) throws IOException {
+  private static void generateIO(IO io, ASTGrammar grammar, JavaCCContext context) throws IOException {
     // TODO :: CBA -- Require Unification of output language specific processing
     // into a single Enum class
-    CodeGenerator codeGenerator = JavaCCGlobals.getCodeGenerator();
+    CodeGenerator codeGenerator = JavaCCGlobals.getCodeGenerator(context);
     if (codeGenerator != null) {
       codeGenerator.getJJTreeCodeGenerator().visit(grammar, io);
-      codeGenerator.getJJTreeCodeGenerator().generateHelperFiles();
+      codeGenerator.getJJTreeCodeGenerator().generateHelperFiles(context);
     } else {
       // Catch all to ensure we don't accidently do nothing
       throw new RuntimeException("No valid CodeGenerator for JJTree : " + Options.getCodeGenerator());

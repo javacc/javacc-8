@@ -11,22 +11,22 @@ public interface CodeGenerator {
   /**
    * Generate any other support files you need.
    */
-  boolean generateHelpers(CodeGeneratorSettings settings, TokenizerData tokenizerData);
+  boolean generateHelpers(JavaCCContext context, CodeGeneratorSettings settings, TokenizerData tokenizerData);
 
   /**
    * The Token class generator.
    */
-  TokenCodeGenerator getTokenCodeGenerator();
+  TokenCodeGenerator getTokenCodeGenerator(JavaCCContext context);
 
   /**
    * The TokenManager class generator.
    */
-  TokenManagerCodeGenerator getTokenManagerCodeGenerator();
+  TokenManagerCodeGenerator getTokenManagerCodeGenerator(JavaCCContext context);
 
   /**
    * The Parser class generator.
    */
-  ParserCodeGenerator getParserCodeGenerator();
+  ParserCodeGenerator getParserCodeGenerator(JavaCCContext context);
 
   /**
    * TODO(sreeni): Fix this when we do tree annotations in the parser code

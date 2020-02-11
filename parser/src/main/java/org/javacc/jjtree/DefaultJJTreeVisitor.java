@@ -5,6 +5,8 @@
 
 package org.javacc.jjtree;
 
+import org.javacc.parser.JavaCCContext;
+
 public class DefaultJJTreeVisitor implements JJTreeParserVisitor {
 
   public Object defaultVisit(SimpleNode node, Object data) {
@@ -221,7 +223,7 @@ public class DefaultJJTreeVisitor implements JJTreeParserVisitor {
     return defaultVisit(node, data);
   }
 
-  public void generateHelperFiles() throws java.io.IOException {}
+  public void generateHelperFiles(JavaCCContext context) throws java.io.IOException {}
 }
 /*
  * JavaCC - OriginalChecksum=3b7689ed0de9c57e70ae4a27c1480635 (do not edit this

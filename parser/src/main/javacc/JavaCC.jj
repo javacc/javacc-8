@@ -580,10 +580,10 @@ TOKEN :
  * THE JAVACC GRAMMAR SPECIFICATION STARTS HERE *
  ************************************************/
 
-void javacc_input() :
+void javacc_input(JavaCCContext context) :
 	{
 	  String id1, id2;
-	  initialize();
+	  initialize(context);
 	}
 {
   javacc_options()
@@ -624,7 +624,7 @@ void javacc_options() :
 {
   [ LOOKAHEAD({ getToken(1).image.equals("options") }) <IDENTIFIER>  "{" ( option_binding() )* "}" ]
 	{
-	  Options.normalize();
+	  Options.normalize(context);
 	}
 }
 
@@ -646,22 +646,22 @@ void option_binding() :
   (
     int_val = IntegerLiteral()
 	{
-	  Options.setInputFileOption(t, getToken(0), option_name, new Integer(int_val));
+	  Options.setInputFileOption(t, getToken(0), option_name, new Integer(int_val), context);
 	}
   |
     bool_val = BooleanLiteral()
 	{
-	  Options.setInputFileOption(t, getToken(0), option_name, new Boolean(bool_val));
+	  Options.setInputFileOption(t, getToken(0), option_name, new Boolean(bool_val), context);
 	}
   |
     string_val = StringLiteral()
 	{
-	  Options.setInputFileOption(t, getToken(0), option_name, string_val);
+	  Options.setInputFileOption(t, getToken(0), option_name, string_val, context);
 	}
   |
     string_list = StringList()
     {
-	  Options.setInputFileOption(t, getToken(0), option_name, string_list);
+	  Options.setInputFileOption(t, getToken(0), option_name, string_list, context);
     }
   )
   ";"
@@ -906,7 +906,7 @@ void regular_expr_production() :
   regexpr_kind(p)
 	{
 	  if (p.kind != TokenProduction.TOKEN && Options.getUserTokenManager()) {
-	    JavaCCErrors.warning(getToken(0), "Regular expression is being treated as if it were a TOKEN since option USER_TOKEN_MANAGER has been set to true.");
+	    context.errors().warning(getToken(0), "Regular expression is being treated as if it were a TOKEN since option USER_TOKEN_MANAGER has been set to true.");
 	  }
 	}
   [
@@ -914,7 +914,7 @@ void regular_expr_production() :
 	{
 	  p.ignoreCase = true;
 	  if (Options.getUserTokenManager()) {
-	    JavaCCErrors.warning(t, "Ignoring \"IGNORE_CASE\" specification since option USER_TOKEN_MANAGER has been set to true.");
+	    context.errors().warning(t, "Ignoring \"IGNORE_CASE\" specification since option USER_TOKEN_MANAGER has been set to true.");
 	  }
 	}
   ]
@@ -991,10 +991,10 @@ void regexpr_spec(TokenProduction p) :
     Block(act.getActionTokens())
 	{
 	  if (Options.getUserTokenManager()) {
-	    JavaCCErrors.warning(t, "Ignoring action in regular expression specification since option USER_TOKEN_MANAGER has been set to true.");
+	    context.errors().warning(t, "Ignoring action in regular expression specification since option USER_TOKEN_MANAGER has been set to true.");
 	  }
 	  if (res.rexp.private_rexp) {
-	    JavaCCErrors.parse_error(t, "Actions are not permitted on private (#) regular expressions.");
+	    context.errors().parse_error(t, "Actions are not permitted on private (#) regular expressions.");
 	  }
 	}
   ]
@@ -1002,7 +1002,7 @@ void regexpr_spec(TokenProduction p) :
 	{
 	  res.nextState = t.image;
 	  if (res.rexp.private_rexp) {
-	    JavaCCErrors.parse_error(t, "Lexical state changes are not permitted after private (#) regular expressions.");
+	    context.errors().parse_error(t, "Lexical state changes are not permitted after private (#) regular expressions.");
 	  }
 	}
   ]
@@ -1063,7 +1063,7 @@ void expansion(Container c1) :
     t="LOOKAHEAD" "(" la=local_lookahead() ")"
 	{
 	  if (inLocalLA != 0 && la.getAmount() != 0) {
-	    JavaCCErrors.warning(t, "Only semantic lookahead specifications within other lookahead specifications is considered.  Syntactic lookahead is ignored.");
+	    context.errors().warning(t, "Only semantic lookahead specifications within other lookahead specifications is considered.  Syntactic lookahead is ignored.");
 	  }
 	}
   )?
@@ -1193,9 +1193,9 @@ void expansion_unit(Container c) :
 	  seq.parent = ch; seq.ordinal = 0;
 	  if (la.getAmount() != 0) {
 	    if (la.getActionTokens().size() != 0) {
-	      JavaCCErrors.warning(t, "Encountered LOOKAHEAD(...) at a non-choice location.  Only semantic lookahead will be considered here.");
+	      context.errors().warning(t, "Encountered LOOKAHEAD(...) at a non-choice location.  Only semantic lookahead will be considered here.");
 	    } else {
-	      JavaCCErrors.warning(t, "Encountered LOOKAHEAD(...) at a non-choice location.  This will be ignored.");
+	      context.errors().warning(t, "Encountered LOOKAHEAD(...) at a non-choice location.  This will be ignored.");
 	    }
 	  }
 	  c.member = ch;
@@ -1212,7 +1212,7 @@ void expansion_unit(Container c) :
 	{
 	  inAction = false;
 	  if (inLocalLA != 0) {
-	    JavaCCErrors.warning(t, "Action within lookahead specification will be ignored.");
+	    context.errors().warning(t, "Action within lookahead specification will be ignored.");
 	  }
 	  c.member = act;
 	}

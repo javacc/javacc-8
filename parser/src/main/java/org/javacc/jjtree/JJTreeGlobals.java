@@ -37,6 +37,10 @@ import java.util.Set;
 
 public class JJTreeGlobals {
 
+  static {
+    JJTreeGlobals.initialize();
+  }
+
   static void initialize() {
     JJTreeGlobals.toolList = new ArrayList<>();
     JJTreeGlobals.parserName = null;
@@ -69,10 +73,6 @@ public class JJTreeGlobals {
     JJTreeGlobals.jjtreeOptions.add("VISITOR_METHOD_NAME_INCLUDES_TYPE_NAME");
     JJTreeGlobals.jjtreeOptions.add("NODE_INCLUDES");
     JJTreeGlobals.jjtreeOptions.add("NODE_DIRECTORY");
-  }
-
-  static {
-    JJTreeGlobals.initialize();
   }
 
   /**

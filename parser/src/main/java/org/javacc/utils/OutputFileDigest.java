@@ -1,7 +1,7 @@
 
 package org.javacc.utils;
 
-import org.javacc.parser.JavaCCErrors;
+import org.javacc.parser.JavaCCContext;
 import org.javacc.parser.JavaCCGlobals;
 import org.javacc.parser.Options;
 
@@ -67,7 +67,7 @@ abstract class OutputFileDigest {
    * @throws FileNotFoundException
    * @throws IOException
    */
-  public static boolean check(File file, String toolName, String compatibleVersion, List<String> options)
+  public static boolean check(File file, String toolName, String compatibleVersion, List<String> options, JavaCCContext context)
       throws FileNotFoundException, IOException {
     // File does not exist
     if (!file.exists()) {
@@ -95,11 +95,11 @@ abstract class OutputFileDigest {
       String calculatedDigest = OutputFileDigest.toHexString(digestStream);
       if ((existingMD5 == null) || !existingMD5.equals(calculatedDigest)) {
         if (compatibleVersion != null) {
-          OutputFileDigest.checkVersion(file, toolName, compatibleVersion);
+          OutputFileDigest.checkVersion(file, toolName, compatibleVersion, context);
         }
 
         if (!options.isEmpty()) {
-          OutputFileDigest.checkOptions(file, options.toArray(new String[options.size()]));
+          OutputFileDigest.checkOptions(file, options.toArray(new String[options.size()]), context);
         }
 
         // No checksum in file, or checksum differs.
@@ -124,7 +124,7 @@ abstract class OutputFileDigest {
    * @param toolName
    * @param versionId
    */
-  private static void checkVersion(File file, String toolName, String versionId) {
+  private static void checkVersion(File file, String toolName, String versionId, JavaCCContext context) {
     String firstLine = "/* " + JavaCCGlobals.getIdString(toolName, file.getName()) + " Version ";
 
     try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
@@ -133,9 +133,9 @@ abstract class OutputFileDigest {
         if (line.startsWith(firstLine)) {
           String version = line.replaceFirst(".*Version ", "").replaceAll(" \\*/", "");
           if (!version.equals(versionId)) {
-            JavaCCErrors.warning(file.getName() + ": File is obsolete.  Please rename or delete this file so"
+            context.errors().warning(file.getName() + ": File is obsolete.  Please rename or delete this file so"
                 + " that a new one can be generated for you.");
-            JavaCCErrors.warning(file.getName() + " file   version: " + version + " javacc version: " + versionId);
+            context.errors().warning(file.getName() + " file   version: " + version + " javacc version: " + versionId);
           }
           return;
         }
@@ -143,7 +143,7 @@ abstract class OutputFileDigest {
       // If no version line is found, do not output the warning.
     } catch (FileNotFoundException e1) {
       // This should never happen
-      JavaCCErrors.semantic_error("Could not open file " + file.getName() + " for writing.");
+      context.errors().semantic_error("Could not open file " + file.getName() + " for writing.");
       throw new Error();
     } catch (IOException e2) {}
   }
@@ -155,14 +155,14 @@ abstract class OutputFileDigest {
    * @param file
    * @param options
    */
-  private static void checkOptions(File file, String[] options) {
+  private static void checkOptions(File file, String[] options, JavaCCContext context) {
     try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
       String line;
       while ((line = reader.readLine()) != null) {
         if (line.startsWith("/* JavaCCOptions:")) {
           String currentOptions = Options.getOptionsString(options);
           if (line.indexOf(currentOptions) == -1) {
-            JavaCCErrors
+            context.errors()
             .warning(file.getName() + ": Generated using incompatible options. Please rename or delete this file so"
                 + " that a new one can be generated for you.");
           }
@@ -171,7 +171,7 @@ abstract class OutputFileDigest {
       }
     } catch (FileNotFoundException e1) {
       // This should never happen
-      JavaCCErrors.semantic_error("Could not open file " + file.getName() + " for writing.");
+      context.errors().semantic_error("Could not open file " + file.getName() + " for writing.");
       throw new Error();
     } catch (IOException e2) {}
     // Not found so cannot check

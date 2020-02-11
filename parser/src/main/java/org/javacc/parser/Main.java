@@ -162,7 +162,7 @@ public class Main {
   public static int mainProgram(String args[]) throws Exception {
 
     // Initialize all static state
-    Main.reInitAll();
+    JavaCCContext context = Main.reInitAll();
 
     JavaCCGlobals.bannerLine("Parser Generator", "");
 
@@ -214,9 +214,9 @@ public class Main {
       // - 1];
       JavaCCGlobals.jjtreeGenerated = JavaCCGlobals.isGeneratedBy("JJTree", args[args.length - 1]);
       JavaCCGlobals.toolNames = JavaCCGlobals.getToolNames(args[args.length - 1]);
-      parser.javacc_input();
+      parser.javacc_input(context);
 
-      JavaCCGlobals.createOutputDir(Options.getOutputDirectory());
+      JavaCCGlobals.createOutputDir(Options.getOutputDirectory(), context);
 
 
       boolean unicodeWarning = false;
@@ -226,13 +226,13 @@ public class Main {
             + "Please make sure you create the parser/lexer using a Reader with the correct character encoding.");
       }
 
-      Semanticize.start();
+      Semanticize.start(context);
       boolean isBuildParser = Options.getBuildParser();
 
 
-      CodeGenerator codeGenerator = JavaCCGlobals.getCodeGenerator();
+      CodeGenerator codeGenerator = JavaCCGlobals.getCodeGenerator(context);
       if (codeGenerator != null) {
-        ParserCodeGenerator parserCodeGenerator = codeGenerator.getParserCodeGenerator();
+        ParserCodeGenerator parserCodeGenerator = codeGenerator.getParserCodeGenerator(context);
         if (isBuildParser && (parserCodeGenerator != null)) {
           ParserData parserData = Main.createParserData();
           CodeGeneratorSettings settings = CodeGeneratorSettings.of(Options.getOptions());
@@ -241,46 +241,46 @@ public class Main {
         }
 
         // Must always create the lexer object even if not building a parser.
-        LexGen lg = new LexGen();
+        LexGen lg = new LexGen(context);
         TokenizerData tokenizerData = lg.generateTokenizerData(false, unicodeWarning);
 
         Options.setStringOption(Options.NONUSER_OPTION__PARSER_NAME, JavaCCGlobals.cu_name);
 
-        if (JavaCCErrors.get_error_count() != 0) {
+        if (context.errors().get_error_count() != 0) {
           throw new MetaParseException();
         }
         if (Options.isGenerateBoilerplateCode()) {
-          if ((!codeGenerator.getTokenCodeGenerator()
+          if ((!codeGenerator.getTokenCodeGenerator(context)
               .generateCodeForToken(CodeGeneratorSettings.of(Options.getOptions())))
-              || (!codeGenerator.generateHelpers(CodeGeneratorSettings.of(Options.getOptions()), tokenizerData))) {
-            JavaCCErrors.semantic_error("Could not generate the code for Token or helper classes.");
+              || (!codeGenerator.generateHelpers(context, CodeGeneratorSettings.of(Options.getOptions()), tokenizerData))) {
+            context.errors().semantic_error("Could not generate the code for Token or helper classes.");
           }
         }
       }
 
 
-      if ((JavaCCErrors.get_error_count() == 0) && (isBuildParser || Options.getBuildTokenManager())) {
-        if (JavaCCErrors.get_warning_count() == 0) {
+      if ((context.errors().get_error_count() == 0) && (isBuildParser || Options.getBuildTokenManager())) {
+        if (context.errors().get_warning_count() == 0) {
           if (isBuildParser) {
             System.out.println("Parser generated successfully.");
           }
         } else {
-          System.out.println("Parser generated with 0 errors and " + JavaCCErrors.get_warning_count() + " warnings.");
+          System.out.println("Parser generated with 0 errors and " + context.errors().get_warning_count() + " warnings.");
         }
         return 0;
       } else {
-        System.out.println("Detected " + JavaCCErrors.get_error_count() + " errors and "
-            + JavaCCErrors.get_warning_count() + " warnings.");
-        return (JavaCCErrors.get_error_count() == 0) ? 0 : 1;
+        System.out.println("Detected " + context.errors().get_error_count() + " errors and "
+            + context.errors().get_warning_count() + " warnings.");
+        return (context.errors().get_error_count() == 0) ? 0 : 1;
       }
     } catch (MetaParseException e) {
-      System.out.println("Detected " + JavaCCErrors.get_error_count() + " errors and "
-          + JavaCCErrors.get_warning_count() + " warnings.");
+      System.out.println("Detected " + context.errors().get_error_count() + " errors and "
+          + context.errors().get_warning_count() + " warnings.");
       return 1;
     } catch (ParseException e) {
       System.out.println(e.toString());
-      System.out.println("Detected " + (JavaCCErrors.get_error_count() + 1) + " errors and "
-          + JavaCCErrors.get_warning_count() + " warnings.");
+      System.out.println("Detected " + (context.errors().get_error_count() + 1) + " errors and "
+          + context.errors().get_warning_count() + " warnings.");
       return 1;
     }
   }
@@ -304,9 +304,10 @@ public class Main {
     return parserData;
   }
 
-  public static void reInitAll() {
-    org.javacc.parser.JavaCCErrors.reInit();
+  public static JavaCCContext reInitAll() {
+    JavaCCContext context = new JavaCCContext();
     org.javacc.parser.JavaCCGlobals.reInit();
     Options.init();
+    return context;
   }
 }

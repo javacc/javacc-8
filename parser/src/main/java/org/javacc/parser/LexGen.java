@@ -44,6 +44,8 @@ import java.util.Map;
 public class LexGen {
 
   public static final String   DEFAULT_STATE    = "DEFAULT";
+  private final JavaCCContext context;
+  
   // Hashtable of vectors
   private Hashtable<String, List<TokenProduction>> allTpsForState = new Hashtable<>();
 
@@ -69,7 +71,8 @@ public class LexGen {
   private boolean[]                                hasNfa;
   private NfaState                                 initialState;
 
-  public LexGen() {
+  public LexGen(JavaCCContext context) {
+    this.context = context;
     actions = null;
     allTpsForState = new Hashtable<>();
     canLoop = null;
@@ -94,7 +97,7 @@ public class LexGen {
   }
 
   private LexerContext BuildLexStatesTable(boolean unicodeWarning) {
-    LexerContext lexerContext = new LexerContext();
+    LexerContext lexerContext = new LexerContext(context);
     lexerContext.unicodeWarningGiven = unicodeWarning;
     Iterator<TokenProduction> it = JavaCCGlobals.rexprlist.iterator();
     TokenProduction tp;
@@ -168,11 +171,11 @@ public class LexGen {
   }
 
   public TokenizerData generateTokenizerData(boolean generateDataOnly, boolean unicodeWarning) throws IOException {
-    if (!Options.getBuildTokenManager() || Options.getUserTokenManager() || (JavaCCErrors.get_error_count() > 0)) {
+    if (!Options.getBuildTokenManager() || Options.getUserTokenManager() || (context.errors().get_error_count() > 0)) {
       return new TokenizerData();
     }
 
-    final CodeGenerator codeGenerator = JavaCCGlobals.getCodeGenerator();
+    final CodeGenerator codeGenerator = JavaCCGlobals.getCodeGenerator(context);
     List<RegularExpression> choices = new ArrayList<>();
     TokenProduction tp;
     int i, j;
@@ -335,7 +338,7 @@ public class LexGen {
     }
 
     for (i = 0; i < choices.size(); i++) {
-      ((RChoice) choices.get(i)).CheckUnmatchability(lexerContext.lexStates);
+      ((RChoice) choices.get(i)).CheckUnmatchability(lexerContext.lexStates, lexerContext.context);
     }
 
     CheckEmptyStringMatch(lexerContext, tokenizerData);
@@ -394,7 +397,7 @@ public class LexGen {
       return tokenizerData;
     }
 
-    TokenManagerCodeGenerator gen = codeGenerator.getTokenManagerCodeGenerator();
+    TokenManagerCodeGenerator gen = codeGenerator.getTokenManagerCodeGenerator(context);
     CodeGeneratorSettings settings = CodeGeneratorSettings.of(Options.getOptions());
     gen.generateCode(settings, tokenizerData);
     gen.finish(settings, tokenizerData);
@@ -455,13 +458,13 @@ public class LexGen {
         }
 
         if (len == 0) {
-          JavaCCErrors.warning(rexprs[initMatch[i]],
+          context.errors().warning(rexprs[initMatch[i]],
               "Regular expression"
                   + ((rexprs[initMatch[i]].label.equals("")) ? "" : (" for " + rexprs[initMatch[i]].label))
                   + " can be matched by the empty string (\"\") in lexical state " + tokenizerData.lexStateNames[i]
                       + ". This can result in an endless loop of " + "empty string matches.");
         } else {
-          JavaCCErrors.warning(rexprs[initMatch[i]],
+          context.errors().warning(rexprs[initMatch[i]],
               "Regular expression"
                   + ((rexprs[initMatch[i]].label.equals("")) ? "" : (" for " + rexprs[initMatch[i]].label))
                   + " can be matched by the empty string (\"\") in lexical state " + tokenizerData.lexStateNames[i]

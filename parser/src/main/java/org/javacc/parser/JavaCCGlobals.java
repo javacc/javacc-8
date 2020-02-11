@@ -333,30 +333,30 @@ public class JavaCCGlobals {
     return new ArrayList<>();
   }
 
-  public static void createOutputDir(File outputDir) {
+  public static void createOutputDir(File outputDir, JavaCCContext context) {
     if (!outputDir.exists()) {
-      JavaCCErrors.warning("Output directory \"" + outputDir + "\" does not exist. Creating the directory.");
+      context.errors().warning("Output directory \"" + outputDir + "\" does not exist. Creating the directory.");
 
       if (!outputDir.mkdirs()) {
-        JavaCCErrors.semantic_error("Cannot create the output directory : " + outputDir);
+        context.errors().semantic_error("Cannot create the output directory : " + outputDir);
         return;
       }
     }
 
     if (!outputDir.isDirectory()) {
-      JavaCCErrors.semantic_error("\"" + outputDir + " is not a valid output directory.");
+      context.errors().semantic_error("\"" + outputDir + " is not a valid output directory.");
       return;
     }
 
     if (!outputDir.canWrite()) {
-      JavaCCErrors.semantic_error("Cannot write to the output output directory : \"" + outputDir + "\"");
+      context.errors().semantic_error("Cannot write to the output output directory : \"" + outputDir + "\"");
       return;
     }
   }
 
   private static CodeGenerator codeGenerator = null;
 
-  public static CodeGenerator getCodeGenerator() {
+  public static CodeGenerator getCodeGenerator(JavaCCContext context) {
     if (JavaCCGlobals.codeGenerator != null) {
       return JavaCCGlobals.codeGenerator;
     }
@@ -374,7 +374,7 @@ public class JavaCCGlobals {
       }
     }
 
-    JavaCCErrors.semantic_error("Could not load the CodeGenerator class: \"" + name + "\"");
+    context.errors().semantic_error("Could not load the CodeGenerator class: \"" + name + "\"");
     return JavaCCGlobals.codeGenerator;
   }
 

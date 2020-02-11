@@ -1,5 +1,5 @@
 
-import org.javacc.parser.JavaCCErrors;
+import org.javacc.parser.JavaCCContext;
 import org.javacc.parser.JavaCCParser;
 import org.javacc.parser.LexGen;
 import org.javacc.parser.Main;
@@ -24,7 +24,7 @@ public class JavaCCInterpreter {
 
   public static void main(String[] args) throws Exception {
     // Initialize all static state
-    Main.reInitAll();
+    JavaCCContext context = Main.reInitAll();
     Options.set(Options.NONUSER_OPTION__INTERPRETER, true);
     Options.set("STATIC", false);
     // TODO JavaCCParser parser = null;
@@ -60,32 +60,32 @@ public class JavaCCInterpreter {
       System.exit(1);
     }
     JavaCCInterpreter interp = new JavaCCInterpreter();
-    interp.runTokenizer(grammar, input);
+    interp.runTokenizer(grammar, input, context);
   }
 
-  public void runTokenizer(String grammar, String input) {
+  public void runTokenizer(String grammar, String input, JavaCCContext context) {
     try {
       JavaCCParser parser = new JavaCCParser(new StringReader(grammar));
-      parser.javacc_input();
+      parser.javacc_input(context);
       // Options.init();
       Options.set(Options.NONUSER_OPTION__INTERPRETER, true);
-      Semanticize.start();
-      LexGen lg = new LexGen();
+      Semanticize.start(context);
+      LexGen lg = new LexGen(context);
       TokenizerData tokenizerData = lg.generateTokenizerData(true, false);
-      if (JavaCCErrors.get_error_count() == 0) {
+      if (context.errors().get_error_count() == 0) {
         long l = System.currentTimeMillis();
         JavaCCInterpreter.tokenize(tokenizerData, input);
         System.err.println("Tokenized in: " + (System.currentTimeMillis() - l));
       }
     } catch (MetaParseException e) {
-      System.out.println("Detected " + JavaCCErrors.get_error_count() + " errors and "
-          + JavaCCErrors.get_warning_count() + " warnings.");
+      System.out.println("Detected " + context.errors().get_error_count() + " errors and "
+          + context.errors().get_warning_count() + " warnings.");
       System.exit(1);
     } catch (Exception e) {
       e.printStackTrace();
       System.out.println(e.toString());
-      System.out.println("Detected " + (JavaCCErrors.get_error_count() + 1) + " errors and "
-          + JavaCCErrors.get_warning_count() + " warnings.");
+      System.out.println("Detected " + (context.errors().get_error_count() + 1) + " errors and "
+          + context.errors().get_warning_count() + " warnings.");
       System.exit(1);
     }
   }

@@ -1,20 +1,20 @@
 // Copyright 2011 Google Inc. All Rights Reserved.
 // Author: sreeni@google.com (Sreeni Viswanadha)
 
-/* Copyright (c) 2005-2006, Kees Jan Koster kjkoster@kjkoster.org
- * All rights reserved.
+/*
+ * Copyright (c) 2005-2006, Kees Jan Koster kjkoster@kjkoster.org All rights
+ * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
  *
- *     * Redistributions of source code must retain the above copyright notice,
- *       this list of conditions and the following disclaimer.
- *     * Redistributions in binary form must reproduce the above copyright
- *       notice, this list of conditions and the following disclaimer in the
- *       documentation and/or other materials provided with the distribution.
- *     * Neither the name of the Sun Microsystems, Inc. nor the names of its
- *       contributors may be used to endorse or promote products derived from
- *       this software without specific prior written permission.
+ * * Redistributions of source code must retain the above copyright notice, this
+ * list of conditions and the following disclaimer. * Redistributions in binary
+ * form must reproduce the above copyright notice, this list of conditions and
+ * the following disclaimer in the documentation and/or other materials provided
+ * with the distribution. * Neither the name of the Sun Microsystems, Inc. nor
+ * the names of its contributors may be used to endorse or promote products
+ * derived from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -31,7 +31,7 @@
 
 package org.javacc.jjtree;
 
-import org.javacc.parser.JavaCCErrors;
+import org.javacc.parser.JavaCCContext;
 import org.javacc.parser.Options;
 
 import java.io.File;
@@ -46,17 +46,13 @@ public class JJTreeOptions extends Options {
   /**
    * Limit subclassing to derived classes.
    */
-  protected JJTreeOptions() {
-    super();
-  }
+  protected JJTreeOptions() {}
 
   /**
    * Initialize the JJTree-specific options.
    */
   public static void init() {
     Options.init();
-
-
     Options.optionValues.put("MULTI", Boolean.FALSE);
     Options.optionValues.put("NODE_DEFAULT_VOID", Boolean.FALSE);
     Options.optionValues.put("NODE_SCOPE_HOOK", Boolean.FALSE);
@@ -95,16 +91,17 @@ public class JJTreeOptions extends Options {
   /**
    * Check options for consistency
    */
-  static void validate() {
+  static void validate(JavaCCContext context) {
     if (!JJTreeOptions.getVisitor()) {
       if (JJTreeOptions.getVisitorDataType().length() > 0) {
-        JavaCCErrors.warning("VISITOR_DATA_TYPE option will be ignored since VISITOR is false");
+        context.errors().warning("VISITOR_DATA_TYPE option will be ignored since VISITOR is false");
       }
-      if ((JJTreeOptions.getVisitorReturnType().length() > 0) && !JJTreeOptions.getVisitorReturnType().equals("Object")) {
-        JavaCCErrors.warning("VISITOR_RETURN_TYPE option will be ignored since VISITOR is false");
+      if ((JJTreeOptions.getVisitorReturnType().length() > 0)
+          && !JJTreeOptions.getVisitorReturnType().equals("Object")) {
+        context.errors().warning("VISITOR_RETURN_TYPE option will be ignored since VISITOR is false");
       }
       if (JJTreeOptions.getVisitorException().length() > 0) {
-        JavaCCErrors.warning("VISITOR_EXCEPTION option will be ignored since VISITOR is false");
+        context.errors().warning("VISITOR_EXCEPTION option will be ignored since VISITOR is false");
       }
     }
   }
