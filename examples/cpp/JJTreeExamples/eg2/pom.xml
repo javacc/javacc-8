@@ -22,13 +22,8 @@
 					</dependency>
 					<dependency>
 						<groupId>org.javacc.codegen</groupId>
-						<artifactId>java</artifactId>
-						<version>${javacc.parser}</version>
-					</dependency>
-					<dependency>
-						<groupId>org.javacc.codegen</groupId>
 						<artifactId>cpp</artifactId>
-						<version>${javacc.parser}</version>
+						<version>${javacc.cpp}</version>
 					</dependency>
 				</dependencies>
 				<executions>
