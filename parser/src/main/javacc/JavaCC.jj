@@ -599,11 +599,11 @@ void javacc_input(JavaCCContext context) :
 	  parser_class_name = id1;
 
           if (!isJavaLanguage()) {
-            JavaCCGlobals.otherLanguageDeclTokenBeg = getToken(1);
+            context.globals().otherLanguageDeclTokenBeg = getToken(1);
             while(getToken(1).kind != _PARSER_END) {
               getNextToken();
             }
-            JavaCCGlobals.otherLanguageDeclTokenEnd = getToken(1);
+            context.globals().otherLanguageDeclTokenEnd = getToken(1);
           }
 	}
     CompilationUnit()

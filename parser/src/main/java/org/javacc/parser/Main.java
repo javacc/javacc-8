@@ -212,8 +212,8 @@ public class Main {
       System.out.println("Reading from file " + args[args.length - 1] + " . . .");
       // JavaCCGlobals.fileName = JavaCCGlobals.origFileName = args[args.length
       // - 1];
-      JavaCCGlobals.jjtreeGenerated = JavaCCGlobals.isGeneratedBy("JJTree", args[args.length - 1]);
-      JavaCCGlobals.toolNames = JavaCCGlobals.getToolNames(args[args.length - 1]);
+      context.globals().jjtreeGenerated = JavaCCGlobals.isGeneratedBy("JJTree", args[args.length - 1]);
+      context.globals().toolNames = JavaCCGlobals.getToolNames(args[args.length - 1]);
       parser.javacc_input(context);
 
       JavaCCGlobals.createOutputDir(Options.getOutputDirectory(), context);
@@ -230,11 +230,11 @@ public class Main {
       boolean isBuildParser = Options.getBuildParser();
 
 
-      CodeGenerator codeGenerator = JavaCCGlobals.getCodeGenerator(context);
+      CodeGenerator codeGenerator = context.globals().getCodeGenerator(context);
       if (codeGenerator != null) {
         ParserCodeGenerator parserCodeGenerator = codeGenerator.getParserCodeGenerator(context);
         if (isBuildParser && (parserCodeGenerator != null)) {
-          ParserData parserData = Main.createParserData();
+          ParserData parserData = Main.createParserData(context);
           CodeGeneratorSettings settings = CodeGeneratorSettings.of(Options.getOptions());
           parserCodeGenerator.generateCode(settings, parserData);
           parserCodeGenerator.finish(settings, parserData);
@@ -244,7 +244,7 @@ public class Main {
         LexGen lg = new LexGen(context);
         TokenizerData tokenizerData = lg.generateTokenizerData(false, unicodeWarning);
 
-        Options.setStringOption(Options.NONUSER_OPTION__PARSER_NAME, JavaCCGlobals.cu_name);
+        Options.setStringOption(Options.NONUSER_OPTION__PARSER_NAME, context.globals().cu_name);
 
         if (context.errors().get_error_count() != 0) {
           throw new MetaParseException();
@@ -285,17 +285,17 @@ public class Main {
     }
   }
 
-  private static ParserData createParserData() {
+  private static ParserData createParserData(JavaCCContext context) {
     ParserData parserData = new ParserData();
-    parserData.bnfproductions = JavaCCGlobals.bnfproductions;
-    parserData.parserName = JavaCCGlobals.cu_name;
-    parserData.tokenCount = JavaCCGlobals.tokenCount;
-    parserData.namesOfTokens = JavaCCGlobals.names_of_tokens;
-    parserData.productionTable = JavaCCGlobals.production_table;
+    parserData.bnfproductions = context.globals().bnfproductions;
+    parserData.parserName = context.globals().cu_name;
+    parserData.tokenCount = context.globals().tokenCount;
+    parserData.namesOfTokens = context.globals().names_of_tokens;
+    parserData.productionTable = context.globals().production_table;
     StringBuilder decls = new StringBuilder();
-    if (JavaCCGlobals.otherLanguageDeclTokenBeg != null) {
-      // int line = JavaCCGlobals.otherLanguageDeclTokenBeg.beginLine;
-      for (Token t = JavaCCGlobals.otherLanguageDeclTokenBeg; t != JavaCCGlobals.otherLanguageDeclTokenEnd; t =
+    if (context.globals().otherLanguageDeclTokenBeg != null) {
+      // int line = context.globals().otherLanguageDeclTokenBeg.beginLine;
+      for (Token t = context.globals().otherLanguageDeclTokenBeg; t != context.globals().otherLanguageDeclTokenEnd; t =
           t.next) {
         decls.append(CodeBuilder.toString(t));
       }
@@ -306,7 +306,6 @@ public class Main {
 
   public static JavaCCContext reInitAll() {
     JavaCCContext context = new JavaCCContext();
-    org.javacc.parser.JavaCCGlobals.reInit();
     Options.init();
     return context;
   }

@@ -760,7 +760,7 @@ class NfaState {
 
     if (toRet >= nameSet.length) {
       // TODO(sreeni) : Fix this mess.
-      if ((JavaCCGlobals.getCodeGenerator(lexerContext.context) != null) || Options.booleanValue(Options.NONUSER_OPTION__INTERPRETER)) {
+      if ((lexerContext.context.globals().getCodeGenerator(lexerContext.context) != null) || Options.booleanValue(Options.NONUSER_OPTION__INTERPRETER)) {
         tmp = lexerContext.generatedStates++;
       } else {
         if (lexerContext.dummyStateIndex == -1) {
@@ -770,7 +770,7 @@ class NfaState {
         }
       }
 
-      if ((JavaCCGlobals.getCodeGenerator(lexerContext.context) != null) || Options.booleanValue(Options.NONUSER_OPTION__INTERPRETER)) {
+      if ((lexerContext.context.globals().getCodeGenerator(lexerContext.context) != null) || Options.booleanValue(Options.NONUSER_OPTION__INTERPRETER)) {
         NfaState dummyState = new NfaState(lexerContext);
         dummyState.isComposite = true;
         dummyState.compositeStates = nameSet;
@@ -787,7 +787,7 @@ class NfaState {
     stateNameToReturn = Integer.valueOf(tmp);
     lexerContext.stateNameForComposite.put(stateSetString, stateNameToReturn);
     lexerContext.compositeStateTable.put(stateSetString, nameSet);
-    if ((JavaCCGlobals.getCodeGenerator(lexerContext.context) != null) || Options.booleanValue(Options.NONUSER_OPTION__INTERPRETER)) {
+    if ((lexerContext.context.globals().getCodeGenerator(lexerContext.context) != null) || Options.booleanValue(Options.NONUSER_OPTION__INTERPRETER)) {
       NfaState tmpNfaState = lexerContext.indexedAllStates.get(tmp);
       for (int c : nameSet) {
         if (c < lexerContext.indexedAllStates.size()) {

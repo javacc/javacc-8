@@ -33,10 +33,12 @@ package org.javacc.parser;
  */
 public final class JavaCCContext {
 
-  private final JavaCCErrors errors;;
+  private final JavaCCErrors  errors;
+  private final JavaCCGlobals globals;
 
   public JavaCCContext() {
     this.errors = new JavaCCErrors();
+    this.globals = new JavaCCGlobals();
   }
 
   /**
@@ -44,5 +46,12 @@ public final class JavaCCContext {
    */
   public final JavaCCErrors errors() {
     return errors;
+  }
+
+  /**
+   * Get the globals instance.
+   */
+  public final JavaCCGlobals globals() {
+    return globals;
   }
 }

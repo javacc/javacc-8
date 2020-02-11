@@ -199,7 +199,7 @@ public class JJTree {
   private static void generateIO(IO io, ASTGrammar grammar, JavaCCContext context) throws IOException {
     // TODO :: CBA -- Require Unification of output language specific processing
     // into a single Enum class
-    CodeGenerator codeGenerator = JavaCCGlobals.getCodeGenerator(context);
+    CodeGenerator codeGenerator = context.globals().getCodeGenerator(context);
     if (codeGenerator != null) {
       codeGenerator.getJJTreeCodeGenerator().visit(grammar, io);
       codeGenerator.getJJTreeCodeGenerator().generateHelperFiles(context);

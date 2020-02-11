@@ -91,16 +91,16 @@ public class Semanticize {
      * them to trivial choices. This way, their semantic lookahead specification
      * can be evaluated during other lookahead evaluations.
      */
-    for (Iterator<NormalProduction> it = JavaCCGlobals.bnfproductions.iterator(); it.hasNext();) {
+    for (Iterator<NormalProduction> it = context.globals().bnfproductions.iterator(); it.hasNext();) {
       ExpansionTreeWalker.postOrderWalk(it.next().getExpansion(), new LookaheadFixer(context));
     }
 
     /*
      * The following loop populates "production_table"
      */
-    for (Iterator<NormalProduction> it = JavaCCGlobals.bnfproductions.iterator(); it.hasNext();) {
+    for (Iterator<NormalProduction> it = context.globals().bnfproductions.iterator(); it.hasNext();) {
       NormalProduction p = it.next();
-      if (JavaCCGlobals.production_table.put(p.getLhs(), p) != null) {
+      if (context.globals().production_table.put(p.getLhs(), p) != null) {
         context.errors().semantic_error(p, p.getLhs() + " occurs on the left hand side of more than one production.");
       }
     }
@@ -109,7 +109,7 @@ public class Semanticize {
      * The following walks the entire parse tree to make sure that all
      * non-terminals on RHS's are defined on the LHS.
      */
-    for (Iterator<NormalProduction> it = JavaCCGlobals.bnfproductions.iterator(); it.hasNext();) {
+    for (Iterator<NormalProduction> it = context.globals().bnfproductions.iterator(); it.hasNext();) {
       ExpansionTreeWalker.preOrderWalk(it.next().getExpansion(), new ProductionDefinedChecker(context));
     }
 
@@ -122,13 +122,13 @@ public class Semanticize {
      * In this case, <name> occurrences are OK, while regular expression specs
      * generate a warning.
      */
-    for (Iterator<TokenProduction> it = JavaCCGlobals.rexprlist.iterator(); it.hasNext();) {
+    for (Iterator<TokenProduction> it = context.globals().rexprlist.iterator(); it.hasNext();) {
       TokenProduction tp = it.next();
       List<RegExprSpec> respecs = tp.respecs;
       for (Iterator<RegExprSpec> it1 = respecs.iterator(); it1.hasNext();) {
         RegExprSpec res = it1.next();
         if (res.nextState != null) {
-          if (JavaCCGlobals.lexstate_S2I.get(res.nextState) == null) {
+          if (context.globals().lexstate_S2I.get(res.nextState) == null) {
             context.errors().semantic_error(res.nsTok, "Lexical state \"" + res.nextState + "\" has not been defined.");
           }
         }
@@ -142,11 +142,11 @@ public class Semanticize {
             context.errors().semantic_error(res.rexp,
                 "EOF action/state change can be specified only in a " + "TOKEN specification.");
           }
-          if ((JavaCCGlobals.nextStateForEof != null) || (JavaCCGlobals.actForEof != null)) {
+          if ((context.globals().nextStateForEof != null) || (context.globals().actForEof != null)) {
             context.errors().semantic_error(res.rexp, "Duplicate action/state change specification for <EOF>.");
           }
-          JavaCCGlobals.actForEof = res.act;
-          JavaCCGlobals.nextStateForEof = res.nextState;
+          context.globals().actForEof = res.act;
+          context.globals().nextStateForEof = res.nextState;
           semanticize.prepareToRemove(respecs, res);
         } else if (tp.isExplicit && Options.getUserTokenManager()) {
           context.errors().warning(res.rexp,
@@ -169,20 +169,20 @@ public class Semanticize {
      * "named_tokens_table" and "ordered_named_tokens". Duplications are flagged
      * as errors.
      */
-    for (Iterator<TokenProduction> it = JavaCCGlobals.rexprlist.iterator(); it.hasNext();) {
+    for (Iterator<TokenProduction> it = context.globals().rexprlist.iterator(); it.hasNext();) {
       TokenProduction tp = it.next();
       List<RegExprSpec> respecs = tp.respecs;
       for (Iterator<RegExprSpec> it1 = respecs.iterator(); it1.hasNext();) {
         RegExprSpec res = it1.next();
         if (!(res.rexp instanceof RJustName) && !res.rexp.label.equals("")) {
           String s = res.rexp.label;
-          Object obj = JavaCCGlobals.named_tokens_table.put(s, res.rexp);
+          Object obj = context.globals().named_tokens_table.put(s, res.rexp);
           if (obj != null) {
             context.errors().semantic_error(res.rexp, "Multiply defined lexical token name \"" + s + "\".");
           } else {
-            JavaCCGlobals.ordered_named_tokens.add(res.rexp);
+            context.globals().ordered_named_tokens.add(res.rexp);
           }
-          if (JavaCCGlobals.lexstate_S2I.get(s) != null) {
+          if (context.globals().lexstate_S2I.get(s) != null) {
             context.errors().semantic_error(res.rexp,
                 "Lexical token name \"" + s + "\" is the same as " + "that of a lexical state.");
           }
@@ -201,20 +201,20 @@ public class Semanticize {
      * "names_of_tokens".
      */
 
-    JavaCCGlobals.tokenCount = 1;
-    for (Iterator<TokenProduction> it = JavaCCGlobals.rexprlist.iterator(); it.hasNext();) {
+    context.globals().tokenCount = 1;
+    for (Iterator<TokenProduction> it = context.globals().rexprlist.iterator(); it.hasNext();) {
       TokenProduction tp = it.next();
       List<RegExprSpec> respecs = tp.respecs;
       if (tp.lexStates == null) {
-        tp.lexStates = new String[JavaCCGlobals.lexstate_I2S.size()];
+        tp.lexStates = new String[context.globals().lexstate_I2S.size()];
         int i = 0;
-        for (Enumeration<String> enum1 = JavaCCGlobals.lexstate_I2S.elements(); enum1.hasMoreElements();) {
+        for (Enumeration<String> enum1 = context.globals().lexstate_I2S.elements(); enum1.hasMoreElements();) {
           tp.lexStates[i++] = enum1.nextElement();
         }
       }
       Hashtable<String, Hashtable<String, RegularExpression>> table[] = new Hashtable[tp.lexStates.length];
       for (int i = 0; i < tp.lexStates.length; i++) {
-        table[i] = JavaCCGlobals.simple_tokens_table.get(tp.lexStates[i]);
+        table[i] = context.globals().simple_tokens_table.get(tp.lexStates[i]);
       }
       for (Iterator<RegExprSpec> it1 = respecs.iterator(); it1.hasNext();) {
         RegExprSpec res = it1.next();
@@ -230,7 +230,7 @@ public class Semanticize {
               // current one.
               // So go ahead and insert this item.
               if (sl.ordinal == 0) {
-                sl.ordinal = JavaCCGlobals.tokenCount++;
+                sl.ordinal = context.globals().tokenCount++;
               }
               table2 = new Hashtable<>();
               table2.put(sl.image, sl);
@@ -275,7 +275,7 @@ public class Semanticize {
               }
               // This entry is legitimate. So insert it.
               if (sl.ordinal == 0) {
-                sl.ordinal = JavaCCGlobals.tokenCount++;
+                sl.ordinal = context.globals().tokenCount++;
               }
               table2.put(sl.image, sl);
               // The above "put" may override an existing entry (that is not
@@ -286,7 +286,7 @@ public class Semanticize {
               RegularExpression re = table2.get(sl.image);
               if (re == null) {
                 if (sl.ordinal == 0) {
-                  sl.ordinal = JavaCCGlobals.tokenCount++;
+                  sl.ordinal = context.globals().tokenCount++;
                 }
                 table2.put(sl.image, sl);
               } else if (tp.isExplicit) {
@@ -320,13 +320,13 @@ public class Semanticize {
             }
           }
         } else if (!(res.rexp instanceof RJustName)) {
-          res.rexp.ordinal = JavaCCGlobals.tokenCount++;
+          res.rexp.ordinal = context.globals().tokenCount++;
         }
         if (!(res.rexp instanceof RJustName) && !res.rexp.label.equals("")) {
-          JavaCCGlobals.names_of_tokens.put(Integer.valueOf(res.rexp.ordinal), res.rexp.label);
+          context.globals().names_of_tokens.put(Integer.valueOf(res.rexp.ordinal), res.rexp.label);
         }
         if (!(res.rexp instanceof RJustName)) {
-          JavaCCGlobals.rexps_of_tokens.put(Integer.valueOf(res.rexp.ordinal), res.rexp);
+          context.globals().rexps_of_tokens.put(Integer.valueOf(res.rexp.ordinal), res.rexp);
         }
       }
     }
@@ -345,7 +345,7 @@ public class Semanticize {
 
     if (!Options.getUserTokenManager()) {
       FixRJustNames frjn = new FixRJustNames(context);
-      for (Iterator<TokenProduction> it = JavaCCGlobals.rexprlist.iterator(); it.hasNext();) {
+      for (Iterator<TokenProduction> it = context.globals().rexprlist.iterator(); it.hasNext();) {
         TokenProduction tp = it.next();
         List<RegExprSpec> respecs = tp.respecs;
         for (Iterator<RegExprSpec> it1 = respecs.iterator(); it1.hasNext();) {
@@ -373,7 +373,7 @@ public class Semanticize {
      */
 
     if (Options.getUserTokenManager()) {
-      for (Iterator<TokenProduction> it = JavaCCGlobals.rexprlist.iterator(); it.hasNext();) {
+      for (Iterator<TokenProduction> it = context.globals().rexprlist.iterator(); it.hasNext();) {
         TokenProduction tp = it.next();
         List<RegExprSpec> respecs = tp.respecs;
         for (Iterator<RegExprSpec> it1 = respecs.iterator(); it1.hasNext();) {
@@ -381,12 +381,12 @@ public class Semanticize {
           if (res.rexp instanceof RJustName) {
 
             RJustName jn = (RJustName) res.rexp;
-            RegularExpression rexp = JavaCCGlobals.named_tokens_table.get(jn.label);
+            RegularExpression rexp = context.globals().named_tokens_table.get(jn.label);
             if (rexp == null) {
-              jn.ordinal = JavaCCGlobals.tokenCount++;
-              JavaCCGlobals.named_tokens_table.put(jn.label, jn);
-              JavaCCGlobals.ordered_named_tokens.add(jn);
-              JavaCCGlobals.names_of_tokens.put(Integer.valueOf(jn.ordinal), jn.label);
+              jn.ordinal = context.globals().tokenCount++;
+              context.globals().named_tokens_table.put(jn.label, jn);
+              context.globals().ordered_named_tokens.add(jn);
+              context.globals().names_of_tokens.put(Integer.valueOf(jn.ordinal), jn.label);
             } else {
               jn.ordinal = rexp.ordinal;
               semanticize.prepareToRemove(respecs, res);
@@ -406,13 +406,13 @@ public class Semanticize {
      * ...Constants file.
      */
     if (Options.getUserTokenManager()) {
-      for (Iterator<TokenProduction> it = JavaCCGlobals.rexprlist.iterator(); it.hasNext();) {
+      for (Iterator<TokenProduction> it = context.globals().rexprlist.iterator(); it.hasNext();) {
         TokenProduction tp = it.next();
         List<RegExprSpec> respecs = tp.respecs;
         for (Iterator<RegExprSpec> it1 = respecs.iterator(); it1.hasNext();) {
           RegExprSpec res = it1.next();
           Integer ii = Integer.valueOf(res.rexp.ordinal);
-          if (JavaCCGlobals.names_of_tokens.get(ii) == null) {
+          if (context.globals().names_of_tokens.get(ii) == null) {
             context.errors().warning(res.rexp,
                 "Unlabeled regular expression cannot be referred to by " + "user generated token manager.");
           }
@@ -432,7 +432,7 @@ public class Semanticize {
     boolean emptyUpdate = true;
     while (emptyUpdate) {
       emptyUpdate = false;
-      for (Iterator<NormalProduction> it = JavaCCGlobals.bnfproductions.iterator(); it.hasNext();) {
+      for (Iterator<NormalProduction> it = context.globals().bnfproductions.iterator(); it.hasNext();) {
         NormalProduction prod = it.next();
         if (emptyExpansionExists(prod.getExpansion())) {
           if (!prod.isEmptyPossible()) {
@@ -447,7 +447,7 @@ public class Semanticize {
       // The following code checks that all ZeroOrMore, ZeroOrOne, and OneOrMore
       // nodes
       // do not contain expansions that can expand to the empty token list.
-      for (Iterator<NormalProduction> it = JavaCCGlobals.bnfproductions.iterator(); it.hasNext();) {
+      for (Iterator<NormalProduction> it = context.globals().bnfproductions.iterator(); it.hasNext();) {
         ExpansionTreeWalker.preOrderWalk(it.next().getExpansion(), new EmptyChecker(context));
       }
 
@@ -456,7 +456,7 @@ public class Semanticize {
       // productions that it can expand to without consuming any tokens. Once
       // this is
       // done, a left-recursion check can be performed.
-      for (Iterator<NormalProduction> it = JavaCCGlobals.bnfproductions.iterator(); it.hasNext();) {
+      for (Iterator<NormalProduction> it = context.globals().bnfproductions.iterator(); it.hasNext();) {
         NormalProduction prod = it.next();
         addLeftMost(prod, prod.getExpansion());
       }
@@ -466,7 +466,7 @@ public class Semanticize {
       // been determined to participate in a left recursive loop, it is not
       // tried
       // in any other loop.
-      for (Iterator<NormalProduction> it = JavaCCGlobals.bnfproductions.iterator(); it.hasNext();) {
+      for (Iterator<NormalProduction> it = context.globals().bnfproductions.iterator(); it.hasNext();) {
         NormalProduction prod = it.next();
         if (prod.getWalkStatus() == 0) {
           prodWalk(prod, context);
@@ -480,7 +480,7 @@ public class Semanticize {
       // so we only need to do the equivalent of the above walk.
       // This is not done if option USER_TOKEN_MANAGER is set to true.
       if (!Options.getUserTokenManager()) {
-        for (Iterator<TokenProduction> it = JavaCCGlobals.rexprlist.iterator(); it.hasNext();) {
+        for (Iterator<TokenProduction> it = context.globals().rexprlist.iterator(); it.hasNext();) {
           TokenProduction tp = it.next();
           List<RegExprSpec> respecs = tp.respecs;
           for (Iterator<RegExprSpec> it1 = respecs.iterator(); it1.hasNext();) {
@@ -502,7 +502,7 @@ public class Semanticize {
        * The following code performs the lookahead ambiguity checking.
        */
       if (context.errors().get_error_count() == 0) {
-        for (Iterator<NormalProduction> it = JavaCCGlobals.bnfproductions.iterator(); it.hasNext();) {
+        for (Iterator<NormalProduction> it = context.globals().bnfproductions.iterator(); it.hasNext();) {
           ExpansionTreeWalker.preOrderWalk(it.next().getExpansion(), new LookaheadChecker(semanticize));
         }
       }
@@ -728,7 +728,7 @@ public class Semanticize {
     public void action(Expansion e) {
       if (e instanceof RJustName) {
         RJustName jn = (RJustName) e;
-        RegularExpression rexp = JavaCCGlobals.named_tokens_table.get(jn.label);
+        RegularExpression rexp = context.globals().named_tokens_table.get(jn.label);
         if (rexp == null) {
           context.errors().semantic_error(e, "Undefined lexical token name \"" + jn.label + "\".");
         } else if ((jn == root) && !jn.tpContext.isExplicit && rexp.private_rexp) {
@@ -850,7 +850,7 @@ public class Semanticize {
     public void action(Expansion e) {
       if (e instanceof NonTerminal) {
         NonTerminal nt = (NonTerminal) e;
-        if (nt.setProd(JavaCCGlobals.production_table.get(nt.getName())) == null) {
+        if (nt.setProd(context.globals().production_table.get(nt.getName())) == null) {
           context.errors().semantic_error(e, "Non-terminal " + nt.getName() + " has not been defined.");
         } else {
           nt.getProd().getParents().add(nt);

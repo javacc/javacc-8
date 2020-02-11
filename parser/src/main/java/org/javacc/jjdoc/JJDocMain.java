@@ -159,7 +159,7 @@ public final class JJDocMain extends JJDocGlobals {
     try {
 
       parser.javacc_input(context);
-      JJDoc.start();
+      JJDoc.start(context);
 
       if (context.errors().get_error_count() == 0) {
         if (context.errors().get_warning_count() == 0) {

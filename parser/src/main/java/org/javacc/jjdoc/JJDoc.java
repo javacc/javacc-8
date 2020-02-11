@@ -33,6 +33,7 @@ import org.javacc.parser.CharacterRange;
 import org.javacc.parser.Choice;
 import org.javacc.parser.CppCodeProduction;
 import org.javacc.parser.Expansion;
+import org.javacc.parser.JavaCCContext;
 import org.javacc.parser.JavaCCGlobals;
 import org.javacc.parser.JavaCodeProduction;
 import org.javacc.parser.Lookahead;
@@ -67,11 +68,11 @@ import java.util.List;
  */
 public class JJDoc extends JJDocGlobals {
 
-  static void start() {
+  static void start(JavaCCContext context) {
     JJDocGlobals.generator = JJDocGlobals.getGenerator();
     JJDocGlobals.generator.documentStart();
-    JJDoc.emitTokenProductions(JJDocGlobals.generator, JavaCCGlobals.rexprlist);
-    JJDoc.emitNormalProductions(JJDocGlobals.generator, JavaCCGlobals.bnfproductions);
+    JJDoc.emitTokenProductions(JJDocGlobals.generator, context.globals().rexprlist, context);
+    JJDoc.emitNormalProductions(JJDocGlobals.generator, context.globals().bnfproductions, context);
     JJDocGlobals.generator.documentEnd();
   }
 
@@ -83,7 +84,7 @@ public class JJDoc extends JJDocGlobals {
     return (t != tok) ? t : null;
   }
 
-  private static void emitTopLevelSpecialTokens(Token tok, Generator gen) {
+  private static void emitTopLevelSpecialTokens(Token tok, Generator gen, JavaCCContext context) {
     if (tok == null) {
       // Strange ...
       return;
@@ -91,10 +92,10 @@ public class JJDoc extends JJDocGlobals {
     tok = JJDoc.getPrecedingSpecialToken(tok);
     String s = "";
     if (tok != null) {
-      JavaCCGlobals.cline = tok.beginLine;
-      JavaCCGlobals.ccol = tok.beginColumn;
+      context.globals().cline = tok.beginLine;
+      context.globals().ccol = tok.beginColumn;
       while (tok != null) {
-        s += JavaCCGlobals.printTokenOnly(tok, true);
+        s += context.globals().printTokenOnly(tok, true);
         tok = tok.next;
       }
     }
@@ -103,12 +104,12 @@ public class JJDoc extends JJDocGlobals {
     }
   }
 
-  private static void emitTokenProductions(Generator gen, List<TokenProduction> prods) {
+  private static void emitTokenProductions(Generator gen, List<TokenProduction> prods, JavaCCContext context) {
     gen.tokensStart();
     // FIXME there are many empty productions here
     for (Iterator<TokenProduction> it = prods.iterator(); it.hasNext();) {
       TokenProduction tp = it.next();
-      JJDoc.emitTopLevelSpecialTokens(tp.firstToken, gen);
+      JJDoc.emitTopLevelSpecialTokens(tp.firstToken, gen, context);
 
 
       gen.handleTokenProduction(tp);
@@ -155,11 +156,11 @@ public class JJDoc extends JJDocGlobals {
     return token;
   }
 
-  private static void emitNormalProductions(Generator gen, List<NormalProduction> prods) {
+  private static void emitNormalProductions(Generator gen, List<NormalProduction> prods, JavaCCContext context) {
     gen.nonterminalsStart();
     for (Iterator<NormalProduction> it = prods.iterator(); it.hasNext();) {
       NormalProduction np = it.next();
-      JJDoc.emitTopLevelSpecialTokens(np.getFirstToken(), gen);
+      JJDoc.emitTopLevelSpecialTokens(np.getFirstToken(), gen, context);
       if (np instanceof BNFProduction) {
         gen.productionStart(np);
         if (np.getExpansion() instanceof Choice) {
