@@ -34,7 +34,6 @@
 							<goal>jjtree-javacc</goal>
 						</goals>
 						<configuration>
-							<codeGenerator>Java</codeGenerator>
 							<nodeDirectory>src/main/java</nodeDirectory>
 						</configuration>
 					</execution>

@@ -22,7 +22,6 @@
 							<goal>javacc</goal>
 						</goals>
 						<configuration>
-							<codeGenerator>Java</codeGenerator>
 							<packageName>example1</packageName>
 							<includes>example1/Example1.jj</includes>
 						</configuration>
@@ -34,7 +33,6 @@
 							<goal>javacc</goal>
 						</goals>
 						<configuration>
-							<codeGenerator>Java</codeGenerator>
 							<packageName>example2</packageName>
 							<includes>Example2.jj</includes>
 						</configuration>
@@ -60,7 +58,6 @@
 							<goal>javacc</goal>
 						</goals>
 						<configuration>
-							<codeGenerator>Java</codeGenerator>
 							<packageName>example4</packageName>
 							<includes>Example4.jj</includes>
 						</configuration>
@@ -72,7 +69,6 @@
 							<goal>javacc</goal>
 						</goals>
 						<configuration>
-							<codeGenerator>Java</codeGenerator>
 							<packageName>example5</packageName>
 							<includes>Example5.jj</includes>
 						</configuration>
@@ -84,7 +80,6 @@
 							<goal>javacc</goal>
 						</goals>
 						<configuration>
-							<codeGenerator>Java</codeGenerator>
 							<packageName>example6</packageName>
 							<includes>Example6.jj</includes>
 						</configuration>
@@ -96,7 +91,6 @@
 							<goal>javacc</goal>
 						</goals>
 						<configuration>
-							<codeGenerator>Java</codeGenerator>
 							<packageName>example7</packageName>
 							<includes>Example7.jj</includes>
 						</configuration>
@@ -108,7 +102,6 @@
 							<goal>javacc</goal>
 						</goals>
 						<configuration>
-							<codeGenerator>Java</codeGenerator>
 							<packageName>example8</packageName>
 							<includes>Example8.jj</includes>
 						</configuration>
@@ -120,7 +113,6 @@
 							<goal>javacc</goal>
 						</goals>
 						<configuration>
-							<codeGenerator>Java</codeGenerator>
 							<packageName>example9</packageName>
 							<includes>Example9.jj</includes>
 						</configuration>
@@ -132,7 +124,6 @@
 							<goal>javacc</goal>
 						</goals>
 						<configuration>
-							<codeGenerator>Java</codeGenerator>
 							<packageName>example10</packageName>
 							<includes>Example10.jj</includes>
 						</configuration>

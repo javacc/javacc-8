@@ -22,9 +22,6 @@
 						<goals>
 							<goal>javacc</goal>
 						</goals>
-						<configuration>
-							<codeGenerator>Java</codeGenerator>
-						</configuration>
 					</execution>
 				</executions>
 			</plugin>
