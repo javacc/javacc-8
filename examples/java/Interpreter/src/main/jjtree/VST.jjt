@@ -87,7 +87,7 @@ void CompilationUnit() :
 }
 
 /** Variable declaration. */
-void VarDeclaration() :
+void VarDeclaration() #VarDeclaration:
 { Token t; }
 {
   (
