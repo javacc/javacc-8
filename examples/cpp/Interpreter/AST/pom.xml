@@ -8,7 +8,7 @@
   </parent>
   <groupId>org.javacc.examples.cpp.interpreter</groupId>
   <artifactId>AST</artifactId>
-  <name>JavaCC examples C++ Interpreter AST</name>
+  <name>JavaCC examples C++  Interpreter AST</name>
   <packaging>nar</packaging>
 	<build>
 		<plugins>
@@ -37,18 +37,19 @@
 					<libraries>
 						<library>
 							<type>executable</type>
+							<run>true</run>
 						</library>
 					</libraries>
 					<cpp>
 						<includePaths>
 							<includePath>
-								<path>src/main/cpp</path>
+								<path>${project.basedir}/src/main/cpp</path>
 							</includePath>
 							<includePath>
-								<path>target/generated-sources/cpp</path>
+								<path>${project.basedir}/target/generated-sources/cpp</path>
 							</includePath>
 							<includePath>
-								<path>target/generated-sources/jjtree</path>
+								<path>${project.basedir}/target/generated-sources/jjtree</path>
 							</includePath>
 						</includePaths>
 					</cpp>
