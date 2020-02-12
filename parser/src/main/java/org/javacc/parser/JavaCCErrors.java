@@ -32,10 +32,9 @@ package org.javacc.parser;
  */
 public final class JavaCCErrors {
 
-  private int parse_error_count = 0;
-  int         semantic_error_count;
-  int         warning_count;
-
+  private int parse_error_count;
+  private int semantic_error_count;
+  private int warning_count;
 
   JavaCCErrors() {
     this.parse_error_count = 0;

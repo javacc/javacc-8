@@ -43,7 +43,7 @@ import java.util.Set;
  */
 class LexerContext {
 
-  final JavaCCContext context;
+  final Context context;
   int                 lexStateIndex;
   int                 curKind;
   RegularExpression   curRE;
@@ -98,7 +98,7 @@ class LexerContext {
   final Set<Integer>                kindToIgnoreCase   = new HashSet<>();
   final Map<Integer, NfaState>      nfaStateMap        = new HashMap<>();
 
-  LexerContext(JavaCCContext context) {
+  LexerContext(Context context) {
     this.context = context;
     canMatchAnyChar = null;
     curKind = 0;

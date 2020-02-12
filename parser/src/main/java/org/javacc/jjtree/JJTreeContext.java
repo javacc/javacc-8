@@ -1,11 +1,11 @@
 
 package org.javacc.jjtree;
 
-import org.javacc.parser.JavaCCContext;
+import org.javacc.parser.Context;
 import org.javacc.parser.Options;
 
 
-public class JJTreeContext extends JavaCCContext {
+public class JJTreeContext extends Context {
 
   private final JJTreeOptions treeOptions = new JJTreeOptions();
 

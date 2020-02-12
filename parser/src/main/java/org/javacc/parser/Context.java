@@ -27,25 +27,31 @@
 
 package org.javacc.parser;
 
+import java.util.ServiceLoader;
+
 /**
  * The JavaCC context provides all environment variables for the code generation
  * process.
  */
-public class JavaCCContext {
+public class Context {
 
   private final JavaCCErrors  errors;
   private final JavaCCGlobals globals;
   private final Options       options;
 
-  public JavaCCContext() {
+
+  private CodeGenerator codeGenerator = null;
+
+  public Context() {
     this(new Options());
     Options.init();
   }
 
-  public JavaCCContext(Options options) {
+  public Context(Options options) {
     this.options = options;
     this.errors = new JavaCCErrors();
     this.globals = new JavaCCGlobals();
+    this.codeGenerator = null;
   }
 
   /**
@@ -67,5 +73,29 @@ public class JavaCCContext {
    */
   public final Options options() {
     return options;
+  }
+
+  /**
+   * Get the {@link CodeGenerator}.
+   */
+  public final CodeGenerator getCodeGenerator() {
+    if (codeGenerator != null) {
+      return codeGenerator;
+    }
+
+    String name = Options.getCodeGenerator();
+    if (name == null) {
+      return null;
+    }
+
+    ServiceLoader<CodeGenerator> serviceLoader = ServiceLoader.load(CodeGenerator.class);
+    for (CodeGenerator generator : serviceLoader) {
+      if (generator.getName().equalsIgnoreCase(name)) {
+        codeGenerator = generator;
+        return codeGenerator;
+      }
+    }
+    errors().semantic_error("Could not load the CodeGenerator class: \"" + name + "\"");
+    return codeGenerator;
   }
 }

@@ -138,7 +138,7 @@ public class RChoice extends RegularExpression {
     }
   }
 
-  void CheckUnmatchability(int[] lexStates, JavaCCContext context) {
+  void CheckUnmatchability(int[] lexStates, Context context) {
     RegularExpression curRE;
     for (int i = 0; i < getChoices().size(); i++) {
       if (!(curRE = getChoices().get(i)).private_rexp && (// curRE instanceof

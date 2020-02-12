@@ -35,14 +35,14 @@ import java.util.List;
 
 public class Semanticize {
 
-  private final JavaCCContext     context;
+  private final Context     context;
   private List<List<RegExprSpec>> removeList = new ArrayList<>();
   private List<RegExprSpec>       itemList   = new ArrayList<>();
 
 
   private long nextGenerationIndex;
 
-  private Semanticize(JavaCCContext context) {
+  private Semanticize(Context context) {
     this.context = context;
     removeList = new ArrayList<>();
     itemList = new ArrayList<>();
@@ -50,8 +50,8 @@ public class Semanticize {
     loopString = null;
     nextGenerationIndex = 1;
   }
-  
-  protected final JavaCCContext getContext() {
+
+  protected final Context getContext() {
     return context;
   }
 
@@ -73,7 +73,7 @@ public class Semanticize {
     return nextGenerationIndex++;
   }
 
-  public static void start(JavaCCContext context) throws MetaParseException {
+  public static void start(Context context) throws MetaParseException {
     Semanticize semanticize = new Semanticize(context);
 
     if (context.errors().get_error_count() != 0) {
@@ -614,7 +614,7 @@ public class Semanticize {
 
   // Returns true to indicate an unraveling of a detected left recursion loop,
   // and returns false otherwise.
-  static private boolean prodWalk(NormalProduction prod, JavaCCContext context) {
+  static private boolean prodWalk(NormalProduction prod, Context context) {
     prod.setWalkStatus(-1);
     for (int i = 0; i < prod.leIndex; i++) {
       if (prod.getLeftExpansions()[i].getWalkStatus() == -1) {
@@ -648,7 +648,7 @@ public class Semanticize {
 
   // Returns true to indicate an unraveling of a detected loop,
   // and returns false otherwise.
-  static private boolean rexpWalk(RegularExpression rexp, JavaCCContext context) {
+  static private boolean rexpWalk(RegularExpression rexp, Context context) {
     if (rexp instanceof RJustName) {
       RJustName jn = (RJustName) rexp;
       if (jn.regexpr.walkStatus == -1) {
@@ -708,14 +708,14 @@ public class Semanticize {
   private static class FixRJustNames implements TreeWalkerOp {
 
     private RegularExpression root;
-    private final JavaCCContext context;
+    private final Context context;
 
     /**
      * Constructs an instance of {@link FixRJustNames}.
      *
      * @param context
      */
-    private FixRJustNames(JavaCCContext context) {
+    private FixRJustNames(Context context) {
       this.context = context;
     }
 
@@ -747,15 +747,15 @@ public class Semanticize {
   }
 
   private static class LookaheadFixer implements TreeWalkerOp {
-    
-    private final JavaCCContext context;
+
+    private final Context context;
 
     /**
      * Constructs an instance of {@link LookaheadFixer}.
      *
      * @param context
      */
-    private LookaheadFixer(JavaCCContext context) {
+    private LookaheadFixer(Context context) {
       this.context = context;
     }
 
@@ -825,15 +825,15 @@ public class Semanticize {
   }
 
   private static class ProductionDefinedChecker implements TreeWalkerOp {
-    
-    private final JavaCCContext context;
+
+    private final Context context;
 
     /**
      * Constructs an instance of {@link ProductionDefinedChecker}.
      *
      * @param context
      */
-    private ProductionDefinedChecker(JavaCCContext context) {
+    private ProductionDefinedChecker(Context context) {
       this.context = context;
     }
 
@@ -862,9 +862,9 @@ public class Semanticize {
 
   private static class EmptyChecker implements TreeWalkerOp {
 
-    private final JavaCCContext context;
-    
-    private EmptyChecker(JavaCCContext context) {
+    private final Context context;
+
+    private EmptyChecker(Context context) {
       this.context = context;
     }
 

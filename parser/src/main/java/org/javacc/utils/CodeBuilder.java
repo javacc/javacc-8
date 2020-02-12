@@ -5,7 +5,7 @@ package org.javacc.utils;
 
 import org.javacc.jjtree.TokenUtils;
 import org.javacc.parser.CodeGeneratorSettings;
-import org.javacc.parser.JavaCCContext;
+import org.javacc.parser.Context;
 import org.javacc.parser.JavaCCErrors;
 import org.javacc.parser.JavaCCGlobals;
 import org.javacc.parser.JavaCCParserConstants;
@@ -24,7 +24,7 @@ import java.util.Set;
 
 public abstract class CodeBuilder<B extends CodeBuilder<?>> implements Closeable {
 
-  private final JavaCCContext         context;
+  private final Context         context;
   private final CodeGeneratorSettings options;
 
 
@@ -42,7 +42,7 @@ public abstract class CodeBuilder<B extends CodeBuilder<?>> implements Closeable
    * @param context
    * @param options
    */
-  protected CodeBuilder(JavaCCContext context, CodeGeneratorSettings options) {
+  protected CodeBuilder(Context context, CodeGeneratorSettings options) {
     this.context = context;
     this.options = options;
   }
@@ -311,7 +311,7 @@ public abstract class CodeBuilder<B extends CodeBuilder<?>> implements Closeable
      * @param context
      * @param options
      */
-    private GenericCodeBuilder(JavaCCContext context, CodeGeneratorSettings options) {
+    private GenericCodeBuilder(Context context, CodeGeneratorSettings options) {
       super(context, options);
     }
 
@@ -329,7 +329,7 @@ public abstract class CodeBuilder<B extends CodeBuilder<?>> implements Closeable
      * @param context
      * @param options
      */
-    public static GenericCodeBuilder of(JavaCCContext context, CodeGeneratorSettings options) {
+    public static GenericCodeBuilder of(Context context, CodeGeneratorSettings options) {
       return new GenericCodeBuilder(context, options);
     }
   }

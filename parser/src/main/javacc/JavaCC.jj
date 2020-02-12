@@ -580,7 +580,7 @@ TOKEN :
  * THE JAVACC GRAMMAR SPECIFICATION STARTS HERE *
  ************************************************/
 
-void javacc_input(JavaCCContext context) :
+void javacc_input(Context context) :
 	{
 	  String id1, id2;
 	  initialize(context);

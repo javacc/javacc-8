@@ -94,7 +94,7 @@ public class JJDoc extends JJDocGlobals {
       context.globals().cline = tok.beginLine;
       context.globals().ccol = tok.beginColumn;
       while (tok != null) {
-        s += context.globals().printTokenOnly(tok, true);
+        s += tok.printTokenOnly(context.globals(), true);
         tok = tok.next;
       }
     }

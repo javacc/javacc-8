@@ -36,7 +36,7 @@ public class NodeScope {
   public String            closedVar;
   public String            exceptionVar;
   public String            nodeVar;
-  
+
   private final int        scopeNumber;
 
   public NodeScope(ASTProduction p, ASTNodeDescriptor n, JJTreeContext context) {

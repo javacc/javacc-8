@@ -1,7 +1,7 @@
 
 package org.javacc.utils;
 
-import org.javacc.parser.JavaCCContext;
+import org.javacc.parser.Context;
 import org.javacc.parser.JavaCCGlobals;
 import org.javacc.parser.Options;
 
@@ -67,7 +67,7 @@ abstract class OutputFileDigest {
    * @throws FileNotFoundException
    * @throws IOException
    */
-  public static boolean check(File file, String toolName, String compatibleVersion, List<String> options, JavaCCContext context)
+  public static boolean check(File file, String toolName, String compatibleVersion, List<String> options, Context context)
       throws FileNotFoundException, IOException {
     // File does not exist
     if (!file.exists()) {
@@ -124,7 +124,7 @@ abstract class OutputFileDigest {
    * @param toolName
    * @param versionId
    */
-  private static void checkVersion(File file, String toolName, String versionId, JavaCCContext context) {
+  private static void checkVersion(File file, String toolName, String versionId, Context context) {
     String firstLine = "/* " + JavaCCGlobals.getIdString(toolName, file.getName()) + " Version ";
 
     try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
@@ -155,7 +155,7 @@ abstract class OutputFileDigest {
    * @param file
    * @param options
    */
-  private static void checkOptions(File file, String[] options, JavaCCContext context) {
+  private static void checkOptions(File file, String[] options, Context context) {
     try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
       String line;
       while ((line = reader.readLine()) != null) {

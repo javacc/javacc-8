@@ -74,7 +74,7 @@ class LookaheadCalc {
     return false;
   }
 
-  private static String image(MatchInfo m, JavaCCContext context) {
+  private static String image(MatchInfo m, Context context) {
     String ret = "";
     for (int i = 0; i < m.firstFreeLoc; i++) {
       if (m.match[i] == 0) {
@@ -97,7 +97,7 @@ class LookaheadCalc {
     }
   }
 
-  static void choiceCalc(Choice ch, JavaCCContext context) {
+  static void choiceCalc(Choice ch, Context context) {
     int first = LookaheadCalc.firstChoice(ch);
     // dbl[i] and dbr[i] are lists of size limited matches for choice i
     // of ch. dbl ignores matches with semantic lookaheads (when force_la_check
@@ -243,8 +243,8 @@ class LookaheadCalc {
         if (LookaheadCalc.javaCodeCheck(first)) {
           semanticize.getContext().errors().warning(nested,
               "JAVACODE non-terminal within " + LookaheadCalc.image(exp)
-                  + " construct will force this construct to be entered in favor of "
-                  + "expansions occurring after construct.");
+              + " construct will force this construct to be entered in favor of "
+              + "expansions occurring after construct.");
         }
       }
       if ((m = LookaheadCalc.overlap(first, follow)) == null) {

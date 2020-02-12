@@ -28,7 +28,7 @@
 
 package org.javacc.jjtree;
 
-import org.javacc.parser.JavaCCContext;
+import org.javacc.parser.Context;
 
 /**
  * Utilities for manipulating Tokens.
@@ -79,7 +79,7 @@ public final class TokenUtils {
     }
   }
 
-  static String remove_escapes_and_quotes(Token t, String str, JavaCCContext context) {
+  static String remove_escapes_and_quotes(Token t, String str, Context context) {
     String retval = "";
     int index = 1;
     char ch, ch1;

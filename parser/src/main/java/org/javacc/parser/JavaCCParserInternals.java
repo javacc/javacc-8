@@ -35,7 +35,7 @@ import java.util.List;
  */
 public abstract class JavaCCParserInternals {
 
-  protected JavaCCContext context;
+  protected Context context;
 
   protected JavaCCParserInternals() {
     first_cu_token = null;
@@ -45,21 +45,23 @@ public abstract class JavaCCParserInternals {
     System.out.println("");
   }
 
-  protected void initialize(JavaCCContext context) {
+  protected void initialize(Context context) {
     this.context = context;
     add_cu_token_here = context.globals().cu_to_insertion_point_1;
-//    Integer i = Integer.valueOf(0);
-//    context.globals().lexstate_S2I.put("DEFAULT", i);
-//    context.globals().lexstate_I2S.put(i, "DEFAULT");
-//    context.globals().simple_tokens_table.put("DEFAULT", new Hashtable<String, Hashtable<String, RegularExpression>>());
+    // Integer i = Integer.valueOf(0);
+    // context.globals().lexstate_S2I.put("DEFAULT", i);
+    // context.globals().lexstate_I2S.put(i, "DEFAULT");
+    // context.globals().simple_tokens_table.put("DEFAULT", new
+    // Hashtable<String, Hashtable<String, RegularExpression>>());
   }
-  
+
   protected void checkDefaultState() {
-    if(!context.globals().simple_tokens_table.containsKey(LexGen.DEFAULT_STATE)) {
+    if (!context.globals().simple_tokens_table.containsKey(LexGen.DEFAULT_STATE)) {
       Integer i = Integer.valueOf(nextFreeLexState++);
       context.globals().lexstate_S2I.put(LexGen.DEFAULT_STATE, i);
       context.globals().lexstate_I2S.put(i, LexGen.DEFAULT_STATE);
-      context.globals().simple_tokens_table.put(LexGen.DEFAULT_STATE, new Hashtable<String, Hashtable<String, RegularExpression>>());
+      context.globals().simple_tokens_table.put(LexGen.DEFAULT_STATE,
+          new Hashtable<String, Hashtable<String, RegularExpression>>());
     }
   }
 
@@ -345,12 +347,10 @@ public abstract class JavaCCParserInternals {
   }
 
   protected final boolean isJavaLanguage() {
-    return (context.globals().getCodeGenerator(context) != null)
-        && "Java".equalsIgnoreCase(context.globals().getCodeGenerator(context).getName());
+    return (context.getCodeGenerator() != null) && "Java".equalsIgnoreCase(context.getCodeGenerator().getName());
   }
 
   protected final String getLanguageName() {
-    return context.globals().getCodeGenerator(context) == null ? null
-        : context.globals().getCodeGenerator(context).getName();
+    return context.getCodeGenerator() == null ? null : context.getCodeGenerator().getName();
   }
 }

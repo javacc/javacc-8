@@ -40,7 +40,7 @@ public class CharacterRange extends Expansion {
 
   CharacterRange() {}
 
-  CharacterRange(char l, char r, JavaCCContext context) {
+  CharacterRange(char l, char r, Context context) {
     if (l > r) {
       context.errors().semantic_error(this, "Invalid range : \"" + (int) l + "\" - \"" + (int) r
           + "\". First character should be less than or equal to the second one in a range.");

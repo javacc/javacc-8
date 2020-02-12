@@ -14,7 +14,7 @@ public final class OptionsTest extends TestCase {
 
   public void testDefaults() {
     Options.init();
-    JavaCCContext context = new JavaCCContext();
+    Context context = new Context();
 
     assertEquals(49, Options.optionValues.size());
 
@@ -55,7 +55,7 @@ public final class OptionsTest extends TestCase {
 
   public void testSetBooleanOption() {
     Options.init();
-    JavaCCContext context = new JavaCCContext();
+    Context context = new Context();
 
     assertEquals(true, Options.getStatic());
     Options.setCmdLineOption("-NOSTATIC");
@@ -78,7 +78,7 @@ public final class OptionsTest extends TestCase {
 
   public void testIntBooleanOption() {
     Options.init();
-    JavaCCContext context = new JavaCCContext();
+    Context context = new Context();
 
     assertEquals(1, Options.getLookahead());
     Options.setCmdLineOption("LOOKAHEAD=2");
@@ -98,7 +98,7 @@ public final class OptionsTest extends TestCase {
 
   public void testSetStringOption() {
     Options.init();
-    JavaCCContext context = new JavaCCContext();
+    Context context = new Context();
 
     assertEquals("", Options.getTokenExtends());
     Options.setCmdLineOption("-TOKEN_EXTENDS=java.lang.Object");
@@ -117,7 +117,7 @@ public final class OptionsTest extends TestCase {
 
   public void testSetNonexistentOption() {
     Options.init();
-    JavaCCContext context = new JavaCCContext();
+    Context context = new Context();
 
     assertEquals(0, context.errors().get_warning_count());
     Options.setInputFileOption(null, null, "NONEXISTENTOPTION", Boolean.TRUE, context);
@@ -130,7 +130,7 @@ public final class OptionsTest extends TestCase {
 
   public void testSetWrongTypeForOption() {
     Options.init();
-    JavaCCContext context = new JavaCCContext();
+    Context context = new Context();
 
     assertEquals(0, context.errors().get_warning_count());
     assertEquals(0, context.errors().get_error_count());
@@ -144,7 +144,7 @@ public final class OptionsTest extends TestCase {
 
   public void testNormalize() {
     Options.init();
-    JavaCCContext context = new JavaCCContext();
+    Context context = new Context();
 
     assertEquals(false, Options.getDebugLookahead());
     assertEquals(false, Options.getDebugParser());

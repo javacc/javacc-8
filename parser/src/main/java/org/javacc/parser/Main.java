@@ -162,7 +162,7 @@ public class Main {
   public static int mainProgram(String args[]) throws Exception {
 
     // Initialize all static state
-    JavaCCContext context = Main.reInitAll();
+    Context context = Main.reInitAll();
 
     JavaCCGlobals.bannerLine("Parser Generator", "");
 
@@ -230,7 +230,7 @@ public class Main {
       boolean isBuildParser = Options.getBuildParser();
 
 
-      CodeGenerator codeGenerator = context.globals().getCodeGenerator(context);
+      CodeGenerator codeGenerator = context.getCodeGenerator();
       if (codeGenerator != null) {
         ParserCodeGenerator parserCodeGenerator = codeGenerator.getParserCodeGenerator(context);
         if (isBuildParser && (parserCodeGenerator != null)) {
@@ -267,7 +267,7 @@ public class Main {
           }
         } else {
           System.out
-              .println("Parser generated with 0 errors and " + context.errors().get_warning_count() + " warnings.");
+          .println("Parser generated with 0 errors and " + context.errors().get_warning_count() + " warnings.");
         }
         return 0;
       } else {
@@ -287,7 +287,7 @@ public class Main {
     }
   }
 
-  private static ParserData createParserData(JavaCCContext context) {
+  private static ParserData createParserData(Context context) {
     ParserData parserData = new ParserData();
     parserData.bnfproductions = context.globals().bnfproductions;
     parserData.parserName = context.globals().cu_name;
@@ -306,7 +306,7 @@ public class Main {
     return parserData;
   }
 
-  public static JavaCCContext reInitAll() {
-    return new JavaCCContext();
+  public static Context reInitAll() {
+    return new Context();
   }
 }

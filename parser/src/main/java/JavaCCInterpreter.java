@@ -1,5 +1,5 @@
 
-import org.javacc.parser.JavaCCContext;
+import org.javacc.parser.Context;
 import org.javacc.parser.JavaCCParser;
 import org.javacc.parser.LexGen;
 import org.javacc.parser.Main;
@@ -24,7 +24,7 @@ public class JavaCCInterpreter {
 
   public static void main(String[] args) throws Exception {
     // Initialize all static state
-    JavaCCContext context = Main.reInitAll();
+    Context context = Main.reInitAll();
     Options.set(Options.NONUSER_OPTION__INTERPRETER, true);
     Options.set("STATIC", false);
     // TODO JavaCCParser parser = null;
@@ -63,7 +63,7 @@ public class JavaCCInterpreter {
     interp.runTokenizer(grammar, input, context);
   }
 
-  public void runTokenizer(String grammar, String input, JavaCCContext context) {
+  public void runTokenizer(String grammar, String input, Context context) {
     try {
       JavaCCParser parser = new JavaCCParser(new StringReader(grammar));
       parser.javacc_input(context);

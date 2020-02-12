@@ -43,9 +43,9 @@ import java.util.Map;
  */
 public class LexGen {
 
-  public static final String   DEFAULT_STATE    = "DEFAULT";
-  private final JavaCCContext context;
-  
+  public static final String DEFAULT_STATE = "DEFAULT";
+  private final Context      context;
+
   // Hashtable of vectors
   private Hashtable<String, List<TokenProduction>> allTpsForState = new Hashtable<>();
 
@@ -71,7 +71,7 @@ public class LexGen {
   private boolean[]                                hasNfa;
   private NfaState                                 initialState;
 
-  public LexGen(JavaCCContext context) {
+  public LexGen(Context context) {
     this.context = context;
     actions = null;
     allTpsForState = new Hashtable<>();
@@ -175,7 +175,7 @@ public class LexGen {
       return new TokenizerData();
     }
 
-    final CodeGenerator codeGenerator = context.globals().getCodeGenerator(context);
+    final CodeGenerator codeGenerator = context.getCodeGenerator();
     List<RegularExpression> choices = new ArrayList<>();
     TokenProduction tp;
     int i, j;
@@ -372,7 +372,7 @@ public class LexGen {
       StringBuilder sb = new StringBuilder();
       for (int k = 0; k < act.getActionTokens().size(); k++) {
         sb.append(act.getActionTokens().get(k).image);
-//        sb.append(" ");
+        // sb.append(" ");
       }
       actionStrings.put(i, sb.toString());
     }

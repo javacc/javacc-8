@@ -36,7 +36,6 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
-import java.util.ServiceLoader;
 
 /**
  * This package contains data created as a result of parsing and semanticizing a
@@ -212,7 +211,6 @@ public class JavaCCGlobals {
   public JavaCCGlobals() {
     this.jjtreeGenerated = false;
     this.toolNames = null;
-    this.codeGenerator = null;
     this.cu_name = null;
     this.cu_to_insertion_point_1 = new ArrayList<>();
     this.cu_to_insertion_point_2 = new ArrayList<>();
@@ -365,7 +363,7 @@ public class JavaCCGlobals {
     return new ArrayList<>();
   }
 
-  public static void createOutputDir(File outputDir, JavaCCContext context) {
+  public static void createOutputDir(File outputDir, Context context) {
     if (!outputDir.exists()) {
       context.errors().warning("Output directory \"" + outputDir + "\" does not exist. Creating the directory.");
 
@@ -383,38 +381,6 @@ public class JavaCCGlobals {
     if (!outputDir.canWrite()) {
       context.errors().semantic_error("Cannot write to the output output directory : \"" + outputDir + "\"");
       return;
-    }
-  }
-
-  private CodeGenerator codeGenerator = null;
-
-  public CodeGenerator getCodeGenerator(JavaCCContext context) {
-    if (codeGenerator != null) {
-      return codeGenerator;
-    }
-
-    String name = Options.getCodeGenerator();
-    if (name == null) {
-      return null;
-    }
-
-    ServiceLoader<CodeGenerator> serviceLoader = ServiceLoader.load(CodeGenerator.class);
-    for (CodeGenerator generator : serviceLoader) {
-      if (generator.getName().equalsIgnoreCase(name)) {
-        codeGenerator = generator;
-        return codeGenerator;
-      }
-    }
-
-    context.errors().semantic_error("Could not load the CodeGenerator class: \"" + name + "\"");
-    return codeGenerator;
-  }
-
-  public static String staticOpt() {
-    if (Options.getStatic()) {
-      return "static ";
-    } else {
-      return "";
     }
   }
 
@@ -466,29 +432,4 @@ public class JavaCCGlobals {
   }
 
   public int cline, ccol;
-
-
-  public String printTokenOnly(Token t, boolean escape) {
-    String retval = "";
-    for (; cline < t.beginLine; cline++) {
-      retval += "\n";
-      ccol = 1;
-    }
-    for (; ccol < t.beginColumn; ccol++) {
-      retval += " ";
-    }
-    if ((t.kind == JavaCCParserConstants.STRING_LITERAL) || (t.kind == JavaCCParserConstants.CHARACTER_LITERAL)) {
-      retval += escape ? addUnicodeEscapes(t.image) : t.image;
-    } else {
-      retval += t.image;
-    }
-    cline = t.endLine;
-    ccol = t.endColumn + 1;
-    char last = t.image.charAt(t.image.length() - 1);
-    if ((last == '\n') || (last == '\r')) {
-      cline++;
-      ccol = 1;
-    }
-    return retval;
-  }
 }

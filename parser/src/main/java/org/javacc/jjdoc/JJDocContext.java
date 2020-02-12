@@ -1,11 +1,11 @@
 
 package org.javacc.jjdoc;
 
-import org.javacc.parser.JavaCCContext;
+import org.javacc.parser.Context;
 import org.javacc.parser.Options;
 
 
-public class JJDocContext extends JavaCCContext {
+public class JJDocContext extends Context {
 
   public JJDocContext() {
     super(new Options());

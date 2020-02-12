@@ -141,7 +141,7 @@ public class RCharacterList extends RegularExpression {
       8060, 8061, 8064, 8071, 8080, 8087, 8096, 8103, 8112, 8113, 8115, 8115, 8131, 8131, 8144, 8145, 8160, 8161, 8165,
       8165, 8179, 8179, 8560, 8575, 9424, 9449, 65345, 65370, 65371, 0xfffe, 0xffff, 0xffff };
 
-  private void ToCaseNeutral(JavaCCContext context) {
+  private void ToCaseNeutral(Context context) {
     int cnt = descriptors.size();
 
     for (int i = 0; i < cnt; i++) {

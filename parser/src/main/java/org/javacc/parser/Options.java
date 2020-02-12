@@ -338,7 +338,7 @@ public class Options {
     return value;
   }
 
-  public static void setInputFileOption(Object nameloc, Object valueloc, String name, Object value, JavaCCContext context) {
+  public static void setInputFileOption(Object nameloc, Object valueloc, String name, Object value, Context context) {
     String nameUpperCase = name.toUpperCase();
     if (!Options.optionValues.containsKey(nameUpperCase)) {
       context.errors().warning(nameloc, "Bad option name \"" + name + "\".  Option setting will be ignored.");
@@ -500,7 +500,7 @@ public class Options {
     }
   }
 
-  public static void normalize(JavaCCContext context) {
+  public static void normalize(Context context) {
     if (Options.getDebugLookahead() && !Options.getDebugParser()) {
       if (Options.cmdLineSetting.contains(Options.USEROPTION__DEBUG_PARSER)
           || Options.inputFileSetting.contains(Options.USEROPTION__DEBUG_PARSER)) {
