@@ -4,6 +4,7 @@
     <groupId>org.javacc.examples.cpp</groupId>
     <artifactId>Interpreter</artifactId>
     <version>8.0.0</version>
+    <relativePath>..</relativePath>
   </parent>
   <groupId>org.javacc.examples.cpp.interpreter</groupId>
   <artifactId>AST</artifactId>

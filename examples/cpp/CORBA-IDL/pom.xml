@@ -8,7 +8,7 @@
 	</parent>
 	<groupId>org.javacc.examples.cpp</groupId>
 	<artifactId>CORBA-IDL</artifactId>
-	<name>JavaCC examples C++ CORBA-IDL</name>
+	<name>JavaCC examples C++  CORBA-IDL</name>
 	<packaging>nar</packaging>
 	<build>
 		<plugins>

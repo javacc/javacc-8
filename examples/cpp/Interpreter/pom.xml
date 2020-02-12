@@ -10,10 +10,8 @@
 	<artifactId>Interpreter</artifactId>
 	<packaging>pom</packaging>
 	<modules>
-<!-- 
-		<module>AST</module>
- -->
+  		<module>AST</module>
  		<module>VST</module>
 	</modules>
-	<name>JavaCC examples C++ Interpreter</name>
+	<name>JavaCC examples C++  Interpreter</name>
 </project>
