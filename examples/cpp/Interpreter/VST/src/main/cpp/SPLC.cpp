@@ -35,7 +35,7 @@ JJString ReadFileFully() {
 	return code;
 }
 static void usage(int argc, char**argv) {
-	cerr << "SPL" << " [ spl in out err ]" << endl;
+	cerr << "SPL" << " spl [ in out err ]" << endl;
 }
 int main(int argc, char**argv) {
 	istream*	input  = &cin;
@@ -64,7 +64,7 @@ int main(int argc, char**argv) {
 				return 8;
 			}
 		} else
-		if (argc == 1) {
+		if (argc == 2) {
 			JJString s = ReadFileFully();
 			cout << s << endl;
 			cs = new CharStream(s.c_str(), s.size() - 1, 1, 1);
