@@ -1,6 +1,8 @@
 
 package org.javacc.parser;
 
+import org.javacc.jjtree.JJTreeContext;
+
 public interface CodeGenerator {
 
   /**
@@ -11,26 +13,26 @@ public interface CodeGenerator {
   /**
    * Generate any other support files you need.
    */
-  boolean generateHelpers(CodeGeneratorSettings settings, TokenizerData tokenizerData);
+  boolean generateHelpers(Context context, CodeGeneratorSettings settings, TokenizerData tokenizerData);
 
   /**
    * The Token class generator.
    */
-  TokenCodeGenerator getTokenCodeGenerator();
+  TokenCodeGenerator getTokenCodeGenerator(Context context);
 
   /**
    * The TokenManager class generator.
    */
-  TokenManagerCodeGenerator getTokenManagerCodeGenerator();
+  TokenManagerCodeGenerator getTokenManagerCodeGenerator(Context context);
 
   /**
    * The Parser class generator.
    */
-  ParserCodeGenerator getParserCodeGenerator();
+  ParserCodeGenerator getParserCodeGenerator(Context context);
 
   /**
    * TODO(sreeni): Fix this when we do tree annotations in the parser code
    * generator. The JJTree preprocesor.
    */
-  org.javacc.jjtree.DefaultJJTreeVisitor getJJTreeCodeGenerator();
+  org.javacc.jjtree.DefaultJJTreeVisitor getJJTreeCodeGenerator(JJTreeContext context);
 }

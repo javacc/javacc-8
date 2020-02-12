@@ -1,17 +1,16 @@
-/* Copyright (c) 2006, Sun Microsystems, Inc.
- * All rights reserved.
+/*
+ * Copyright (c) 2006, Sun Microsystems, Inc. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
  *
- *     * Redistributions of source code must retain the above copyright notice,
- *       this list of conditions and the following disclaimer.
- *     * Redistributions in binary form must reproduce the above copyright
- *       notice, this list of conditions and the following disclaimer in the
- *       documentation and/or other materials provided with the distribution.
- *     * Neither the name of the Sun Microsystems, Inc. nor the names of its
- *       contributors may be used to endorse or promote products derived from
- *       this software without specific prior written permission.
+ * * Redistributions of source code must retain the above copyright notice, this
+ * list of conditions and the following disclaimer. * Redistributions in binary
+ * form must reproduce the above copyright notice, this list of conditions and
+ * the following disclaimer in the documentation and/or other materials provided
+ * with the distribution. * Neither the name of the Sun Microsystems, Inc. nor
+ * the names of its contributors may be used to endorse or promote products
+ * derived from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -22,8 +21,8 @@
  * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
  * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
- * THE POSSIBILITY OF SUCH DAMAGE.
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
  */
 
 
@@ -44,9 +43,13 @@ import java.io.PrintWriter;
  */
 public class TextGenerator implements Generator {
 
-  protected PrintWriter ostr;
+  protected final JJDocContext context;
+  protected PrintWriter        ostr;
 
-  public TextGenerator() {}
+
+  public TextGenerator(JJDocContext context) {
+    this.context = context;
+  }
 
   /**
    * {@inheritDoc}
@@ -131,7 +134,7 @@ public class TextGenerator implements Generator {
 
   @Override
   public void handleTokenProduction(TokenProduction tp) {
-    String text = JJDoc.getStandardTokenProductionText(tp);
+    String text = JJDoc.getStandardTokenProductionText(tp, context);
     text(text);
   }
 
@@ -248,16 +251,15 @@ public class TextGenerator implements Generator {
    * stream.
    */
   protected PrintWriter create_output_stream() {
-
-    if (JJDocOptions.getOutputFile().equals("")) {
+    if (context.getOutputFile().equals("")) {
       if (JJDocGlobals.input_file.equals("standard input")) {
         return new java.io.PrintWriter(new java.io.OutputStreamWriter(System.out));
       } else {
         String ext = ".html";
 
-        if (JJDocOptions.getText()) {
+        if (context.getText()) {
           ext = ".txt";
-        } else if (JJDocOptions.getXText()) {
+        } else if (context.getXText()) {
           ext = ".xtext";
         }
 
@@ -274,7 +276,7 @@ public class TextGenerator implements Generator {
         }
       }
     } else {
-      JJDocGlobals.output_file = JJDocOptions.getOutputFile();
+      JJDocGlobals.output_file = context.getOutputFile();
     }
 
     try {

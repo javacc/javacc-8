@@ -141,7 +141,7 @@ public class RCharacterList extends RegularExpression {
       8060, 8061, 8064, 8071, 8080, 8087, 8096, 8103, 8112, 8113, 8115, 8115, 8131, 8131, 8144, 8145, 8160, 8161, 8165,
       8165, 8179, 8179, 8560, 8575, 9424, 9449, 65345, 65370, 65371, 0xfffe, 0xffff, 0xffff };
 
-  private void ToCaseNeutral() {
+  private void ToCaseNeutral(Context context) {
     int cnt = descriptors.size();
 
     for (int i = 0; i < cnt; i++) {
@@ -173,26 +173,26 @@ public class RCharacterList extends RegularExpression {
             if (r <= RCharacterList.diffLowerCaseRanges[j + 1]) {
               descriptors.add(new CharacterRange(Character.toLowerCase(RCharacterList.diffLowerCaseRanges[j]),
                   (char) ((Character.toLowerCase(RCharacterList.diffLowerCaseRanges[j]) + r)
-                      - RCharacterList.diffLowerCaseRanges[j])));
+                      - RCharacterList.diffLowerCaseRanges[j]), context));
               break;
             }
 
             descriptors.add(new CharacterRange(Character.toLowerCase(RCharacterList.diffLowerCaseRanges[j]),
-                Character.toLowerCase(RCharacterList.diffLowerCaseRanges[j + 1])));
+                Character.toLowerCase(RCharacterList.diffLowerCaseRanges[j + 1]), context));
           } else {
             if (r <= RCharacterList.diffLowerCaseRanges[j + 1]) {
               descriptors.add(new CharacterRange(
                   (char) ((Character.toLowerCase(RCharacterList.diffLowerCaseRanges[j]) + l)
                       - RCharacterList.diffLowerCaseRanges[j]),
                   (char) ((Character.toLowerCase(RCharacterList.diffLowerCaseRanges[j]) + r)
-                      - RCharacterList.diffLowerCaseRanges[j])));
+                      - RCharacterList.diffLowerCaseRanges[j]), context));
               break;
             }
 
             descriptors.add(new CharacterRange(
                 (char) ((Character.toLowerCase(RCharacterList.diffLowerCaseRanges[j]) + l)
                     - RCharacterList.diffLowerCaseRanges[j]),
-                Character.toLowerCase(RCharacterList.diffLowerCaseRanges[j + 1])));
+                Character.toLowerCase(RCharacterList.diffLowerCaseRanges[j + 1]), context));
           }
 
           j += 2;
@@ -200,12 +200,12 @@ public class RCharacterList extends RegularExpression {
             if (r <= RCharacterList.diffLowerCaseRanges[j + 1]) {
               descriptors.add(new CharacterRange(Character.toLowerCase(RCharacterList.diffLowerCaseRanges[j]),
                   (char) ((Character.toLowerCase(RCharacterList.diffLowerCaseRanges[j]) + r)
-                      - RCharacterList.diffLowerCaseRanges[j])));
+                      - RCharacterList.diffLowerCaseRanges[j]), context));
               break;
             }
 
             descriptors.add(new CharacterRange(Character.toLowerCase(RCharacterList.diffLowerCaseRanges[j]),
-                Character.toLowerCase(RCharacterList.diffLowerCaseRanges[j + 1])));
+                Character.toLowerCase(RCharacterList.diffLowerCaseRanges[j + 1]), context));
             j += 2;
           }
           break;
@@ -225,26 +225,26 @@ public class RCharacterList extends RegularExpression {
           if (r <= RCharacterList.diffUpperCaseRanges[j + 1]) {
             descriptors.add(new CharacterRange(Character.toUpperCase(RCharacterList.diffUpperCaseRanges[j]),
                 (char) ((Character.toUpperCase(RCharacterList.diffUpperCaseRanges[j]) + r)
-                    - RCharacterList.diffUpperCaseRanges[j])));
+                    - RCharacterList.diffUpperCaseRanges[j]), context));
             continue;
           }
 
           descriptors.add(new CharacterRange(Character.toUpperCase(RCharacterList.diffUpperCaseRanges[j]),
-              Character.toUpperCase(RCharacterList.diffUpperCaseRanges[j + 1])));
+              Character.toUpperCase(RCharacterList.diffUpperCaseRanges[j + 1]), context));
         } else {
           if (r <= RCharacterList.diffUpperCaseRanges[j + 1]) {
             descriptors.add(new CharacterRange(
                 (char) ((Character.toUpperCase(RCharacterList.diffUpperCaseRanges[j]) + l)
                     - RCharacterList.diffUpperCaseRanges[j]),
                 (char) ((Character.toUpperCase(RCharacterList.diffUpperCaseRanges[j]) + r)
-                    - RCharacterList.diffUpperCaseRanges[j])));
+                    - RCharacterList.diffUpperCaseRanges[j]), context));
             continue;
           }
 
           descriptors.add(new CharacterRange(
               (char) ((Character.toUpperCase(RCharacterList.diffUpperCaseRanges[j]) + l)
                   - RCharacterList.diffUpperCaseRanges[j]),
-              Character.toUpperCase(RCharacterList.diffUpperCaseRanges[j + 1])));
+              Character.toUpperCase(RCharacterList.diffUpperCaseRanges[j + 1]), context));
         }
 
         j += 2;
@@ -252,12 +252,12 @@ public class RCharacterList extends RegularExpression {
           if (r <= RCharacterList.diffUpperCaseRanges[j + 1]) {
             descriptors.add(new CharacterRange(Character.toUpperCase(RCharacterList.diffUpperCaseRanges[j]),
                 (char) ((Character.toUpperCase(RCharacterList.diffUpperCaseRanges[j]) + r)
-                    - RCharacterList.diffUpperCaseRanges[j])));
+                    - RCharacterList.diffUpperCaseRanges[j]), context));
             break;
           }
 
           descriptors.add(new CharacterRange(Character.toUpperCase(RCharacterList.diffUpperCaseRanges[j]),
-              Character.toUpperCase(RCharacterList.diffUpperCaseRanges[j + 1])));
+              Character.toUpperCase(RCharacterList.diffUpperCaseRanges[j + 1]), context));
           j += 2;
         }
       }
@@ -282,7 +282,7 @@ public class RCharacterList extends RegularExpression {
          * 0) System.out.println(""); } System.out.println("");
          */
 
-        ToCaseNeutral();
+        ToCaseNeutral(lexerContext.context);
         SortDescriptors();
 
         /*
@@ -305,7 +305,7 @@ public class RCharacterList extends RegularExpression {
     }
 
     if ((descriptors.size() == 0) && !negated_list) {
-      JavaCCErrors.semantic_error(this, "Empty character set is not allowed as it will not match any character.");
+      lexerContext.context.errors().semantic_error(this, "Empty character set is not allowed as it will not match any character.");
       return new Nfa(lexerContext);
     }
 
@@ -450,7 +450,7 @@ public class RCharacterList extends RegularExpression {
 
         // System.out.println("lastRemoved : " + (int)lastRemoved + "; char : "
         // + (int)c);
-        newDescriptors.add(new CharacterRange((char) (lastRemoved + 1), (char) ((lastRemoved = c) - 1)));
+        newDescriptors.add(new CharacterRange((char) (lastRemoved + 1), (char) ((lastRemoved = c) - 1), lexerContext.context));
       } else {
         char l = ((CharacterRange) descriptors.get(i)).getLeft();
         char r = ((CharacterRange) descriptors.get(i)).getRight();
@@ -462,7 +462,7 @@ public class RCharacterList extends RegularExpression {
 
         // System.out.println("lastRemoved : " + (int)lastRemoved + "; left : "
         // + l + "; right : " + (int)r);
-        newDescriptors.add(new CharacterRange((char) (lastRemoved + 1), (char) (l - 1)));
+        newDescriptors.add(new CharacterRange((char) (lastRemoved + 1), (char) (l - 1), lexerContext.context));
         lastRemoved = r;
       }
     }
@@ -470,11 +470,11 @@ public class RCharacterList extends RegularExpression {
     // System.out.println("lastRem : " + (int)lastRemoved);
     if (lexerContext.unicodeWarningGiven || Options.getJavaUnicodeEscape()) {
       if (lastRemoved < (char) 0xffff) {
-        newDescriptors.add(new CharacterRange((char) (lastRemoved + 1), (char) 0xffff));
+        newDescriptors.add(new CharacterRange((char) (lastRemoved + 1), (char) 0xffff, lexerContext.context));
       }
     } else {
       if (lastRemoved < (char) 0xff) {
-        newDescriptors.add(new CharacterRange((char) (lastRemoved + 1), (char) 0xff));
+        newDescriptors.add(new CharacterRange((char) (lastRemoved + 1), (char) 0xff, lexerContext.context));
       }
     }
 

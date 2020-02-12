@@ -67,11 +67,11 @@ import java.util.List;
  */
 public class JJDoc extends JJDocGlobals {
 
-  static void start() {
-    JJDocGlobals.generator = JJDocGlobals.getGenerator();
+  static void start(JJDocContext context) {
+    JJDocGlobals.generator = JJDocGlobals.getGenerator(context);
     JJDocGlobals.generator.documentStart();
-    JJDoc.emitTokenProductions(JJDocGlobals.generator, JavaCCGlobals.rexprlist);
-    JJDoc.emitNormalProductions(JJDocGlobals.generator, JavaCCGlobals.bnfproductions);
+    JJDoc.emitTokenProductions(JJDocGlobals.generator, context.globals().rexprlist, context);
+    JJDoc.emitNormalProductions(JJDocGlobals.generator, context.globals().bnfproductions, context);
     JJDocGlobals.generator.documentEnd();
   }
 
@@ -83,7 +83,7 @@ public class JJDoc extends JJDocGlobals {
     return (t != tok) ? t : null;
   }
 
-  private static void emitTopLevelSpecialTokens(Token tok, Generator gen) {
+  private static void emitTopLevelSpecialTokens(Token tok, Generator gen, JJDocContext context) {
     if (tok == null) {
       // Strange ...
       return;
@@ -91,10 +91,10 @@ public class JJDoc extends JJDocGlobals {
     tok = JJDoc.getPrecedingSpecialToken(tok);
     String s = "";
     if (tok != null) {
-      JavaCCGlobals.cline = tok.beginLine;
-      JavaCCGlobals.ccol = tok.beginColumn;
+      context.globals().cline = tok.beginLine;
+      context.globals().ccol = tok.beginColumn;
       while (tok != null) {
-        s += JavaCCGlobals.printTokenOnly(tok, true);
+        s += tok.printTokenOnly(context.globals(), true);
         tok = tok.next;
       }
     }
@@ -103,12 +103,12 @@ public class JJDoc extends JJDocGlobals {
     }
   }
 
-  private static void emitTokenProductions(Generator gen, List<TokenProduction> prods) {
+  private static void emitTokenProductions(Generator gen, List<TokenProduction> prods, JJDocContext context) {
     gen.tokensStart();
     // FIXME there are many empty productions here
     for (Iterator<TokenProduction> it = prods.iterator(); it.hasNext();) {
       TokenProduction tp = it.next();
-      JJDoc.emitTopLevelSpecialTokens(tp.firstToken, gen);
+      JJDoc.emitTopLevelSpecialTokens(tp.firstToken, gen, context);
 
 
       gen.handleTokenProduction(tp);
@@ -116,7 +116,7 @@ public class JJDoc extends JJDocGlobals {
     gen.tokensEnd();
   }
 
-  public static String getStandardTokenProductionText(TokenProduction tp) {
+  public static String getStandardTokenProductionText(TokenProduction tp, JJDocContext context) {
     String token = "";
     if (tp.isExplicit) {
       if (tp.lexStates == null) {
@@ -139,7 +139,7 @@ public class JJDoc extends JJDocGlobals {
       for (Iterator<RegExprSpec> it2 = tp.respecs.iterator(); it2.hasNext();) {
         RegExprSpec res = it2.next();
 
-        token += JJDoc.emitRE(res.rexp);
+        token += JJDoc.emitRE(res.rexp, context);
 
         if (res.nsTok != null) {
           token += " : " + res.nsTok.image;
@@ -155,11 +155,11 @@ public class JJDoc extends JJDocGlobals {
     return token;
   }
 
-  private static void emitNormalProductions(Generator gen, List<NormalProduction> prods) {
+  private static void emitNormalProductions(Generator gen, List<NormalProduction> prods, JJDocContext context) {
     gen.nonterminalsStart();
     for (Iterator<NormalProduction> it = prods.iterator(); it.hasNext();) {
       NormalProduction np = it.next();
-      JJDoc.emitTopLevelSpecialTokens(np.getFirstToken(), gen);
+      JJDoc.emitTopLevelSpecialTokens(np.getFirstToken(), gen, context);
       if (np instanceof BNFProduction) {
         gen.productionStart(np);
         if (np.getExpansion() instanceof Choice) {
@@ -168,13 +168,13 @@ public class JJDoc extends JJDocGlobals {
           for (Iterator<Expansion> expansionsIterator = c.getChoices().iterator(); expansionsIterator.hasNext();) {
             Expansion e = expansionsIterator.next();
             gen.expansionStart(e, first);
-            JJDoc.emitExpansionTree(e, gen);
+            JJDoc.emitExpansionTree(e, gen, context);
             gen.expansionEnd(e, first);
             first = false;
           }
         } else {
           gen.expansionStart(np.getExpansion(), true);
-          JJDoc.emitExpansionTree(np.getExpansion(), gen);
+          JJDoc.emitExpansionTree(np.getExpansion(), gen, context);
           gen.expansionEnd(np.getExpansion(), true);
         }
         gen.productionEnd(np);
@@ -187,62 +187,62 @@ public class JJDoc extends JJDocGlobals {
     gen.nonterminalsEnd();
   }
 
-  private static void emitExpansionTree(Expansion exp, Generator gen) {
+  private static void emitExpansionTree(Expansion exp, Generator gen, JJDocContext context) {
     // gen.text("[->" + exp.getClass().getName() + "]");
     if (exp instanceof Action) {
-      JJDoc.emitExpansionAction((Action) exp, gen);
+      JJDoc.emitExpansionAction((Action) exp, gen, context);
     } else if (exp instanceof Choice) {
-      JJDoc.emitExpansionChoice((Choice) exp, gen);
+      JJDoc.emitExpansionChoice((Choice) exp, gen, context);
     } else if (exp instanceof Lookahead) {
-      JJDoc.emitExpansionLookahead((Lookahead) exp, gen);
+      JJDoc.emitExpansionLookahead((Lookahead) exp, gen, context);
     } else if (exp instanceof NonTerminal) {
-      JJDoc.emitExpansionNonTerminal((NonTerminal) exp, gen);
+      JJDoc.emitExpansionNonTerminal((NonTerminal) exp, gen, context);
     } else if (exp instanceof OneOrMore) {
-      JJDoc.emitExpansionOneOrMore((OneOrMore) exp, gen);
+      JJDoc.emitExpansionOneOrMore((OneOrMore) exp, gen, context);
     } else if (exp instanceof RegularExpression) {
-      JJDoc.emitExpansionRegularExpression((RegularExpression) exp, gen);
+      JJDoc.emitExpansionRegularExpression((RegularExpression) exp, gen, context);
     } else if (exp instanceof Sequence) {
-      JJDoc.emitExpansionSequence((Sequence) exp, gen);
+      JJDoc.emitExpansionSequence((Sequence) exp, gen, context);
     } else if (exp instanceof TryBlock) {
-      JJDoc.emitExpansionTryBlock((TryBlock) exp, gen);
+      JJDoc.emitExpansionTryBlock((TryBlock) exp, gen, context);
     } else if (exp instanceof ZeroOrMore) {
-      JJDoc.emitExpansionZeroOrMore((ZeroOrMore) exp, gen);
+      JJDoc.emitExpansionZeroOrMore((ZeroOrMore) exp, gen, context);
     } else if (exp instanceof ZeroOrOne) {
-      JJDoc.emitExpansionZeroOrOne((ZeroOrOne) exp, gen);
+      JJDoc.emitExpansionZeroOrOne((ZeroOrOne) exp, gen, context);
     } else {
-      JJDocGlobals.error("Oops: Unknown expansion type.");
+      JJDocGlobals.error(context, "Oops: Unknown expansion type.");
     }
     // gen.text("[<-" + exp.getClass().getName() + "]");
   }
 
-  private static void emitExpansionAction(Action a, Generator gen) {}
+  private static void emitExpansionAction(Action a, Generator gen, JJDocContext context) {}
 
-  private static void emitExpansionChoice(Choice c, Generator gen) {
+  private static void emitExpansionChoice(Choice c, Generator gen, JJDocContext context) {
     for (Iterator<Expansion> it = c.getChoices().iterator(); it.hasNext();) {
       Expansion e = it.next();
-      JJDoc.emitExpansionTree(e, gen);
+      JJDoc.emitExpansionTree(e, gen, context);
       if (it.hasNext()) {
         gen.text(" | ");
       }
     }
   }
 
-  private static void emitExpansionLookahead(Lookahead l, Generator gen) {}
+  private static void emitExpansionLookahead(Lookahead l, Generator gen, JJDocContext context) {}
 
-  private static void emitExpansionNonTerminal(NonTerminal nt, Generator gen) {
+  private static void emitExpansionNonTerminal(NonTerminal nt, Generator gen, JJDocContext context) {
     gen.nonTerminalStart(nt);
     gen.text(nt.getName());
     gen.nonTerminalEnd(nt);
   }
 
-  private static void emitExpansionOneOrMore(OneOrMore o, Generator gen) {
+  private static void emitExpansionOneOrMore(OneOrMore o, Generator gen, JJDocContext context) {
     gen.text("( ");
-    JJDoc.emitExpansionTree(o.getExpansion(), gen);
+    JJDoc.emitExpansionTree(o.getExpansion(), gen, context);
     gen.text(" )+");
   }
 
-  private static void emitExpansionRegularExpression(RegularExpression r, Generator gen) {
-    String reRendered = JJDoc.emitRE(r);
+  private static void emitExpansionRegularExpression(RegularExpression r, Generator gen, JJDocContext context) {
+    String reRendered = JJDoc.emitRE(r, context);
     if (!reRendered.equals("")) {
       gen.reStart(r);
       gen.text(reRendered);
@@ -250,7 +250,7 @@ public class JJDoc extends JJDocGlobals {
     }
   }
 
-  private static void emitExpansionSequence(Sequence s, Generator gen) {
+  private static void emitExpansionSequence(Sequence s, Generator gen, JJDocContext context) {
     boolean firstUnit = true;
     for (Iterator<Expansion> it = s.units.iterator(); it.hasNext();) {
       Expansion e = it.next();
@@ -264,7 +264,7 @@ public class JJDoc extends JJDocGlobals {
       if (needParens) {
         gen.text("( ");
       }
-      JJDoc.emitExpansionTree(e, gen);
+      JJDoc.emitExpansionTree(e, gen, context);
       if (needParens) {
         gen.text(" )");
       }
@@ -272,30 +272,30 @@ public class JJDoc extends JJDocGlobals {
     }
   }
 
-  private static void emitExpansionTryBlock(TryBlock t, Generator gen) {
+  private static void emitExpansionTryBlock(TryBlock t, Generator gen, JJDocContext context) {
     boolean needParens = t.exp instanceof Choice;
     if (needParens) {
       gen.text("( ");
     }
-    JJDoc.emitExpansionTree(t.exp, gen);
+    JJDoc.emitExpansionTree(t.exp, gen, context);
     if (needParens) {
       gen.text(" )");
     }
   }
 
-  private static void emitExpansionZeroOrMore(ZeroOrMore z, Generator gen) {
+  private static void emitExpansionZeroOrMore(ZeroOrMore z, Generator gen, JJDocContext context) {
     gen.text("( ");
-    JJDoc.emitExpansionTree(z.getExpansion(), gen);
+    JJDoc.emitExpansionTree(z.getExpansion(), gen, context);
     gen.text(" )*");
   }
 
-  private static void emitExpansionZeroOrOne(ZeroOrOne z, Generator gen) {
+  private static void emitExpansionZeroOrOne(ZeroOrOne z, Generator gen, JJDocContext context) {
     gen.text("( ");
-    JJDoc.emitExpansionTree(z.getExpansion(), gen);
+    JJDoc.emitExpansionTree(z.getExpansion(), gen, context);
     gen.text(" )?");
   }
 
-  public static String emitRE(RegularExpression re) {
+  public static String emitRE(RegularExpression re, JJDocContext context) {
     String returnString = "";
     boolean hasLabel = !re.label.equals("");
     boolean justName = re instanceof RJustName;
@@ -337,7 +337,7 @@ public class JJDoc extends JJDocGlobals {
           returnString += JavaCCGlobals.add_escapes(new String(s));
           returnString += "\"";
         } else {
-          JJDocGlobals.error("Oops: unknown character list element type.");
+          JJDocGlobals.error(context, "Oops: unknown character list element type.");
         }
         if (it.hasNext()) {
           returnString += ",";
@@ -348,7 +348,7 @@ public class JJDoc extends JJDocGlobals {
       RChoice c = (RChoice) re;
       for (Iterator<RegularExpression> it = c.getChoices().iterator(); it.hasNext();) {
         RegularExpression sub = it.next();
-        returnString += JJDoc.emitRE(sub);
+        returnString += JJDoc.emitRE(sub, context);
         if (it.hasNext()) {
           returnString += " | ";
         }
@@ -361,7 +361,7 @@ public class JJDoc extends JJDocGlobals {
     } else if (re instanceof ROneOrMore) {
       ROneOrMore om = (ROneOrMore) re;
       returnString += "(";
-      returnString += JJDoc.emitRE(om.regexpr);
+      returnString += JJDoc.emitRE(om.regexpr, context);
       returnString += ")+";
     } else if (re instanceof RSequence) {
       RSequence s = (RSequence) re;
@@ -374,7 +374,7 @@ public class JJDoc extends JJDocGlobals {
         if (needParens) {
           returnString += "(";
         }
-        returnString += JJDoc.emitRE(sub);
+        returnString += JJDoc.emitRE(sub, context);
         if (needParens) {
           returnString += ")";
         }
@@ -388,17 +388,17 @@ public class JJDoc extends JJDocGlobals {
     } else if (re instanceof RZeroOrMore) {
       RZeroOrMore zm = (RZeroOrMore) re;
       returnString += "(";
-      returnString += JJDoc.emitRE(zm.regexpr);
+      returnString += JJDoc.emitRE(zm.regexpr, context);
       returnString += ")*";
     } else if (re instanceof RZeroOrOne) {
       RZeroOrOne zo = (RZeroOrOne) re;
       returnString += "(";
-      returnString += JJDoc.emitRE(zo.regexpr);
+      returnString += JJDoc.emitRE(zo.regexpr, context);
       returnString += ")?";
     } else if (re instanceof RRepetitionRange) {
       RRepetitionRange zo = (RRepetitionRange) re;
       returnString += "(";
-      returnString += JJDoc.emitRE(zo.regexpr);
+      returnString += JJDoc.emitRE(zo.regexpr, context);
       returnString += ")";
       returnString += "{";
       if (zo.hasMax) {
@@ -410,7 +410,7 @@ public class JJDoc extends JJDocGlobals {
       }
       returnString += "}";
     } else {
-      JJDocGlobals.error("Oops: Unknown regular expression type.");
+      JJDocGlobals.error(context, "Oops: Unknown regular expression type.");
     }
     if (needBrackets) {
       returnString += ">";

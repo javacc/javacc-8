@@ -37,11 +37,11 @@ import java.util.List;
 
 public class ASTNodeDescriptor extends JJTreeNode {
 
+  private boolean faked = false;
+
   ASTNodeDescriptor(int id) {
     super(id);
   }
-
-  private boolean faked = false;
 
   static ASTNodeDescriptor indefinite(String s) {
     ASTNodeDescriptor nd = new ASTNodeDescriptor(JJTreeParserTreeConstants.JJTNODEDESCRIPTOR);
@@ -105,9 +105,9 @@ public class ASTNodeDescriptor extends JJTreeNode {
     }
   }
 
-  public String getNodeType() {
-    if (JJTreeOptions.getMulti()) {
-      return JJTreeOptions.getNodePrefix() + name;
+  public String getNodeType(JJTreeContext context) {
+    if (context.treeOptions().getMulti()) {
+      return context.treeOptions().getNodePrefix() + name;
     } else {
       return "SimpleNode";
     }

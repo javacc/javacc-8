@@ -159,7 +159,7 @@ class NfaState {
     if (!lexerContext.unicodeWarningGiven && (c > 0xff) && !Options.getJavaUnicodeEscape()
         && !Options.getUserCharStream()) {
       lexerContext.unicodeWarningGiven = true;
-      JavaCCErrors.warning(lexerContext.curRE,
+      lexerContext.context.errors().warning(lexerContext.curRE,
           "Non-ASCII characters used in regular expression.\n"
               + "Please make sure you use the correct Reader when you create the parser, "
               + "one that can handle your character set.");
@@ -201,7 +201,7 @@ class NfaState {
     if (!lexerContext.unicodeWarningGiven && ((left > 0xff) || (right > 0xff)) && !Options.getJavaUnicodeEscape()
         && !Options.getUserCharStream()) {
       lexerContext.unicodeWarningGiven = true;
-      JavaCCErrors.warning(lexerContext.curRE,
+      lexerContext.context.errors().warning(lexerContext.curRE,
           "Non-ASCII characters used in regular expression.\n"
               + "Please make sure you use the correct Reader when you create the parser, "
               + "one that can handle your character set.");
@@ -321,7 +321,7 @@ class NfaState {
   private void MergeMoves(NfaState other) {
     // Warning : This function does not merge epsilon moves
     if (asciiMoves == other.asciiMoves) {
-      JavaCCErrors.semantic_error(
+      lexerContext.context.errors().semantic_error(
           "Bug in JavaCC : Please send " + "a report along with the input that caused this. Thank you.");
       throw new Error();
     }
@@ -760,7 +760,8 @@ class NfaState {
 
     if (toRet >= nameSet.length) {
       // TODO(sreeni) : Fix this mess.
-      if ((JavaCCGlobals.getCodeGenerator() != null) || Options.booleanValue(Options.NONUSER_OPTION__INTERPRETER)) {
+      if ((lexerContext.context.getCodeGenerator() != null)
+          || Options.booleanValue(Options.NONUSER_OPTION__INTERPRETER)) {
         tmp = lexerContext.generatedStates++;
       } else {
         if (lexerContext.dummyStateIndex == -1) {
@@ -770,7 +771,8 @@ class NfaState {
         }
       }
 
-      if ((JavaCCGlobals.getCodeGenerator() != null) || Options.booleanValue(Options.NONUSER_OPTION__INTERPRETER)) {
+      if ((lexerContext.context.getCodeGenerator() != null)
+          || Options.booleanValue(Options.NONUSER_OPTION__INTERPRETER)) {
         NfaState dummyState = new NfaState(lexerContext);
         dummyState.isComposite = true;
         dummyState.compositeStates = nameSet;
@@ -787,7 +789,8 @@ class NfaState {
     stateNameToReturn = Integer.valueOf(tmp);
     lexerContext.stateNameForComposite.put(stateSetString, stateNameToReturn);
     lexerContext.compositeStateTable.put(stateSetString, nameSet);
-    if ((JavaCCGlobals.getCodeGenerator() != null) || Options.booleanValue(Options.NONUSER_OPTION__INTERPRETER)) {
+    if ((lexerContext.context.getCodeGenerator() != null)
+        || Options.booleanValue(Options.NONUSER_OPTION__INTERPRETER)) {
       NfaState tmpNfaState = lexerContext.indexedAllStates.get(tmp);
       for (int c : nameSet) {
         if (c < lexerContext.indexedAllStates.size()) {
