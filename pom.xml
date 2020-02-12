@@ -177,8 +177,10 @@
 		<module>codegen</module>
 		<module>parser</module>
 		<module>examples</module>
+<!-- 
 		<module>tests</module>
-		<module>grammars</module>
+ 		<module>grammars</module>
+ -->
 	</modules>
 
 
