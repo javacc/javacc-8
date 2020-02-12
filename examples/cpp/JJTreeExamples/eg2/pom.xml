@@ -1,41 +1,31 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>org.javacc.examples.cpp</groupId>
-    <artifactId>JJTreeExamples</artifactId>
-    <version>8.0.0</version>
-  </parent>
-  <groupId>org.javacc.examples.cpp.jjtreeexamples</groupId>
-  <artifactId>eg2</artifactId>
-  <packaging>nar</packaging>
-  <name>JavaCC examples C++  JJTreeExamples EG2</name>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.javacc.examples.cpp</groupId>
+		<artifactId>JJTreeExamples</artifactId>
+		<version>8.0.0</version>
+	</parent>
+	<groupId>org.javacc.examples.cpp.jjtreeexamples</groupId>
+	<artifactId>eg2</artifactId>
+	<packaging>nar</packaging>
+	<name>JavaCC examples C++  JJTreeExamples EG2</name>
 	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>javacc-maven-plugin</artifactId>
-				<dependencies>
-					<dependency>
-						<groupId>org.javacc</groupId>
-						<artifactId>parser</artifactId>
-						<version>${javacc.parser}</version>
-					</dependency>
-					<dependency>
-						<groupId>org.javacc.codegen</groupId>
-						<artifactId>cpp</artifactId>
-						<version>${javacc.cpp}</version>
-					</dependency>
-				</dependencies>
 				<executions>
 					<execution>
-						<id>jcc</id>
+						<id>jcc-eg2</id>
 						<phase>generate-sources</phase>
 						<goals>
 							<goal>jjtree-javacc</goal>
 						</goals>
 						<configuration>
-							<outputDirectory>${project.basedir}/target/generated-sources/cpp</outputDirectory>
-							<nodeDirectory>${project.basedir}/src/main/cpp</nodeDirectory>
+							<nodePackage>eg2</nodePackage>
+							<outputDirectory>${project.basedir}/target/generated-sources/cpp/eg2</outputDirectory>
+							<nodeDirectory>${project.basedir}/src/main/cpp/eg2</nodeDirectory>
 						</configuration>
 					</execution>
 				</executions>
@@ -44,27 +34,48 @@
 				<groupId>com.github.maven-nar</groupId>
 				<artifactId>nar-maven-plugin</artifactId>
 				<extensions>true</extensions>
-				<configuration>
-					<libraries>
-						<library>
-							<type>executable</type>
-							<run>true</run>
-						</library>
-					</libraries>
-					<cpp>
-						<includePaths>
-							<includePath>
-								<path>${project.basedir}/src/main/cpp</path>
-							</includePath>
-							<includePath>
-								<path>${project.basedir}/target/generated-sources/cpp</path>
-							</includePath>
-							<includePath>
-								<path>${project.basedir}/target/generated-sources/jjtree</path>
-							</includePath>
-						</includePaths>
-					</cpp>
- 				</configuration>
+				<executions>
+					<execution>
+						<id>compile-eg2</id>
+						<goals>
+							<goal>nar-compile</goal>
+						</goals>
+						<configuration>
+							<libraries>
+								<library>
+									<type>executable</type>
+								</library>
+							</libraries>
+							<cpp>
+								<includePaths>
+									<includePath>
+										<path>${project.basedir}/src/main/cpp/eg2</path>
+									</includePath>
+									<includePath>
+										<path>${project.basedir}/target/generated-sources/cpp/eg2</path>
+									</includePath>
+									<includePath>
+										<path>${project.basedir}/target/generated-sources/jjtree/eg2</path>
+									</includePath>
+								</includePaths>
+							</cpp>
+						</configuration>
+					</execution>
+					<execution>
+						<id>run-eg2</id>
+						<goals>
+							<goal>nar-test</goal>
+						</goals>
+						<configuration>
+							<libraries>
+								<library>
+									<type>executable</type>
+									<run>true</run>
+								</library>
+							</libraries>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
