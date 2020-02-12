@@ -3,7 +3,7 @@
 #include "ASTNotNode.h"
 
   
-  ASTNotNode::ASTNotNode(int id) : SimpleNode(id) {
+  ASTNotNode::ASTNotNode(int id) : Node(id) {
   }
   ASTNotNode::~ASTNotNode() {
   }

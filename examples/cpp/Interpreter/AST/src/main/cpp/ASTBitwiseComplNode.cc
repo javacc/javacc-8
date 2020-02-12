@@ -4,7 +4,7 @@
 #include "Integer.h"
 
   
-  ASTBitwiseComplNode::ASTBitwiseComplNode(int id) : SimpleNode(id) {
+  ASTBitwiseComplNode::ASTBitwiseComplNode(int id) : Node(id) {
   }
   ASTBitwiseComplNode::~ASTBitwiseComplNode() {
   }

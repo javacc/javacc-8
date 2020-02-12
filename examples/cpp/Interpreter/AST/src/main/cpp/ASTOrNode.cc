@@ -3,7 +3,7 @@
 #include "ASTOrNode.h"
 
   
-  ASTOrNode::ASTOrNode(int id) : SimpleNode(id) {
+  ASTOrNode::ASTOrNode(int id) : Node(id) {
   }
   ASTOrNode::~ASTOrNode() {
   }

@@ -8,7 +8,7 @@
 #include "Integer.h"
 #include "SPLParserConstants.h"
 
-Integer::Integer(int value) : SimpleNode(INT), integer(value) {
+Integer::Integer(int value) : Node(INT), integer(value) {
 }
 
 Integer::~Integer() {

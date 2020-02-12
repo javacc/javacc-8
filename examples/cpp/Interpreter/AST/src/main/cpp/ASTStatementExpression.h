@@ -2,10 +2,10 @@
 /* JavaCCOptions:MULTI=true,NODE_USES_PARSER=false,VISITOR=false,TRACK_TOKENS=true,NODE_PREFIX=AST,NODE_EXTENDS=MyNode,NODE_FACTORY=,SUPPORT_CLASS_VISIBILITY_PUBLIC=true */
 #pragma once
 
-#include "SimpleNode.h"
+#include "Node.h"
 
 
-class ASTStatementExpression : public SimpleNode {
+class ASTStatementExpression : public Node {
 public: 
   ASTStatementExpression(int id);
   virtual ~ASTStatementExpression();

@@ -4,9 +4,9 @@
 #include "SPLParserVisitor.h"
 
   
-  ASTReadStatement::ASTReadStatement(int id) : SimpleNode(id) {
+  ASTReadStatement::ASTReadStatement(int id) : Node(id) {
   }
-  ASTReadStatement::ASTReadStatement(SPLParser *parser, int id) : SimpleNode(parser, id) {
+  ASTReadStatement::ASTReadStatement(SPLParser *parser, int id) : Node(parser, id) {
   }
   ASTReadStatement::~ASTReadStatement() {
   }

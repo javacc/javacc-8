@@ -3,7 +3,7 @@
 #include "ASTBitwiseOrNode.h"
 
   
-  ASTBitwiseOrNode::ASTBitwiseOrNode(int id) : SimpleNode(id) {
+  ASTBitwiseOrNode::ASTBitwiseOrNode(int id) : Node(id) {
   }
   ASTBitwiseOrNode::~ASTBitwiseOrNode() {
   }

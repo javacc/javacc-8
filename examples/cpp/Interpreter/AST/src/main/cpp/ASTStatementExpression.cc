@@ -3,7 +3,7 @@
 #include "ASTStatementExpression.h"
 
   
-  ASTStatementExpression::ASTStatementExpression(int id) : SimpleNode(id) {
+  ASTStatementExpression::ASTStatementExpression(int id) : Node(id) {
   }
   ASTStatementExpression::~ASTStatementExpression() {
   }

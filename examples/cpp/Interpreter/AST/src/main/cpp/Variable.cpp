@@ -7,7 +7,7 @@
 
 #include "Variable.h"
 
-Variable::Variable() {
+Variable::Variable(int id) : Node(id) {
 }
 
 Variable::~Variable() {

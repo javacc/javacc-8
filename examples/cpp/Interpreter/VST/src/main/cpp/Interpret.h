@@ -24,7 +24,7 @@ public:
 	Interpret(istream& in, ostream& out, ostream& err);
 	~Interpret();
 
-	void visit(const SimpleNode *node, void* data);
+	void visit(const Node *node, void* data);
 	void visit(const ASTCompilationUnit *node, void* data);
 	void visit(const ASTVarDeclaration *node, void* data);
 	void visit(const ASTAssignment *node, void* data);

@@ -3,7 +3,7 @@
 #include "ASTGENode.h"
 
   
-  ASTGENode::ASTGENode(int id) : SimpleNode(id) {
+  ASTGENode::ASTGENode(int id) : Node(id) {
   }
   ASTGENode::~ASTGENode() {
   }

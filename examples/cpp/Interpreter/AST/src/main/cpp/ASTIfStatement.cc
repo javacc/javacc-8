@@ -3,7 +3,7 @@
 #include "ASTIfStatement.h"
 
   
-  ASTIfStatement::ASTIfStatement(int id) : SimpleNode(id) {
+  ASTIfStatement::ASTIfStatement(int id) : Node(id) {
   }
   ASTIfStatement::~ASTIfStatement() {
   }

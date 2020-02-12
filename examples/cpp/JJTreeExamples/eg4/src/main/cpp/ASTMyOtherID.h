@@ -8,12 +8,12 @@
 #ifndef ASTMYOTHERID_H_
 #define ASTMYOTHERID_H_
 #include "ParserTree.h"
-#include "SimpleNode.h"
+#include "Node.h"
 
 namespace EG4 {
 class ParserVisitor;
 
-class ASTMyOtherID:  public SimpleNode {
+class ASTMyOtherID:  public Node {
 private:
 	JAVACC_SIMPLE_STRING name;
 

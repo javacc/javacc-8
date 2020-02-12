@@ -3,7 +3,7 @@
 #include "ASTEQNode.h"
 
   
-  ASTEQNode::ASTEQNode(int id) : SimpleNode(id) {
+  ASTEQNode::ASTEQNode(int id) : Node(id) {
   }
   ASTEQNode::~ASTEQNode() {
   }

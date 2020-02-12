@@ -10,9 +10,9 @@
 using std::istream;
 using std::ostream;
 
-#include "SimpleNode.h"
+#include "Node.h"
 
-class Integer : public SimpleNode {
+class Integer : public Node {
 public:
 	Integer(int value = 0);
 	virtual ~Integer();

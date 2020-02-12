@@ -3,7 +3,7 @@
 #include "ASTId.h"
 
   
-  ASTId::ASTId(int id) : SimpleNode(id) {
+  ASTId::ASTId(int id) : Node(id) {
   }
   ASTId::~ASTId() {
   }

@@ -3,7 +3,7 @@
 #include "ASTModNode.h"
 
   
-  ASTModNode::ASTModNode(int id) : SimpleNode(id) {
+  ASTModNode::ASTModNode(int id) : Node(id) {
   }
   ASTModNode::~ASTModNode() {
   }

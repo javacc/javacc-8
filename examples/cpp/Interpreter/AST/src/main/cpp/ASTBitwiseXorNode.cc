@@ -3,7 +3,7 @@
 #include "ASTBitwiseXorNode.h"
 
   
-  ASTBitwiseXorNode::ASTBitwiseXorNode(int id) : SimpleNode(id) {
+  ASTBitwiseXorNode::ASTBitwiseXorNode(int id) : Node(id) {
   }
   ASTBitwiseXorNode::~ASTBitwiseXorNode() {
   }

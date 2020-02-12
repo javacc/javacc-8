@@ -14,7 +14,7 @@ class DumpVisitor : public SPLParserDefaultVisitor {
 public:
 	DumpVisitor();
 	virtual ~DumpVisitor();
-	virtual void defaultVisit(const SimpleNode *node, void* data);
+	virtual void defaultVisit(const Node *node, void* data);
 	virtual void visit(const ASTIntConstNode *node, void* data);
 
 private:

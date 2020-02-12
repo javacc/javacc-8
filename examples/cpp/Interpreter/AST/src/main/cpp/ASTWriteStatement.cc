@@ -3,7 +3,7 @@
 #include "ASTWriteStatement.h"
 
   
-  ASTWriteStatement::ASTWriteStatement(int id) : SimpleNode(id) {
+  ASTWriteStatement::ASTWriteStatement(int id) : Node(id) {
   }
   ASTWriteStatement::~ASTWriteStatement() {
   }

@@ -4,9 +4,9 @@
 #include "SPLParserVisitor.h"
 
   
-  ASTIntConstNode::ASTIntConstNode(int id) : SimpleNode(id) {
+  ASTIntConstNode::ASTIntConstNode(int id) : Node(id) {
   }
-  ASTIntConstNode::ASTIntConstNode(SPLParser *parser, int id) : SimpleNode(parser, id) {
+  ASTIntConstNode::ASTIntConstNode(SPLParser *parser, int id) : Node(parser, id) {
   }
   ASTIntConstNode::~ASTIntConstNode() {
   }

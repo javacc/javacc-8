@@ -10,9 +10,9 @@
 
 namespace EG4 {
 
-ASTMyOtherID::ASTMyOtherID(int id) : SimpleNode(id) {
+ASTMyOtherID::ASTMyOtherID(int id) : Node(id) {
 }
-ASTMyOtherID::ASTMyOtherID(Parser *p, int id) : SimpleNode(p, id){
+ASTMyOtherID::ASTMyOtherID(Parser *p, int id) : Node(p, id){
 }
 ASTMyOtherID::~ASTMyOtherID() {
 }

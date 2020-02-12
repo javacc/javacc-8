@@ -3,7 +3,7 @@
 #include "ASTReadStatement.h"
 
   
-  ASTReadStatement::ASTReadStatement(int id) : SimpleNode(id) {
+  ASTReadStatement::ASTReadStatement(int id) : Node(id) {
   }
   ASTReadStatement::~ASTReadStatement() {
   }

@@ -26,7 +26,7 @@ Interpret::~Interpret() {
 	}
 }
 
-void Interpret::visit(const SimpleNode *node, void* data) {
+void Interpret::visit(const Node *node, void* data) {
 	node->jjtChildrenAccept(this, data);
 }
 void Interpret::visit(const ASTCompilationUnit *node, void* data) {

@@ -3,7 +3,7 @@
 #include "ASTGTNode.h"
 
   
-  ASTGTNode::ASTGTNode(int id) : SimpleNode(id) {
+  ASTGTNode::ASTGTNode(int id) : Node(id) {
   }
   ASTGTNode::~ASTGTNode() {
   }

@@ -16,7 +16,7 @@ DumpVisitor::DumpVisitor() {
 DumpVisitor::~DumpVisitor() {
 }
 
-void DumpVisitor::defaultVisit(const SimpleNode *node, void* data) {
+void DumpVisitor::defaultVisit(const Node *node, void* data) {
 	clog << node->toString() << endl;
 	node->jjtChildrenAccept(this, data);
 }

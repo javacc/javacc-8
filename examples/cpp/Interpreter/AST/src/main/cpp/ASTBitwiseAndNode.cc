@@ -6,7 +6,7 @@
 #include "Integer.h"
 
   
-  ASTBitwiseAndNode::ASTBitwiseAndNode(int id) : SimpleNode(id) {
+  ASTBitwiseAndNode::ASTBitwiseAndNode(int id) : Node(id) {
   }
   ASTBitwiseAndNode::~ASTBitwiseAndNode() {
   }

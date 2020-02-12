@@ -3,7 +3,7 @@
 #include "ASTLENode.h"
 
   
-  ASTLENode::ASTLENode(int id) : SimpleNode(id) {
+  ASTLENode::ASTLENode(int id) : Node(id) {
   }
   ASTLENode::~ASTLENode() {
   }

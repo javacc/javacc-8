@@ -3,7 +3,7 @@
 #include "ASTCompilationUnit.h"
 
   
-  ASTCompilationUnit::ASTCompilationUnit(int id) : SimpleNode(id) {
+  ASTCompilationUnit::ASTCompilationUnit(int id) : Node(id) {
   }
   ASTCompilationUnit::~ASTCompilationUnit() {
   }

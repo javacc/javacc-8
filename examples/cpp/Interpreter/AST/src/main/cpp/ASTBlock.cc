@@ -3,7 +3,7 @@
 #include "ASTBlock.h"
 
   
-  ASTBlock::ASTBlock(int id) : SimpleNode(id) {
+  ASTBlock::ASTBlock(int id) : Node(id) {
   }
   ASTBlock::~ASTBlock() {
   }

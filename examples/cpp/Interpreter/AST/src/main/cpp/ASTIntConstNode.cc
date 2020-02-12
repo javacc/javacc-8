@@ -4,7 +4,7 @@
 #include "Integer.h"
 
   
-  ASTIntConstNode::ASTIntConstNode(int id) : SimpleNode(id) {
+  ASTIntConstNode::ASTIntConstNode(int id) : Node(id) {
   }
   ASTIntConstNode::~ASTIntConstNode() {
   }

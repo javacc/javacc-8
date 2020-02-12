@@ -3,7 +3,7 @@
 #include "ASTSubtractNode.h"
 
   
-  ASTSubtractNode::ASTSubtractNode(int id) : SimpleNode(id) {
+  ASTSubtractNode::ASTSubtractNode(int id) : Node(id) {
   }
   ASTSubtractNode::~ASTSubtractNode() {
   }

@@ -3,7 +3,7 @@
 #include "ASTFalseNode.h"
 
   
-  ASTFalseNode::ASTFalseNode(int id) : SimpleNode(id) {
+  ASTFalseNode::ASTFalseNode(int id) : Node(id) {
   }
   ASTFalseNode::~ASTFalseNode() {
   }

@@ -3,7 +3,7 @@
 #include "ASTLTNode.h"
 
   
-  ASTLTNode::ASTLTNode(int id) : SimpleNode(id) {
+  ASTLTNode::ASTLTNode(int id) : Node(id) {
   }
   ASTLTNode::~ASTLTNode() {
   }

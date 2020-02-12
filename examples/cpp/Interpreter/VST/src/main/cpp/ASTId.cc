@@ -4,9 +4,9 @@
 #include "SPLParserVisitor.h"
 
   
-  ASTId::ASTId(int id) : SimpleNode(id) {
+  ASTId::ASTId(int id) : Node(id) {
   }
-  ASTId::ASTId(SPLParser *parser, int id) : SimpleNode(parser, id) {
+  ASTId::ASTId(SPLParser *parser, int id) : Node(parser, id) {
   }
   ASTId::~ASTId() {
   }

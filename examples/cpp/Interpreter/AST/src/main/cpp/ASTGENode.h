@@ -2,10 +2,10 @@
 /* JavaCCOptions:MULTI=true,NODE_USES_PARSER=false,VISITOR=false,TRACK_TOKENS=true,NODE_PREFIX=AST,NODE_EXTENDS=MyNode,NODE_FACTORY=,SUPPORT_CLASS_VISIBILITY_PUBLIC=true */
 #pragma once
 
-#include "SimpleNode.h"
+#include "Node.h"
 
 
-class ASTGENode : public SimpleNode {
+class ASTGENode : public Node {
 public: 
   ASTGENode(int id);
   virtual ~ASTGENode();

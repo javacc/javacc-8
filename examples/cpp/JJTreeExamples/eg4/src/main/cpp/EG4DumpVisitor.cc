@@ -28,7 +28,7 @@ JAVACC_SIMPLE_STRING EG4DumpVisitor::indentString() const {
 	return buffer;
 }
 
-void* EG4DumpVisitor::visit(const SimpleNode* node, void* data) {
+void* EG4DumpVisitor::visit(const Node* node, void* data) {
 //  System.out.println(indentString() + node +
 //                 ": acceptor not unimplemented in subclass?");
 	++indent;

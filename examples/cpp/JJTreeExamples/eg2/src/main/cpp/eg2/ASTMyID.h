@@ -11,7 +11,7 @@
 
 namespace EG2 {
 
-class ASTMyID : public SimpleNode {
+class ASTMyID : public Node {
 private:
 	JAVACC_STRING_TYPE name;
 public:

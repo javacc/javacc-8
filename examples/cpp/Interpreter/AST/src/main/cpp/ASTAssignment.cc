@@ -4,7 +4,7 @@
 #include "ASTAssignment.h"
 
   
-  ASTAssignment::ASTAssignment(int id) : SimpleNode(id) {
+  ASTAssignment::ASTAssignment(int id) : Node(id) {
   }
   ASTAssignment::~ASTAssignment() {
   }

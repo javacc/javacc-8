@@ -3,7 +3,7 @@
 #include "ASTWhileStatement.h"
 
   
-  ASTWhileStatement::ASTWhileStatement(int id) : SimpleNode(id) {
+  ASTWhileStatement::ASTWhileStatement(int id) : Node(id) {
   }
   ASTWhileStatement::~ASTWhileStatement() {
   }

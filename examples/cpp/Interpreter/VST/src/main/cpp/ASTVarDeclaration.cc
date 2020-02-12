@@ -4,9 +4,9 @@
 #include "SPLParserVisitor.h"
 
   
-  ASTVarDeclaration::ASTVarDeclaration(int id) : SimpleNode(id) {
+  ASTVarDeclaration::ASTVarDeclaration(int id) : Node(id) {
   }
-  ASTVarDeclaration::ASTVarDeclaration(SPLParser *parser, int id) : SimpleNode(parser, id) {
+  ASTVarDeclaration::ASTVarDeclaration(SPLParser *parser, int id) : Node(parser, id) {
   }
   ASTVarDeclaration::~ASTVarDeclaration() {
   }

@@ -2,11 +2,11 @@
 /* JavaCCOptions:MULTI=true,NODE_USES_PARSER=false,VISITOR=true,TRACK_TOKENS=true,NODE_PREFIX=AST,NODE_EXTENDS=,NODE_FACTORY=,SUPPORT_CLASS_VISIBILITY_PUBLIC=true */
 #pragma once
 
-#include "SimpleNode.h"
+#include "Node.h"
 
 class SPLParser;
 
-class ASTId : public SimpleNode {
+class ASTId : public Node {
 public: 
            ASTId(int id);
            ASTId(SPLParser *parser, int id);

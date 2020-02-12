@@ -3,7 +3,7 @@
 #include "ASTNENode.h"
 
   
-  ASTNENode::ASTNENode(int id) : SimpleNode(id) {
+  ASTNENode::ASTNENode(int id) : Node(id) {
   }
   ASTNENode::~ASTNENode() {
   }

@@ -2,10 +2,10 @@
 /* JavaCCOptions:MULTI=true,NODE_USES_PARSER=false,VISITOR=false,TRACK_TOKENS=true,NODE_PREFIX=AST,NODE_EXTENDS=MyNode,NODE_FACTORY=,SUPPORT_CLASS_VISIBILITY_PUBLIC=true */
 #pragma once
 
-#include "SimpleNode.h"
+#include "Node.h"
 
 
-class ASTCompilationUnit : public SimpleNode {
+class ASTCompilationUnit : public Node {
 public: 
   ASTCompilationUnit(int id);
   virtual ~ASTCompilationUnit();

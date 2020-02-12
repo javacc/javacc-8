@@ -6,7 +6,7 @@
 #include "SPLParserConstants.h"
 
   
-  ASTVarDeclaration::ASTVarDeclaration(int id) : SimpleNode(id) {
+  ASTVarDeclaration::ASTVarDeclaration(int id) : Node(id) {
   }
   ASTVarDeclaration::~ASTVarDeclaration() {
   }

@@ -15,7 +15,7 @@ using std::string;
 
 class Variable : public Node {
 public:
-	Variable();
+	Variable(int id);
 	virtual ~Variable();
 
 private:

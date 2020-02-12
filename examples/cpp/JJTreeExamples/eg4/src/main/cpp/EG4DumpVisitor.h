@@ -21,7 +21,7 @@ public:
 
 	/**
 	 *  This is an example of how the Visitor pattern might be used to
-	 *  implement the dumping code that comes with SimpleNode.  It's a bit
+	 *  implement the dumping code that comes with Node.  It's a bit
 	 *  long-winded, but it does illustrate a couple of the main points.
 	 *  <ol>
 	 *  <li> the visitor can maintain state between the nodes that it visits
@@ -29,7 +29,7 @@ public:
 	 *  </li>
 	 *
 	 *  <li>if you don't implement a jjtAccept() method for a subclass of
-	 *  SimpleNode, then SimpleNode's acceptor will get called.
+	 *  Node, then Node's acceptor will get called.
 	 *  </li>
 	 *  <li> the utility method childrenAccept() can be useful when
 	 *  implementing preorder or postorder tree walks.
@@ -42,7 +42,7 @@ private:
 	int indent;
 	JAVACC_SIMPLE_STRING indentString() const;
 public:
-	void* visit(const SimpleNode *node, void * data);
+	void* visit(const Node *node, void * data);
 	void* visit(const ASTStart *node, void * data);
 	void* visit(const ASTAdd *node, void * data);
 	void* visit(const ASTMult *node, void * data);

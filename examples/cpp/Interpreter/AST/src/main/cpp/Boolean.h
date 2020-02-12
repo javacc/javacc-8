@@ -7,9 +7,9 @@
 
 #pragma once
 
-#include "SimpleNode.h"
+#include "Node.h"
 
-class Boolean : public SimpleNode {
+class Boolean : public Node {
 public:
 	Boolean(bool value = false);
 	virtual ~Boolean();

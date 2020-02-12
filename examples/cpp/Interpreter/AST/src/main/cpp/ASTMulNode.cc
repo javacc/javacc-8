@@ -3,7 +3,7 @@
 #include "ASTMulNode.h"
 
   
-  ASTMulNode::ASTMulNode(int id) : SimpleNode(id) {
+  ASTMulNode::ASTMulNode(int id) : Node(id) {
   }
   ASTMulNode::~ASTMulNode() {
   }

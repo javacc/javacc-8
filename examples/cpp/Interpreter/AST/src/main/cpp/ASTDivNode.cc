@@ -3,7 +3,7 @@
 #include "ASTDivNode.h"
 
   
-  ASTDivNode::ASTDivNode(int id) : SimpleNode(id) {
+  ASTDivNode::ASTDivNode(int id) : Node(id) {
   }
   ASTDivNode::~ASTDivNode() {
   }

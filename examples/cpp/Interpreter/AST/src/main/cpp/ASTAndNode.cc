@@ -4,7 +4,7 @@
 #include "Boolean.h"
 
   
-  ASTAndNode::ASTAndNode(int id) : SimpleNode(id) {
+  ASTAndNode::ASTAndNode(int id) : Node(id) {
   }
   ASTAndNode::~ASTAndNode() {
   }

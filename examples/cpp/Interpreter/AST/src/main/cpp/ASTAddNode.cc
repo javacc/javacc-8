@@ -4,7 +4,7 @@
 #include "Integer.h"
 
   
-  ASTAddNode::ASTAddNode(int id) : SimpleNode(id) {
+  ASTAddNode::ASTAddNode(int id) : Node(id) {
   }
   ASTAddNode::~ASTAddNode() {
   }
