@@ -16,6 +16,7 @@
 <!-- 
  		<module>JavaCCGrammar</module>	use JAVACODE, not supported yet in C++
 		<module>MailProcessing</module> WIP
+ 		<module>JavaCCGrammar</module> contains JAVACODE
  -->
  		<module>JJTreeExamples</module>
  	</modules>
