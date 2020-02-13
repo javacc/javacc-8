@@ -10,13 +10,11 @@
   }
   void ASTBitwiseComplNode::interpret()
   {
-#ifdef FAE
      jjtGetChild(0)->interpret();
 
 	 unique_ptr<Integer> top((Integer*)stack.top()); stack.pop();
 
      stack.push(new Integer(~(*top)));
-#endif
   }
 
 

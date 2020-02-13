@@ -10,7 +10,6 @@
   }
   void ASTAssignment::interpret()
   {
-#ifdef FAE
      string name;
 
      jjtGetChild(1)->interpret();
@@ -18,7 +17,6 @@
 	 Node* top = stack.top();
 	 name =  ((ASTId*)jjtGetChild(0))->name;
      symtab[name] = top;
-#endif
   }
 
 

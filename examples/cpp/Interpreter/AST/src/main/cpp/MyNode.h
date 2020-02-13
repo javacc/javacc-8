@@ -32,6 +32,8 @@
 #include <map>
 #include <stack>
 #include <memory>
+#include <stdexcept>
+using std::runtime_error;
 using std::string;
 using std::map;
 using std::stack;
@@ -48,6 +50,10 @@ protected:
 	/** Stack for calculations. */
 	static stack<Node*> stack;
 
+public:
+	virtual void interpret() {
+		throw runtime_error("unsupported operation"); // It better not come here.
+	}
 
 /*
  *

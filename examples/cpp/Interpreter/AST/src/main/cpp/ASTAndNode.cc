@@ -10,7 +10,6 @@
   }
   void ASTAndNode::interpret()
   {
- #ifdef FAE
      jjtGetChild(0)->interpret();
 
 	 const Node* top = stack.top();
@@ -26,7 +25,6 @@
 	 unique_ptr<Boolean> left((Boolean*)stack.top()); stack.pop();
 	 unique_ptr<Boolean> right((Boolean*)stack.top()); stack.pop();
      stack.push(new Boolean(*left && *right));
- #endif
   }
 
 

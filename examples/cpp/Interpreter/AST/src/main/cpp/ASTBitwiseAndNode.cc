@@ -12,7 +12,6 @@
   }
   void ASTBitwiseAndNode::interpret()
   {
-#ifdef FAE
      jjtGetChild(0)->interpret();
      jjtGetChild(1)->interpret();
 
@@ -27,7 +26,6 @@
 		 unique_ptr<Integer> righ((Integer*)stack.top()); stack.pop();
 		 stack.push(new Integer(*left & *righ));
 	 }
-#endif
   }
 
 
