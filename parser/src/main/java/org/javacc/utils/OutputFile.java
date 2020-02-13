@@ -26,6 +26,7 @@
 package org.javacc.utils;
 
 import org.javacc.Version;
+import org.javacc.parser.Context;
 import org.javacc.parser.JavaCCGlobals;
 import org.javacc.parser.Options;
 
@@ -79,12 +80,12 @@ class OutputFile implements Closeable {
    *        is a list of options (such s STATIC=false) to check for changes.
    * @throws IOException
    */
-  OutputFile(File file, String toolName, String compatibleVersion, List<String> options) throws IOException {
+  OutputFile(File file, String toolName, String compatibleVersion, List<String> options, Context context) throws IOException {
     this.file = file;
     this.options = options;
     this.compatibleVersion = compatibleVersion;
     this.toolName = toolName;
-    needToWrite = OutputFileDigest.check(file, toolName, compatibleVersion, options);
+    needToWrite = OutputFileDigest.check(file, toolName, compatibleVersion, options, context);
   }
 
   /**

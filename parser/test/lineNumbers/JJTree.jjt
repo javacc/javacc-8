@@ -40,6 +40,8 @@ PARSER_BEGIN(JJTreeParser)
 
 package org.javacc.jjtree;
 
+import org.javacc.parser.JavaCCContext;
+
 public class JJTreeParser {
 
   void jjtreeOpenNodeScope(Node n)
@@ -404,7 +406,7 @@ void option_binding() #OptionBinding :
 	}
    | v=StringLiteral()
         {	
-	  String vs = TokenUtils.remove_escapes_and_quotes(v, v.image);
+	  String vs = TokenUtils.remove_escapes_and_quotes(v, v.image, new JavaCCContext());
 	  JJTreeOptions.setInputFileOption(o, v, o.image, (Object)vs);
 	  jjtThis.initialize(o.image, vs);
 	}

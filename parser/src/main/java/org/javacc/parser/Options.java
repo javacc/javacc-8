@@ -53,7 +53,7 @@ public class Options {
   /**
    * Limit subclassing to derived classes.
    */
-  protected Options() {}
+  public Options() {}
 
   /**
    * These are options that are not settable by the user themselves, and that
@@ -216,7 +216,7 @@ public class Options {
    * of legal options. Its initial values define the default option values, and
    * the option types can be determined from these values too.
    */
-  protected static Map<String, Object> optionValues = null;
+  public static Map<String, Object> optionValues = null;
 
   /**
    * Initialize for JavaCC
@@ -338,10 +338,10 @@ public class Options {
     return value;
   }
 
-  public static void setInputFileOption(Object nameloc, Object valueloc, String name, Object value) {
+  public static void setInputFileOption(Object nameloc, Object valueloc, String name, Object value, Context context) {
     String nameUpperCase = name.toUpperCase();
     if (!Options.optionValues.containsKey(nameUpperCase)) {
-      JavaCCErrors.warning(nameloc, "Bad option name \"" + name + "\".  Option setting will be ignored.");
+      context.errors().warning(nameloc, "Bad option name \"" + name + "\".  Option setting will be ignored.");
       return;
     }
     final Object existingValue = Options.optionValues.get(nameUpperCase);
@@ -360,19 +360,19 @@ public class Options {
       }
       boolean isValidInteger = (object instanceof Integer) && (((Integer) value).intValue() <= 0);
       if (isIndirectProperty || (existingValue.getClass() != object.getClass()) || isValidInteger) {
-        JavaCCErrors.warning(valueloc,
+        context.errors().warning(valueloc,
             "Bad option value \"" + value + "\" for \"" + name + "\".  Option setting will be ignored.");
         return;
       }
 
       if (Options.inputFileSetting.contains(nameUpperCase)) {
-        JavaCCErrors.warning(nameloc, "Duplicate option setting for \"" + name + "\" will be ignored.");
+        context.errors().warning(nameloc, "Duplicate option setting for \"" + name + "\" will be ignored.");
         return;
       }
 
       if (Options.cmdLineSetting.contains(nameUpperCase)) {
         if (!existingValue.equals(value)) {
-          JavaCCErrors.warning(nameloc, "Command line setting of \"" + name + "\" modifies option value in file.");
+          context.errors().warning(nameloc, "Command line setting of \"" + name + "\" modifies option value in file.");
         }
         return;
       }
@@ -386,7 +386,7 @@ public class Options {
     if (nameUpperCase.equalsIgnoreCase(Options.USEROPTION__JAVA_TEMPLATE_TYPE)) {
       String templateType = (String) value;
       if (!Options.isValidJavaTemplateType(templateType)) {
-        JavaCCErrors.warning(valueloc, "Bad option value \"" + value + "\" for \"" + name
+        context.errors().warning(valueloc, "Bad option value \"" + value + "\" for \"" + name
             + "\".  Option setting will be ignored. Valid options : " + Options.getAllValidJavaTemplateTypes());
         return;
       }
@@ -500,11 +500,11 @@ public class Options {
     }
   }
 
-  public static void normalize() {
+  public static void normalize(Context context) {
     if (Options.getDebugLookahead() && !Options.getDebugParser()) {
       if (Options.cmdLineSetting.contains(Options.USEROPTION__DEBUG_PARSER)
           || Options.inputFileSetting.contains(Options.USEROPTION__DEBUG_PARSER)) {
-        JavaCCErrors
+        context.errors()
         .warning("True setting of option DEBUG_LOOKAHEAD overrides " + "false setting of option DEBUG_PARSER.");
       }
       Options.optionValues.put(Options.USEROPTION__DEBUG_PARSER, Boolean.TRUE);

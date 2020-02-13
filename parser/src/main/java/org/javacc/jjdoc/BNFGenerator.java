@@ -42,12 +42,16 @@ import java.io.PrintWriter;
 
 public class BNFGenerator implements Generator {
 
+  private final JJDocContext context;
   protected PrintWriter ostr;
   private boolean       printing = true;
 
-  protected PrintWriter create_output_stream() {
+  public BNFGenerator(JJDocContext context) {
+    this.context = context;
+  }
 
-    if (JJDocOptions.getOutputFile().equals("")) {
+  protected PrintWriter create_output_stream() {
+    if (context.getOutputFile().equals("")) {
       if (JJDocGlobals.input_file.equals("standard input")) {
         return new java.io.PrintWriter(new java.io.OutputStreamWriter(System.out));
       } else {
@@ -65,7 +69,7 @@ public class BNFGenerator implements Generator {
         }
       }
     } else {
-      JJDocGlobals.output_file = JJDocOptions.getOutputFile();
+      JJDocGlobals.output_file = context.getOutputFile();
     }
     try {
       ostr = new java.io.PrintWriter(new java.io.FileWriter(JJDocGlobals.output_file));
@@ -192,7 +196,7 @@ public class BNFGenerator implements Generator {
   @Override
   public void handleTokenProduction(TokenProduction tp) {
     printing = false;
-    String text = JJDoc.getStandardTokenProductionText(tp);
+    String text = JJDoc.getStandardTokenProductionText(tp, context);
     text(text);
     printing = true;
   }

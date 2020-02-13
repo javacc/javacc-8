@@ -146,4 +146,29 @@ public class Token {
       super(kind, image);
     }
   }
+
+
+  public String printTokenOnly(JavaCCGlobals globals, boolean escape) {
+    String retval = "";
+    for (; globals.cline < beginLine; globals.cline++) {
+      retval += "\n";
+      globals.ccol = 1;
+    }
+    for (; globals.ccol < beginColumn; globals.ccol++) {
+      retval += " ";
+    }
+    if ((kind == JavaCCParserConstants.STRING_LITERAL) || (kind == JavaCCParserConstants.CHARACTER_LITERAL)) {
+      retval += escape ? JavaCCGlobals.addUnicodeEscapes(image) : image;
+    } else {
+      retval += image;
+    }
+    globals.cline = endLine;
+    globals.ccol = endColumn + 1;
+    char last = image.charAt(image.length() - 1);
+    if ((last == '\n') || (last == '\r')) {
+      globals.cline++;
+      globals.ccol = 1;
+    }
+    return retval;
+  }
 }
