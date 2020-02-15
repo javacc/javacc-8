@@ -241,7 +241,7 @@ public class RStringLiteral extends RegularExpression {
           return;
         }
       } catch (Exception e) {
-        JavaCCErrors.semantic_error("Error cloning state vector");
+        lexerContext.context.errors().semantic_error("Error cloning state vector");
       }
 
       lexerContext.intermediateKinds[i] = new int[image.length()];
@@ -343,7 +343,7 @@ public class RStringLiteral extends RegularExpression {
       if ((lexerContext.intermediateKinds != null)
           && (lexerContext.intermediateKinds[kind][s.length() - 1] != Integer.MAX_VALUE)
           && (lexerContext.intermediateKinds[kind][s.length() - 1] < kind)) {
-        JavaCCErrors.warning("Token: " + s + " will not be matched as " + "specified. It will be matched as token "
+        lexerContext.context.errors().warning("Token: " + s + " will not be matched as " + "specified. It will be matched as token "
             + "of kind: " + lexerContext.intermediateKinds[kind][s.length() - 1] + " instead.");
         actualKind = lexerContext.intermediateKinds[kind][s.length() - 1];
       } else {

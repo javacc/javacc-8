@@ -1,17 +1,16 @@
-/* Copyright (c) 2006, Sun Microsystems, Inc.
- * All rights reserved.
+/*
+ * Copyright (c) 2006, Sun Microsystems, Inc. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
  *
- *     * Redistributions of source code must retain the above copyright notice,
- *       this list of conditions and the following disclaimer.
- *     * Redistributions in binary form must reproduce the above copyright
- *       notice, this list of conditions and the following disclaimer in the
- *       documentation and/or other materials provided with the distribution.
- *     * Neither the name of the Sun Microsystems, Inc. nor the names of its
- *       contributors may be used to endorse or promote products derived from
- *       this software without specific prior written permission.
+ * * Redistributions of source code must retain the above copyright notice, this
+ * list of conditions and the following disclaimer. * Redistributions in binary
+ * form must reproduce the above copyright notice, this list of conditions and
+ * the following disclaimer in the documentation and/or other materials provided
+ * with the distribution. * Neither the name of the Sun Microsystems, Inc. nor
+ * the names of its contributors may be used to endorse or promote products
+ * derived from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -75,13 +74,13 @@ class LookaheadCalc {
     return false;
   }
 
-  private static String image(MatchInfo m) {
+  private static String image(MatchInfo m, Context context) {
     String ret = "";
     for (int i = 0; i < m.firstFreeLoc; i++) {
       if (m.match[i] == 0) {
         ret += " <EOF>";
       } else {
-        RegularExpression re = JavaCCGlobals.rexps_of_tokens.get(Integer.valueOf(m.match[i]));
+        RegularExpression re = context.globals().rexps_of_tokens.get(Integer.valueOf(m.match[i]));
         if (re instanceof RStringLiteral) {
           ret += " \"" + JavaCCGlobals.add_escapes(((RStringLiteral) re).image) + "\"";
         } else if ((re.label != null) && !re.label.equals("")) {
@@ -98,7 +97,7 @@ class LookaheadCalc {
     }
   }
 
-  static void choiceCalc(Choice ch) {
+  static void choiceCalc(Choice ch, Context context) {
     int first = LookaheadCalc.firstChoice(ch);
     // dbl[i] and dbr[i] are lists of size limited matches for choice i
     // of ch. dbl ignores matches with semantic lookaheads (when force_la_check
@@ -135,11 +134,11 @@ class LookaheadCalc {
         for (int i = first; i < (ch.getChoices().size() - 1); i++) {
           Expansion exp = ch.getChoices().get(i);
           if (Semanticize.emptyExpansionExists(exp)) {
-            JavaCCErrors.warning(exp, "This choice can expand to the empty token sequence "
+            context.errors().warning(exp, "This choice can expand to the empty token sequence "
                 + "and will therefore always be taken in favor of the choices appearing later.");
             break;
           } else if (LookaheadCalc.javaCodeCheck(dbl[i])) {
-            JavaCCErrors.warning(exp, "JAVACODE non-terminal will force this choice to be taken "
+            context.errors().warning(exp, "JAVACODE non-terminal will force this choice to be taken "
                 + "in favor of the choices appearing later.");
             break;
           }
@@ -166,22 +165,22 @@ class LookaheadCalc {
         continue;
       }
       if (minLA[i] > Options.getChoiceAmbiguityCheck()) {
-        JavaCCErrors.warning("Choice conflict involving two expansions at");
+        context.errors().warning("Choice conflict involving two expansions at");
         System.err.print("         line " + ch.getChoices().get(i).getLine());
         System.err.print(", column " + ch.getChoices().get(i).getColumn());
         System.err.print(" and line " + ch.getChoices().get(other[i]).getLine());
         System.err.print(", column " + ch.getChoices().get(other[i]).getColumn());
         System.err.println(" respectively.");
-        System.err.println("         A common prefix is: " + LookaheadCalc.image(overlapInfo[i]));
+        System.err.println("         A common prefix is: " + LookaheadCalc.image(overlapInfo[i], context));
         System.err.println("         Consider using a lookahead of " + minLA[i] + " or more for earlier expansion.");
       } else if (minLA[i] > 1) {
-        JavaCCErrors.warning("Choice conflict involving two expansions at");
+        context.errors().warning("Choice conflict involving two expansions at");
         System.err.print("         line " + ch.getChoices().get(i).getLine());
         System.err.print(", column " + ch.getChoices().get(i).getColumn());
         System.err.print(" and line " + ch.getChoices().get(other[i]).getLine());
         System.err.print(", column " + ch.getChoices().get(other[i]).getColumn());
         System.err.println(" respectively.");
-        System.err.println("         A common prefix is: " + LookaheadCalc.image(overlapInfo[i]));
+        System.err.println("         A common prefix is: " + LookaheadCalc.image(overlapInfo[i], context));
         System.err.println("         Consider using a lookahead of " + minLA[i] + " for earlier expansion.");
       }
     }
@@ -242,7 +241,7 @@ class LookaheadCalc {
       follow = walk.getSizeLimitedMatches();
       if (la == 1) {
         if (LookaheadCalc.javaCodeCheck(first)) {
-          JavaCCErrors.warning(nested,
+          semanticize.getContext().errors().warning(nested,
               "JAVACODE non-terminal within " + LookaheadCalc.image(exp)
               + " construct will force this construct to be entered in favor of "
               + "expansions occurring after construct.");
@@ -254,16 +253,16 @@ class LookaheadCalc {
       m1 = m;
     }
     if (la > Options.getOtherAmbiguityCheck()) {
-      JavaCCErrors.warning("Choice conflict in " + LookaheadCalc.image(exp) + " construct " + "at line " + exp.getLine()
-      + ", column " + exp.getColumn() + ".");
+      semanticize.getContext().errors().warning("Choice conflict in " + LookaheadCalc.image(exp) + " construct "
+          + "at line " + exp.getLine() + ", column " + exp.getColumn() + ".");
       System.err.println("         Expansion nested within construct and expansion following construct");
-      System.err.println("         have common prefixes, one of which is: " + LookaheadCalc.image(m1));
+      System.err.println("         have common prefixes, one of which is: " + LookaheadCalc.image(m1, semanticize.getContext()));
       System.err.println("         Consider using a lookahead of " + la + " or more for nested expansion.");
     } else if (la > 1) {
-      JavaCCErrors.warning("Choice conflict in " + LookaheadCalc.image(exp) + " construct " + "at line " + exp.getLine()
-      + ", column " + exp.getColumn() + ".");
+      semanticize.getContext().errors().warning("Choice conflict in " + LookaheadCalc.image(exp) + " construct "
+          + "at line " + exp.getLine() + ", column " + exp.getColumn() + ".");
       System.err.println("         Expansion nested within construct and expansion following construct");
-      System.err.println("         have common prefixes, one of which is: " + LookaheadCalc.image(m1));
+      System.err.println("         have common prefixes, one of which is: " + LookaheadCalc.image(m1, semanticize.getContext()));
       System.err.println("         Consider using a lookahead of " + la + " for nested expansion.");
     }
   }

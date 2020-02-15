@@ -1,20 +1,19 @@
 // Copyright 2011 Google Inc. All Rights Reserved.
 // Author: sreeni@google.com (Sreeni Viswanadha)
 
-/* Copyright (c) 2006, Sun Microsystems, Inc.
- * All rights reserved.
+/*
+ * Copyright (c) 2006, Sun Microsystems, Inc. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
  *
- *     * Redistributions of source code must retain the above copyright notice,
- *       this list of conditions and the following disclaimer.
- *     * Redistributions in binary form must reproduce the above copyright
- *       notice, this list of conditions and the following disclaimer in the
- *       documentation and/or other materials provided with the distribution.
- *     * Neither the name of the Sun Microsystems, Inc. nor the names of its
- *       contributors may be used to endorse or promote products derived from
- *       this software without specific prior written permission.
+ * * Redistributions of source code must retain the above copyright notice, this
+ * list of conditions and the following disclaimer. * Redistributions in binary
+ * form must reproduce the above copyright notice, this list of conditions and
+ * the following disclaimer in the documentation and/or other materials provided
+ * with the distribution. * Neither the name of the Sun Microsystems, Inc. nor
+ * the names of its contributors may be used to endorse or promote products
+ * derived from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -122,8 +121,9 @@ public class JJTree {
     io = new IO();
 
     try {
+      JJTreeContext context = new JJTreeContext();
+      JJTreeGlobals.initialize();
 
-      initializeOptions();
       if (args.length == 0) {
         p("");
         help_message();
@@ -146,7 +146,7 @@ public class JJTree {
         Options.setCmdLineOption(args[arg]);
       }
 
-      JJTreeOptions.validate();
+      context.validate();
 
       try {
         io.setInput(fn);
@@ -161,19 +161,19 @@ public class JJTree {
 
       try {
         JJTreeParser parser = new JJTreeParser(io.getIn());
-        parser.javacc_input();
+        parser.javacc_input(context);
 
         ASTGrammar root = (ASTGrammar) parser.jjtree.rootNode();
         if (Boolean.getBoolean("jjtree-dump")) {
           root.dump(" ");
         }
         try {
-          io.setOutput();
+          io.setOutput(context);
         } catch (JJTreeIOException ioe) {
           p("Error setting output: " + ioe.getMessage());
           return 1;
         }
-        JJTree.generateIO(io, root);
+        JJTree.generateIO(io, root, context);
         io.getOut().close();
         p("Annotated grammar generated successfully in " + io.getOutputFileName());
 
@@ -193,22 +193,13 @@ public class JJTree {
     }
   }
 
-
-  /**
-   * Initialize for JJTree
-   */
-  private void initializeOptions() {
-    JJTreeOptions.init();
-    JJTreeGlobals.initialize();
-  }
-
-  private static void generateIO(IO io, ASTGrammar grammar) throws IOException {
+  private static void generateIO(IO io, ASTGrammar grammar, JJTreeContext context) throws IOException {
     // TODO :: CBA -- Require Unification of output language specific processing
     // into a single Enum class
-    CodeGenerator codeGenerator = JavaCCGlobals.getCodeGenerator();
+    CodeGenerator codeGenerator = context.getCodeGenerator();
     if (codeGenerator != null) {
-      codeGenerator.getJJTreeCodeGenerator().visit(grammar, io);
-      codeGenerator.getJJTreeCodeGenerator().generateHelperFiles();
+      codeGenerator.getJJTreeCodeGenerator(context).visit(grammar, io);
+      codeGenerator.getJJTreeCodeGenerator(context).generateHelperFiles();
     } else {
       // Catch all to ensure we don't accidently do nothing
       throw new RuntimeException("No valid CodeGenerator for JJTree : " + Options.getCodeGenerator());

@@ -1,17 +1,16 @@
-/* Copyright (c) 2006, Sun Microsystems, Inc.
- * All rights reserved.
+/*
+ * Copyright (c) 2006, Sun Microsystems, Inc. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
  *
- *     * Redistributions of source code must retain the above copyright notice,
- *       this list of conditions and the following disclaimer.
- *     * Redistributions in binary form must reproduce the above copyright
- *       notice, this list of conditions and the following disclaimer in the
- *       documentation and/or other materials provided with the distribution.
- *     * Neither the name of the Sun Microsystems, Inc. nor the names of its
- *       contributors may be used to endorse or promote products derived from
- *       this software without specific prior written permission.
+ * * Redistributions of source code must retain the above copyright notice, this
+ * list of conditions and the following disclaimer. * Redistributions in binary
+ * form must reproduce the above copyright notice, this list of conditions and
+ * the following disclaimer in the documentation and/or other materials provided
+ * with the distribution. * Neither the name of the Sun Microsystems, Inc. nor
+ * the names of its contributors may be used to endorse or promote products
+ * derived from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -33,9 +32,15 @@ package org.javacc.parser;
  */
 public final class JavaCCErrors {
 
-  private static int parse_error_count = 0, semantic_error_count = 0, warning_count = 0;
+  private int parse_error_count;
+  private int semantic_error_count;
+  private int warning_count;
 
-  private JavaCCErrors() {}
+  JavaCCErrors() {
+    this.parse_error_count = 0;
+    this.semantic_error_count = 0;
+    this.warning_count = 0;
+  }
 
   private static void printLocationInfo(Object node) {
     if (node instanceof NormalProduction) {
@@ -59,59 +64,53 @@ public final class JavaCCErrors {
     }
   }
 
-  public static void parse_error(Object node, String mess) {
+  public void parse_error(Object node, String mess) {
     System.err.print("Error: ");
     JavaCCErrors.printLocationInfo(node);
     System.err.println(mess);
-    JavaCCErrors.parse_error_count++;
+    parse_error_count++;
   }
 
-  public static int get_parse_error_count() {
-    return JavaCCErrors.parse_error_count;
+  public int get_parse_error_count() {
+    return parse_error_count;
   }
 
-  public static void semantic_error(Object node, String mess) {
+  public void semantic_error(Object node, String mess) {
     System.err.print("Error: ");
     JavaCCErrors.printLocationInfo(node);
     System.err.println(mess);
-    JavaCCErrors.semantic_error_count++;
+    semantic_error_count++;
   }
 
-  public static void semantic_error(String mess) {
+  public void semantic_error(String mess) {
     System.err.print("Error: ");
     System.err.println(mess);
-    JavaCCErrors.semantic_error_count++;
+    semantic_error_count++;
   }
 
-  public static int get_semantic_error_count() {
-    return JavaCCErrors.semantic_error_count;
+  public int get_semantic_error_count() {
+    return semantic_error_count;
   }
 
-  public static void warning(Object node, String mess) {
+  public void warning(Object node, String mess) {
     System.err.print("Warning: ");
     JavaCCErrors.printLocationInfo(node);
     System.err.println(mess);
-    JavaCCErrors.warning_count++;
+    warning_count++;
   }
 
-  public static void warning(String mess) {
+  public void warning(String mess) {
     System.err.print("Warning: ");
     System.err.println(mess);
-    JavaCCErrors.warning_count++;
+    warning_count++;
   }
 
-  public static int get_warning_count() {
-    return JavaCCErrors.warning_count;
+  public int get_warning_count() {
+    return warning_count;
   }
 
-  public static int get_error_count() {
-    return JavaCCErrors.parse_error_count + JavaCCErrors.semantic_error_count;
-  }
-
-  public static void reInit() {
-    JavaCCErrors.parse_error_count = 0;
-    JavaCCErrors.semantic_error_count = 0;
-    JavaCCErrors.warning_count = 0;
+  public int get_error_count() {
+    return parse_error_count + semantic_error_count;
   }
 
   public static void fatal(String message) {

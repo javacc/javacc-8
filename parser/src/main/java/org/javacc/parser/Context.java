@@ -44,7 +44,6 @@ public class Context {
 
   public Context() {
     this(new Options());
-    Options.init();
   }
 
   public Context(Options options) {
@@ -52,6 +51,7 @@ public class Context {
     this.errors = new JavaCCErrors();
     this.globals = new JavaCCGlobals();
     this.codeGenerator = null;
+    Options.init();
   }
 
   /**
