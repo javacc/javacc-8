@@ -5,6 +5,7 @@ package org.javacc.utils;
 
 import org.javacc.jjtree.TokenUtils;
 import org.javacc.parser.CodeGeneratorSettings;
+import org.javacc.parser.Context;
 import org.javacc.parser.JavaCCErrors;
 import org.javacc.parser.JavaCCGlobals;
 import org.javacc.parser.JavaCCParserConstants;
@@ -23,6 +24,7 @@ import java.util.Set;
 
 public abstract class CodeBuilder<B extends CodeBuilder<?>> implements Closeable {
 
+  private final Context         context;
   private final CodeGeneratorSettings options;
 
 
@@ -37,9 +39,11 @@ public abstract class CodeBuilder<B extends CodeBuilder<?>> implements Closeable
   /**
    * Constructs an instance of {@link CodeBuilder}.
    *
+   * @param context
    * @param options
    */
-  protected CodeBuilder(CodeGeneratorSettings options) {
+  protected CodeBuilder(Context context, CodeGeneratorSettings options) {
+    this.context = context;
     this.options = options;
   }
 
@@ -168,7 +172,7 @@ public abstract class CodeBuilder<B extends CodeBuilder<?>> implements Closeable
   protected final void store(File file, StringBuffer buffer) {
     String tool = tools.isEmpty() ? JavaCCGlobals.toolName : String.join(",", tools);
 
-    try (OutputFile output = new OutputFile(file, tool, version, option)) {
+    try (OutputFile output = new OutputFile(file, tool, version, option, context)) {
       output.getPrintWriter().print(buffer.toString());
     } catch (IOException ioe) {
       JavaCCErrors.fatal("Could not create output file: " + file.getAbsolutePath());
@@ -304,10 +308,11 @@ public abstract class CodeBuilder<B extends CodeBuilder<?>> implements Closeable
     /**
      * Constructs an instance of {@link AbstractCodeGenBuilder2}.
      *
+     * @param context
      * @param options
      */
-    private GenericCodeBuilder(CodeGeneratorSettings options) {
-      super(options);
+    private GenericCodeBuilder(Context context, CodeGeneratorSettings options) {
+      super(context, options);
     }
 
     /**
@@ -321,10 +326,11 @@ public abstract class CodeBuilder<B extends CodeBuilder<?>> implements Closeable
     /**
      * Constructs an instance of {@link GenericCodeBuilder}.
      *
+     * @param context
      * @param options
      */
-    public static GenericCodeBuilder of(CodeGeneratorSettings options) {
-      return new GenericCodeBuilder(options);
+    public static GenericCodeBuilder of(Context context, CodeGeneratorSettings options) {
+      return new GenericCodeBuilder(context, options);
     }
   }
 }

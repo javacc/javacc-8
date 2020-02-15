@@ -43,7 +43,9 @@ import java.util.Map;
  */
 public class LexGen {
 
-  public static final String   DEFAULT_STATE    = "DEFAULT";
+  public static final String DEFAULT_STATE = "DEFAULT";
+  private final Context      context;
+
   // Hashtable of vectors
   private Hashtable<String, List<TokenProduction>> allTpsForState = new Hashtable<>();
 
@@ -69,7 +71,8 @@ public class LexGen {
   private boolean[]                                hasNfa;
   private NfaState                                 initialState;
 
-  public LexGen() {
+  public LexGen(Context context) {
+    this.context = context;
     actions = null;
     allTpsForState = new Hashtable<>();
     canLoop = null;
@@ -94,13 +97,13 @@ public class LexGen {
   }
 
   private LexerContext BuildLexStatesTable(boolean unicodeWarning) {
-    LexerContext lexerContext = new LexerContext();
+    LexerContext lexerContext = new LexerContext(context);
     lexerContext.unicodeWarningGiven = unicodeWarning;
-    Iterator<TokenProduction> it = JavaCCGlobals.rexprlist.iterator();
+    Iterator<TokenProduction> it = context.globals().rexprlist.iterator();
     TokenProduction tp;
     int i;
 
-    String[] tmpLexStateName = new String[JavaCCGlobals.lexstate_I2S.size()];
+    String[] tmpLexStateName = new String[context.globals().lexstate_I2S.size()];
     while (it.hasNext()) {
       tp = it.next();
       List<RegExprSpec> respecs = tp.respecs;
@@ -134,7 +137,7 @@ public class LexGen {
     toToken = new long[(maxOrdinal / 64) + 1];
     toToken[0] = 1L;
     actions = new Action[maxOrdinal];
-    actions[0] = JavaCCGlobals.actForEof;
+    actions[0] = context.globals().actForEof;
     initStates = new Hashtable<>();
     lexerContext.canMatchAnyChar = new int[maxLexStates];
     canLoop = new boolean[maxLexStates];
@@ -148,7 +151,7 @@ public class LexGen {
     lexerContext.mixed = new boolean[maxLexStates];
     initMatch = new int[maxLexStates];
     newLexState = new String[maxOrdinal];
-    newLexState[0] = JavaCCGlobals.nextStateForEof;
+    newLexState[0] = context.globals().nextStateForEof;
     lexerContext.lexStates = new int[maxOrdinal];
     lexerContext.ignoreCase = new boolean[maxOrdinal];
     rexprs = new RegularExpression[maxOrdinal];
@@ -168,11 +171,11 @@ public class LexGen {
   }
 
   public TokenizerData generateTokenizerData(boolean generateDataOnly, boolean unicodeWarning) throws IOException {
-    if (!Options.getBuildTokenManager() || Options.getUserTokenManager() || (JavaCCErrors.get_error_count() > 0)) {
+    if (!Options.getBuildTokenManager() || Options.getUserTokenManager() || (context.errors().get_error_count() > 0)) {
       return new TokenizerData();
     }
 
-    final CodeGenerator codeGenerator = JavaCCGlobals.getCodeGenerator();
+    final CodeGenerator codeGenerator = context.getCodeGenerator();
     List<RegularExpression> choices = new ArrayList<>();
     TokenProduction tp;
     int i, j;
@@ -183,8 +186,8 @@ public class LexGen {
 
     TokenizerData tokenizerData = new TokenizerData();
     tokenizerData.lexStateNames = new String[maxLexStates];
-    for (int l : JavaCCGlobals.lexstate_I2S.keySet()) {
-      tokenizerData.lexStateNames[l] = JavaCCGlobals.lexstate_I2S.get(l);
+    for (int l : context.globals().lexstate_I2S.keySet()) {
+      tokenizerData.lexStateNames[l] = context.globals().lexstate_I2S.get(l);
     }
 
     // while (e.hasMoreElements())
@@ -335,21 +338,21 @@ public class LexGen {
     }
 
     for (i = 0; i < choices.size(); i++) {
-      ((RChoice) choices.get(i)).CheckUnmatchability(lexerContext.lexStates);
+      ((RChoice) choices.get(i)).CheckUnmatchability(lexerContext.lexStates, lexerContext.context);
     }
 
     CheckEmptyStringMatch(lexerContext, tokenizerData);
 
-    tokenizerData.setParserName(JavaCCGlobals.cu_name);
+    tokenizerData.setParserName(context.globals().cu_name);
     NfaState.BuildTokenizerData(tokenizerData, lexerContext);
     RStringLiteral.BuildTokenizerData(tokenizerData, lexerContext);
 
     int[] newLexStateIndices = new int[maxOrdinal];
     StringBuilder tokenMgrDecls = new StringBuilder();
-    if ((JavaCCGlobals.token_mgr_decls != null) && (JavaCCGlobals.token_mgr_decls.size() > 0)) {
+    if ((context.globals().token_mgr_decls != null) && (context.globals().token_mgr_decls.size() > 0)) {
       // Token t = token_mgr_decls.get(0);
-      for (j = 0; j < JavaCCGlobals.token_mgr_decls.size(); j++) {
-        tokenMgrDecls.append(JavaCCGlobals.token_mgr_decls.get(j).image + " ");
+      for (j = 0; j < context.globals().token_mgr_decls.size(); j++) {
+        tokenMgrDecls.append(context.globals().token_mgr_decls.get(j).image + " ");
       }
     }
     tokenizerData.setDecls(tokenMgrDecls.toString());
@@ -369,7 +372,7 @@ public class LexGen {
       StringBuilder sb = new StringBuilder();
       for (int k = 0; k < act.getActionTokens().size(); k++) {
         sb.append(act.getActionTokens().get(k).image);
-//        sb.append(" ");
+        // sb.append(" ");
       }
       actionStrings.put(i, sb.toString());
     }
@@ -377,9 +380,9 @@ public class LexGen {
     tokenizerData.updateMatchInfo(actionStrings, newLexStateIndices, toSkip, toSpecial, toMore, toToken,
         lexerContext.allImages);
     Map<Integer, String> labels = new HashMap<>();
-    String[] images = new String[JavaCCGlobals.rexps_of_tokens.size() + 1];
-    for (Integer o : JavaCCGlobals.rexps_of_tokens.keySet()) {
-      RegularExpression re = JavaCCGlobals.rexps_of_tokens.get(o);
+    String[] images = new String[context.globals().rexps_of_tokens.size() + 1];
+    for (Integer o : context.globals().rexps_of_tokens.keySet()) {
+      RegularExpression re = context.globals().rexps_of_tokens.get(o);
       String label = re.label;
       if ((label != null) && (label.length() > 0)) {
         labels.put(o, label);
@@ -388,13 +391,13 @@ public class LexGen {
         images[o] = ((RStringLiteral) re).image;
       }
     }
-    tokenizerData.setLabelsAndImages(JavaCCGlobals.names_of_tokens, images);
+    tokenizerData.setLabelsAndImages(context.globals().names_of_tokens, images);
 
     if (generateDataOnly) {
       return tokenizerData;
     }
 
-    TokenManagerCodeGenerator gen = codeGenerator.getTokenManagerCodeGenerator();
+    TokenManagerCodeGenerator gen = codeGenerator.getTokenManagerCodeGenerator(context);
     CodeGeneratorSettings settings = CodeGeneratorSettings.of(Options.getOptions());
     gen.generateCode(settings, tokenizerData);
     gen.finish(settings, tokenizerData);
@@ -455,13 +458,13 @@ public class LexGen {
         }
 
         if (len == 0) {
-          JavaCCErrors.warning(rexprs[initMatch[i]],
+          context.errors().warning(rexprs[initMatch[i]],
               "Regular expression"
                   + ((rexprs[initMatch[i]].label.equals("")) ? "" : (" for " + rexprs[initMatch[i]].label))
                   + " can be matched by the empty string (\"\") in lexical state " + tokenizerData.lexStateNames[i]
                       + ". This can result in an endless loop of " + "empty string matches.");
         } else {
-          JavaCCErrors.warning(rexprs[initMatch[i]],
+          context.errors().warning(rexprs[initMatch[i]],
               "Regular expression"
                   + ((rexprs[initMatch[i]].label.equals("")) ? "" : (" for " + rexprs[initMatch[i]].label))
                   + " can be matched by the empty string (\"\") in lexical state " + tokenizerData.lexStateNames[i]
