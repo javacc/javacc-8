@@ -7,7 +7,7 @@
 		<version>8.0.0</version>
 	</parent>
 	<groupId>org.javacc.grammars.cpp</groupId>
-	<artifactId>cobol</artifactId>
+	<artifactId>java_1.5</artifactId>
 	<packaging>nar</packaging>
 	<name>JavaCC grammars C++  C</name>
 	<build>
@@ -45,7 +45,7 @@
 								<path>${project.basedir}/src/main/cpp</path>
 							</includePath>
 							<includePath>
-								<path>${project.basedir}/target/generated-sources/cpp/convex/step2/parser</path>
+								<path>${project.basedir}/target/generated-sources/cpp</path>
 							</includePath>
 						</includePaths>
 					</cpp>
