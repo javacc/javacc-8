@@ -1,6 +1,6 @@
-#include "gen/ErrorHandler.h"
-#include "gen/Token.h"
-#include "gen/JavaParser.h"
+#include "ErrorHandler.h"
+#include "Token.h"
+#include "JavaParser.h"
 
 namespace java { namespace parser {
 

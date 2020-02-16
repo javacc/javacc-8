@@ -7,9 +7,9 @@
 		<version>8.0.0</version>
 	</parent>
 	<groupId>org.javacc.grammars.cpp</groupId>
-	<artifactId>java</artifactId>
+	<artifactId>asn1</artifactId>
 	<packaging>nar</packaging>
-	<name>JavaCC grammars C++  Java</name>
+	<name>JavaCC grammars C++  ASN.1</name>
 	<build>
 		<plugins>
 			<plugin>
@@ -20,7 +20,7 @@
 						<id>jcc</id>
 						<phase>generate-sources</phase>
 						<goals>
-							<goal>jjtree-javacc</goal>
+							<goal>javacc</goal>
 						</goals>
 						<configuration>
 							<outputDirectory>${project.basedir}/target/generated-sources/cpp</outputDirectory>
@@ -46,9 +46,6 @@
 							</includePath>
 							<includePath>
 								<path>${project.basedir}/target/generated-sources/cpp</path>
-							</includePath>
-							<includePath>
-								<path>${project.basedir}/target/generated-sources/jjtree</path>
 							</includePath>
 						</includePaths>
 					</cpp>

@@ -20,8 +20,6 @@ options {
 	SANITY_CHECK=true;
 	DEBUG_PARSER=false;
 	DEBUG_TOKEN_MANAGER=false;
-	OUTPUT_LANGUAGE="c++";
-	CODE_GENERATOR="C++";
 }
 
 PARSER_BEGIN(AsnParser)

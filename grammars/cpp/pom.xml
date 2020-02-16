@@ -10,6 +10,12 @@
   <packaging>pom</packaging>
   <modules>
   	<module>java</module>
+  	<module>asn1</module>
+  	<module>c</module>
+  	<module>chemical</module>
+  	<module>cobol</module>
+  	<module>dtd</module>
+  	<module>ecma</module>
   </modules>
 	<build>
 		<pluginManagement>

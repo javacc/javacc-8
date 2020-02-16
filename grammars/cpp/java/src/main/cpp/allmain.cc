@@ -4,9 +4,9 @@
 #include <string>
 #include <stdlib.h>
 
-#include "gen/CharStream.h"
-#include "gen/JavaParser.h"
-#include "gen/JavaParserTokenManager.h"
+#include "CharStream.h"
+#include "JavaParser.h"
+#include "JavaParserTokenManager.h"
 
 using namespace java::parser;
 using namespace std;

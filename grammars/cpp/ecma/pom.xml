@@ -1,15 +1,14 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>org.javacc.grammars</groupId>
-		<artifactId>cpp</artifactId>
-		<version>8.0.0</version>
-	</parent>
-	<groupId>org.javacc.grammars.cpp</groupId>
-	<artifactId>java</artifactId>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.javacc.grammars</groupId>
+    <artifactId>cpp</artifactId>
+    <version>8.0.0</version>
+  </parent>
+  <groupId>org.javacc.grammars.cpp</groupId>
+  <artifactId>ecma</artifactId>
 	<packaging>nar</packaging>
-	<name>JavaCC grammars C++  Java</name>
+	<name>JavaCC grammars C++  ECMA</name>
 	<build>
 		<plugins>
 			<plugin>
@@ -45,10 +44,10 @@
 								<path>${project.basedir}/src/main/cpp</path>
 							</includePath>
 							<includePath>
-								<path>${project.basedir}/target/generated-sources/cpp</path>
+								<path>${project.basedir}/target/generated-sources/cpp/org/dojo/jsl/parser</path>
 							</includePath>
 							<includePath>
-								<path>${project.basedir}/target/generated-sources/jjtree</path>
+								<path>${project.basedir}/target/generated-sources/jjtree/org/dojo/jsl/parser</path>
 							</includePath>
 						</includePaths>
 					</cpp>
