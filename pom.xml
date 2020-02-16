@@ -221,7 +221,7 @@
 	<reporting>
 		<plugins>
 			<plugin>
-				<groupId>org.javacc</groupId>
+				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>javacc-maven-plugin</artifactId>
 				<configuration>
 					<sourceDirectory>src/main/java/org/javacc/parser</sourceDirectory>
