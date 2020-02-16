@@ -32,20 +32,66 @@
 				<artifactId>exec-maven-plugin</artifactId>
 				<executions>
 					<execution>
+						<id>run-eg1</id>
 						<phase>test</phase>
 						<goals>
 							<goal>java</goal>
 						</goals>
+						<configuration>
+							<mainClass>eg1.Eg1</mainClass>
+							<arguments>
+								<argument>${project.basedir}/eg1/eg1.in</argument>
+								<argument>${project.basedir}/eg1/eg1.out</argument>
+								<argument>${project.basedir}/eg1/eg1.err</argument>
+							</arguments>
+						</configuration>
+					</execution>
+					<execution>
+						<id>run-eg2</id>
+						<phase>test</phase>
+						<goals>
+							<goal>java</goal>
+						</goals>
+						<configuration>
+							<mainClass>eg2.Eg2</mainClass>
+							<arguments>
+								<argument>${project.basedir}/eg2/eg2.in</argument>
+								<argument>${project.basedir}/eg2/eg2.out</argument>
+								<argument>${project.basedir}/eg2/eg2.err</argument>
+							</arguments>
+						</configuration>
+					</execution>
+					<execution>
+						<id>run-eg3</id>
+						<phase>test</phase>
+						<goals>
+							<goal>java</goal>
+						</goals>
+						<configuration>
+							<mainClass>eg3.Eg3</mainClass>
+							<arguments>
+								<argument>${project.basedir}/eg3/eg3.in</argument>
+								<argument>${project.basedir}/eg3/eg3.out</argument>
+								<argument>${project.basedir}/eg3/eg3.err</argument>
+							</arguments>
+						</configuration>
+					</execution>
+					<execution>
+						<id>run-eg4</id>
+						<phase>test</phase>
+						<goals>
+							<goal>java</goal>
+						</goals>
+						<configuration>
+							<mainClass>eg4.Eg4</mainClass>
+							<arguments>
+								<argument>${project.basedir}/eg4/eg4.in</argument>
+								<argument>${project.basedir}/eg4/eg4.out</argument>
+								<argument>${project.basedir}/eg4/eg4.err</argument>
+							</arguments>
+						</configuration>
 					</execution>
 				</executions>
-				<configuration>
-					<mainClass>eg1.Eg1</mainClass>
-					<arguments>
-						<argument>${project.basedir}/eg1/eg1.in</argument>
-						<argument>${project.basedir}/eg1/eg1.out</argument>
-						<argument>${project.basedir}/eg1/eg1.err</argument>
-					</arguments>
-				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
