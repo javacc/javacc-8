@@ -8,4 +8,40 @@
   <groupId>org.javacc.grammars</groupId>
   <artifactId>cpp</artifactId>
   <packaging>pom</packaging>
+  <modules>
+  	<module>java</module>
+  </modules>
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>javacc-maven-plugin</artifactId>
+					<dependencies>
+						<dependency>
+							<groupId>org.javacc</groupId>
+							<artifactId>parser</artifactId>
+							<version>${javacc.parser}</version>
+							<scope>runtime</scope>
+						</dependency>
+						<dependency>
+							<groupId>org.javacc.codegen</groupId>
+							<artifactId>cpp</artifactId>
+							<version>${javacc.cpp}</version>
+							<scope>runtime</scope>
+						</dependency>
+					</dependencies>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>javacc-maven-plugin</artifactId>
+				<configuration>
+					<codeGenerator>c++</codeGenerator>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>
