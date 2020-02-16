@@ -7,9 +7,9 @@
 		<version>8.0.0</version>
 	</parent>
 	<groupId>org.javacc.grammars.cpp</groupId>
-	<artifactId>java</artifactId>
+	<artifactId>java_1.1</artifactId>
 	<packaging>nar</packaging>
-	<name>JavaCC grammars C++  Java</name>
+	<name>JavaCC grammars C++  Java 1.1</name>
 	<build>
 		<plugins>
 			<plugin>
