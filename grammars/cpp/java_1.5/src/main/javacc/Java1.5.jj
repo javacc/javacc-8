@@ -27,12 +27,13 @@
  */
 
 options {
-  JAVA_UNICODE_ESCAPE = true;
-  ERROR_REPORTING = false;
-  STATIC = false;
-  COMMON_TOKEN_ACTION = false;
-  TOKEN_FACTORY = "MyToken";
-  JDK_VERSION = "1.5";
+	JAVA_UNICODE_ESCAPE = true;
+	ERROR_REPORTING = false;
+	STATIC = false;
+	COMMON_TOKEN_ACTION = false;
+	TOKEN_FACTORY = "MyToken";
+	TOKEN_MANAGER_INCLUDES="MyToken.h";
+	PARSER_INCLUDES=("ModifierSet.h", "MyToken.h");
 }
 
 PARSER_BEGIN(JavaParser)
@@ -119,7 +120,7 @@ TOKEN :
 | < LONG: "long" >
 | < NATIVE: "native" >
 | < NEW: "new" >
-| < NULL: "null" >
+| < _NULL: "null" >
 | < PACKAGE: "package">
 | < PRIVATE: "private" >
 | < PROTECTED: "protected" >
@@ -919,14 +920,14 @@ TOKEN :
   < RUNSIGNEDSHIFT: ">>>" >
   {
      matchedToken.kind = GT;
-     ((MyToken)matchedToken).realKind = RUNSIGNEDSHIFT;
+     ((MyToken)matchedToken)->realKind = RUNSIGNEDSHIFT;
      input_stream.backup(2);
      matchedToken.image = ">";
   }
 | < RSIGNEDSHIFT: ">>" >
   {
      matchedToken.kind = GT;
-     ((MyToken)matchedToken).realKind = RSIGNEDSHIFT;
+     ((MyToken)matchedToken)->realKind = RSIGNEDSHIFT;
      input_stream.backup(1);
      matchedToken.image = ">";
   }
@@ -979,27 +980,27 @@ int Modifiers():
  (
   LOOKAHEAD(2)
   (
-   "public" { modifiers |= ModifierSet.PUBLIC; }
+   "public" { modifiers |= ModifierSet::PUBLIC; }
   |
-   "static" { modifiers |= ModifierSet.STATIC; }
+   "static" { modifiers |= ModifierSet::STATIC; }
   |
-   "protected" { modifiers |= ModifierSet.PROTECTED; }
+   "protected" { modifiers |= ModifierSet::PROTECTED; }
   |
-   "private" { modifiers |= ModifierSet.PRIVATE; }
+   "private" { modifiers |= ModifierSet::PRIVATE; }
   |
-   "final" { modifiers |= ModifierSet.FINAL; }
+   "final" { modifiers |= ModifierSet::FINAL; }
   |
-   "abstract" { modifiers |= ModifierSet.ABSTRACT; }
+   "abstract" { modifiers |= ModifierSet::ABSTRACT; }
   |
-   "synchronized" { modifiers |= ModifierSet.SYNCHRONIZED; }
+   "synchronized" { modifiers |= ModifierSet::SYNCHRONIZED; }
   |
-   "native" { modifiers |= ModifierSet.NATIVE; }
+   "native" { modifiers |= ModifierSet::NATIVE; }
   |
-   "transient" { modifiers |= ModifierSet.TRANSIENT; }
+   "transient" { modifiers |= ModifierSet::TRANSIENT; }
   |
-   "volatile" { modifiers |= ModifierSet.VOLATILE; }
+   "volatile" { modifiers |= ModifierSet::VOLATILE; }
   |
-   "strictfp" { modifiers |= ModifierSet.STRICTFP; }
+   "strictfp" { modifiers |= ModifierSet::STRICTFP; }
   |
    Annotation()
   )
@@ -1864,8 +1865,8 @@ void TryStatement():
 void RUNSIGNEDSHIFT():
 {}
 {
-  ( LOOKAHEAD({ getToken(1).kind == GT &&
-                ((MyToken)getToken(1)).realKind == RUNSIGNEDSHIFT} )
+  ( LOOKAHEAD({ getToken(1)->kind == GT &&
+                ((MyToken)getToken(1))->realKind == RUNSIGNEDSHIFT} )
    ">" ">" ">"
   )
 }
@@ -1873,8 +1874,8 @@ void RUNSIGNEDSHIFT():
 void RSIGNEDSHIFT():
 {}
 {
-  ( LOOKAHEAD({ getToken(1).kind == GT &&
-                ((MyToken)getToken(1)).realKind == RSIGNEDSHIFT} )
+  ( LOOKAHEAD({ getToken(1)->kind == GT &&
+                ((MyToken)getToken(1))->realKind == RSIGNEDSHIFT} )
   ">" ">"
   )
 }
