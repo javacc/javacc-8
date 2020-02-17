@@ -917,17 +917,17 @@ TOKEN :
 /* >'s need special attention due to generics syntax. */
 TOKEN :
 {
-  < RUNSIGNEDSHIFT: ">>>" >
+  < _RUNSIGNEDSHIFT: ">>>" >
   {
      matchedToken.kind = GT;
-     ((MyToken)matchedToken)->realKind = RUNSIGNEDSHIFT;
+     ((MyToken)matchedToken)->realKind = _RUNSIGNEDSHIFT;
      input_stream.backup(2);
      matchedToken.image = ">";
   }
-| < RSIGNEDSHIFT: ">>" >
+| < _RSIGNEDSHIFT: ">>" >
   {
      matchedToken.kind = GT;
-     ((MyToken)matchedToken)->realKind = RSIGNEDSHIFT;
+     ((MyToken)matchedToken)->realKind = _RSIGNEDSHIFT;
      input_stream.backup(1);
      matchedToken.image = ">";
   }
@@ -1866,7 +1866,7 @@ void RUNSIGNEDSHIFT():
 {}
 {
   ( LOOKAHEAD({ getToken(1)->kind == GT &&
-                ((MyToken)getToken(1))->realKind == RUNSIGNEDSHIFT} )
+                ((MyToken*)getToken(1))->realKind == _RUNSIGNEDSHIFT} )
    ">" ">" ">"
   )
 }
@@ -1875,7 +1875,7 @@ void RSIGNEDSHIFT():
 {}
 {
   ( LOOKAHEAD({ getToken(1)->kind == GT &&
-                ((MyToken)getToken(1))->realKind == RSIGNEDSHIFT} )
+                ((MyToken*)getToken(1))->realKind == _RSIGNEDSHIFT} )
   ">" ">"
   )
 }

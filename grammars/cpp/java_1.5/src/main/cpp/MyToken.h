@@ -1,5 +1,6 @@
 #pragma once
 #include "JavaCC.h"
+#include "Token.h"
 
 class MyToken : public Token {
 public:
