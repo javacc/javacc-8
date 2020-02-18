@@ -12,4 +12,68 @@ public:
 	static const int TRANSIENT = 0x0100;
 	static const int VOLATILE = 0x0200;
 	static const int STRICTFP = 0x1000;
+	
+     static bool isPublic(int modifiers)
+     {
+       return (modifiers & PUBLIC) != 0;
+     }
+
+     static bool isProtected(int modifiers)
+     {
+       return (modifiers & PROTECTED) != 0;
+     }
+
+     static bool isPrivate(int modifiers)
+     {
+       return (modifiers & PRIVATE) != 0;
+     }
+
+     static bool isStatic(int modifiers)
+     {
+       return (modifiers & STATIC) != 0;
+     }
+
+     static bool isAbstract(int modifiers)
+     {
+       return (modifiers & ABSTRACT) != 0;
+     }
+
+     static bool isFinal(int modifiers)
+     {
+       return (modifiers & FINAL) != 0;
+     }
+
+     static bool isNative(int modifiers)
+     {
+       return (modifiers & NATIVE) != 0;
+     }
+
+     static bool isStrictfp(int modifiers)
+     {
+       return (modifiers & STRICTFP) != 0;
+     }
+
+     static bool isSynchronized(int modifiers)
+     {
+       return (modifiers & SYNCHRONIZED) != 0;
+     }
+
+     static bool isTransient(int modifiers)
+      {
+       return (modifiers & TRANSIENT) != 0;
+     }
+
+     static bool isVolatile(int modifiers)
+     {
+       return (modifiers & VOLATILE) != 0;
+     }
+
+     /**
+      * Removes the given modifier.
+      */
+     static int removeModifier(int modifiers, int mod)
+     {
+        return modifiers & ~mod;
+     }
+	
 };
