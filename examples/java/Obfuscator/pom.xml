@@ -11,7 +11,7 @@
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
+				<groupId>org.javacc.plugin</groupId>
 				<artifactId>javacc-maven-plugin</artifactId>
 				<executions>
 					<execution>

@@ -115,6 +115,20 @@
 		</repository>
 	</repositories>
 
+	<pluginRepositories>
+		<pluginRepository>
+			<id>ossrh</id>
+			<name>Sonatype snapshot repository</name>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+		</pluginRepository>
+	</pluginRepositories>
+
 	<properties>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
@@ -193,7 +207,7 @@
 					<version>${maven-antrun-plugin}</version>
 				</plugin>
 				<plugin>
-					<groupId>org.codehaus.mojo</groupId>
+					<groupId>org.javacc.plugin</groupId>
 					<artifactId>javacc-maven-plugin</artifactId>
 					<version>${javacc-maven-plugin}</version>
 				</plugin>
@@ -221,7 +235,7 @@
 	<reporting>
 		<plugins>
 			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
+				<groupId>org.javacc.plugin</groupId>
 				<artifactId>javacc-maven-plugin</artifactId>
 				<configuration>
 					<sourceDirectory>src/main/java/org/javacc/parser</sourceDirectory>

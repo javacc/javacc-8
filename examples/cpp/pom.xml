@@ -46,7 +46,7 @@
 		<pluginManagement>
 			<plugins>
 				<plugin>
-					<groupId>org.codehaus.mojo</groupId>
+				<groupId>org.javacc.plugin</groupId>
 					<artifactId>javacc-maven-plugin</artifactId>
 					<dependencies>
 						<dependency>
@@ -67,7 +67,7 @@
 		</pluginManagement>
 		<plugins>
 			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
+				<groupId>org.javacc.plugin</groupId>
 				<artifactId>javacc-maven-plugin</artifactId>
 				<configuration>
 					<codeGenerator>c++</codeGenerator>
