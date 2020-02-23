@@ -108,16 +108,16 @@ public class Options {
   public static final String USEROPTION__DEPTH_LIMIT                       = "DEPTH_LIMIT";
 
   public static final String USEROPTION__NAMESPACE                         = "NAMESPACE";
-  public static final String USEROPTION__CPP_TOKEN_INCLUDES                = "TOKEN_INCLUDES";
-  public static final String USEROPTION__CPP_PARSER_INCLUDES               = "PARSER_INCLUDES";
   public static final String USEROPTION__IGNORE_ACTIONS                    = "IGNORE_ACTIONS";
-  public static final String USEROPTION__CPP_TOKEN_MANAGER_INCLUDES        = "TOKEN_MANAGER_INCLUDES";
   public static final String USEROPTION__CPP_TOKEN_MANAGER_SUPERCLASS      = "TOKEN_MANAGER_SUPERCLASS";
   public static final String USEROPTION__CPP_STOP_ON_FIRST_ERROR           = "STOP_ON_FIRST_ERROR";
   public static final String USEROPTION__CPP_STACK_LIMIT                   = "STACK_LIMIT";
 
   public static final String USEROPTION__CPP_TOKEN_INCLUDE                 = "TOKEN_INCLUDE";
+  public static final String USEROPTION__CPP_TOKEN_INCLUDES                = "TOKEN_INCLUDES";
   public static final String USEROPTION__CPP_PARSER_INCLUDE                = "PARSER_INCLUDE";
+  public static final String USEROPTION__CPP_PARSER_INCLUDES               = "PARSER_INCLUDES";
+  public static final String USEROPTION__CPP_TOKEN_MANAGER_INCLUDES        = "TOKEN_MANAGER_INCLUDES";
 
   public static final String USEROPTION__USER_TOKEN_MANAGER                = "USER_TOKEN_MANAGER";
   public static final String USEROPTION__CPP_USER_TOKEN_CONSTANT           = "USER_TOKEN_CONSTANT";
