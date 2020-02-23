@@ -14,8 +14,8 @@
 	
 	</properties>
 	<modules>
+		<module>cpp</module>
 		<module>java</module>
 		<module>csharp</module>
-		<module>cpp</module>
 	</modules>
 </project>
