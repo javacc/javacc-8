@@ -113,9 +113,7 @@ public class Options {
   public static final String USEROPTION__CPP_STOP_ON_FIRST_ERROR           = "STOP_ON_FIRST_ERROR";
   public static final String USEROPTION__CPP_STACK_LIMIT                   = "STACK_LIMIT";
 
-  public static final String USEROPTION__CPP_TOKEN_INCLUDE                 = "TOKEN_INCLUDE";
   public static final String USEROPTION__CPP_TOKEN_INCLUDES                = "TOKEN_INCLUDES";
-  public static final String USEROPTION__CPP_PARSER_INCLUDE                = "PARSER_INCLUDE";
   public static final String USEROPTION__CPP_PARSER_INCLUDES               = "PARSER_INCLUDES";
   public static final String USEROPTION__CPP_TOKEN_MANAGER_INCLUDES        = "TOKEN_MANAGER_INCLUDES";
 
@@ -193,11 +191,8 @@ public class Options {
     temp.add(new OptionInfo(Options.USEROPTION__TOKEN_FACTORY, OptionType.STRING, ""));
     temp.add(new OptionInfo(Options.USEROPTION__GRAMMAR_ENCODING, OptionType.STRING, ""));
 
-    temp.add(
-        new OptionInfo(Options.USEROPTION__JAVA_TEMPLATE_TYPE, OptionType.STRING, Options.JAVA_TEMPLATE_TYPE_CLASSIC));
+    temp.add(new OptionInfo(Options.USEROPTION__JAVA_TEMPLATE_TYPE, OptionType.STRING, Options.JAVA_TEMPLATE_TYPE_CLASSIC));
     temp.add(new OptionInfo(Options.USEROPTION__NAMESPACE, OptionType.STRING, ""));
-    temp.add(new OptionInfo(Options.USEROPTION__CPP_TOKEN_INCLUDES, OptionType.STRING, ""));
-    temp.add(new OptionInfo(Options.USEROPTION__CPP_PARSER_INCLUDES, OptionType.STRING, ""));
 
     temp.add(new OptionInfo(Options.USEROPTION__CPP_TOKEN_MANAGER_INCLUDES, OptionType.STRING, ""));
     temp.add(new OptionInfo(Options.USEROPTION__IGNORE_ACTIONS, OptionType.BOOLEAN, Boolean.FALSE));
@@ -206,6 +201,11 @@ public class Options {
 
     temp.add(new OptionInfo(Options.USEROPTION__DEPTH_LIMIT, OptionType.INTEGER, Integer.valueOf(0)));
     temp.add(new OptionInfo(Options.USEROPTION__CPP_STACK_LIMIT, OptionType.STRING, ""));
+
+    temp.add(new OptionInfo(Options.USEROPTION__CPP_TOKEN_INCLUDES, OptionType.STRINGLIST, null));
+    temp.add(new OptionInfo(Options.USEROPTION__CPP_PARSER_INCLUDES, OptionType.STRINGLIST, null));   
+    temp.add(new OptionInfo(Options.USEROPTION__CPP_TOKEN_MANAGER_INCLUDES, OptionType.STRINGLIST, null));   
+    
 
     userOptions = Collections.unmodifiableSet(temp);
   }
@@ -253,6 +253,18 @@ public class Options {
    */
   public static String stringValue(final String option) {
     return (String) Options.optionValues.get(option);
+  }
+
+
+  /**
+   * Convenience method to retrieve string options.
+   */
+  public static List<String> stringListValue(final String option) {
+    Object object = Options.optionValues.get(option);
+    if (object instanceof List<?>) {
+    	return (List<String>) object;
+    }
+    return null;
   }
 
 
@@ -693,6 +705,33 @@ public class Options {
    */
   public static boolean getBuildTokenManager() {
     return Options.booleanValue(Options.USEROPTION__BUILD_TOKEN_MANAGER);
+  }
+
+  /**
+   * Find the token manager Includes
+   *
+   * @return The requested token manager includes;
+   */
+  public static List<String> getTokenManagerIncludes() {
+    return Options.stringListValue(Options.USEROPTION__CPP_TOKEN_MANAGER_INCLUDES);
+  }
+
+  /**
+   * Find the parser includes
+   *
+   * @return The requested parser includes;
+   */
+  public static List<String> getParserIncludes() {
+    return Options.stringListValue(Options.USEROPTION__CPP_PARSER_INCLUDES);
+  }
+
+  /**
+   * Find the token includes
+   *
+   * @return The requested token includes;
+   */
+  public static List<String> getTokenIncludes() {
+    return Options.stringListValue(Options.USEROPTION__CPP_TOKEN_INCLUDES);
   }
 
   /**
