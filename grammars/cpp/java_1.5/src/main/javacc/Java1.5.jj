@@ -32,7 +32,7 @@ options {
 	STATIC = false;
 	COMMON_TOKEN_ACTION = false;
 	TOKEN_FACTORY = "MyToken";
-	TOKEN_MANAGER_INCLUDES="MyToken.h";
+	TOKEN_MANAGER_INCLUDES=("MyToken.h");
 	PARSER_INCLUDES=("ModifierSet.h", "MyToken.h", "ParseException.h");
 }
 
@@ -56,7 +56,7 @@ SKIP :
 
 MORE :
 {
-  <"/**" ~["/"]> { input_stream.backup(1); } : IN_FORMAL_COMMENT
+  <"/**" ~["/"]> { input_stream->backup(1); } : IN_FORMAL_COMMENT
 |
   "/*" : IN_MULTI_LINE_COMMENT
 }
@@ -919,17 +919,17 @@ TOKEN :
 {
   < _RUNSIGNEDSHIFT: ">>>" >
   {
-     matchedToken.kind = GT;
-     ((MyToken)matchedToken)->realKind = _RUNSIGNEDSHIFT;
-     input_stream.backup(2);
-     matchedToken.image = ">";
+     matchedToken->kind = GT;
+     ((MyToken*)matchedToken)->realKind = _RUNSIGNEDSHIFT;
+     input_stream->backup(2);
+     matchedToken->image = ">";
   }
 | < _RSIGNEDSHIFT: ">>" >
   {
-     matchedToken.kind = GT;
-     ((MyToken)matchedToken)->realKind = _RSIGNEDSHIFT;
-     input_stream.backup(1);
-     matchedToken.image = ">";
+     matchedToken->kind = GT;
+     ((MyToken*)matchedToken)->realKind = _RSIGNEDSHIFT;
+     input_stream->backup(1);
+     matchedToken->image = ">";
   }
 | < GT: ">" >
 }
