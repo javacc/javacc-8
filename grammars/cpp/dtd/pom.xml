@@ -8,7 +8,7 @@
   <groupId>org.javacc.grammars.cpp</groupId>
   <artifactId>dtd</artifactId>
 	<packaging>nar</packaging>
-	<name>JavaCC grammars C++  C</name>
+	<name>JavaCC grammars C++  DTD</name>
 	<build>
 		<plugins>
 			<plugin>

@@ -9,7 +9,7 @@
 	<groupId>org.javacc.grammars.cpp</groupId>
 	<artifactId>cobol</artifactId>
 	<packaging>nar</packaging>
-	<name>JavaCC grammars C++  C</name>
+	<name>JavaCC grammars C++  Cobol</name>
 	<build>
 		<plugins>
 			<plugin>
