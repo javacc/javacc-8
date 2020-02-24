@@ -148,7 +148,7 @@
 <!-- 
 		<nar>3.9.1</nar>
  -->
- 	</properties>
+	</properties>
 
 	<dependencyManagement>
 		<dependencies>
@@ -233,13 +233,17 @@
 			</plugins>
 		</pluginManagement>
 		<plugins>
-				<plugin>
-					<groupId>com.github.maven-nar</groupId>
-					<artifactId>nar-maven-plugin</artifactId>
-					<configuration>
-						<commandLogLevel>0</commandLogLevel>
-					</configuration>
-				</plugin>
+			<plugin>
+				<groupId>com.github.maven-nar</groupId>
+				<artifactId>nar-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<configuration>
+							<commandLogLevel>0</commandLogLevel>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 
