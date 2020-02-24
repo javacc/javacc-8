@@ -1,7 +1,5 @@
 #include <iostream>
 #include <fstream>
-#include <iomanip>
-#include <iostream>
 #include <string>
 #include "JavaParser.h"
 
@@ -32,9 +30,9 @@ JJString ReadFileFully() {
 
 	return code;
 }
-static void usage(int argc, const char* argv) {
+static void usage(int argc, const char** argv) {
 }
-int main(int argc, const char* argv) {
+int main(int argc, const char** argv) {
 	istream*	input  = &cin;
 	ostream*	output = &cout;
 	ostream*	error  = &cerr;
