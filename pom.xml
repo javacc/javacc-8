@@ -144,10 +144,10 @@
 		<javacc.cpp>8.0.0</javacc.cpp>
 		<javacc.java>8.0.0</javacc.java>
 		<javacc.csharp>8.0.0</javacc.csharp>
-		<nar>3.9.3-SNAPSHOT</nar>
 <!-- 
-		<nar>3.9.1</nar>
+		<nar>3.9.3-SNAPSHOT</nar>
  -->
+		<nar>3.9.1</nar>
 	</properties>
 
 	<dependencyManagement>
