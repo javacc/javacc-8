@@ -13,19 +13,8 @@ using namespace std;
 JJString ReadFileFully() {
 	JJString code;
 #if 0
-	code =
-		"int n;\n"
-		"int fact;\n"
-		"read n;\n"
-		"fact = 1;\n"
-		"while (n > 1)\n"
-		"{\n"
-		"		fact = fact * n;\n"
-		"		n = n - 1;\n"
-		"}\n"
-		"write fact;\n";
 #else
-	code = "int foo;\nfoo = 3 + 4 * 5 + 6;\nwrite foo;\n";
+	code = "        PROCEDURE DIVISION.";
 #endif
 
 	return code;
