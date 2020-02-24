@@ -1,4 +1,5 @@
-#pragma once
+#ifndef MY_TOKEN
+#define MY_TOKEN
 #include "JavaCC.h"
 #include "Token.h"
 
@@ -18,3 +19,4 @@ private:
 	int			kind;
 	JJString	image;
 };
+#endif
