@@ -64,13 +64,6 @@ options {
  */
 
 PARSER_BEGIN(CobolParser)
-/*
-package convex.step2.parser;
-
-public class CobolParser {
-
-}
-*/
 PARSER_END(CobolParser)
 
 ////////////////////////////////////////////////////////////////////////////////

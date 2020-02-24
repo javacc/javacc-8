@@ -144,7 +144,11 @@
 		<javacc.cpp>8.0.0</javacc.cpp>
 		<javacc.java>8.0.0</javacc.java>
 		<javacc.csharp>8.0.0</javacc.csharp>
-	</properties>
+		<nar>3.9.3-SNAPSHOT</nar>
+<!-- 
+		<nar>3.9.1</nar>
+ -->
+ 	</properties>
 
 	<dependencyManagement>
 		<dependencies>
@@ -224,11 +228,18 @@
 				<plugin>
 					<groupId>com.github.maven-nar</groupId>
 					<artifactId>nar-maven-plugin</artifactId>
-					<version>3.9.1</version>
+					<version>${nar}</version>
 				</plugin>
 			</plugins>
 		</pluginManagement>
 		<plugins>
+				<plugin>
+					<groupId>com.github.maven-nar</groupId>
+					<artifactId>nar-maven-plugin</artifactId>
+					<configuration>
+						<commandLogLevel>0</commandLogLevel>
+					</configuration>
+				</plugin>
 		</plugins>
 	</build>
 
