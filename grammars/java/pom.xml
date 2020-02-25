@@ -11,6 +11,8 @@
 	<packaging>pom</packaging>
 	<modules>
 		<module>java</module>
+		<module>c</module>
+		<module>cobol</module>
 	</modules>
 	<build>
 		<plugins>
