@@ -30,7 +30,7 @@ package ast;
 
 /* JJT: 0.2.2 */
 
-public class ASTMulNode extends SimpleNode {
+public class ASTMulNode extends Node {
   public ASTMulNode(int id) {
     super(id);
   }

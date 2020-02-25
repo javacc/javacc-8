@@ -33,7 +33,7 @@ package ast;
 
 
 
-public class ASTSubtractNode extends SimpleNode {
+public class ASTSubtractNode extends Node {
   public ASTSubtractNode(int id) {
     super(id);
   }

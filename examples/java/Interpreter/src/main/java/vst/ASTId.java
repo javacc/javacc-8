@@ -1,6 +1,6 @@
 package vst;
 
-public class ASTId extends SimpleNode {
+public class ASTId extends Node {
 	 String name;
 
 	public ASTId(int id) {

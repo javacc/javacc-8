@@ -31,7 +31,7 @@ package eg2;
 /**
  * An ID.
  */
-public class ASTMyID extends SimpleNode {
+public class ASTMyID extends Node {
   private String name;
 
   /**

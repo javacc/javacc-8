@@ -30,7 +30,7 @@ package ast;
 
 /* JJT: 0.2.2 */
 
-public class ASTCompilationUnit extends SimpleNode {
+public class ASTCompilationUnit extends Node {
   public ASTCompilationUnit(int id) {
     super(id);
   }
@@ -46,8 +46,8 @@ public class ASTCompilationUnit extends SimpleNode {
      for (i = 0; i < k; i++)
      {
 	System.out.print("Executing:");
-	Token first  = ((SimpleNode)jjtGetChild(i)).jjtGetFirstToken();
-	Token last = ((SimpleNode)jjtGetChild(i)).jjtGetLastToken();
+	Token first  = ((Node)jjtGetChild(i)).jjtGetFirstToken();
+	Token last = ((Node)jjtGetChild(i)).jjtGetLastToken();
 	for (Token t = first; t != null; t = t.next)
 	{
 	    System.out.print(" " + t);

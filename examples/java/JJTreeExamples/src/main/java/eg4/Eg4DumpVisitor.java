@@ -65,7 +65,7 @@ public class Eg4DumpVisitor implements Eg4Visitor
     return sb.toString();
   }
 
-  public Object visit(SimpleNode node, Object data) {
+  public Object visit(Node node, Object data) {
     System.out.println(indentString() + node +
                    ": acceptor not unimplemented in subclass?");
     ++indent;

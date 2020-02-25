@@ -10,8 +10,8 @@ public class Interpreter implements SPLParserVisitor {
 	private final PrintStream out;
 	private final PrintStream err;
 
-	Map<String, Node> symtab;
-	Stack<Node> nodestack;
+	Map<String, Tree> symtab;
+	Stack<Tree> nodestack;
 	
 	Interpreter(InputStream in, PrintStream out, PrintStream err) {
 		this.in = in;
@@ -20,7 +20,7 @@ public class Interpreter implements SPLParserVisitor {
 	}
 
 	@Override
-	public void visit(SimpleNode node, Object data) {
+	public void visit(Node node, Object data) {
 
 	}
 

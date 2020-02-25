@@ -58,7 +58,7 @@ public class Eg1 {
     }
     Eg1 t = new Eg1(input);
     try {
-      SimpleNode n = Eg1.Start();
+      Node n = Eg1.Start();
       n.dump("");
       output.println("Thank you.");
     } catch (Exception e) {
@@ -111,7 +111,7 @@ TOKEN : /* IDENTIFIERS */
 }
 
 /** Main production. */
-SimpleNode Start() : {}
+Node Start() : {}
 {
   Expression() ";"
   { return jjtThis; }

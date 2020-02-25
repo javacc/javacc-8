@@ -33,7 +33,7 @@ import eg4.SimpleNode;
 /**
  * An ID.
  */
-public class ASTMyID extends SimpleNode {
+public class ASTMyID extends Node {
   private String name;
 
   /**

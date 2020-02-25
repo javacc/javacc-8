@@ -31,7 +31,7 @@
 
 import java.io.*;
 
-public class ASTCompilationUnit extends SimpleNode {
+public class ASTCompilationUnit extends Node {
   ASTCompilationUnit(int id) {
     super(id);
   }

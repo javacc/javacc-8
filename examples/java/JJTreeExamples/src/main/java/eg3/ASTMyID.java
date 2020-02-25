@@ -34,7 +34,7 @@ import eg3.ASTMyID;
 /**
  * An ID.
  */
-public class ASTMyID extends SimpleNode {
+public class ASTMyID extends Node {
   private String name;
 
   /**

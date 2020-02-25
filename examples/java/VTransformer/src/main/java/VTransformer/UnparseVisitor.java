@@ -44,14 +44,14 @@ public class UnparseVisitor implements JavaParserVisitor
   }
 
 
-  public Object print(SimpleNode node, Object data) {
+  public Object print(Node node, Object data) {
     Token t1 = node.getFirstToken();
     Token t = new Token();
     t.next = t1;
 
-    SimpleNode n;
+    Node n;
     for (int ord = 0; ord < node.jjtGetNumChildren(); ord++) {
-      n = (SimpleNode)node.jjtGetChild(ord);
+      n = (Node)node.jjtGetChild(ord);
       while (true) {
 	t = t.next;
 	if (t == n.getFirstToken()) break;
@@ -99,7 +99,7 @@ public class UnparseVisitor implements JavaParserVisitor
   }
 
 
-  public Object visit(SimpleNode node, Object data)
+  public Object visit(Node node, Object data)
   {
     return print(node, data);
   }

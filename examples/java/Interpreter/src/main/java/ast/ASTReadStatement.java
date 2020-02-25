@@ -31,7 +31,7 @@ package ast;
 
 import java.io.IOException;
 
-public class ASTReadStatement extends SimpleNode {
+public class ASTReadStatement extends Node {
   String name;
 
   public ASTReadStatement(int id) {

@@ -1,6 +1,6 @@
 package vst;
 
-public class ASTIntConstNode extends SimpleNode {
+public class ASTIntConstNode extends Node {
 	public int val;
 	
 	public ASTIntConstNode(int id) {

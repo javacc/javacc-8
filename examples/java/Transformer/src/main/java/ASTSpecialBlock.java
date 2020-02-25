@@ -31,7 +31,7 @@
 
 import java.io.*;
 
-public class ASTSpecialBlock extends SimpleNode {
+public class ASTSpecialBlock extends Node {
   ASTSpecialBlock(int id) {
     super(id);
   }

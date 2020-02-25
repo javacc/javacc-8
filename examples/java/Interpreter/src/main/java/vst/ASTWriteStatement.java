@@ -1,6 +1,6 @@
 package vst;
 
-class ASTWriteStatement extends SimpleNode {
+class ASTWriteStatement extends Node {
 	String name;
 
 	public ASTWriteStatement(int id) {

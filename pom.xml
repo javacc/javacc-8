@@ -147,11 +147,12 @@
 <!-- 
 		<nar>3.9.3-SNAPSHOT</nar>
  -->
-		<nar>3.9.2</nar>
+		<nar>3.9.1</nar>
 	</properties>
 
 	<dependencyManagement>
 		<dependencies>
+<!-- 
 			<dependency>
 				<groupId>org.javacc</groupId>
 				<artifactId>parser</artifactId>
@@ -172,7 +173,8 @@
 				<artifactId>java</artifactId>
 				<version>${javacc.java}</version>
 			</dependency>
-			<dependency>
+ -->
+ 			<dependency>
 				<groupId>junit</groupId>
 				<artifactId>junit</artifactId>
 				<version>4.12</version>
@@ -192,8 +194,8 @@
 		</dependency>
 	</dependencies>
 	<modules>
-		<module>codegen</module>
 		<module>parser</module>
+		<module>codegen</module>
 		<module>examples</module>
 <!-- 
 		<module>tests</module>
@@ -225,6 +227,7 @@
 					<artifactId>nar-maven-plugin</artifactId>
 					<version>${nar}</version>
 				</plugin>
+<!-- 
 				<plugin>
 					<groupId>org.javacc.plugin</groupId>
 					<artifactId>javacc-maven-plugin</artifactId>
@@ -256,7 +259,8 @@
 						</dependency>
 					</dependencies>
 				</plugin>
-			</plugins>
+ -->
+ 			</plugins>
 		</pluginManagement>
 		<plugins>
 			<plugin>

@@ -13,6 +13,7 @@
 		<dependency>
 			<groupId>org.javacc.codegen</groupId>
 			<artifactId>csharp</artifactId>
+			<version>${javacc.csharp}</version>
 		</dependency>
 	</dependencies>
 	<name>JavaCC default c# code generator tests</name>

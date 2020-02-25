@@ -35,7 +35,7 @@ import java.io.Writer;
 /**
  * Specialised node.
  */
-public class MyNode
+public abstract class MyNode
 {
   /** Symbol table */
   protected static java.util.Hashtable symtab = new java.util.Hashtable();
@@ -66,5 +66,4 @@ public class MyNode
   public static void setOut(Writer out) {
     MyNode.out = out;
   }
-
 }

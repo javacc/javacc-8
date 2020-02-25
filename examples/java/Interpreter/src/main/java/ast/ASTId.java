@@ -30,7 +30,7 @@ package ast;
 
 /* JJT: 0.2.2 */
 
-public class ASTId extends SimpleNode {
+public class ASTId extends Node {
 
   String name;
 

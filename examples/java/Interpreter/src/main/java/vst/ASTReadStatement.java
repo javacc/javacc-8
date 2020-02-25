@@ -1,6 +1,6 @@
 package vst;
 
-class ASTReadStatement extends SimpleNode {
+class ASTReadStatement extends Node {
 	String name;
 
 	public ASTReadStatement(int id) {

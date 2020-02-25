@@ -33,7 +33,7 @@ package ast;
 
 
 
-public class ASTTrueNode extends SimpleNode {
+public class ASTTrueNode extends Node {
   public ASTTrueNode(int id) {
     super(id);
   }

@@ -30,7 +30,7 @@ package ast;
 
 /* JJT: 0.2.2 */
 
-public class ASTIfStatement extends SimpleNode {
+public class ASTIfStatement extends Node {
   public ASTIfStatement(int id) {
     super(id);
   }

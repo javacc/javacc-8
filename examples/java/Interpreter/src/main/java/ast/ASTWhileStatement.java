@@ -33,7 +33,7 @@ package ast;
 
 
 
-public class ASTWhileStatement extends SimpleNode {
+public class ASTWhileStatement extends Node {
   public ASTWhileStatement(int id) {
     super(id);
   }

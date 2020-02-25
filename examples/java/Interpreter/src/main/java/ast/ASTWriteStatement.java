@@ -32,7 +32,7 @@ package ast;
 
 import java.io.IOException;
 
-public class ASTWriteStatement extends SimpleNode {
+public class ASTWriteStatement extends Node {
   String name;
 
   public ASTWriteStatement(int id) {

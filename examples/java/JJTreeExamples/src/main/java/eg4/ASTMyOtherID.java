@@ -4,7 +4,7 @@ import eg4.Eg4Visitor;
 import eg4.SimpleNode;
 
 public
-class ASTMyOtherID extends SimpleNode {
+class ASTMyOtherID extends Node {
   private String name;
   public ASTMyOtherID(int id) {
     super(id);

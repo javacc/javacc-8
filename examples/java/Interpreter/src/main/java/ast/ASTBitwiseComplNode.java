@@ -30,7 +30,7 @@ package ast;
 
 /* JJT: 0.2.2 */
 
-public class ASTBitwiseComplNode extends SimpleNode {
+public class ASTBitwiseComplNode extends Node {
   public ASTBitwiseComplNode(int id) {
     super(id);
   }

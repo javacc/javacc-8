@@ -30,7 +30,7 @@ package ast;
 
 /* JJT: 0.2.2 */
 
-public class ASTBitwiseOrNode extends SimpleNode {
+public class ASTBitwiseOrNode extends Node {
   public ASTBitwiseOrNode(int id) {
     super(id);
   }

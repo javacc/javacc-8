@@ -29,7 +29,7 @@
 
 package VTransformer;
 
-public class SimpleNode implements Node {
+public class Node implements Tree {
   protected Node parent;
   protected Node[] children;
   protected int id;
@@ -37,17 +37,17 @@ public class SimpleNode implements Node {
 
   protected Token first, last;
 
-  public SimpleNode(int i) {
+  public Node(int i) {
     id = i;
   }
 
-  public SimpleNode(JavaParser p, int i) {
+  public Node(JavaParser p, int i) {
     this(i);
     parser = p;
   }
 
   public static Node jjtCreate(JavaParser p, int id) {
-    return new SimpleNode(p, id);
+    return new Node(p, id);
   }
   
   public int getId() {
@@ -118,7 +118,7 @@ public class SimpleNode implements Node {
     System.out.println(toString(prefix));
     if (children != null) {
       for (int i = 0; i < children.length; ++i) {
-	SimpleNode n = (SimpleNode)children[i];
+	Node n = (Node)children[i];
 	if (n != null) {
 	  n.dump(prefix + " ");
 	}

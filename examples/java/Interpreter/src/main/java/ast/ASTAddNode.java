@@ -1,5 +1,5 @@
 package ast;
-import ast.SimpleNode;
+import ast.Node;
 
 /* Copyright (c) 2006, Sun Microsystems, Inc.
  * All rights reserved.
@@ -31,7 +31,7 @@ import ast.SimpleNode;
 
 /* JJT: 0.2.2 */
 
-public class ASTAddNode extends SimpleNode {
+public class ASTAddNode extends Node {
   public ASTAddNode(int id) {
     super(id);
   }

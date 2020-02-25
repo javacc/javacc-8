@@ -30,7 +30,7 @@ package ast;
 
 /* JJT: 0.2.2 */
 
-public class ASTIntConstNode extends SimpleNode {
+public class ASTIntConstNode extends Node {
 
   int val;
 

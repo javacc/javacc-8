@@ -1,6 +1,6 @@
 package vst;
 
-public class ASTVarDeclaration extends SimpleNode {
+public class ASTVarDeclaration extends Node {
 	int type;
 	String name;
 

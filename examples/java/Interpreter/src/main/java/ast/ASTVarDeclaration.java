@@ -33,7 +33,7 @@ package ast;
 
 
 
-public class ASTVarDeclaration extends SimpleNode
+public class ASTVarDeclaration extends Node
                                implements SPLParserConstants {
 
   int type;
