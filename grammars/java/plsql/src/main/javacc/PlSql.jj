@@ -18,7 +18,6 @@ options{
 }
 
 PARSER_BEGIN(PlSql)
-package netflix.db.stats;
 
 import java.io.Reader;
 import java.io.FileInputStream;
