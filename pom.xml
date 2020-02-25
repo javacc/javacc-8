@@ -147,7 +147,7 @@
 <!-- 
 		<nar>3.9.3-SNAPSHOT</nar>
  -->
-		<nar>3.9.1</nar>
+		<nar>3.9.2</nar>
 	</properties>
 
 	<dependencyManagement>
@@ -211,11 +211,6 @@
 					<version>${maven-antrun-plugin}</version>
 				</plugin>
 				<plugin>
-					<groupId>org.javacc.plugin</groupId>
-					<artifactId>javacc-maven-plugin</artifactId>
-					<version>${javacc-maven-plugin}</version>
-				</plugin>
-				<plugin>
 					<groupId>org.codehaus.mojo</groupId>
 					<artifactId>exec-maven-plugin</artifactId>
 					<version>${exec-maven-plugin}</version>
@@ -229,6 +224,37 @@
 					<groupId>com.github.maven-nar</groupId>
 					<artifactId>nar-maven-plugin</artifactId>
 					<version>${nar}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.javacc.plugin</groupId>
+					<artifactId>javacc-maven-plugin</artifactId>
+					<version>${javacc-maven-plugin}</version>
+					<dependencies>
+						<dependency>
+							<groupId>org.javacc</groupId>
+							<artifactId>parser</artifactId>
+							<version>${javacc.parser}</version>
+							<scope>runtime</scope>
+						</dependency>
+						<dependency>
+							<groupId>org.javacc.codegen</groupId>
+							<artifactId>java</artifactId>
+							<version>${javacc.java}</version>
+							<scope>runtime</scope>
+						</dependency>
+						<dependency>
+							<groupId>org.javacc.codegen</groupId>
+							<artifactId>cpp</artifactId>
+							<version>${javacc.cpp}</version>
+							<scope>runtime</scope>
+						</dependency>
+						<dependency>
+							<groupId>org.javacc.codegen</groupId>
+							<artifactId>csharp</artifactId>
+							<version>${javacc.csharp}</version>
+							<scope>runtime</scope>
+						</dependency>
+					</dependencies>
 				</plugin>
 			</plugins>
 		</pluginManagement>
