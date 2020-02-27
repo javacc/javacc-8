@@ -10,6 +10,6 @@
   <packaging>pom</packaging>
   <modules>
   	<module>cpp</module>
-  	<module>java_1.1</module>
+  	<module>java</module>
   </modules>
 </project>

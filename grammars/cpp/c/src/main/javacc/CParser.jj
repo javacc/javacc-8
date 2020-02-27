@@ -41,6 +41,9 @@
 - Preprocessor directives are now simply SKIP'd, so no need to run C files through GCC first
 
   */
+options {
+	PARSER_INCLUDES=("ParsingStack.h");
+}
 
 PARSER_BEGIN(CParser)
 /*
@@ -235,14 +238,14 @@ void StorageClassSpecifier() : {}
 {
 	( <AUTO> | <REGISTER> | <STATIC> | <EXTERN> | <TYPEDEF>
 	{
-		typedefParsingStack.push(Boolean.TRUE);
+		typedefParsingStack.push(true);
 	} )
 }
 
 void TypeSpecifier() : {}
 {
 	( <VOID> | <CHAR> | <SHORT> | <INT> | <LONG> | <FLOAT> | <DOUBLE> | <SIGNED> |
-	  <UNSIGNED> | StructOrUnionSpecifier() | EnumSpecifier() | LOOKAHEAD( { isType(getToken(1).image) } )TypedefName() )
+	  <UNSIGNED> | StructOrUnionSpecifier() | EnumSpecifier() | LOOKAHEAD( { isType(getToken(1)->image) } )TypedefName() )
 }
 
 void TypeQualifier() : {}
@@ -253,7 +256,7 @@ void TypeQualifier() : {}
 void StructOrUnionSpecifier() : {}
 {
 	{
-			typedefParsingStack.push(Boolean.FALSE);
+			typedefParsingStack.push(false);
 	}
 
 	StructOrUnion() ( LOOKAHEAD(3) [ <IDENTIFIER> ] "{" StructDeclarationList() "}" | <IDENTIFIER> )
@@ -278,7 +281,7 @@ void InitDeclaratorList() : {}
 	InitDeclarator() ("," InitDeclarator())*
 	{
 		// Finished with a typedefDeclaration??
-		if(!(typedefParsingStack.empty()) && ((Boolean)typedefParsingStack.peek()).booleanValue()){
+		if(!(typedefParsingStack.empty()) && (typedefParsingStack.top())){
 		   	typedefParsingStack.pop();
 	  }
 	}
@@ -332,17 +335,17 @@ void Declarator() : {}
 	[ Pointer() ] DirectDeclarator()
 }
 
-void DirectDeclarator() : { Token t;}
+void DirectDeclarator() : { Token* t;}
 {
 	( t = <IDENTIFIER>
 
-	{ if(!(typedefParsingStack.empty()) && ((Boolean)typedefParsingStack.peek()).booleanValue()){
-				addType(t.image);
+	{ if(!(typedefParsingStack.empty()) && (typedefParsingStack.top())){
+				addType(t->image);
 	  }
 	}
 	 | "(" Declarator() ")" )
   
-  { typedefParsingStack.push( Boolean.FALSE ); }
+  { typedefParsingStack.push( false ); }
 
 	( "[" [ ConstantExpression() ] "]" |
 	    LOOKAHEAD(3) "(" ParameterTypeList() ")" |

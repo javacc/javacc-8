@@ -1,7 +1,7 @@
 package eg4;
 import eg4.Eg4;
 import eg4.Eg4Visitor;
-import eg4.SimpleNode;
+import eg4.Node;
 
 public
 class ASTMyOtherID extends Node {
@@ -24,7 +24,7 @@ class ASTMyOtherID extends Node {
 
   /**
    * {@inheritDoc}
-   * @see org.javacc.examples.jjtree.eg2.SimpleNode#toString()
+   * @see org.javacc.examples.jjtree.eg2.Node#toString()
    */
   public String toString() {
     return "Identifier: " + name;

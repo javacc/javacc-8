@@ -4,7 +4,7 @@ import eg4.ASTInteger;
 import eg4.ASTMult;
 import eg4.ASTStart;
 import eg4.Eg4Visitor;
-import eg4.SimpleNode;
+import eg4.Node;
 
 /* Copyright (c) 2006, Sun Microsystems, Inc.
  * All rights reserved.
@@ -36,7 +36,7 @@ import eg4.SimpleNode;
 
 /**
  *  This is an example of how the Visitor pattern might be used to
- *  implement the dumping code that comes with SimpleNode.  It's a bit
+ *  implement the dumping code that comes with Node.  It's a bit
  *  long-winded, but it does illustrate a couple of the main points.
  *  <ol>
  *  <li> the visitor can maintain state between the nodes that it visits
@@ -44,7 +44,7 @@ import eg4.SimpleNode;
  *  </li>
  *
  *  <li>if you don't implement a jjtAccept() method for a subclass of
- *  SimpleNode, then SimpleNode's acceptor will get called.
+ *  Node, then Node's acceptor will get called.
  *  </li>
  *  <li> the utility method childrenAccept() can be useful when
  *  implementing preorder or postorder tree walks.

@@ -71,7 +71,7 @@ TOKEN : /* IDENTIFIERS */
 }
 
 /** Main production. */
-SimpleNode* Start() : {}
+Node* Start() : {}
 {
   Expression() ";"
   { return jjtThis; }
