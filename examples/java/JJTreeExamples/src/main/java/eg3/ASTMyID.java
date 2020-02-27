@@ -1,5 +1,5 @@
 package eg3;
-import eg3.SimpleNode;
+import eg3.Node;
 import eg3.ASTMyID;
 
 /* Copyright (c) 2006, Sun Microsystems, Inc.
@@ -56,7 +56,7 @@ public class ASTMyID extends Node {
 
   /**
    * {@inheritDoc}
-   * @see org.javacc.examples.jjtree.eg2.SimpleNode#toString()
+   * @see org.javacc.examples.jjtree.eg2.Node#toString()
    */
   public String toString() {
     return "Identifier: " + name;

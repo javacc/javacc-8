@@ -63,6 +63,9 @@
     <ClInclude Include="..\..\..\target\generated-sources\jjtree\SimpleNode.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\target\generated-sources\jjtree\Tree.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\target\generated-sources\cpp\CharStream.cc">
@@ -86,13 +89,13 @@
     <ClCompile Include="..\..\..\target\generated-sources\jjtree\JJTParserState.cc">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\target\generated-sources\jjtree\SimpleNode.cc">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\main\cpp\eg1.cc">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="Parser.cpp">
+    <ClCompile Include="..\..\..\src\main\cpp\FileStreamReader.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\target\generated-sources\jjtree\Node.cc">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
   </ItemGroup>

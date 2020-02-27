@@ -56,8 +56,8 @@ options {
 
 	/*
 	 * The package to generate the node classes into. 
-	 */
 	NODE_PACKAGE = "org.dojo.jsl.parser";
+	 */
 
 	/*
 	 * Default value is false. Insert a jjtAccept() method in the 

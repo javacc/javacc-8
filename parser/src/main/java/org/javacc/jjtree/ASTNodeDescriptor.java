@@ -109,7 +109,7 @@ public class ASTNodeDescriptor extends JJTreeNode {
     if (context.treeOptions().getMulti()) {
       return context.treeOptions().getNodePrefix() + name;
     } else {
-      return "SimpleNode";
+      return "Node";
     }
   }
 

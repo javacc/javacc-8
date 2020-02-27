@@ -1,5 +1,5 @@
 package eg4;
-import eg4.SimpleNode;
+import eg4.Node;
 
 /* Copyright (c) 2006, Sun Microsystems, Inc.
  * All rights reserved.
@@ -55,7 +55,7 @@ public class ASTMyID extends Node {
 
   /**
    * {@inheritDoc}
-   * @see org.javacc.examples.jjtree.eg2.SimpleNode#toString()
+   * @see org.javacc.examples.jjtree.eg2.Node#toString()
    */
   public String toString() {
     return "Identifier: " + name;

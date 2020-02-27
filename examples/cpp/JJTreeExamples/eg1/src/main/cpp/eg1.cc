@@ -21,7 +21,7 @@ int main(int argc, char** argv) {
 		CharStream *stream = new CharStream(s.c_str(), s.size() - 1, 1, 1);
 		ParserTokenManager *scanner = new ParserTokenManager(stream);
 		Parser parser(scanner);
-		SimpleNode* n = parser.Start();
+		Node* n = parser.Start();
 		n->dump("");
 		cout << "Thank you." << endl;
 	} catch (const ParseException& e) {
