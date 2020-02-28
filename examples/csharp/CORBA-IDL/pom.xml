@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.javacc.examples</groupId>
 		<artifactId>csharp</artifactId>
-		<version>8.0.0</version>
+		<version>8.0.0-SNAPSHOT</version>
 	</parent>
 	<groupId>org.javacc.examples.csharp</groupId>
 	<artifactId>CORBA-IDL</artifactId>

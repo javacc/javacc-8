@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.javacc.grammars</groupId>
 		<artifactId>cpp</artifactId>
-		<version>8.0.0</version>
+		<version>8.0.0-SNAPSHOT</version>
 	</parent>
 	<groupId>org.javacc.grammars.cpp</groupId>
 	<artifactId>java_1.1</artifactId>
