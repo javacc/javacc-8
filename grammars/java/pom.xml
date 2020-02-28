@@ -17,6 +17,29 @@
 		<module>ecma</module>
 	</modules>
 	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+				<groupId>org.javacc.plugin</groupId>
+					<artifactId>javacc-maven-plugin</artifactId>
+					<version>${javacc-maven-plugin}</version>
+					<dependencies>
+						<dependency>
+							<groupId>org.javacc</groupId>
+							<artifactId>parser</artifactId>
+							<version>${javacc.parser}</version>
+							<scope>runtime</scope>
+						</dependency>
+						<dependency>
+							<groupId>org.javacc.codegen</groupId>
+							<artifactId>java</artifactId>
+							<version>${javacc.java}</version>
+							<scope>runtime</scope>
+						</dependency>
+					</dependencies>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 		<plugins>
 			<plugin>
 				<groupId>org.javacc.plugin</groupId>
