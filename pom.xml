@@ -22,10 +22,27 @@
 		<connection>scm:git:git@github.com/javacc/javacc.git</connection>
 		<developerConnection>scm:git:git@github.com/javacc/javacc.git</developerConnection>
 	</scm>
+	
 	<issueManagement>
 		<system>GitHub</system>
 		<url>https://github.com/javacc/javacc/issues</url>
 	</issueManagement>
+		<distributionManagement>
+		<repository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+		</repository>
+		<snapshotRepository>
+			<id>ossrh</id>
+			<name>Sonatype snapshot repository</name>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository>
+		<site>
+			<id>github</id>
+			<url>scm:git:ssh://git@github.com/javacc/javacc-maven-plugin.git</url>
+		</site>
+	</distributionManagement>
+	
 	<mailingLists>
 		<mailingList>
 			<name>Commits</name>
@@ -144,9 +161,9 @@
 		<javacc.cpp>8.0.0</javacc.cpp>
 		<javacc.java>8.0.0</javacc.java>
 		<javacc.csharp>8.0.0</javacc.csharp>
-		<nar>3.9.3-SNAPSHOT</nar>
+		<nar-maven-plugin>3.9.3-SNAPSHOT</nar-maven-plugin>
 <!-- 
-		<nar>3.9.1</nar>
+		<nar-maven-plugin>3.9.1</nar-maven-plugin>
  -->
 	</properties>
 
@@ -225,14 +242,14 @@
 				<plugin>
 					<groupId>com.github.maven-nar</groupId>
 					<artifactId>nar-maven-plugin</artifactId>
-					<version>${nar}</version>
+					<version>${nar-maven-plugin}</version>
 				</plugin>
-<!-- 
 				<plugin>
 					<groupId>org.javacc.plugin</groupId>
 					<artifactId>javacc-maven-plugin</artifactId>
 					<version>${javacc-maven-plugin}</version>
 					<dependencies>
+<!-- 
 						<dependency>
 							<groupId>org.javacc</groupId>
 							<artifactId>parser</artifactId>
@@ -257,9 +274,9 @@
 							<version>${javacc.csharp}</version>
 							<scope>runtime</scope>
 						</dependency>
+-->
 					</dependencies>
-				</plugin>
- -->
+ 				</plugin>
  			</plugins>
 		</pluginManagement>
 		<plugins>
