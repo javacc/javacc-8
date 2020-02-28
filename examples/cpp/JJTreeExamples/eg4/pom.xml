@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.javacc.examples.cpp</groupId>
 		<artifactId>JJTreeExamples</artifactId>
-		<version>8.0.0</version>
+		<version>8.0.0-SNAPSHOT</version>
 	</parent>
 	<groupId>org.javacc.examples.cpp.jjtreeexamples</groupId>
 	<artifactId>eg4</artifactId>

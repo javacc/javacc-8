@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.javacc</groupId>
 		<artifactId>examples</artifactId>
-		<version>8.0.0</version>
+		<version>8.0.0-SNAPSHOT</version>
 	</parent>
 	<name>JavaCC examples Java</name>
 	<groupId>org.javacc.examples</groupId>
@@ -32,7 +32,6 @@
 				<plugin>
 				<groupId>org.javacc.plugin</groupId>
 					<artifactId>javacc-maven-plugin</artifactId>
-					<version>${javacc-maven-plugin}</version>
 					<dependencies>
 						<dependency>
 							<groupId>org.javacc</groupId>

@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org</groupId>
 		<artifactId>javacc</artifactId>
-		<version>8.0.0</version>
+		<version>8.0.0-SNAPSHOT</version>
 	</parent>
 	<name>JavaCC examples</name>
 	<groupId>org.javacc</groupId>
@@ -18,4 +18,22 @@
 		<module>java</module>
 		<module>csharp</module>
 	</modules>
+  <build>
+  	<plugins>
+  		<plugin>
+  			<artifactId>maven-deploy-plugin</artifactId> 
+			<inherited>true</inherited>
+			<configuration>
+				<skip>true</skip>
+			</configuration>  				
+  		</plugin>
+  		<plugin>
+  			<artifactId>maven-release-plugin</artifactId> 
+			<inherited>true</inherited>
+			<configuration>
+				<skip>true</skip>
+			</configuration>  				
+  		</plugin>
+  	</plugins>
+  </build>
 </project>
