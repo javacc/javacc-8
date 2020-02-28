@@ -41,7 +41,9 @@
 - Preprocessor directives are now simply SKIP'd, so no need to run C files through GCC first
 
   */
-
+options {
+	DEBUG_PARSER=true;
+}
 PARSER_BEGIN(CParser)
 
 import java.util.*;
