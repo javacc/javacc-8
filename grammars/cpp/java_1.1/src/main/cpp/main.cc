@@ -38,7 +38,7 @@ int main(int argc, char **argv) {
   JavaParser parser(scanner);
   parser.setErrorHandler(new MyErrorHandler());
   parser.CompilationUnit();
-  SimpleNode *root = (SimpleNode*)parser.jjtree.peekNode();
+  Node *root = (Node*)parser.jjtree.peekNode();
   if (root) {
     JAVACC_STRING_TYPE buffer;
 #if WIDE_CHAR
