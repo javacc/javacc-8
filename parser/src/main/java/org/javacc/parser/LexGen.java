@@ -371,8 +371,8 @@ public class LexGen {
       }
       StringBuilder sb = new StringBuilder();
       for (int k = 0; k < act.getActionTokens().size(); k++) {
-        if(k > 0 && !";".equals(act.getActionTokens().get(k).image))
-          sb.append(" ");
+        if (act.getActionTokens().get(k).specialToken != null)
+          sb.append(act.getActionTokens().get(k).specialToken.image);
         sb.append(act.getActionTokens().get(k).image);
       }
       actionStrings.put(i, sb.toString());
@@ -413,66 +413,66 @@ public class LexGen {
     String reList;
 
     Outer:
-      for (i = 0; i < maxLexStates; i++) {
-        if (done[i] || (initMatch[i] == 0) || (initMatch[i] == Integer.MAX_VALUE)
-            || (lexerContext.canMatchAnyChar[i] != -1)) {
-          continue;
-        }
-
-        done[i] = true;
-        len = 0;
-        cycle = "";
-        reList = "";
-
-        for (k = 0; k < maxLexStates; k++) {
-          seen[k] = false;
-        }
-
-        j = i;
-        seen[i] = true;
-        cycle += tokenizerData.lexStateNames[j] + "-->";
-        while (newLexState[initMatch[j]] != null) {
-          cycle += newLexState[initMatch[j]];
-          if (seen[j = GetIndex(newLexState[initMatch[j]], tokenizerData.lexStateNames)]) {
-            break;
-          }
-
-          cycle += "-->";
-          done[j] = true;
-          seen[j] = true;
-          if ((initMatch[j] == 0) || (initMatch[j] == Integer.MAX_VALUE) || (lexerContext.canMatchAnyChar[j] != -1)) {
-            continue Outer;
-          }
-          if (len != 0) {
-            reList += "; ";
-          }
-          reList += "line " + rexprs[initMatch[j]].getLine() + ", column " + rexprs[initMatch[j]].getColumn();
-          len++;
-        }
-
-        if (newLexState[initMatch[j]] == null) {
-          cycle += tokenizerData.lexStateNames[lexerContext.lexStates[initMatch[j]]];
-        }
-
-        for (k = 0; k < maxLexStates; k++) {
-          canLoop[k] |= seen[k];
-        }
-
-        if (len == 0) {
-          context.errors().warning(rexprs[initMatch[i]],
-              "Regular expression"
-                  + ((rexprs[initMatch[i]].label.equals("")) ? "" : (" for " + rexprs[initMatch[i]].label))
-                  + " can be matched by the empty string (\"\") in lexical state " + tokenizerData.lexStateNames[i]
-                      + ". This can result in an endless loop of " + "empty string matches.");
-        } else {
-          context.errors().warning(rexprs[initMatch[i]],
-              "Regular expression"
-                  + ((rexprs[initMatch[i]].label.equals("")) ? "" : (" for " + rexprs[initMatch[i]].label))
-                  + " can be matched by the empty string (\"\") in lexical state " + tokenizerData.lexStateNames[i]
-                      + ". This regular expression along with the " + "regular expressions at " + reList
-                      + " forms the cycle \n   " + cycle + "\ncontaining regular expressions with empty matches."
-                      + " This can result in an endless loop of empty string matches.");
-        }
+    for (i = 0; i < maxLexStates; i++) {
+      if (done[i] || (initMatch[i] == 0) || (initMatch[i] == Integer.MAX_VALUE)
+          || (lexerContext.canMatchAnyChar[i] != -1)) {
+        continue;
       }
+
+      done[i] = true;
+      len = 0;
+      cycle = "";
+      reList = "";
+
+      for (k = 0; k < maxLexStates; k++) {
+        seen[k] = false;
+      }
+
+      j = i;
+      seen[i] = true;
+      cycle += tokenizerData.lexStateNames[j] + "-->";
+      while (newLexState[initMatch[j]] != null) {
+        cycle += newLexState[initMatch[j]];
+        if (seen[j = GetIndex(newLexState[initMatch[j]], tokenizerData.lexStateNames)]) {
+          break;
+        }
+
+        cycle += "-->";
+        done[j] = true;
+        seen[j] = true;
+        if ((initMatch[j] == 0) || (initMatch[j] == Integer.MAX_VALUE) || (lexerContext.canMatchAnyChar[j] != -1)) {
+          continue Outer;
+        }
+        if (len != 0) {
+          reList += "; ";
+        }
+        reList += "line " + rexprs[initMatch[j]].getLine() + ", column " + rexprs[initMatch[j]].getColumn();
+        len++;
+      }
+
+      if (newLexState[initMatch[j]] == null) {
+        cycle += tokenizerData.lexStateNames[lexerContext.lexStates[initMatch[j]]];
+      }
+
+      for (k = 0; k < maxLexStates; k++) {
+        canLoop[k] |= seen[k];
+      }
+
+      if (len == 0) {
+        context.errors().warning(rexprs[initMatch[i]],
+            "Regular expression"
+                + ((rexprs[initMatch[i]].label.equals("")) ? "" : (" for " + rexprs[initMatch[i]].label))
+                + " can be matched by the empty string (\"\") in lexical state " + tokenizerData.lexStateNames[i]
+                + ". This can result in an endless loop of " + "empty string matches.");
+      } else {
+        context.errors().warning(rexprs[initMatch[i]],
+            "Regular expression"
+                + ((rexprs[initMatch[i]].label.equals("")) ? "" : (" for " + rexprs[initMatch[i]].label))
+                + " can be matched by the empty string (\"\") in lexical state " + tokenizerData.lexStateNames[i]
+                + ". This regular expression along with the " + "regular expressions at " + reList
+                + " forms the cycle \n   " + cycle + "\ncontaining regular expressions with empty matches."
+                + " This can result in an endless loop of empty string matches.");
+      }
+    }
   }
 }
