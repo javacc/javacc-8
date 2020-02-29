@@ -6,7 +6,6 @@ package org.javacc.utils;
 import org.javacc.jjtree.TokenUtils;
 import org.javacc.parser.CodeGeneratorSettings;
 import org.javacc.parser.Context;
-import org.javacc.parser.JavaCCErrors;
 import org.javacc.parser.JavaCCGlobals;
 import org.javacc.parser.JavaCCParserConstants;
 import org.javacc.parser.Token;
@@ -24,7 +23,7 @@ import java.util.Set;
 
 public abstract class CodeBuilder<B extends CodeBuilder<?>> implements Closeable {
 
-  private final Context         context;
+  private final Context               context;
   private final CodeGeneratorSettings options;
 
 
@@ -175,7 +174,7 @@ public abstract class CodeBuilder<B extends CodeBuilder<?>> implements Closeable
     try (OutputFile output = new OutputFile(file, tool, version, option, context)) {
       output.getPrintWriter().print(buffer.toString());
     } catch (IOException ioe) {
-      JavaCCErrors.fatal("Could not create output file: " + file.getAbsolutePath());
+      context.errors().fatal("Could not create output file: " + file.getAbsolutePath());
     }
   }
 

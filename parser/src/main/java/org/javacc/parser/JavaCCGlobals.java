@@ -58,7 +58,7 @@ public class JavaCCGlobals {
    * The list of tools that have participated in generating the input grammar
    * file.
    */
-  public List<String>        toolNames;
+  public final List<String>  toolNames;
 
   /**
    * This prints the banner line when the various tools are invoked. This takes
@@ -75,93 +75,83 @@ public class JavaCCGlobals {
   /**
    * The name of the parser class (what appears in PARSER_BEGIN and PARSER_END).
    */
-  public String                                                              cu_name;
+  public String                                                                    cu_name;
 
   /**
    * This is a list of tokens that appear after "PARSER_BEGIN(name)" all the way
    * until (but not including) the opening brace "{" of the class "name".
    */
-  public List<Token>                                                         cu_to_insertion_point_1   =
-      new ArrayList<>();
+  public final List<Token>                                                         cu_to_insertion_point_1;
 
   /**
    * This is the list of all tokens that appear after the tokens in
    * "cu_to_insertion_point_1" and until (but not including) the closing brace
    * "}" of the class "name".
    */
-  public List<Token>                                                         cu_to_insertion_point_2   =
-      new ArrayList<>();
+  public final List<Token>                                                         cu_to_insertion_point_2;
 
   /**
    * This is the list of all tokens that appear after the tokens in
    * "cu_to_insertion_point_2" and until "PARSER_END(name)".
    */
-  public List<Token>                                                         cu_from_insertion_point_2 =
-      new ArrayList<>();
+  public final List<Token>                                                         cu_from_insertion_point_2;
 
   /**
    * A list of all grammar productions - normal and JAVACODE - in the order they
    * appear in the input file. Each entry here will be a subclass of
    * "NormalProduction".
    */
-  public List<NormalProduction>                                              bnfproductions            =
-      new ArrayList<>();
+  public final List<NormalProduction>                                              bnfproductions;
 
   /**
    * A symbol table of all grammar productions - normal and JAVACODE. The symbol
    * table is indexed by the name of the left hand side non-terminal. Its
    * contents are of type "NormalProduction".
    */
-  public Map<String, NormalProduction>                                       production_table          =
-      new HashMap<>();
+  public final Map<String, NormalProduction>                                       production_table;
 
   /**
    * A mapping of lexical state strings to their integer internal
    * representation. Integers are stored as java.lang.Integer's.
    */
-  Hashtable<String, Integer>                                                 lexstate_S2I              =
-      new Hashtable<>();
+  final Hashtable<String, Integer>                                                 lexstate_S2I;
 
   /**
    * A mapping of the internal integer representations of lexical states to
    * their strings. Integers are stored as java.lang.Integer's.
    */
-  public Hashtable<Integer, String>                                          lexstate_I2S              =
-      new Hashtable<>();
+  public final Hashtable<Integer, String>                                          lexstate_I2S;
 
   /**
    * The declarations to be inserted into the TokenManager class.
    */
-  public List<Token>                                                         token_mgr_decls;
+  public List<Token>                                                               token_mgr_decls;
 
   /**
    * The list of all TokenProductions from the input file. This list includes
    * implicit TokenProductions that are created for uses of regular expressions
    * within BNF productions.
    */
-  public List<TokenProduction>                                               rexprlist                 =
-      new ArrayList<>();
+  public final List<TokenProduction>                                               rexprlist;
 
   /**
    * The total number of distinct tokens. This is therefore one more than the
    * largest assigned token ordinal.
    */
-  public int                                                                 tokenCount;
+  public int                                                                       tokenCount;
 
   /**
    * This is a symbol table that contains all named tokens (those that are
    * defined with a label). The index to the table is the image of the label and
    * the contents of the table are of type "RegularExpression".
    */
-  Map<String, RegularExpression>                                             named_tokens_table        =
-      new HashMap<>();
+  final Map<String, RegularExpression>                                             named_tokens_table;
 
   /**
    * Contains the same entries as "named_tokens_table", but this is an ordered
    * list which is ordered by the order of appearance in the input file.
    */
-  public List<RegularExpression>                                             ordered_named_tokens      =
-      new ArrayList<>();
+  public final List<RegularExpression>                                             ordered_named_tokens;
 
   /**
    * A mapping of ordinal values (represented as objects of type "Integer") to
@@ -170,15 +160,13 @@ public class JavaCCGlobals {
    * there are multiple labels representing the same ordinal value, then only
    * one label is stored.
    */
-  public Map<Integer, String>                                                names_of_tokens           =
-      new HashMap<>();
+  public final Map<Integer, String>                                                names_of_tokens;
 
   /**
    * A mapping of ordinal values (represented as objects of type "Integer") to
    * the corresponding RegularExpression's.
    */
-  public Map<Integer, RegularExpression>                                     rexps_of_tokens           =
-      new HashMap<>();
+  public final Map<Integer, RegularExpression>                                     rexps_of_tokens;
 
   /**
    * This is a three-level symbol table that contains all simple tokens (those
@@ -189,28 +177,28 @@ public class JavaCCGlobals {
    * hashtable. This third level hashtable contains the actual string of the
    * simple token and maps it to its RegularExpression.
    */
-  Hashtable<String, Hashtable<String, Hashtable<String, RegularExpression>>> simple_tokens_table       =
-      new Hashtable<>();
+  final Hashtable<String, Hashtable<String, Hashtable<String, RegularExpression>>> simple_tokens_table;
+
 
   /**
    * maskindex, jj2index, maskVals are variables that are shared between
    * ParseEngine and ParseGen.
    */
-  public int                                                                 maskindex                 = 0;
-  public int                                                                 jj2index                  = 0;
-  public boolean                                                             lookaheadNeeded;
-  public List<int[]>                                                         maskVals                  =
-      new ArrayList<>();
+  public int               maskindex;
+  public int               jj2index;
+  public boolean           lookaheadNeeded;
+  public final List<int[]> maskVals;
 
-  public Action                                                              actForEof;
-  public String                                                              nextStateForEof;
-  public Token                                                               otherLanguageDeclTokenBeg;
-  public Token                                                               otherLanguageDeclTokenEnd;
+
+  public Action actForEof;
+  public String nextStateForEof;
+  public Token  otherLanguageDeclTokenBeg;
+  public Token  otherLanguageDeclTokenEnd;
 
 
   public JavaCCGlobals() {
     this.jjtreeGenerated = false;
-    this.toolNames = null;
+    this.toolNames = new ArrayList<>();
     this.cu_name = null;
     this.cu_to_insertion_point_1 = new ArrayList<>();
     this.cu_to_insertion_point_2 = new ArrayList<>();
@@ -361,27 +349,6 @@ public class JavaCCGlobals {
     }
 
     return new ArrayList<>();
-  }
-
-  public static void createOutputDir(File outputDir, Context context) {
-    if (!outputDir.exists()) {
-      context.errors().warning("Output directory \"" + outputDir + "\" does not exist. Creating the directory.");
-
-      if (!outputDir.mkdirs()) {
-        context.errors().semantic_error("Cannot create the output directory : " + outputDir);
-        return;
-      }
-    }
-
-    if (!outputDir.isDirectory()) {
-      context.errors().semantic_error("\"" + outputDir + " is not a valid output directory.");
-      return;
-    }
-
-    if (!outputDir.canWrite()) {
-      context.errors().semantic_error("Cannot write to the output output directory : \"" + outputDir + "\"");
-      return;
-    }
   }
 
   public static String add_escapes(String str) {

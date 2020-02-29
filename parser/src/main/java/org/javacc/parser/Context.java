@@ -27,6 +27,7 @@
 
 package org.javacc.parser;
 
+import java.io.File;
 import java.util.ServiceLoader;
 
 /**
@@ -97,5 +98,26 @@ public class Context {
     }
     errors().semantic_error("Could not load the CodeGenerator class: \"" + name + "\"");
     return codeGenerator;
+  }
+
+  public final void createOutputDir(File outputDir) {
+    if (!outputDir.exists()) {
+      errors().warning("Output directory \"" + outputDir + "\" does not exist. Creating the directory.");
+
+      if (!outputDir.mkdirs()) {
+        errors().semantic_error("Cannot create the output directory : " + outputDir);
+        return;
+      }
+    }
+
+    if (!outputDir.isDirectory()) {
+      errors().semantic_error("\"" + outputDir + " is not a valid output directory.");
+      return;
+    }
+
+    if (!outputDir.canWrite()) {
+      errors().semantic_error("Cannot write to the output output directory : \"" + outputDir + "\"");
+      return;
+    }
   }
 }

@@ -213,11 +213,10 @@ public class Main {
       // JavaCCGlobals.fileName = JavaCCGlobals.origFileName = args[args.length
       // - 1];
       context.globals().jjtreeGenerated = JavaCCGlobals.isGeneratedBy("JJTree", args[args.length - 1]);
-      context.globals().toolNames = JavaCCGlobals.getToolNames(args[args.length - 1]);
+      context.globals().toolNames.addAll(JavaCCGlobals.getToolNames(args[args.length - 1]));
       parser.javacc_input(context);
 
-      JavaCCGlobals.createOutputDir(Options.getOutputDirectory(), context);
-
+      context.createOutputDir(Options.getOutputDirectory());
 
       boolean unicodeWarning = false;
       if (Options.getUnicodeInput()) {
@@ -267,7 +266,7 @@ public class Main {
           }
         } else {
           System.out
-          .println("Parser generated with 0 errors and " + context.errors().get_warning_count() + " warnings.");
+              .println("Parser generated with 0 errors and " + context.errors().get_warning_count() + " warnings.");
         }
         return 0;
       } else {

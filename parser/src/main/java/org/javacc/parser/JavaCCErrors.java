@@ -42,32 +42,36 @@ public final class JavaCCErrors {
     this.warning_count = 0;
   }
 
-  private static void printLocationInfo(Object node) {
+  public void error(String message, Object... arguments) {
+    System.err.printf(message, arguments);
+  }
+
+  private void printLocationInfo(Object node) {
     if (node instanceof NormalProduction) {
       NormalProduction n = (NormalProduction) node;
-      System.err.print("Line " + n.getLine() + ", Column " + n.getColumn() + ": ");
+      error("Line %s, Column %s: ", n.getLine(), n.getColumn());
     } else if (node instanceof TokenProduction) {
       TokenProduction n = (TokenProduction) node;
-      System.err.print("Line " + n.getLine() + ", Column " + n.getColumn() + ": ");
+      error("Line %s, Column %s: ", n.getLine(), n.getColumn());
     } else if (node instanceof Expansion) {
       Expansion n = (Expansion) node;
-      System.err.print("Line " + n.getLine() + ", Column " + n.getColumn() + ": ");
+      error("Line %s, Column %s: ", n.getLine(), n.getColumn());
     } else if (node instanceof CharacterRange) {
       CharacterRange n = (CharacterRange) node;
-      System.err.print("Line " + n.getLine() + ", Column " + n.getColumn() + ": ");
+      error("Line %s, Column %s: ", n.getLine(), n.getColumn());
     } else if (node instanceof SingleCharacter) {
       SingleCharacter n = (SingleCharacter) node;
-      System.err.print("Line " + n.getLine() + ", Column " + n.getColumn() + ": ");
+      error("Line %s, Column %s: ", n.getLine(), n.getColumn());
     } else if (node instanceof Token) {
       Token t = (Token) node;
-      System.err.print("Line " + t.beginLine + ", Column " + t.beginColumn + ": ");
+      error("Line %s, Column %s: ", t.beginLine, t.beginColumn);
     }
   }
 
   public void parse_error(Object node, String mess) {
-    System.err.print("Error: ");
-    JavaCCErrors.printLocationInfo(node);
-    System.err.println(mess);
+    error("Error: ");
+    printLocationInfo(node);
+    error(mess + "\n");
     parse_error_count++;
   }
 
@@ -76,15 +80,15 @@ public final class JavaCCErrors {
   }
 
   public void semantic_error(Object node, String mess) {
-    System.err.print("Error: ");
-    JavaCCErrors.printLocationInfo(node);
-    System.err.println(mess);
+    error("Error: ");
+    printLocationInfo(node);
+    error(mess + "\n");
     semantic_error_count++;
   }
 
   public void semantic_error(String mess) {
-    System.err.print("Error: ");
-    System.err.println(mess);
+    error("Error: ");
+    error(mess + "\n");
     semantic_error_count++;
   }
 
@@ -93,15 +97,15 @@ public final class JavaCCErrors {
   }
 
   public void warning(Object node, String mess) {
-    System.err.print("Warning: ");
-    JavaCCErrors.printLocationInfo(node);
-    System.err.println(mess);
+    error("Warning: ");
+    printLocationInfo(node);
+    error(mess + "\n");
     warning_count++;
   }
 
   public void warning(String mess) {
-    System.err.print("Warning: ");
-    System.err.println(mess);
+    error("Warning: ");
+    error(mess + "\n");
     warning_count++;
   }
 
@@ -113,8 +117,8 @@ public final class JavaCCErrors {
     return parse_error_count + semantic_error_count;
   }
 
-  public static void fatal(String message) {
-    System.err.println("Fatal Error: " + message);
+  public void fatal(String message) {
+    error("Fatal Error: %s\n", message);
     throw new RuntimeException("Fatal Error: " + message);
   }
 }
