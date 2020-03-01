@@ -198,7 +198,6 @@ public class Options {
     temp.add(new OptionInfo(Options.USEROPTION__JAVA_TEMPLATE_TYPE, OptionType.STRING, Options.JAVA_TEMPLATE_TYPE_CLASSIC));
     temp.add(new OptionInfo(Options.USEROPTION__NAMESPACE, OptionType.STRING, ""));
 
-    temp.add(new OptionInfo(Options.USEROPTION__CPP_TOKEN_MANAGER_INCLUDES, OptionType.STRING, ""));
     temp.add(new OptionInfo(Options.USEROPTION__IGNORE_ACTIONS, OptionType.BOOLEAN, Boolean.FALSE));
     temp.add(new OptionInfo(Options.USEROPTION__CPP_STOP_ON_FIRST_ERROR, OptionType.BOOLEAN, Boolean.FALSE));
     temp.add(new OptionInfo(Options.USEROPTION__CPP_TOKEN_MANAGER_SUPERCLASS, OptionType.STRING, ""));
