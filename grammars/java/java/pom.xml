@@ -44,4 +44,5 @@
 		</plugins>
 	</build>
 
+	<name>JavaCC grammars java java</name>
 </project>

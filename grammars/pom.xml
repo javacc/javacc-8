@@ -30,4 +30,5 @@
   		</plugin>
   	</plugins>
   </build>
+  <name>JavaCC grammars</name>
 </project>

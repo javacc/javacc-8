@@ -8,6 +8,7 @@
 	</parent>
 	<groupId>org.javacc.grammars.java</groupId>
 	<artifactId>cobol</artifactId>
+	<name>JavaCC grammars java cobol</name>
 	<build>
 		<plugins>
 			<plugin>
@@ -37,7 +38,7 @@
 				<configuration>
 					<mainClass>CobolParser</mainClass>
 					<arguments>
-						<argument>${project.basedir}/main.cob</argument>
+						<argument>${project.basedir}/cobol/VARS.cob</argument>
 					</arguments>
 				</configuration>
 			</plugin>

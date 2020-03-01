@@ -65,8 +65,9 @@ options {
 	/*
 	 * Default value is false. Insert calls to user-defined parser 
 	 * methods on entry and exit of every node scope. See Node Scope Hooks above.
-	 */
 	NODE_SCOPE_HOOK=true;
+	 */
+	NODE_SCOPE_HOOK=false;
 
 	/*
 	 * JDK Version
@@ -103,7 +104,7 @@ public class EcmaScript {
 			return;
 		}
 		try {
-			SimpleNode n = parser.Program();
+			Node n = parser.Program();
 			System.out.println("EcmaScript parser:  EcmaScript program parsed successfully.");
 		} catch (ParseException e) {
 			System.out.println(e.getMessage());
@@ -111,19 +112,21 @@ public class EcmaScript {
 		}
 	}
 
+/*
 	void jjtreeOpenNodeScope(Node n){
 		Token t = getToken(1);
 		if(t != null){
-			((SimpleNode) n).setBeginToken(t);
+			((Node) n).setBeginToken(t);
 		}
 	}
 
 	void jjtreeCloseNodeScope(Node n){
 		Token t = getToken(0);
 		if(t != null){
-			((SimpleNode) n).setEndToken(t);
+			((Node) n).setEndToken(t);
 		}
 	}
+*/
 }
 PARSER_END(EcmaScript)
 

@@ -1,12 +1,14 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>org.javacc.grammars</groupId>
-    <artifactId>java</artifactId>
-    <version>8.0.0-SNAPSHOT</version>
-  </parent>
-  <groupId>org.javacc.grammars.java</groupId>
-  <artifactId>ecma</artifactId>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.javacc.grammars</groupId>
+		<artifactId>java</artifactId>
+		<version>8.0.0-SNAPSHOT</version>
+	</parent>
+	<groupId>org.javacc.grammars.java</groupId>
+	<artifactId>ecma</artifactId>
+	<name>JavaCC grammars java ecma</name>
 	<build>
 		<plugins>
 			<plugin>
@@ -38,59 +40,13 @@
 						<configuration>
 							<mainClass>EcmaScript</mainClass>
 							<arguments>
-								<argument>${project.basedir}/eg1/eg1.in</argument>
-								<argument>${project.basedir}/eg1/eg1.out</argument>
-								<argument>${project.basedir}/eg1/eg1.err</argument>
-							</arguments>
-						</configuration>
-					</execution>
-					<execution>
-						<id>run-eg2</id>
-						<phase>test</phase>
-						<goals>
-							<goal>java</goal>
-						</goals>
-						<configuration>
-							<mainClass>eg2.Eg2</mainClass>
-							<arguments>
-								<argument>${project.basedir}/eg2/eg2.in</argument>
-								<argument>${project.basedir}/eg2/eg2.out</argument>
-								<argument>${project.basedir}/eg2/eg2.err</argument>
-							</arguments>
-						</configuration>
-					</execution>
-					<execution>
-						<id>run-eg3</id>
-						<phase>test</phase>
-						<goals>
-							<goal>java</goal>
-						</goals>
-						<configuration>
-							<mainClass>eg3.Eg3</mainClass>
-							<arguments>
-								<argument>${project.basedir}/eg3/eg3.in</argument>
-								<argument>${project.basedir}/eg3/eg3.out</argument>
-								<argument>${project.basedir}/eg3/eg3.err</argument>
-							</arguments>
-						</configuration>
-					</execution>
-					<execution>
-						<id>run-eg4</id>
-						<phase>test</phase>
-						<goals>
-							<goal>java</goal>
-						</goals>
-						<configuration>
-							<mainClass>eg4.Eg4</mainClass>
-							<arguments>
-								<argument>${project.basedir}/eg4/eg4.in</argument>
-								<argument>${project.basedir}/eg4/eg4.out</argument>
-								<argument>${project.basedir}/eg4/eg4.err</argument>
+								<argument>${project.basedir}/ecma/main.ecma</argument>
 							</arguments>
 						</configuration>
 					</execution>
 				</executions>
 			</plugin>
+<!-- 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-antrun-plugin</artifactId>
@@ -173,6 +129,7 @@
 					</execution>
 				</executions>
 			</plugin>
+-->
 		</plugins>
 	</build>
 </project>

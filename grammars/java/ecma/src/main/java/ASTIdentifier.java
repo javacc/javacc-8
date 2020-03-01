@@ -1,4 +1,4 @@
-class ASTIdentifier extends SimpleNode {
+class ASTIdentifier extends Node {
 	public ASTIdentifier(int id) {
 		super(id);
 	}

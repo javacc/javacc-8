@@ -36,10 +36,11 @@
 				<configuration>
 					<mainClass>PlSql</mainClass>
 					<arguments>
-						<argument>${project.basedir}/main.sql</argument>
+						<argument>${project.basedir}/plsql/main.sql</argument>
 					</arguments>
 				</configuration>
 			</plugin>
 		</plugins>
 	</build>
+	<name>JavaCC grammars java plsql</name>
 </project>

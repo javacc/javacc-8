@@ -1,4 +1,4 @@
-class ASTLiteral extends SimpleNode {
+class ASTLiteral extends Node {
 	public ASTLiteral(int id) {
 		super(id);
 	}

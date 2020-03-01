@@ -64,9 +64,40 @@ options {
  */
 
 PARSER_BEGIN(CobolParser)
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 
 public class CobolParser {
-
+	public static void main(String args[]) {
+		CobolParser parser;
+      	if(args.length == 0){
+        	System.out.println("Cobol Parser:  Reading from standard input . . .");
+        	parser = new CobolParser(System.in);
+      	}
+      	else
+      	if(args.length == 1){
+        	System.out.println("Cobol Parser:  Reading from file " + args[0] + " . . ." );
+      		try {
+        		parser = new CobolParser(new FileInputStream(args[0]));
+      		} catch(java.io.FileNotFoundException e) {
+        		System.out.println("Cobol Parser:  File " + args[0] + " not found.");
+        		return ;
+        	}
+      	} else {
+        	System.out.println("Cobol Parser:  Usage is one of:");
+        	System.out.println("         java CParser < inputfile");
+        	System.out.println("OR");
+        	System.out.println("         java CParser inputfile");
+        	return ;
+      	}
+      	try {
+        	parser.CompilationUnit();
+        	System.out.println("Cobol Parser:  Cobol program parsed successfully.");
+      	} catch(ParseException e){
+        	System.out.println("Cobol Parser:  Encountered errors during parse.");
+        	e.printStackTrace();
+      	}
+	}
 }
 
 PARSER_END(CobolParser)

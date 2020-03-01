@@ -12,12 +12,14 @@
 	<modules>
 		<module>asn1</module>
 		<module>c</module>
+<!-- 
 		<module>chemical</module>
-		<module>cobol</module>
-		<module>dtd</module>
-		<module>ecma</module>
-		<module>java_1.1</module>
+ 		<module>ecma</module>
+ 		<module>java_1.1</module>
 		<module>java_1.5</module>
+ -->
+ 		<module>cobol</module>
+		<module>dtd</module>
 	</modules>
 	<build>
 		<pluginManagement>
@@ -52,4 +54,5 @@
 			</plugin>
 		</plugins>
 	</build>
+	<name>JavaCC grammars c++</name>
 </project>
