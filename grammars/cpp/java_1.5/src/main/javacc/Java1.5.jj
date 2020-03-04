@@ -32,7 +32,8 @@ options {
 	STATIC = false;
 	COMMON_TOKEN_ACTION = false;
 	TOKEN_FACTORY = "MyToken";
-	TOKEN_MANAGER_INCLUDES=("MyToken.h");
+//	TOKEN_MANAGER_INCLUDES=("MyToken.h"); FIXME should be accepted also
+	TOKEN_MANAGER_INCLUDE="MyToken.h";
 	PARSER_INCLUDES=("ModifierSet.h", "MyToken.h", "ParseException.h");
 	DEBUG_PARSER=true;
 	DEBUG_TOKEN_MANAGER=true;

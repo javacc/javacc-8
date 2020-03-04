@@ -29,7 +29,7 @@ JAVACC_STRING_TYPE ReadFileFully(char *file_name) {
 
 int main(int argc, char **argv) {
   if (argc < 2) {
-    cout << "Usage: wjavaparser <java inputfile>" << endl;
+    cout << "Usage: javaparser <java inputfile>" << endl;
     exit(1);
   }
   JAVACC_STRING_TYPE s = ReadFileFully(argv[1]);

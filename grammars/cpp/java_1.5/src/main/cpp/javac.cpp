@@ -12,18 +12,21 @@ using namespace std;
 
 JJString ReadFileFully() {
 	JJString code;
-#if 0
+#if 1
 	code =
-		"int n;\n"
-		"int fact;\n"
-		"read n;\n"
-		"fact = 1;\n"
-		"while (n > 1)\n"
+		"import java.util.*;\n"
+
+		"public class JavaGenerics\n"
 		"{\n"
-		"		fact = fact * n;\n"
-		"		n = n - 1;\n"
-		"}\n"
-		"write fact;\n";
+		"	private Map<String, List> map;\n"
+		"\n"
+		"	public void jriat()\n"
+		"	{\n"
+		"		int i = 1 >> > 4;\n"
+		"		int j = 1 >> 4;\n"
+		"		boolean b = 1 > 4;\n"
+		"   }\n"
+		"}\n";
 #else
 	code = "int foo;\nfoo = 3 + 4 * 5 + 6;\nwrite foo;\n";
 #endif
@@ -59,7 +62,7 @@ int main(int argc, const char** argv) {
 				return 8;
 			}
 		} else
-		if (argc == 2) {
+		if (argc == 1) {
 			JJString s = ReadFileFully();
 			cout << s << endl;
 			cs = new CharStream(s.c_str(), s.size() - 1, 1, 1);

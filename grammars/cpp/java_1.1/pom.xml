@@ -37,6 +37,9 @@
 						<library>
 							<type>executable</type>
 							<run>true</run>
+							<args>
+								<arg>${project.basedir}/HelloWorld.java</arg>
+							</args>
 						</library>
 					</libraries>
 					<cpp>
