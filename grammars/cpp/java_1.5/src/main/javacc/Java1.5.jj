@@ -35,7 +35,7 @@ options {
 //	TOKEN_MANAGER_INCLUDES=("MyToken.h"); FIXME should be accepted also
 	TOKEN_MANAGER_INCLUDE="MyToken.h";
 	PARSER_INCLUDES=("ModifierSet.h", "MyToken.h", "ParseException.h");
-	DEBUG_PARSER=true;
+//	DEBUG_PARSER=true;
 //	DEBUG_TOKEN_MANAGER=true;
 }
 
@@ -1868,8 +1868,7 @@ void TryStatement():
 void RUNSIGNEDSHIFT():
 {}
 {
-  ( LOOKAHEAD({ getToken(1)->kind == GT &&
-                ((MyToken*)getToken(1))->realKind == _RUNSIGNEDSHIFT} )
+  ( LOOKAHEAD({ getToken(1)->kind == GT && ((MyToken*)getToken(1))->realKind == _RUNSIGNEDSHIFT} )
    ">" ">" ">"
   )
 }
@@ -1877,8 +1876,7 @@ void RUNSIGNEDSHIFT():
 void RSIGNEDSHIFT():
 {}
 {
-  ( LOOKAHEAD({ getToken(1)->kind == GT &&
-                ((MyToken*)getToken(1))->realKind == _RSIGNEDSHIFT} )
+  ( LOOKAHEAD({ getToken(1)->kind == GT && ((MyToken*)getToken(1))->realKind == _RSIGNEDSHIFT} )
   ">" ">"
   )
 }

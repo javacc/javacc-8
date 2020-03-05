@@ -8,6 +8,7 @@
 #include "ParseException.h"
 #include "StreamReader.h"
 
+
 using namespace std;
 
 JJString ReadFileFully() {

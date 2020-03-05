@@ -2,6 +2,7 @@
 #define MY_TOKEN
 #include "JavaCC.h"
 #include "Token.h"
+#include "JavaParserConstants.h"
 
 class MyToken : public Token {
 public:
@@ -9,7 +10,7 @@ public:
 		this->mykind = kind;
 		this->myimage = image;
 	}
-	static int realKind;
+	int realKind = GT;
 	
 	static Token* newToken(int ofKind, JJString tokenImage) {
 		return new MyToken(ofKind, tokenImage);
