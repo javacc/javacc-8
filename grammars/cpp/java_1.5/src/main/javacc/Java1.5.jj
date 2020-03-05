@@ -36,7 +36,7 @@ options {
 	TOKEN_MANAGER_INCLUDE="MyToken.h";
 	PARSER_INCLUDES=("ModifierSet.h", "MyToken.h", "ParseException.h");
 	DEBUG_PARSER=true;
-	DEBUG_TOKEN_MANAGER=true;
+//	DEBUG_TOKEN_MANAGER=true;
 }
 
 PARSER_BEGIN(JavaParser)

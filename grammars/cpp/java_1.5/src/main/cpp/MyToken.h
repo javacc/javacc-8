@@ -5,9 +5,9 @@
 
 class MyToken : public Token {
 public:
-	MyToken(int kind, JJString image) {
-		this->kind = kind;
-		this->image = image;
+	MyToken(int kind, JJString image) : Token (kind, image) {
+		this->mykind = kind;
+		this->myimage = image;
 	}
 	static int realKind;
 	
@@ -16,7 +16,7 @@ public:
 	}
 	
 private:
-	int			kind;
-	JJString	image;
+	int			mykind;
+	JJString	myimage;
 };
 #endif
