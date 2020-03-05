@@ -23,8 +23,8 @@ JJString ReadFileFully() {
 		"	public void jriat()\n"
 		"	{\n"
 		"		int i = 1 >>> 2;\n"
-		"		int j = 2 >> 4;\n"
-		"		boolean b = 1 > 8;\n"
+		"		int j = 3 >> 4;\n"
+		"		boolean b = 5 > 6;\n"
 		"   }\n"
 		"}\n";
 #else
