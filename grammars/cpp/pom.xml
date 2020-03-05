@@ -13,9 +13,9 @@
 		<module>asn1</module>
 		<module>c</module>
 		<module>chemical</module>
+		<module>java_1.5</module>
 <!-- 
  		<module>java_1.1</module>
-		<module>java_1.5</module>
   		<module>ecma</module>
  -->
  		<module>cobol</module>
