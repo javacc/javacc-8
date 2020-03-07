@@ -8,6 +8,7 @@
   <groupId>org.javacc</groupId>
   <artifactId>grammars</artifactId>
   <packaging>pom</packaging>
+  <name>JavaCC grammars</name>
   <modules>
   	<module>cpp</module>
   	<module>java</module>
@@ -21,14 +22,6 @@
 				<skip>true</skip>
 			</configuration>  				
   		</plugin>
-   		<plugin>
-  			<artifactId>maven-release-plugin</artifactId> 
-			<inherited>true</inherited>
-			<configuration>
-				<skip>true</skip>
-			</configuration>  				
-  		</plugin>
   	</plugins>
   </build>
-  <name>JavaCC grammars</name>
 </project>

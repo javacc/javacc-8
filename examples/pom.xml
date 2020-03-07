@@ -10,9 +10,6 @@
 	<groupId>org.javacc</groupId>
 	<artifactId>examples</artifactId>
 	<packaging>pom</packaging>
-	<properties>
-	
-	</properties>
 	<modules>
 		<module>java</module>
 		<module>cpp</module>
@@ -22,13 +19,6 @@
   	<plugins>
   		<plugin>
   			<artifactId>maven-deploy-plugin</artifactId> 
-			<inherited>true</inherited>
-			<configuration>
-				<skip>true</skip>
-			</configuration>  				
-  		</plugin>
-  		<plugin>
-  			<artifactId>maven-release-plugin</artifactId> 
 			<inherited>true</inherited>
 			<configuration>
 				<skip>true</skip>
