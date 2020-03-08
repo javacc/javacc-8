@@ -21,6 +21,7 @@
 		<url>git@github.com/javacc/javacc.git</url>
 		<connection>scm:git:git@github.com/javacc/javacc.git</connection>
 		<developerConnection>scm:git:git@github.com/javacc/javacc.git</developerConnection>
+		<tag>HEAD</tag>
 	</scm>
 
 	<issueManagement>
