@@ -348,11 +348,12 @@
 							<execution>
 								<id>integration-test-examples</id>
 								<goals>
+									<goal>install</goal>
 									<goal>run</goal>
 								</goals>
 								<configuration>
 									<failIfNoProjects>false</failIfNoProjects>
-									<ignoreFailures>true</ignoreFailures>
+									<ignoreFailures>false</ignoreFailures>
 									<skipInvocation>false</skipInvocation>
 									<projectsDirectory>examples</projectsDirectory>
 									<settingsFile>examples/settings.xml</settingsFile>
@@ -366,11 +367,12 @@
 							<execution>
 								<id>integration-test-grammars</id>
 								<goals>
+									<goal>install</goal>
 									<goal>run</goal>
 								</goals>
 								<configuration>
 									<failIfNoProjects>false</failIfNoProjects>
-									<ignoreFailures>true</ignoreFailures>
+									<ignoreFailures>false</ignoreFailures>
 									<skipInvocation>false</skipInvocation>
 									<projectsDirectory>grammars</projectsDirectory>
 									<settingsFile>grammars/settings.xml</settingsFile>
