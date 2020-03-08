@@ -193,10 +193,6 @@
 	<modules>
 		<module>parser</module>
 		<module>codegen</module>
-<!-- 
-		<module>examples</module>
-		<module>grammars</module>
- -->
 	</modules>
 
 
@@ -350,7 +346,7 @@
 						</dependencies>
 						<executions>
 							<execution>
-								<id>integration-test</id>
+								<id>integration-test-examples</id>
 								<goals>
 									<goal>run</goal>
 								</goals>
@@ -361,6 +357,24 @@
 									<projectsDirectory>examples</projectsDirectory>
 									<settingsFile>examples/settings.xml</settingsFile>
 									<cloneProjectsTo>${project.build.directory}/examples</cloneProjectsTo>
+									<postBuildHookScript>verify.bsh</postBuildHookScript>
+									<localRepositoryPath>${project.build.directory}/local-repo</localRepositoryPath>
+									<debug>false</debug>
+									<streamLogs>true</streamLogs>
+								</configuration>
+							</execution>
+							<execution>
+								<id>integration-test-grammars</id>
+								<goals>
+									<goal>run</goal>
+								</goals>
+								<configuration>
+									<failIfNoProjects>false</failIfNoProjects>
+									<ignoreFailures>true</ignoreFailures>
+									<skipInvocation>false</skipInvocation>
+									<projectsDirectory>grammars</projectsDirectory>
+									<settingsFile>grammars/settings.xml</settingsFile>
+									<cloneProjectsTo>${project.build.directory}/grammars</cloneProjectsTo>
 									<postBuildHookScript>verify.bsh</postBuildHookScript>
 									<localRepositoryPath>${project.build.directory}/local-repo</localRepositoryPath>
 									<debug>false</debug>
