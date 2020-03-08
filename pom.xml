@@ -193,8 +193,10 @@
 	<modules>
 		<module>parser</module>
 		<module>codegen</module>
+<!-- 
 		<module>examples</module>
 		<module>grammars</module>
+ -->
 	</modules>
 
 
@@ -346,22 +348,24 @@
 								<version>2.1.1</version>
 							</dependency>
 						</dependencies>
-						<configuration>
-							<ignoreFailures>true</ignoreFailures>
-							<skipInvocation>false</skipInvocation>
-							<cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>
-							<postBuildHookScript>verify.bsh</postBuildHookScript>
-							<settingsFile>src/it/settings.xml</settingsFile>
-							<localRepositoryPath>${project.build.directory}/local-repo</localRepositoryPath>
-							<debug>true</debug>
-						</configuration>
 						<executions>
 							<execution>
 								<id>integration-test</id>
 								<goals>
-									<goal>install</goal>
 									<goal>run</goal>
 								</goals>
+								<configuration>
+									<failIfNoProjects>false</failIfNoProjects>
+									<ignoreFailures>true</ignoreFailures>
+									<skipInvocation>false</skipInvocation>
+									<projectsDirectory>examples</projectsDirectory>
+									<settingsFile>examples/settings.xml</settingsFile>
+									<cloneProjectsTo>${project.build.directory}/examples</cloneProjectsTo>
+									<postBuildHookScript>verify.bsh</postBuildHookScript>
+									<localRepositoryPath>${project.build.directory}/local-repo</localRepositoryPath>
+									<debug>false</debug>
+									<streamLogs>true</streamLogs>
+								</configuration>
 							</execution>
 						</executions>
 					</plugin>
