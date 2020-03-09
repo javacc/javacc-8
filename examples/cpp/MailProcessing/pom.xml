@@ -18,8 +18,8 @@
 				<dependencies>
 					<dependency>
 						<groupId>org.javacc</groupId>
-						<artifactId>parser</artifactId>
-						<version>${javacc.parser}</version>
+						<artifactId>core</artifactId>
+						<version>${javacc.core}</version>
 					</dependency>
 					<dependency>
 						<groupId>org.javacc.codegen</groupId>

@@ -10,10 +10,10 @@
 	</parent>
 
 	<groupId>org.javacc</groupId>
-	<artifactId>parser</artifactId>
+	<artifactId>core</artifactId>
 	<packaging>jar</packaging>
 
-	<name>JavaCC parser</name>
+	<name>JavaCC core</name>
 
 	<dependencyManagement>
 		<dependencies>
@@ -83,7 +83,7 @@
 						</goals>
 						<configuration>
 							<excludes>
-								<exclude>**/parser/**</exclude>
+								<exclude>**/core/**</exclude>
 							</excludes>
 						</configuration>
 					</execution>
@@ -102,5 +102,5 @@
 		</plugins>
 	</build>
 
- </project>
+</project>
 

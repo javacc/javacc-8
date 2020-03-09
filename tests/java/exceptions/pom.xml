@@ -18,7 +18,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.javacc</groupId>
-			<artifactId>parser</artifactId>
+			<artifactId>core</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.javacc.codegen</groupId>

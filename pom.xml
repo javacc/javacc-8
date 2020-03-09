@@ -9,7 +9,7 @@
 	<version>8.0.0-SNAPSHOT</version>
 
 	<name>JavaCC</name>
-	<description>JavaCC is a parser/scanner generator for java.</description>
+	<description>JavaCC is a core/scanner generator for java.</description>
 	<url>https://github.com/javacc/javacc</url>
 	<inceptionYear>1996</inceptionYear>
 	<organization>
@@ -141,7 +141,7 @@
 		<doclint>none</doclint>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
-		<javacc.parser>8.0.0-SNAPSHOT</javacc.parser>
+		<javacc.core>8.0.0-SNAPSHOT</javacc.core>
 		<javacc.java>8.0.0-SNAPSHOT</javacc.java>
 		<javacc.cpp>8.0.0-SNAPSHOT</javacc.cpp>
 		<javacc.java>8.0.0-SNAPSHOT</javacc.java>
@@ -153,8 +153,8 @@
 <!-- 
 			<dependency>
 				<groupId>org.javacc</groupId>
-				<artifactId>parser</artifactId>
-				<version>${javacc.parser}</version>
+				<artifactId>core</artifactId>
+				<version>${javacc.core}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.javacc.codegen</groupId>
@@ -192,7 +192,7 @@
 		</dependency>
 	</dependencies>
 	<modules>
-		<module>parser</module>
+		<module>core</module>
 		<module>codegen</module>
 	</modules>
 
@@ -258,8 +258,8 @@
 <!-- 
 						<dependency>
 							<groupId>org.javacc</groupId>
-							<artifactId>parser</artifactId>
-							<version>${javacc.parser}</version>
+							<artifactId>core</artifactId>
+							<version>${javacc.core}</version>
 							<scope>runtime</scope>
 						</dependency>
 						<dependency>
@@ -397,8 +397,8 @@
 				<groupId>org.javacc.plugin</groupId>
 				<artifactId>javacc-maven-plugin</artifactId>
 				<configuration>
-					<sourceDirectory>src/main/java/org/javacc/parser</sourceDirectory>
-					<packageName>org.javacc.parser</packageName>
+					<sourceDirectory>src/main/java/org/javacc/core</sourceDirectory>
+					<packageName>org.javacc.core</packageName>
 				</configuration>
 			</plugin>
 

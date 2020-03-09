@@ -44,10 +44,10 @@
 								<path>${project.basedir}/src/main/cpp</path>
 							</includePath>
 							<includePath>
-								<path>${project.basedir}/target/generated-sources/cpp/org/dojo/jsl/parser</path>
+								<path>${project.basedir}/target/generated-sources/cpp/org/dojo/jsl/core</path>
 							</includePath>
 							<includePath>
-								<path>${project.basedir}/target/generated-sources/jjtree/org/dojo/jsl/parser</path>
+								<path>${project.basedir}/target/generated-sources/jjtree/org/dojo/jsl/core</path>
 							</includePath>
 						</includePaths>
 					</cpp>

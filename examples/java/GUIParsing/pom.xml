@@ -3,7 +3,7 @@
   <parent>
     <groupId>org.javacc.examples</groupId>
     <artifactId>java</artifactId>
-    <version>${javacc.parser}</version>
+    <version>${javacc.core}</version>
   </parent>
   <name>JavaCC examples Java GUIParsing</name>
   <groupId>org.javacc.examples.java</groupId>
