@@ -145,6 +145,7 @@
 		<javacc.java>8.0.0-SNAPSHOT</javacc.java>
 		<javacc.cpp>8.0.0-SNAPSHOT</javacc.cpp>
 		<javacc.csharp>8.0.0-SNAPSHOT</javacc.csharp>
+		<skipTests>false</skipTests>
 	</properties>
 
 	<dependencyManagement>
