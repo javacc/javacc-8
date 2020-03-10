@@ -59,73 +59,75 @@ public class Options {
    * These are options that are not settable by the user themselves, and that
    * are set indirectly via some configuration of user options
    */
-  public static final String NONUSER_OPTION__NAMESPACE_CLOSE               = "NAMESPACE_CLOSE";
-  public static final String NONUSER_OPTION__HAS_NAMESPACE                 = "HAS_NAMESPACE";
-  public static final String NONUSER_OPTION__NAMESPACE_OPEN                = "NAMESPACE_OPEN";
-  public static final String NONUSER_OPTION__PARSER_NAME                   = "PARSER_NAME";
-  public static final String NONUSER_OPTION__LEGACY_EXCEPTION_HANDLING     = "LEGACY_EXCEPTION_HANDLING";
-  public static final String NONUSER_OPTION__INTERPRETER                   = "INTERPRETER_MODE";
+  public static final String NONUSER_OPTION__NAMESPACE_CLOSE               	= "NAMESPACE_CLOSE";
+  public static final String NONUSER_OPTION__HAS_NAMESPACE                 	= "HAS_NAMESPACE";
+  public static final String NONUSER_OPTION__NAMESPACE_OPEN                	= "NAMESPACE_OPEN";
+  public static final String NONUSER_OPTION__PARSER_NAME                   	= "PARSER_NAME";
+  public static final String NONUSER_OPTION__LEGACY_EXCEPTION_HANDLING     	= "LEGACY_EXCEPTION_HANDLING";
+  public static final String NONUSER_OPTION__INTERPRETER                   	= "INTERPRETER_MODE";
   /**
    * Options that the user can specify from .javacc file
    */
 
-  public static final String USEROPTION__PARSER_SUPER_CLASS                = "PARSER_SUPER_CLASS";
-  public static final String USEROPTION__JAVA_TEMPLATE_TYPE                = "JAVA_TEMPLATE_TYPE";
-  public static final String USEROPTION__GENERATE_BOILERPLATE              = "GENERATE_BOILERPLATE";
-  public static final String USEROPTION__CODE_GENERATOR                    = "CODE_GENERATOR";
-  public static final String USEROPTION__NO_DFA                            = "NO_DFA";
-  public static final String USEROPTION__STATIC                            = "STATIC";
-  public static final String USEROPTION__TOKEN_MANAGER_SUPER_CLASS         = "TOKEN_MANAGER_SUPER_CLASS";
-  public static final String USEROPTION__LOOKAHEAD                         = "LOOKAHEAD";
-  public static final String USEROPTION__IGNORE_CASE                       = "IGNORE_CASE";
-  public static final String USEROPTION__UNICODE_INPUT                     = "UNICODE_INPUT";
-  public static final String USEROPTION__JAVA_UNICODE_ESCAPE               = "JAVA_UNICODE_ESCAPE";
-  public static final String USEROPTION__ERROR_REPORTING                   = "ERROR_REPORTING";
-  public static final String USEROPTION__DEBUG_TOKEN_MANAGER               = "DEBUG_TOKEN_MANAGER";
-  public static final String USEROPTION__DEBUG_LOOKAHEAD                   = "DEBUG_LOOKAHEAD";
-  public static final String USEROPTION__DEBUG_PARSER                      = "DEBUG_PARSER";
-  public static final String USEROPTION__OTHER_AMBIGUITY_CHECK             = "OTHER_AMBIGUITY_CHECK";
-  public static final String USEROPTION__CHOICE_AMBIGUITY_CHECK            = "CHOICE_AMBIGUITY_CHECK";
-  public static final String USEROPTION__CACHE_TOKENS                      = "CACHE_TOKENS";
-  public static final String USEROPTION__COMMON_TOKEN_ACTION               = "COMMON_TOKEN_ACTION";
-  public static final String USEROPTION__FORCE_LA_CHECK                    = "FORCE_LA_CHECK";
-  public static final String USEROPTION__SANITY_CHECK                      = "SANITY_CHECK";
-  public static final String USEROPTION__TOKEN_MANAGER_USES_PARSER         = "TOKEN_MANAGER_USES_PARSER";
-  public static final String USEROPTION__BUILD_TOKEN_MANAGER               = "BUILD_TOKEN_MANAGER";
-  public static final String USEROPTION__BUILD_PARSER                      = "BUILD_PARSER";
-  public static final String USEROPTION__USER_CHAR_STREAM                  = "USER_CHAR_STREAM";
-  public static final String USEROPTION__JDK_VERSION                       = "JDK_VERSION";
-  public static final String USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC   = "SUPPORT_CLASS_VISIBILITY_PUBLIC";
-  public static final String USEROPTION__GENERATE_ANNOTATIONS              = "GENERATE_ANNOTATIONS";
-  public static final String USEROPTION__GENERATE_STRING_BUILDER           = "GENERATE_STRING_BUILDER";
-  public static final String USEROPTION__GENERATE_GENERICS                 = "GENERATE_GENERICS";
-  public static final String USEROPTION__GENERATE_CHAINED_EXCEPTION        = "GENERATE_CHAINED_EXCEPTION";
-  public static final String USEROPTION__OUTPUT_DIRECTORY                  = "OUTPUT_DIRECTORY";
-  public static final String USEROPTION__KEEP_LINE_COLUMN                  = "KEEP_LINE_COLUMN";
-  public static final String USEROPTION__GRAMMAR_ENCODING                  = "GRAMMAR_ENCODING";
-  public static final String USEROPTION__TOKEN_FACTORY                     = "TOKEN_FACTORY";
-  public static final String USEROPTION__TOKEN_EXTENDS                     = "TOKEN_EXTENDS";
-  public static final String USEROPTION__DEPTH_LIMIT                       = "DEPTH_LIMIT";
+  public static final String USEROPTION__PARSER_SUPER_CLASS                	= "PARSER_SUPER_CLASS";
+  public static final String USEROPTION__JAVA_TEMPLATE_TYPE                	= "JAVA_TEMPLATE_TYPE";
+  public static final String USEROPTION__GENERATE_BOILERPLATE              	= "GENERATE_BOILERPLATE";
+  public static final String USEROPTION__CODE_GENERATOR                    	= "CODE_GENERATOR";
+  public static final String USEROPTION__NO_DFA                            	= "NO_DFA";
+  public static final String USEROPTION__STATIC                            	= "STATIC";
+  public static final String USEROPTION__TOKEN_MANAGER_SUPER_CLASS         	= "TOKEN_MANAGER_SUPER_CLASS";
+  public static final String USEROPTION__LOOKAHEAD                         	= "LOOKAHEAD";
+  public static final String USEROPTION__IGNORE_CASE                       	= "IGNORE_CASE";
+  public static final String USEROPTION__UNICODE_INPUT                     	= "UNICODE_INPUT";
+  public static final String USEROPTION__JAVA_UNICODE_ESCAPE               	= "JAVA_UNICODE_ESCAPE";
+  public static final String USEROPTION__ERROR_REPORTING                   	= "ERROR_REPORTING";
+  public static final String USEROPTION__DEBUG_TOKEN_MANAGER               	= "DEBUG_TOKEN_MANAGER";
+  public static final String USEROPTION__DEBUG_LOOKAHEAD                   	= "DEBUG_LOOKAHEAD";
+  public static final String USEROPTION__DEBUG_PARSER                      	= "DEBUG_PARSER";
+  public static final String USEROPTION__OTHER_AMBIGUITY_CHECK             	= "OTHER_AMBIGUITY_CHECK";
+  public static final String USEROPTION__CHOICE_AMBIGUITY_CHECK            	= "CHOICE_AMBIGUITY_CHECK";
+  public static final String USEROPTION__CACHE_TOKENS                      	= "CACHE_TOKENS";
+  public static final String USEROPTION__COMMON_TOKEN_ACTION               	= "COMMON_TOKEN_ACTION";
+  public static final String USEROPTION__FORCE_LA_CHECK                    	= "FORCE_LA_CHECK";
+  public static final String USEROPTION__SANITY_CHECK                      	= "SANITY_CHECK";
+  public static final String USEROPTION__TOKEN_MANAGER_USES_PARSER         	= "TOKEN_MANAGER_USES_PARSER";
+  public static final String USEROPTION__BUILD_TOKEN_MANAGER               	= "BUILD_TOKEN_MANAGER";
+  public static final String USEROPTION__BUILD_PARSER                      	= "BUILD_PARSER";
+  public static final String USEROPTION__USER_CHAR_STREAM                  	= "USER_CHAR_STREAM";
+  public static final String USEROPTION__JDK_VERSION                       	= "JDK_VERSION";
+  public static final String USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC   	= "SUPPORT_CLASS_VISIBILITY_PUBLIC";
+  public static final String USEROPTION__GENERATE_ANNOTATIONS              	= "GENERATE_ANNOTATIONS";
+  public static final String USEROPTION__GENERATE_STRING_BUILDER           	= "GENERATE_STRING_BUILDER";
+  public static final String USEROPTION__GENERATE_GENERICS                 	= "GENERATE_GENERICS";
+  public static final String USEROPTION__GENERATE_CHAINED_EXCEPTION        	= "GENERATE_CHAINED_EXCEPTION";
+  public static final String USEROPTION__OUTPUT_DIRECTORY                  	= "OUTPUT_DIRECTORY";
+  public static final String USEROPTION__KEEP_LINE_COLUMN                  	= "KEEP_LINE_COLUMN";
+  public static final String USEROPTION__GRAMMAR_ENCODING                  	= "GRAMMAR_ENCODING";
+  public static final String USEROPTION__TOKEN_FACTORY                     	= "TOKEN_FACTORY";
+  public static final String USEROPTION__TOKEN_EXTENDS                     	= "TOKEN_EXTENDS";
+  public static final String USEROPTION__DEPTH_LIMIT                       	= "DEPTH_LIMIT";
 
-  public static final String USEROPTION__NAMESPACE                         = "NAMESPACE";
-  public static final String USEROPTION__IGNORE_ACTIONS                    = "IGNORE_ACTIONS";
-  public static final String USEROPTION__CPP_TOKEN_MANAGER_SUPERCLASS      = "TOKEN_MANAGER_SUPERCLASS";
-  public static final String USEROPTION__CPP_STOP_ON_FIRST_ERROR           = "STOP_ON_FIRST_ERROR";
-  public static final String USEROPTION__CPP_STACK_LIMIT                   = "STACK_LIMIT";
+  public static final String USEROPTION__NAMESPACE                         	= "NAMESPACE";
+  public static final String USEROPTION__IGNORE_ACTIONS                    	= "IGNORE_ACTIONS";
+  public static final String USEROPTION__CPP_TOKEN_MANAGER_SUPERCLASS      	= "TOKEN_MANAGER_SUPERCLASS";
+  public static final String USEROPTION__CPP_STOP_ON_FIRST_ERROR           	= "STOP_ON_FIRST_ERROR";
+  public static final String USEROPTION__CPP_STACK_LIMIT                   	= "STACK_LIMIT";
 
-  public static final String USEROPTION__CPP_TOKEN_INCLUDE                 = "TOKEN_INCLUDE";
-  public static final String USEROPTION__CPP_PARSER_INCLUDE                = "PARSER_INCLUDE";
-  public static final String USEROPTION__CPP_TOKEN_MANAGER_INCLUDE         = "TOKEN_MANAGER_INCLUDE";
+  public static final String USEROPTION__CPP_TOKEN_INCLUDE                 	= "TOKEN_INCLUDE";
+  public static final String USEROPTION__CPP_PARSER_INCLUDE                	= "PARSER_INCLUDE";
+  public static final String USEROPTION__CPP_TOKEN_MANAGER_INCLUDE         	= "TOKEN_MANAGER_INCLUDE";
   
-  public static final String USEROPTION__CPP_TOKEN_INCLUDES                = "TOKEN_INCLUDES";
-  public static final String USEROPTION__CPP_PARSER_INCLUDES               = "PARSER_INCLUDES";
-  public static final String USEROPTION__CPP_TOKEN_MANAGER_INCLUDES        = "TOKEN_MANAGER_INCLUDES";
+  public static final String USEROPTION__CPP_TOKEN_INCLUDES                	= "TOKEN_INCLUDES";
+  public static final String USEROPTION__CPP_PARSER_INCLUDES               	= "PARSER_INCLUDES";
+  public static final String USEROPTION__CPP_TOKEN_MANAGER_INCLUDES        	= "TOKEN_MANAGER_INCLUDES";
 
-  public static final String USEROPTION__USER_TOKEN_MANAGER                = "USER_TOKEN_MANAGER";
-  public static final String USEROPTION__CPP_USER_TOKEN_CONSTANT           = "USER_TOKEN_CONSTANT";
-  public static final String USEROPTION__CPP_USER_TOKEN_CONSTANT_NAMESPACE = "USER_TOKEN_CONSTANT_NAMESPACE";
+  public static final String USEROPTION__USER_TOKEN_MANAGER                	= "USER_TOKEN_MANAGER";
+  public static final String USEROPTION__CPP_USER_TOKEN_CONSTANT_INCLUDE   	= "USER_TOKEN_CONSTANT_INCLUDE";
+  public static final String USEROPTION__CPP_USER_TOKEN_NAME 			  	= "USER_TOKEN_NAME";
+  public static final String USEROPTION__CPP_USER_TOKEN_NAMESPACE			= "USER_TOKEN_NAMESPACE";
+  public static final String USEROPTION__CPP_USER_TOKEN_INCLUDE				= "USER_TOKEN_INCLUDE";
 
-
+  
   /**
    * 2013/07/22 -- GWT Compliant Output -- no external dependencies on GWT, but
    * generated code adds loose coupling to IO, for 6.1 release, this is opt-in,
@@ -166,9 +168,11 @@ public class Options {
     temp.add(new OptionInfo(Options.USEROPTION__UNICODE_INPUT, OptionType.BOOLEAN, Boolean.FALSE));
     temp.add(new OptionInfo(Options.USEROPTION__IGNORE_CASE, OptionType.BOOLEAN, Boolean.FALSE));
     temp.add(new OptionInfo(Options.USEROPTION__USER_TOKEN_MANAGER, OptionType.BOOLEAN, Boolean.FALSE));
-    temp.add(new OptionInfo(Options.USEROPTION__CPP_USER_TOKEN_CONSTANT, OptionType.STRING, ""));
-    temp.add(new OptionInfo(Options.USEROPTION__CPP_USER_TOKEN_CONSTANT_NAMESPACE, OptionType.STRING, ""));
-
+    temp.add(new OptionInfo(Options.USEROPTION__CPP_USER_TOKEN_CONSTANT_INCLUDE, OptionType.STRING, ""));
+    temp.add(new OptionInfo(Options.USEROPTION__CPP_USER_TOKEN_NAME, OptionType.STRING, ""));
+    temp.add(new OptionInfo(Options.USEROPTION__CPP_USER_TOKEN_NAMESPACE, OptionType.STRING, ""));
+    temp.add(new OptionInfo(Options.USEROPTION__CPP_USER_TOKEN_INCLUDE, OptionType.STRING, ""));
+    
     temp.add(new OptionInfo(Options.USEROPTION__USER_CHAR_STREAM, OptionType.BOOLEAN, Boolean.FALSE));
 
     temp.add(new OptionInfo(Options.USEROPTION__BUILD_PARSER, OptionType.BOOLEAN, Boolean.TRUE));
@@ -659,12 +663,21 @@ public class Options {
 
 
   /**
-   * Find the user token manager constant.
+   * Find the user token manager constant include.
    *
-   * @return The requested user token manager constant.
+   * @return The requested user token manager constant  include.
    */
-  public static String getUserTokenManagerConstant() {
-    return Options.stringValue(Options.USEROPTION__CPP_USER_TOKEN_CONSTANT);
+  public static String getUserTokenManagerConstantInclude() {
+    return Options.stringValue(Options.USEROPTION__CPP_USER_TOKEN_CONSTANT_INCLUDE);
+  }
+
+  /**
+   * Find the user token manager constant include.
+   *
+   * @return The requested user token manager constant  include.
+   */
+  public static String getUserTokenName() {
+    return Options.stringValue(Options.USEROPTION__CPP_USER_TOKEN_NAME);
   }
 
   /**
@@ -672,8 +685,17 @@ public class Options {
    *
    * @return The requested user token manager constant.
    */
-  public static String getUserTokenManagerConstantNamespace() {
-    return Options.stringValue(Options.USEROPTION__CPP_USER_TOKEN_CONSTANT_NAMESPACE);
+  public static String getUserTokenNamespace() {
+    return Options.stringValue(Options.USEROPTION__CPP_USER_TOKEN_NAMESPACE);
+  }
+
+  /**
+   * Find the user token include.
+   *
+   * @return The requested user token include.
+   */
+  public static String getUserTokenIncude() {
+    return Options.stringValue(Options.USEROPTION__CPP_USER_TOKEN_INCLUDE);
   }
 
   /**

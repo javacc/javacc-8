@@ -40,7 +40,7 @@ THE POSSIBILITY OF SUCH DAMAGE.
 	<property name="test-src" value="src/test/java" />
 	<property name="resources-src" value="src/main/resources" />
 	<property name="generated-src" value="src/main/generated-sources" />
-	<property name="core-generated-src" value="${generated-src}/org/javacc/core" />
+	<property name="core-generated-src" value="${generated-src}/org/javacc/parser" />
 	<property name="utils-generated-src" value="${generated-src}/org/javacc/utils" />
 	<property name="jjtree-generated-src" value="${generated-src}/org/javacc/jjtree" />
 	<property name="test-tmp" value="test.tmp" />

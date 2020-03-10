@@ -350,9 +350,17 @@ public class LexGen {
     int[] newLexStateIndices = new int[maxOrdinal];
     StringBuilder tokenMgrDecls = new StringBuilder();
     if ((context.globals().token_mgr_decls != null) && (context.globals().token_mgr_decls.size() > 0)) {
-      // Token t = token_mgr_decls.get(0);
-      for (j = 0; j < context.globals().token_mgr_decls.size(); j++) {
-        tokenMgrDecls.append(context.globals().token_mgr_decls.get(j).image + " ");
+      for (Token token : context.globals().token_mgr_decls) {
+        if(token.specialToken != null) {
+          Token t = token;
+          while(t.specialToken != null)
+            t = t.specialToken;
+          while(t != null) {
+            tokenMgrDecls.append(t.image);
+            t = t.next;
+          }
+        }
+        tokenMgrDecls.append(token.image);
       }
     }
     tokenizerData.setDecls(tokenMgrDecls.toString());
