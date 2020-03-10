@@ -193,6 +193,8 @@
 	<modules>
 		<module>core</module>
 		<module>codegen</module>
+		<module>examples</module>
+		<module>grammars</module>
 	</modules>
 
 
@@ -323,6 +325,7 @@
 			<properties>
 				<sitePluginVersion>3.3</sitePluginVersion>
 			</properties>
+<!-- 
 			<build>
 				<pluginManagement>
 					<plugins>
@@ -347,7 +350,7 @@
 						<configuration>
 									<failIfNoProjects>false</failIfNoProjects>
 									<ignoreFailures>false</ignoreFailures>
-									<skipInvocation>true</skipInvocation>
+									<skipInvocation>false</skipInvocation>
 						</configuration>
 						<executions>
 							<execution>
@@ -361,7 +364,7 @@
 									<settingsFile>examples/settings.xml</settingsFile>
 									<cloneProjectsTo>${project.build.directory}/examples</cloneProjectsTo>
 									<postBuildHookScript>verify.bsh</postBuildHookScript>
-									<localRepositoryPath>${project.build.directory}/local-repo</localRepositoryPath>
+									<localRepositoryPath>local-repo</localRepositoryPath>
 									<debug>false</debug>
 									<streamLogs>true</streamLogs>
 								</configuration>
@@ -382,10 +385,11 @@
 									<streamLogs>true</streamLogs>
 								</configuration>
 							</execution>
-						</executions>
+ 						</executions>
 					</plugin>
 				</plugins>
 			</build>
+ -->
 		</profile>
 	</profiles>
 
