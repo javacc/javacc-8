@@ -193,8 +193,6 @@
 	<modules>
 		<module>core</module>
 		<module>codegen</module>
-		<module>examples</module>
-		<module>grammars</module>
 	</modules>
 
 
