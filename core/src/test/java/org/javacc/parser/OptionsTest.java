@@ -16,7 +16,7 @@ public final class OptionsTest extends TestCase {
     Options.init();
     Context context = new Context();
 
-    assertEquals(52, Options.optionValues.size());
+    assertEquals(53, Options.optionValues.size());
 
     assertEquals(true, Options.getBuildParser());
     assertEquals(true, Options.getBuildTokenManager());
