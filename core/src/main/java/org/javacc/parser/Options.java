@@ -125,8 +125,9 @@ public class Options {
   public static final String USEROPTION__CPP_USER_TOKEN_CONSTANT_INCLUDE   	= "USER_TOKEN_CONSTANT_INCLUDE";
   public static final String USEROPTION__CPP_USER_TOKEN_NAME 			  	= "USER_TOKEN_NAME";
   public static final String USEROPTION__CPP_USER_TOKEN_NAMESPACE			= "USER_TOKEN_NAMESPACE";
+  public static final String USEROPTION__CPP_USER_TOKEN_INCLUDE				= "USER_TOKEN_INCLUDE";
 
-
+  
   /**
    * 2013/07/22 -- GWT Compliant Output -- no external dependencies on GWT, but
    * generated code adds loose coupling to IO, for 6.1 release, this is opt-in,
@@ -170,7 +171,8 @@ public class Options {
     temp.add(new OptionInfo(Options.USEROPTION__CPP_USER_TOKEN_CONSTANT_INCLUDE, OptionType.STRING, ""));
     temp.add(new OptionInfo(Options.USEROPTION__CPP_USER_TOKEN_NAME, OptionType.STRING, ""));
     temp.add(new OptionInfo(Options.USEROPTION__CPP_USER_TOKEN_NAMESPACE, OptionType.STRING, ""));
-
+    temp.add(new OptionInfo(Options.USEROPTION__CPP_USER_TOKEN_INCLUDE, OptionType.STRING, ""));
+    
     temp.add(new OptionInfo(Options.USEROPTION__USER_CHAR_STREAM, OptionType.BOOLEAN, Boolean.FALSE));
 
     temp.add(new OptionInfo(Options.USEROPTION__BUILD_PARSER, OptionType.BOOLEAN, Boolean.TRUE));
@@ -685,6 +687,15 @@ public class Options {
    */
   public static String getUserTokenNamespace() {
     return Options.stringValue(Options.USEROPTION__CPP_USER_TOKEN_NAMESPACE);
+  }
+
+  /**
+   * Find the user token include.
+   *
+   * @return The requested user token include.
+   */
+  public static String getUserTokenIncude() {
+    return Options.stringValue(Options.USEROPTION__CPP_USER_TOKEN_INCLUDE);
   }
 
   /**
