@@ -16,7 +16,6 @@ public final class OptionsTest extends TestCase {
     Options.init();
     Context context = new Context();
 
-    assertEquals(54, Options.optionValues.size());
 
     assertEquals(true, Options.getBuildParser());
     assertEquals(true, Options.getBuildTokenManager());
@@ -43,7 +42,7 @@ public final class OptionsTest extends TestCase {
 
     assertEquals("1.5", Options.getJdkVersion());
     assertEquals(new File("."), Options.getOutputDirectory());
-    assertEquals("", Options.getTokenExtends());
+    assertEquals("", Options.getTokenSuperClass());
     assertEquals("", Options.getTokenFactory());
     assertEquals(System.getProperties().get("file.encoding"), Options.getGrammarEncoding());
 
@@ -100,19 +99,19 @@ public final class OptionsTest extends TestCase {
     Options.init();
     Context context = new Context();
 
-    assertEquals("", Options.getTokenExtends());
-    Options.setCmdLineOption("-TOKEN_EXTENDS=java.lang.Object");
-    assertEquals("java.lang.Object", Options.getTokenExtends());
-    Options.setInputFileOption(null, null, Options.USEROPTION__TOKEN_EXTENDS, "Object", context);
+    assertEquals("", Options.getTokenSuperClass());
+    Options.setCmdLineOption("-TOKEN_SUPER_CLASS=java.lang.Object");
+    assertEquals("java.lang.Object", Options.getTokenSuperClass());
+    Options.setInputFileOption(null, null, Options.USEROPTION__TOKEN_SUPER_CLASS, "Object", context);
     // File option does not override cmd line
-    assertEquals("java.lang.Object", Options.getTokenExtends());
+    assertEquals("java.lang.Object", Options.getTokenSuperClass());
 
     Options.init();
 
-    Options.setInputFileOption(null, null, Options.USEROPTION__TOKEN_EXTENDS, "Object", context);
-    assertEquals("Object", Options.getTokenExtends());
-    Options.setCmdLineOption("-TOKEN_EXTENDS=java.lang.Object");
-    assertEquals("java.lang.Object", Options.getTokenExtends());
+    Options.setInputFileOption(null, null, Options.USEROPTION__TOKEN_SUPER_CLASS, "Object", context);
+    assertEquals("Object", Options.getTokenSuperClass());
+    Options.setCmdLineOption("-TOKEN_SUPER_CLASS=java.lang.Object");
+    assertEquals("java.lang.Object", Options.getTokenSuperClass());
   }
 
   public void testSetNonexistentOption() {
