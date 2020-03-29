@@ -225,8 +225,8 @@ public class Options {
     temp.add(new OptionInfo(Options.USEROPTION__CPP_USER_TOKEN_CONSTANT_INCLUDE, OptionType.STRING, ""));
     temp.add(new OptionInfo(Options.USEROPTION__CPP_USER_TOKEN_TYPE, OptionType.STRING, "Token"));
     temp.add(new OptionInfo(Options.USEROPTION__CPP_USER_TOKEN_NAMESPACE, OptionType.STRING, ""));
-    temp.add(new OptionInfo(Options.USEROPTION__CPP_USER_TOKEN_INCLUDE, OptionType.STRING, "Token.h"));
-    temp.add(new OptionInfo(Options.USEROPTION__CPP_USER_TOKEN_MANAGER_INCLUDE, OptionType.STRING, "TokenManager.h"));
+    temp.add(new OptionInfo(Options.USEROPTION__CPP_USER_TOKEN_INCLUDE, OptionType.STRING, ""));
+    temp.add(new OptionInfo(Options.USEROPTION__CPP_USER_TOKEN_MANAGER_INCLUDE, OptionType.STRING, ""));
 
     temp.add(new OptionInfo(Options.USEROPTION__TOKEN_MANAGER_USES_PARSER, OptionType.BOOLEAN, Boolean.FALSE));
 

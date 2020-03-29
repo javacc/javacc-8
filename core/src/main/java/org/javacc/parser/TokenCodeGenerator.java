@@ -3,8 +3,6 @@ package org.javacc.parser;
 
 public interface TokenCodeGenerator {
 
-  /**
-   * The Token class generator.
-   */
-  boolean generateCodeForToken(CodeGeneratorSettings settings);
+	  boolean generateCodeForToken(CodeGeneratorSettings settings);
+	  boolean generateCodeForDefaultToken(CodeGeneratorSettings settings);
 }
