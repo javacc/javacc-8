@@ -101,29 +101,31 @@ public class Options {
   public static final String USEROPTION__OUTPUT_DIRECTORY                  	= "OUTPUT_DIRECTORY";
   public static final String USEROPTION__KEEP_LINE_COLUMN                  	= "KEEP_LINE_COLUMN";
   public static final String USEROPTION__GRAMMAR_ENCODING                  	= "GRAMMAR_ENCODING";
-  public static final String USEROPTION__TOKEN_FACTORY                     	= "TOKEN_FACTORY";
   public static final String USEROPTION__DEPTH_LIMIT                       	= "DEPTH_LIMIT";
   
-  public static final String USEROPTION__TOKEN_SUPER_CLASS                	= "TOKEN_SUPER_CLASS";
-  public static final String USEROPTION__PARSER_SUPER_CLASS                	= "PARSER_SUPER_CLASS";
-  public static final String USEROPTION__TOKEN_MANAGER_SUPER_CLASS         	= "TOKEN_MANAGER_SUPER_CLASS";
 
   public static final String USEROPTION__NAMESPACE                         	= "NAMESPACE";
   public static final String USEROPTION__IGNORE_ACTIONS                    	= "IGNORE_ACTIONS";
   public static final String USEROPTION__CPP_STOP_ON_FIRST_ERROR           	= "STOP_ON_FIRST_ERROR";
   public static final String USEROPTION__CPP_STACK_LIMIT                   	= "STACK_LIMIT";
 
-  public static final String USEROPTION__CPP_TOKEN_INCLUDE                 	= "TOKEN_INCLUDE";
-  public static final String USEROPTION__CPP_PARSER_INCLUDE                	= "PARSER_INCLUDE";
-  public static final String USEROPTION__CPP_TOKEN_MANAGER_INCLUDE         	= "TOKEN_MANAGER_INCLUDE";
+  public static final String USEROPTION__TOKEN_FACTORY                     	= "TOKEN_FACTORY";
+  public static final String USEROPTION__TOKEN_INCLUDE  	               	= "TOKEN_INCLUDE";
+  public static final String USEROPTION__TOKEN_CLASS	                 	= "TOKEN_CLASS";
+  public static final String USEROPTION__TOKEN_SUPER_CLASS                	= "TOKEN_SUPER_CLASS";
+  public static final String USEROPTION__TOKEN_NAMESPACE         	      	= "TOKEN_NAMESPACE";
   
-  public static final String USEROPTION__CPP_INCLUDE_FOR_TOKEN             	= "INCLUDE_FOR_TOKEN";
-  public static final String USEROPTION__CPP_INCLUDE_FOR_PARSER           	= "INCLUDE_FOR_PARSER";
-  public static final String USEROPTION__CPP_INCLUDE_FOR_TOKEN_MANAGER    	= "INCLUDE_FOR_TOKEN_MANAGER";
-  																				
-  public static final String USEROPTION__CPP_INCLUDES_FOR_TOKEN             = "INCLUDES_FOR_TOKEN";
-  public static final String USEROPTION__CPP_INCLUDES_FOR_PARSER           	= "INCLUDES_FOR_PARSER";
-  public static final String USEROPTION__CPP_INCLUDES_FOR_TOKEN_MANAGER    	= "INCLUDES_FOR_TOKEN_MANAGER";
+  public static final String USEROPTION__PARSER_INCLUDE  	              	= "PARSER_INCLUDE";
+  public static final String USEROPTION__PARSER_CLASS 	                	= "PARSER_CLASS";
+  public static final String USEROPTION__PARSER_SUPER_CLASS                	= "PARSER_SUPER_CLASS";
+  public static final String USEROPTION__PARSER_NAMESPACE	              	= "PARSER_NAMESPACE";
+  
+  public static final String USEROPTION__TOKEN_MANAGER_INCLUDE         		= "TOKEN_MANAGER_INCLUDE";
+  public static final String USEROPTION__TOKEN_MANAGER_SUPER_CLASS         	= "TOKEN_MANAGER_SUPER_CLASS";
+  
+  public static final String USEROPTION__INCLUDE_FOR_TOKEN             		= "INCLUDE_FOR_TOKEN";
+  public static final String USEROPTION__INCLUDE_FOR_PARSER           		= "INCLUDE_FOR_PARSER";
+  public static final String USEROPTION__INCLUDE_FOR_TOKEN_MANAGER    		= "INCLUDE_FOR_TOKEN_MANAGER";
   																				
   public static final String USEROPTION__USER_TOKEN_MANAGER                	= "USER_TOKEN_MANAGER";
   public static final String USEROPTION__CPP_USER_TOKEN_CONSTANT_INCLUDE	= "USER_TOKEN_CONSTANT_INCLUDE";
@@ -208,13 +210,15 @@ public class Options {
     temp.add(new OptionInfo(Options.USEROPTION__PARSER_SUPER_CLASS, OptionType.STRING, null));
     temp.add(new OptionInfo(Options.USEROPTION__TOKEN_MANAGER_SUPER_CLASS, OptionType.STRING, null));
 
-    temp.add(new OptionInfo(Options.USEROPTION__CPP_TOKEN_INCLUDE, OptionType.STRING, null));
-    temp.add(new OptionInfo(Options.USEROPTION__CPP_PARSER_INCLUDE, OptionType.STRING, null));   
-    temp.add(new OptionInfo(Options.USEROPTION__CPP_TOKEN_MANAGER_INCLUDE, OptionType.STRING, null));   
+    temp.add(new OptionInfo(Options.USEROPTION__TOKEN_INCLUDE, OptionType.STRING, "DefaultToken.h"));
+    temp.add(new OptionInfo(Options.USEROPTION__TOKEN_CLASS, OptionType.STRING, "DefaultToken"));
+    temp.add(new OptionInfo(Options.USEROPTION__TOKEN_NAMESPACE, OptionType.STRING, ""));
+    temp.add(new OptionInfo(Options.USEROPTION__PARSER_INCLUDE, OptionType.STRING, null));   
+    temp.add(new OptionInfo(Options.USEROPTION__TOKEN_MANAGER_INCLUDE, OptionType.STRING, null));   
     
-    temp.add(new OptionInfo(Options.USEROPTION__CPP_INCLUDE_FOR_TOKEN, OptionType.STRING, null));
-    temp.add(new OptionInfo(Options.USEROPTION__CPP_INCLUDE_FOR_PARSER, OptionType.STRING, null));   
-    temp.add(new OptionInfo(Options.USEROPTION__CPP_INCLUDE_FOR_TOKEN_MANAGER, OptionType.STRING, null));   
+    temp.add(new OptionInfo(Options.USEROPTION__INCLUDE_FOR_TOKEN, OptionType.STRING, null));
+    temp.add(new OptionInfo(Options.USEROPTION__INCLUDE_FOR_PARSER, OptionType.STRING, null));   
+    temp.add(new OptionInfo(Options.USEROPTION__INCLUDE_FOR_TOKEN_MANAGER, OptionType.STRING, null));   
 /*
  *     
     temp.add(new OptionInfo(Options.USEROPTION__CPP_INCLUDES_FOR_TOKEN, OptionType.STRINGLIST, null));
@@ -762,7 +766,7 @@ public class Options {
    * @return The requested token includes;
    */
   public static String getIncludeForToken() {
-    return Options.stringValue(Options.USEROPTION__CPP_INCLUDE_FOR_TOKEN);
+    return Options.stringValue(Options.USEROPTION__INCLUDE_FOR_TOKEN);
   }
 
   /**
@@ -771,7 +775,7 @@ public class Options {
    * @return The requested parser includes;
    */
   public static String getIncludeForParser() {
-    return Options.stringValue(Options.USEROPTION__CPP_INCLUDE_FOR_PARSER);
+    return Options.stringValue(Options.USEROPTION__INCLUDE_FOR_PARSER);
   }
 
   /**
@@ -780,7 +784,7 @@ public class Options {
    * @return The requested token manager includes;
    */
   public static String getIncludeForTokenManager() {
-    return Options.stringValue(Options.USEROPTION__CPP_INCLUDE_FOR_TOKEN_MANAGER);
+    return Options.stringValue(Options.USEROPTION__INCLUDE_FOR_TOKEN_MANAGER);
   }
 
   /**
@@ -816,16 +820,34 @@ public class Options {
    * @return The requested parser includes;
    */
   public static String getParserInclude() {
-    return Options.stringValue(Options.USEROPTION__CPP_PARSER_INCLUDE);
+    return Options.stringValue(Options.USEROPTION__PARSER_INCLUDE);
   }
 
   /**
    * Find the token include
    *
-   * @return The requested token includes;
+   * @return The requested token include;
    */
   public static String getTokenInclude() {
-    return Options.stringValue(Options.USEROPTION__CPP_TOKEN_INCLUDE);
+    return Options.stringValue(Options.USEROPTION__TOKEN_INCLUDE);
+  }
+
+  /**
+   * Find the token include
+   *
+   * @return The requested token include;
+   */
+  public static String getTokenClass() {
+    return Options.stringValue(Options.USEROPTION__TOKEN_CLASS);
+  }
+
+  /**
+   * Find the token include
+   *
+   * @return The requested token include;
+   */
+  public static String getTokenNamespace() {
+    return Options.stringValue(Options.USEROPTION__TOKEN_NAMESPACE);
   }
 
   /**
@@ -834,7 +856,7 @@ public class Options {
    * @return The requested token manager includes;
    */
   public static String getTokenManagerInclude() {
-    return Options.stringValue(Options.USEROPTION__CPP_TOKEN_MANAGER_INCLUDE);
+    return Options.stringValue(Options.USEROPTION__TOKEN_MANAGER_INCLUDE);
   }
 
   /**
