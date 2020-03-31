@@ -195,7 +195,6 @@ public class Options {
     temp.add(new OptionInfo(Options.USEROPTION__JDK_VERSION, OptionType.STRING, "1.5"));
     temp.add(new OptionInfo(Options.USEROPTION__JAVA_TEMPLATE_TYPE, OptionType.STRING, Options.JAVA_TEMPLATE_TYPE_CLASSIC));
 
-    temp.add(new OptionInfo(Options.USEROPTION__TOKEN_FACTORY, OptionType.STRING, ""));
     temp.add(new OptionInfo(Options.USEROPTION__GRAMMAR_ENCODING, OptionType.STRING, ""));
 
     temp.add(new OptionInfo(Options.USEROPTION__NAMESPACE, OptionType.STRING, ""));
@@ -210,6 +209,7 @@ public class Options {
     temp.add(new OptionInfo(Options.USEROPTION__PARSER_SUPER_CLASS, OptionType.STRING, null));
     temp.add(new OptionInfo(Options.USEROPTION__TOKEN_MANAGER_SUPER_CLASS, OptionType.STRING, null));
 
+    temp.add(new OptionInfo(Options.USEROPTION__TOKEN_FACTORY, OptionType.STRING, ""));
     temp.add(new OptionInfo(Options.USEROPTION__TOKEN_INCLUDE, OptionType.STRING, "DefaultToken.h"));
     temp.add(new OptionInfo(Options.USEROPTION__TOKEN_CLASS, OptionType.STRING, "DefaultToken"));
     temp.add(new OptionInfo(Options.USEROPTION__TOKEN_NAMESPACE, OptionType.STRING, ""));
@@ -219,13 +219,7 @@ public class Options {
     temp.add(new OptionInfo(Options.USEROPTION__INCLUDE_FOR_TOKEN, OptionType.STRING, null));
     temp.add(new OptionInfo(Options.USEROPTION__INCLUDE_FOR_PARSER, OptionType.STRING, null));   
     temp.add(new OptionInfo(Options.USEROPTION__INCLUDE_FOR_TOKEN_MANAGER, OptionType.STRING, null));   
-/*
- *     
-    temp.add(new OptionInfo(Options.USEROPTION__CPP_INCLUDES_FOR_TOKEN, OptionType.STRINGLIST, null));
-    temp.add(new OptionInfo(Options.USEROPTION__CPP_INCLUDES_FOR_PARSER, OptionType.STRINGLIST, null));   
-    temp.add(new OptionInfo(Options.USEROPTION__CPP_INCLUDES_FOR_TOKEN_MANAGER, OptionType.STRINGLIST, null));   
- */
-    
+
     temp.add(new OptionInfo(Options.USEROPTION__CPP_USER_TOKEN_CONSTANT_INCLUDE, OptionType.STRING, ""));
     temp.add(new OptionInfo(Options.USEROPTION__CPP_USER_TOKEN_TYPE, OptionType.STRING, "Token"));
     temp.add(new OptionInfo(Options.USEROPTION__CPP_USER_TOKEN_NAMESPACE, OptionType.STRING, ""));
