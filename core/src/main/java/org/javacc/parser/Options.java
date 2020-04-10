@@ -31,9 +31,6 @@
 
 package org.javacc.parser;
 
-import org.javacc.utils.OptionInfo;
-import org.javacc.utils.OptionType;
-
 import java.io.File;
 import java.util.Arrays;
 import java.util.Collections;
@@ -44,6 +41,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
+
+import org.javacc.utils.OptionInfo;
+import org.javacc.utils.OptionType;
 
 /**
  * A class with static state that stores all option information.
@@ -268,7 +268,7 @@ public class Options {
 
 
   /**
-   * Convenience method to retrieve string options.
+   * Convenience method to retrieve string list options.
    */
   public static List<String> stringListValue(final String option) {
     Object object = Options.optionValues.get(option);
@@ -416,7 +416,8 @@ public class Options {
 
       boolean isLegacy = Options.JAVA_TEMPLATE_TYPE_CLASSIC.equals(templateType);
       Options.optionValues.put(Options.NONUSER_OPTION__LEGACY_EXCEPTION_HANDLING, isLegacy);
-    } else if (nameUpperCase.equalsIgnoreCase(Options.USEROPTION__NAMESPACE)) {
+    } else 
+    if (nameUpperCase.equalsIgnoreCase(Options.USEROPTION__NAMESPACE)) {
       Options.processCPPNamespaceOption((String) value);
     }
   }
@@ -1009,20 +1010,26 @@ public class Options {
     }
   }
 
+  public static Pair<String,String> getOpenCloseNamespace(String namespace) {
+	  Pair<String,String> pair = null;
+	    if (namespace.length() > 0) {
+	      StringTokenizer st = new StringTokenizer(namespace, "::");
+	      String opening = st.nextToken() + " {";
+	      String closing = "}";
+	      while (st.hasMoreTokens()) {
+	        opening = opening + "\nnamespace " + st.nextToken() + " {";
+	        closing = closing + "\n}";
+	      }
+	      pair = new Pair<String, String>(opening, closing);
+	    }
+	  return pair;
+  }
   private static void processCPPNamespaceOption(String optionValue) {
-    String ns = optionValue;
-    if (ns.length() > 0) {
-      // We also need to split it.
-      StringTokenizer st = new StringTokenizer(ns, "::");
-      String expanded_ns = st.nextToken() + " {";
-      String ns_close = "}";
-      while (st.hasMoreTokens()) {
-        expanded_ns = expanded_ns + "\nnamespace " + st.nextToken() + " {";
-        ns_close = ns_close + "\n}";
-      }
-      Options.optionValues.put(Options.NONUSER_OPTION__NAMESPACE_OPEN, expanded_ns);
+	  Pair<String,String> pair = getOpenCloseNamespace(optionValue);
+	  if (pair != null) {
+      Options.optionValues.put(Options.NONUSER_OPTION__NAMESPACE_OPEN, pair.getFirst());
       Options.optionValues.put(Options.NONUSER_OPTION__HAS_NAMESPACE, Boolean.TRUE);
-      Options.optionValues.put(Options.NONUSER_OPTION__NAMESPACE_CLOSE, ns_close);
+      Options.optionValues.put(Options.NONUSER_OPTION__NAMESPACE_CLOSE, pair.getSecond());
     }
   }
 
