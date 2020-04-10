@@ -198,7 +198,8 @@ public class Options {
     temp.add(new OptionInfo(Options.USEROPTION__GRAMMAR_ENCODING, OptionType.STRING, ""));
 
     temp.add(new OptionInfo(Options.USEROPTION__NAMESPACE, OptionType.STRING, ""));
-
+    temp.add(new OptionInfo(Options.NONUSER_OPTION__HAS_NAMESPACE, OptionType.BOOLEAN, Boolean.FALSE));
+    
     temp.add(new OptionInfo(Options.USEROPTION__IGNORE_ACTIONS, OptionType.BOOLEAN, Boolean.FALSE));
     temp.add(new OptionInfo(Options.USEROPTION__CPP_STOP_ON_FIRST_ERROR, OptionType.BOOLEAN, Boolean.FALSE));
 
@@ -1035,6 +1036,18 @@ public class Options {
    */
   public static String getNamespace() {
     return Options.stringValue(Options.USEROPTION__NAMESPACE);
+  }
+
+  public static boolean hasNamespace() {
+	  return Options.booleanValue(NONUSER_OPTION__HAS_NAMESPACE);
+  }
+  /**
+   * get the c++ namespace.
+   *
+   * @return The requested namespace.
+   */
+  public static String getParserNamespace() {
+    return Options.stringValue(Options.USEROPTION__PARSER_NAMESPACE);
   }
 
   /**
