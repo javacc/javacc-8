@@ -966,12 +966,12 @@ public class Options {
   }
 
   /**
-   * Find the output directory.
+   * get the c++ namespace.
    *
-   * @return The requested output directory.
+   * @return The requested namespace.
    */
-  public static File getNamespace() {
-    return new File(Options.stringValue(Options.USEROPTION__NAMESPACE));
+  public static String getNamespace() {
+    return Options.stringValue(Options.USEROPTION__NAMESPACE);
   }
 
   /**
