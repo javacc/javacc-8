@@ -114,11 +114,10 @@ public class Options {
   public static final String USEROPTION__TOKEN_CLASS	                 	= "TOKEN_CLASS";
   public static final String USEROPTION__TOKEN_SUPER_CLASS                	= "TOKEN_SUPER_CLASS";
   public static final String USEROPTION__TOKEN_NAMESPACE         	      	= "TOKEN_NAMESPACE";
+  public static final String USEROPTION__TOKEN_CONSTANTS         	      	= "TOKEN_CONSTANTS";
   
   public static final String USEROPTION__PARSER_INCLUDE  	              	= "PARSER_INCLUDE";
-  public static final String USEROPTION__PARSER_CLASS 	                	= "PARSER_CLASS";
   public static final String USEROPTION__PARSER_SUPER_CLASS                	= "PARSER_SUPER_CLASS";
-  public static final String USEROPTION__PARSER_NAMESPACE	              	= "PARSER_NAMESPACE";
   
   public static final String USEROPTION__TOKEN_MANAGER_INCLUDE         		= "TOKEN_MANAGER_INCLUDE";
   public static final String USEROPTION__TOKEN_MANAGER_SUPER_CLASS         	= "TOKEN_MANAGER_SUPER_CLASS";
@@ -211,9 +210,11 @@ public class Options {
     temp.add(new OptionInfo(Options.USEROPTION__TOKEN_MANAGER_SUPER_CLASS, OptionType.STRING, null));
 
     temp.add(new OptionInfo(Options.USEROPTION__TOKEN_FACTORY, OptionType.STRING, ""));
-    temp.add(new OptionInfo(Options.USEROPTION__TOKEN_INCLUDE, OptionType.STRING, "DefaultToken.h"));
-    temp.add(new OptionInfo(Options.USEROPTION__TOKEN_CLASS, OptionType.STRING, "DefaultToken"));
+    temp.add(new OptionInfo(Options.USEROPTION__TOKEN_INCLUDE, OptionType.STRING, ""));
+    temp.add(new OptionInfo(Options.USEROPTION__TOKEN_CLASS, OptionType.STRING, ""));
     temp.add(new OptionInfo(Options.USEROPTION__TOKEN_NAMESPACE, OptionType.STRING, ""));
+    temp.add(new OptionInfo(Options.USEROPTION__TOKEN_CONSTANTS, OptionType.STRING, ""));
+    
     temp.add(new OptionInfo(Options.USEROPTION__PARSER_INCLUDE, OptionType.STRING, null));   
     temp.add(new OptionInfo(Options.USEROPTION__TOKEN_MANAGER_INCLUDE, OptionType.STRING, null));   
     
@@ -847,6 +848,15 @@ public class Options {
   }
 
   /**
+   * Find the token constant include
+   *
+   * @return The requested token include;
+   */
+  public static String getTokenConstants() {
+    return Options.stringValue(Options.USEROPTION__TOKEN_CONSTANTS);
+  }
+
+  /**
    * Find the token manager Include
    *
    * @return The requested token manager includes;
@@ -1043,15 +1053,6 @@ public class Options {
 	  return Options.booleanValue(NONUSER_OPTION__HAS_NAMESPACE);
   }
   /**
-   * get the c++ namespace.
-   *
-   * @return The requested namespace.
-   */
-  public static String getParserNamespace() {
-    return Options.stringValue(Options.USEROPTION__PARSER_NAMESPACE);
-  }
-
-  /**
    * Find the output directory.
    *
    * @return The requested output directory.
@@ -1144,4 +1145,16 @@ public class Options {
   static Set<OptionInfo> getUserOptions() {
     return Options.userOptions;
   }
+  
+  static boolean isNullOrEmpty(String string) {
+	  if (string == null)
+		  return true;
+	  return string.isEmpty();
+  }
+  static boolean isNotEmpty(String string) {
+	  if (string == null)
+		  return false;
+	  return !string.isEmpty();
+  }
+
 }
