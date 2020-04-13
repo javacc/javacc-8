@@ -127,12 +127,6 @@ public class Options {
   public static final String USEROPTION__INCLUDE_FOR_TOKEN_MANAGER    		= "INCLUDE_FOR_TOKEN_MANAGER";
   																				
   public static final String USEROPTION__USER_TOKEN_MANAGER                	= "USER_TOKEN_MANAGER";
-  public static final String USEROPTION__CPP_USER_TOKEN_CONSTANT_INCLUDE	= "USER_TOKEN_CONSTANT_INCLUDE";
-  public static final String USEROPTION__CPP_USER_TOKEN_TYPE 		  		= "USER_TOKEN_TYPE";
-  public static final String USEROPTION__CPP_USER_TOKEN_NAMESPACE	  		= "USER_TOKEN_NAMESPACE";
-  public static final String USEROPTION__CPP_USER_TOKEN_INCLUDE				= "USER_TOKEN_INCLUDE";
-  public static final String USEROPTION__CPP_USER_TOKEN_MANAGER_INCLUDE		= "USER_TOKEN_MANAGER_INCLUDE";
-
     
   /**
    * 2013/07/22 -- GWT Compliant Output -- no external dependencies on GWT, but
@@ -221,12 +215,6 @@ public class Options {
     temp.add(new OptionInfo(Options.USEROPTION__INCLUDE_FOR_TOKEN, OptionType.STRING, null));
     temp.add(new OptionInfo(Options.USEROPTION__INCLUDE_FOR_PARSER, OptionType.STRING, null));   
     temp.add(new OptionInfo(Options.USEROPTION__INCLUDE_FOR_TOKEN_MANAGER, OptionType.STRING, null));   
-
-    temp.add(new OptionInfo(Options.USEROPTION__CPP_USER_TOKEN_CONSTANT_INCLUDE, OptionType.STRING, ""));
-    temp.add(new OptionInfo(Options.USEROPTION__CPP_USER_TOKEN_TYPE, OptionType.STRING, "Token"));
-    temp.add(new OptionInfo(Options.USEROPTION__CPP_USER_TOKEN_NAMESPACE, OptionType.STRING, ""));
-    temp.add(new OptionInfo(Options.USEROPTION__CPP_USER_TOKEN_INCLUDE, OptionType.STRING, ""));
-    temp.add(new OptionInfo(Options.USEROPTION__CPP_USER_TOKEN_MANAGER_INCLUDE, OptionType.STRING, ""));
 
     temp.add(new OptionInfo(Options.USEROPTION__TOKEN_MANAGER_USES_PARSER, OptionType.BOOLEAN, Boolean.FALSE));
 
@@ -674,50 +662,6 @@ public class Options {
     return Options.booleanValue(Options.USEROPTION__USER_TOKEN_MANAGER);
   }
 
-
-  /**
-   * Find the user token manager constant include.
-   *
-   * @return The requested user token manager constant  include.
-   */
-  public static String getUserTokenManagerConstantInclude() {
-    return Options.stringValue(Options.USEROPTION__CPP_USER_TOKEN_CONSTANT_INCLUDE);
-  }
-
-  /**
-   * Find the user token manager constant include.
-   *
-   * @return The requested user token manager constant  include.
-   */
-  public static String getUserTokenType() {
-    return Options.stringValue(Options.USEROPTION__CPP_USER_TOKEN_TYPE);
-  }
-  /**
-   * Find the user token manager constant include.
-   *
-   * @return The requested user token manager constant  include.
-   */
-  public static String getUserTokenNamespace() {
-    return Options.stringValue(Options.USEROPTION__CPP_USER_TOKEN_NAMESPACE);
-  }
-  
-  /**
-   * Find the user token include.
-   *
-   * @return The requested user token include.
-   */
-  public static String getUserTokenInclude() {
-    return Options.stringValue(Options.USEROPTION__CPP_USER_TOKEN_INCLUDE);
-  }
-
-  /**
-   * Find the user token include.
-   *
-   * @return The requested user token include.
-   */
-  public static String getUserTokenManagerInclude() {
-    return Options.stringValue(Options.USEROPTION__CPP_USER_TOKEN_MANAGER_INCLUDE);
-  }
 
   /**
    * Find the user charstream value.
