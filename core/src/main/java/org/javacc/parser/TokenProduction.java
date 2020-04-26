@@ -124,4 +124,16 @@ public class TokenProduction {
   public int getColumn() {
     return column;
   }
+  
+  @Override
+  public String toString() {
+	  StringBuffer sb = new StringBuffer();
+	  sb.append(kindImage[kind] );
+	  if (firstToken != null) {
+		  sb.append(":" );
+		  sb.append(firstToken.toString() );
+	  }
+	  return sb.toString();
+  }
+  
 }
