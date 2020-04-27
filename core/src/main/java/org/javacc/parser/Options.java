@@ -122,9 +122,6 @@ public class Options {
   public static final String USEROPTION__TOKEN_MANAGER_INCLUDE         		= "TOKEN_MANAGER_INCLUDE";
   public static final String USEROPTION__TOKEN_MANAGER_SUPER_CLASS         	= "TOKEN_MANAGER_SUPER_CLASS";
   
-  public static final String USEROPTION__INCLUDE_FOR_TOKEN             		= "INCLUDE_FOR_TOKEN";
-  public static final String USEROPTION__INCLUDE_FOR_PARSER           		= "INCLUDE_FOR_PARSER";
-  public static final String USEROPTION__INCLUDE_FOR_TOKEN_MANAGER    		= "INCLUDE_FOR_TOKEN_MANAGER";
   																				
   public static final String USEROPTION__USER_TOKEN_MANAGER                	= "USER_TOKEN_MANAGER";
     
@@ -204,17 +201,13 @@ public class Options {
     temp.add(new OptionInfo(Options.USEROPTION__TOKEN_MANAGER_SUPER_CLASS, OptionType.STRING, null));
 
     temp.add(new OptionInfo(Options.USEROPTION__TOKEN_FACTORY, OptionType.STRING, ""));
-    temp.add(new OptionInfo(Options.USEROPTION__TOKEN_INCLUDE, OptionType.STRING, ""));
     temp.add(new OptionInfo(Options.USEROPTION__TOKEN_CLASS, OptionType.STRING, ""));
     temp.add(new OptionInfo(Options.USEROPTION__TOKEN_NAMESPACE, OptionType.STRING, ""));
     temp.add(new OptionInfo(Options.USEROPTION__TOKEN_CONSTANTS, OptionType.STRING, ""));
     
-    temp.add(new OptionInfo(Options.USEROPTION__PARSER_INCLUDE, OptionType.STRING, null));   
-    temp.add(new OptionInfo(Options.USEROPTION__TOKEN_MANAGER_INCLUDE, OptionType.STRING, null));   
-    
-    temp.add(new OptionInfo(Options.USEROPTION__INCLUDE_FOR_TOKEN, OptionType.STRING, null));
-    temp.add(new OptionInfo(Options.USEROPTION__INCLUDE_FOR_PARSER, OptionType.STRING, null));   
-    temp.add(new OptionInfo(Options.USEROPTION__INCLUDE_FOR_TOKEN_MANAGER, OptionType.STRING, null));   
+    temp.add(new OptionInfo(Options.USEROPTION__TOKEN_INCLUDE, OptionType.STRING, ""));
+    temp.add(new OptionInfo(Options.USEROPTION__PARSER_INCLUDE, OptionType.STRING, ""));   
+    temp.add(new OptionInfo(Options.USEROPTION__TOKEN_MANAGER_INCLUDE, OptionType.STRING, ""));   
 
     temp.add(new OptionInfo(Options.USEROPTION__TOKEN_MANAGER_USES_PARSER, OptionType.BOOLEAN, Boolean.FALSE));
 
@@ -699,33 +692,6 @@ public class Options {
    */
   public static boolean getBuildTokenManager() {
     return Options.booleanValue(Options.USEROPTION__BUILD_TOKEN_MANAGER);
-  }
-
-  /**
-   * Find the token includes
-   *
-   * @return The requested token includes;
-   */
-  public static String getIncludeForToken() {
-    return Options.stringValue(Options.USEROPTION__INCLUDE_FOR_TOKEN);
-  }
-
-  /**
-   * Find the parser includes
-   *
-   * @return The requested parser includes;
-   */
-  public static String getIncludeForParser() {
-    return Options.stringValue(Options.USEROPTION__INCLUDE_FOR_PARSER);
-  }
-
-  /**
-   * Find the token manager includes
-   *
-   * @return The requested token manager includes;
-   */
-  public static String getIncludeForTokenManager() {
-    return Options.stringValue(Options.USEROPTION__INCLUDE_FOR_TOKEN_MANAGER);
   }
 
   /**
