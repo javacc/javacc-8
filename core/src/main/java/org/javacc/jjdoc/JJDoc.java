@@ -105,11 +105,11 @@ public class JJDoc extends JJDocGlobals {
 
   private static void emitTokenProductions(Generator gen, List<TokenProduction> prods, JJDocContext context) {
     gen.tokensStart();
-    // FIXME there are many empty productions here
     for (Iterator<TokenProduction> it = prods.iterator(); it.hasNext();) {
       TokenProduction tp = it.next();
-      JJDoc.emitTopLevelSpecialTokens(tp.firstToken, gen, context);
-
+      // FIXME there are many empty productions here
+      if (tp.firstToken != null)
+    	  JJDoc.emitTopLevelSpecialTokens(tp.firstToken, gen, context);
 
       gen.handleTokenProduction(tp);
     }
@@ -227,7 +227,10 @@ public class JJDoc extends JJDocGlobals {
     }
   }
 
-  private static void emitExpansionLookahead(Lookahead l, Generator gen, JJDocContext context) {}
+  private static void emitExpansionLookahead(Lookahead l, Generator gen, JJDocContext context) {
+    gen.lookAheadStart(l);
+    gen.lookAheadEnd(l); 
+  }
 
   private static void emitExpansionNonTerminal(NonTerminal nt, Generator gen, JJDocContext context) {
     gen.nonTerminalStart(nt);
@@ -254,7 +257,7 @@ public class JJDoc extends JJDocGlobals {
     boolean firstUnit = true;
     for (Iterator<Expansion> it = s.units.iterator(); it.hasNext();) {
       Expansion e = it.next();
-      if ((e instanceof Lookahead) || (e instanceof Action)) {
+      if (e instanceof Action) {
         continue;
       }
       if (!firstUnit) {

@@ -61,7 +61,9 @@ public class JJDocGlobals {
       } else if (context.getBNF()) {
         JJDocGlobals.generator = new BNFGenerator(context);
       } else if (context.getXText()) {
-        JJDocGlobals.generator = new XTextGenerator(context);
+          JJDocGlobals.generator = new XTextGenerator(context);
+      } else if (context.getJCC()) {
+          JJDocGlobals.generator = new JCCGenerator(context);
       } else {
         JJDocGlobals.generator = new HTMLGenerator(context);
       }
@@ -73,7 +75,9 @@ public class JJDocGlobals {
       } else if (context.getBNF()) {
         JJDocGlobals.generator = new BNFGenerator(context);
       } else if (context.getXText()) {
-        JJDocGlobals.generator = new XTextGenerator(context);
+          JJDocGlobals.generator = new XTextGenerator(context);
+      } else if (context.getJCC()) {
+          JJDocGlobals.generator = new JCCGenerator(context);
       } else {
         if (JJDocGlobals.generator instanceof TextGenerator) {
           JJDocGlobals.generator = new HTMLGenerator(context);
