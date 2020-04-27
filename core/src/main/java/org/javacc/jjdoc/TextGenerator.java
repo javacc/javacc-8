@@ -31,6 +31,7 @@ package org.javacc.jjdoc;
 import org.javacc.parser.CppCodeProduction;
 import org.javacc.parser.Expansion;
 import org.javacc.parser.JavaCodeProduction;
+import org.javacc.parser.Lookahead;
 import org.javacc.parser.NonTerminal;
 import org.javacc.parser.NormalProduction;
 import org.javacc.parser.RegularExpression;
@@ -328,6 +329,11 @@ public class TextGenerator implements Generator {
   public void error(String message) {
     System.err.println(message);
   }
+  @Override
+  public void lookAheadStart(Lookahead l) {
+  }
 
-
+  @Override
+  public void lookAheadEnd(Lookahead l) {
+  }
 }

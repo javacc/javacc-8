@@ -14,7 +14,7 @@ public class JJDocContext extends Context {
     Options.optionValues.put("TEXT", Boolean.FALSE);
     Options.optionValues.put("XTEXT", Boolean.FALSE);
     Options.optionValues.put("BNF", Boolean.FALSE);
-
+    Options.optionValues.put("JCC", Boolean.FALSE);
     Options.optionValues.put("OUTPUT_FILE", "");
     Options.optionValues.put("CSS", "");
   }
@@ -49,6 +49,13 @@ public class JJDocContext extends Context {
    */
   public final boolean getBNF() {
     return Options.booleanValue("BNF");
+  }
+
+  /**
+   * Find the BNF value.
+   */
+  public final boolean getJCC() {
+    return Options.booleanValue("JCC");
   }
 
   /**

@@ -32,6 +32,7 @@ package org.javacc.jjdoc;
 import org.javacc.parser.CppCodeProduction;
 import org.javacc.parser.Expansion;
 import org.javacc.parser.JavaCodeProduction;
+import org.javacc.parser.Lookahead;
 import org.javacc.parser.NonTerminal;
 import org.javacc.parser.NormalProduction;
 import org.javacc.parser.RegularExpression;
@@ -162,6 +163,9 @@ public interface Generator {
    * @param nt the NonTerminal being output
    */
   void nonTerminalStart(NonTerminal nt);
+
+  void lookAheadStart(Lookahead l);
+  void lookAheadEnd(Lookahead l);
 
   /**
    * Output end of non-terminal.

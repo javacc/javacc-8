@@ -70,6 +70,7 @@ public final class JJDocMain extends JJDocGlobals {
     JJDocGlobals.info(context, "    ONE_TABLE              (default true)");
     JJDocGlobals.info(context, "    TEXT                   (default false)");
     JJDocGlobals.info(context, "    BNF                    (default false)");
+    JJDocGlobals.info(context, "    JCC                    (default false)");
     JJDocGlobals.info(context, "");
 
     JJDocGlobals.info(context, "");
@@ -81,7 +82,7 @@ public final class JJDocMain extends JJDocGlobals {
     JJDocGlobals.info(context, "    JJDoc generates JavaDoc documentation from JavaCC grammar files.");
     JJDocGlobals.info(context, "");
     JJDocGlobals.info(context, "    For more information, see the online JJDoc documentation at");
-    JJDocGlobals.info(context, "    https://javacc.dev.java.net/doc/JJDoc.html");
+    JJDocGlobals.info(context, "    https://github.com/javacc/doc/JJDoc.html");
   }
 
   /**
