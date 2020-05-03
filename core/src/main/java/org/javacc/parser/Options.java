@@ -109,15 +109,14 @@ public class Options {
   public static final String USEROPTION__CPP_STOP_ON_FIRST_ERROR           	= "STOP_ON_FIRST_ERROR";
   public static final String USEROPTION__CPP_STACK_LIMIT                   	= "STACK_LIMIT";
 
+  public static final String USEROPTION__TOKEN_EXTENDS                     	= "TOKEN_EXTENDS";
   public static final String USEROPTION__TOKEN_FACTORY                     	= "TOKEN_FACTORY";
   public static final String USEROPTION__TOKEN_INCLUDE  	               	= "TOKEN_INCLUDE";
   public static final String USEROPTION__TOKEN_CLASS	                 	= "TOKEN_CLASS";
-  public static final String USEROPTION__TOKEN_SUPER_CLASS                	= "TOKEN_SUPER_CLASS";
   public static final String USEROPTION__TOKEN_NAMESPACE         	      	= "TOKEN_NAMESPACE";
   public static final String USEROPTION__TOKEN_CONSTANTS         	      	= "TOKEN_CONSTANTS";
   
   public static final String USEROPTION__PARSER_INCLUDE  	              	= "PARSER_INCLUDE";
-  public static final String USEROPTION__PARSER_SUPER_CLASS                	= "PARSER_SUPER_CLASS";
   
   public static final String USEROPTION__TOKEN_MANAGER_INCLUDE         		= "TOKEN_MANAGER_INCLUDE";
   public static final String USEROPTION__TOKEN_MANAGER_SUPER_CLASS         	= "TOKEN_MANAGER_SUPER_CLASS";
@@ -196,10 +195,8 @@ public class Options {
     temp.add(new OptionInfo(Options.USEROPTION__DEPTH_LIMIT, OptionType.INTEGER, Integer.valueOf(0)));
     temp.add(new OptionInfo(Options.USEROPTION__CPP_STACK_LIMIT, OptionType.STRING, ""));
 
-    temp.add(new OptionInfo(Options.USEROPTION__TOKEN_SUPER_CLASS, OptionType.STRING, ""));
-    temp.add(new OptionInfo(Options.USEROPTION__PARSER_SUPER_CLASS, OptionType.STRING, null));
-    temp.add(new OptionInfo(Options.USEROPTION__TOKEN_MANAGER_SUPER_CLASS, OptionType.STRING, null));
 
+    temp.add(new OptionInfo(Options.USEROPTION__TOKEN_EXTENDS, OptionType.STRING, ""));
     temp.add(new OptionInfo(Options.USEROPTION__TOKEN_FACTORY, OptionType.STRING, ""));
     temp.add(new OptionInfo(Options.USEROPTION__TOKEN_CLASS, OptionType.STRING, ""));
     temp.add(new OptionInfo(Options.USEROPTION__TOKEN_NAMESPACE, OptionType.STRING, ""));
@@ -923,8 +920,8 @@ public class Options {
    *
    * @return The required base class for Token.
    */
-  public static String getTokenSuperClass() {
-    return Options.stringValue(Options.USEROPTION__TOKEN_SUPER_CLASS);
+  public static String getTokenExtends() {
+    return Options.stringValue(Options.USEROPTION__TOKEN_EXTENDS);
   }
 
   /**
