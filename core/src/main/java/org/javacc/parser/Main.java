@@ -249,10 +249,12 @@ public class Main {
           throw new MetaParseException();
         }
         if (Options.isGenerateBoilerplateCode()) {
-          if ((!codeGenerator.getTokenCodeGenerator(context)
-              .generateCodeForToken(CodeGeneratorSettings.of(Options.getOptions())))
-              || (!codeGenerator.generateHelpers(context, CodeGeneratorSettings.of(Options.getOptions()),
-                  tokenizerData))) {
+        	CodeGeneratorSettings cgs = CodeGeneratorSettings.of(Options.getOptions());
+          if (!codeGenerator.getTokenCodeGenerator(context).generateCodeForToken(cgs) || 
+              !codeGenerator.getTokenCodeGenerator(context).generateCodeForDefaultToken(cgs)  || 
+              !codeGenerator.generateHelpers(context, cgs,  tokenizerData)
+              )
+          {
             context.errors().semantic_error("Could not generate the code for Token or helper classes.");
           }
         }

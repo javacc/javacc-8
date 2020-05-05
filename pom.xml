@@ -246,7 +246,7 @@
 				<plugin>
 					<groupId>com.github.maven-nar</groupId>
 					<artifactId>nar-maven-plugin</artifactId>
-					<version>3.9.1</version>
+					<version>3.9.7</version>
 				</plugin>
 				<plugin>
 					<groupId>org.javacc.plugin</groupId>

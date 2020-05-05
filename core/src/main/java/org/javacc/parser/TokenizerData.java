@@ -101,7 +101,7 @@ public class TokenizerData {
   // Name of lexical state - for debugging.
   public String[] lexStateNames;
 
-  // DEFULAT lexical state index.
+  // DEFAULT lexical state index.
   public int defaultLexState;
 
   public void setParserName(String parserName) {
