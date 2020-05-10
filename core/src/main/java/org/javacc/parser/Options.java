@@ -101,12 +101,14 @@ public class Options {
   public static final String USEROPTION__KEEP_LINE_COLUMN                  	= "KEEP_LINE_COLUMN";
   public static final String USEROPTION__GRAMMAR_ENCODING                  	= "GRAMMAR_ENCODING";
   public static final String USEROPTION__DEPTH_LIMIT                       	= "DEPTH_LIMIT";
+  public static final String USEROPTION__USE_CPP_ARRAY                   	= "USE_CPP_ARRAY";
   
-
+  
   public static final String USEROPTION__NAMESPACE                         	= "NAMESPACE";
   public static final String USEROPTION__IGNORE_ACTIONS                    	= "IGNORE_ACTIONS";
   public static final String USEROPTION__CPP_STOP_ON_FIRST_ERROR           	= "STOP_ON_FIRST_ERROR";
   public static final String USEROPTION__CPP_STACK_LIMIT                   	= "STACK_LIMIT";
+  public static final String USEROPTION__CPP_PARSER_ATTRIBUTE          		= "PARSER_ATTRIBUTE";
 
   public static final String USEROPTION__TOKEN_EXTENDS                     	= "TOKEN_EXTENDS";
   public static final String USEROPTION__TOKEN_FACTORY                     	= "TOKEN_FACTORY";
@@ -193,8 +195,9 @@ public class Options {
 
     temp.add(new OptionInfo(Options.USEROPTION__DEPTH_LIMIT, OptionType.INTEGER, Integer.valueOf(0)));
     temp.add(new OptionInfo(Options.USEROPTION__CPP_STACK_LIMIT, OptionType.STRING, ""));
+    temp.add(new OptionInfo(Options.USEROPTION__CPP_PARSER_ATTRIBUTE, OptionType.STRING, ""));
 
-
+    
     temp.add(new OptionInfo(Options.USEROPTION__TOKEN_EXTENDS, OptionType.STRING, ""));
     temp.add(new OptionInfo(Options.USEROPTION__TOKEN_FACTORY, OptionType.STRING, ""));
     temp.add(new OptionInfo(Options.USEROPTION__TOKEN_CLASS, OptionType.STRING, ""));
@@ -958,6 +961,16 @@ public class Options {
   public static boolean hasNamespace() {
 	  return Options.booleanValue(NONUSER_OPTION__HAS_NAMESPACE);
   }
+
+  /**
+   * get the c++ dll macro.
+   *
+   * @return The requested namespace.
+   */
+  public static String getParserAttribute() {
+    return Options.stringValue(Options.USEROPTION__CPP_PARSER_ATTRIBUTE);
+  }
+  
   /**
    * Find the output directory.
    *
