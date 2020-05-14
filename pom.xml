@@ -246,7 +246,7 @@
 				<plugin>
 					<groupId>com.github.maven-nar</groupId>
 					<artifactId>nar-maven-plugin</artifactId>
-					<version>3.9.7</version>
+					<version>3.10.1</version>
 				</plugin>
 				<plugin>
 					<groupId>org.javacc.plugin</groupId>
@@ -290,7 +290,7 @@
 				<executions>
 					<execution>
 						<configuration>
-							<commandLogLevel>0</commandLogLevel>
+							<commandLogLevel>3</commandLogLevel>
 						</configuration>
 					</execution>
 				</executions>
