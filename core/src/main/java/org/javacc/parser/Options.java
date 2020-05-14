@@ -101,7 +101,6 @@ public class Options {
   public static final String USEROPTION__KEEP_LINE_COLUMN                  	= "KEEP_LINE_COLUMN";
   public static final String USEROPTION__GRAMMAR_ENCODING                  	= "GRAMMAR_ENCODING";
   public static final String USEROPTION__DEPTH_LIMIT                       	= "DEPTH_LIMIT";
-  public static final String USEROPTION__USE_CPP_ARRAY                   	= "USE_CPP_ARRAY";
   
   
   public static final String USEROPTION__NAMESPACE                         	= "NAMESPACE";
@@ -109,6 +108,7 @@ public class Options {
   public static final String USEROPTION__CPP_STOP_ON_FIRST_ERROR           	= "STOP_ON_FIRST_ERROR";
   public static final String USEROPTION__CPP_STACK_LIMIT                   	= "STACK_LIMIT";
   public static final String USEROPTION__CPP_PARSER_ATTRIBUTE          		= "PARSER_ATTRIBUTE";
+  public static final String USEROPTION__CPP_USE_ARRAY                   	= "CPP_USE_ARRAY";
 
   public static final String USEROPTION__TOKEN_EXTENDS                     	= "TOKEN_EXTENDS";
   public static final String USEROPTION__TOKEN_FACTORY                     	= "TOKEN_FACTORY";
@@ -196,6 +196,7 @@ public class Options {
     temp.add(new OptionInfo(Options.USEROPTION__DEPTH_LIMIT, OptionType.INTEGER, Integer.valueOf(0)));
     temp.add(new OptionInfo(Options.USEROPTION__CPP_STACK_LIMIT, OptionType.STRING, ""));
     temp.add(new OptionInfo(Options.USEROPTION__CPP_PARSER_ATTRIBUTE, OptionType.STRING, ""));
+    temp.add(new OptionInfo(Options.USEROPTION__CPP_USE_ARRAY, OptionType.BOOLEAN, false));
 
     
     temp.add(new OptionInfo(Options.USEROPTION__TOKEN_EXTENDS, OptionType.STRING, ""));
@@ -969,6 +970,15 @@ public class Options {
    */
   public static String getParserAttribute() {
     return Options.stringValue(Options.USEROPTION__CPP_PARSER_ATTRIBUTE);
+  }
+  
+  /**
+   * get the use cpp array
+   *
+   * @return The requested namespace.
+   */
+  public static boolean getCppUseArray() {
+    return Options.booleanValue(Options.USEROPTION__CPP_USE_ARRAY);
   }
   
   /**
