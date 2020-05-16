@@ -1,9 +1,12 @@
 setlocal
+set NUMBER=8.0.0
+set VERSION=-SNAPSHOT
+set NAME=%NUMBER%%VERSION%
 set M2=%USERPROFILE%\.m2\repository\org\javacc
-set PARSER=%M2%\parser\8.0.0\parser-8.0.0.jar
-set CPP=%M2%\codegen\cpp\8.0.0\cpp-8.0.0.jar
-set JAVA=%M2%\codegen\java\8.0.0\java-8.0.0.jar
-set CSHARP=%M2%\codegen\csharp\8.0.0\csharp-8.0.0.jar
+set PARSER=%M2%\core\%NAME%\core-%NAME%.jar
+set CPP=%M2%\codegen\cpp\%NAME%\cpp-%NAME%.jar
+set JAVA=%M2%\codegen\java\%NAME%\java-%NAME%.jar
+set CSHARP=%M2%\codegen\csharp\%NAME%\csharp-%NAME%.jar
 set CP=%PARSER%;%JAVA%;%CPP%
 java -cp %CP% javacc %*
 endlocal
