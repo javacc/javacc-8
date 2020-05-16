@@ -196,10 +196,10 @@ class TemplateBuilder {
     // TODO :: Added by Sreenivas on 12 June 2013 for 6.0 release, merged in to
     // 6.1 release for sake of compatibility by cainsley ... This needs to be
     // removed urgently!!!
-    if (text.startsWith("\\#")) { // Hack to escape # for C++
-      text = text.substring(1);
-    }
-    out.println(text);
+//    if (text.startsWith("\\#")) { // Hack to escape # for C++
+//      text = text.substring(1);
+//    }
+    out.println(text.replace("\\#", "#"));
   }
 
   private void process(BufferedReader in, PrintWriter out, boolean ignoring) throws IOException {
