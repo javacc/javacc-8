@@ -63,6 +63,7 @@ public class Options {
   public static final String NONUSER_OPTION__HAS_NAMESPACE                 	= "HAS_NAMESPACE";
   public static final String NONUSER_OPTION__NAMESPACE_OPEN                	= "NAMESPACE_OPEN";
   public static final String NONUSER_OPTION__PARSER_NAME                   	= "PARSER_NAME";
+  public static final String NONUSER_OPTION__PARSER_NAME_UPPER_CASE        	= "PARSER_NAME_UPPER_CASE";
   public static final String NONUSER_OPTION__LEGACY_EXCEPTION_HANDLING     	= "LEGACY_EXCEPTION_HANDLING";
   public static final String NONUSER_OPTION__INTERPRETER                   	= "INTERPRETER_MODE";
   /**
@@ -103,23 +104,23 @@ public class Options {
   public static final String USEROPTION__DEPTH_LIMIT                       	= "DEPTH_LIMIT";
   
   
-  public static final String USEROPTION__NAMESPACE                         	= "NAMESPACE";
+  public static final String USEROPTION__CPP_NAMESPACE                     	= "NAMESPACE";
   public static final String USEROPTION__IGNORE_ACTIONS                    	= "IGNORE_ACTIONS";
   public static final String USEROPTION__CPP_STOP_ON_FIRST_ERROR           	= "STOP_ON_FIRST_ERROR";
   public static final String USEROPTION__CPP_STACK_LIMIT                   	= "STACK_LIMIT";
-  public static final String USEROPTION__CPP_PARSER_ATTRIBUTE          		= "PARSER_ATTRIBUTE";
   public static final String USEROPTION__CPP_USE_ARRAY                   	= "CPP_USE_ARRAY";
+  public static final String USEROPTION__CPP_LIBRARY	                   	= "LIBRARY";
 
   public static final String USEROPTION__TOKEN_EXTENDS                     	= "TOKEN_EXTENDS";
-  public static final String USEROPTION__TOKEN_FACTORY                     	= "TOKEN_FACTORY";
-  public static final String USEROPTION__TOKEN_INCLUDE  	               	= "TOKEN_INCLUDE";
-  public static final String USEROPTION__TOKEN_CLASS	                 	= "TOKEN_CLASS";
-  public static final String USEROPTION__TOKEN_NAMESPACE         	      	= "TOKEN_NAMESPACE";
-  public static final String USEROPTION__TOKEN_CONSTANTS         	      	= "TOKEN_CONSTANTS";
+  public static final String USEROPTION__CPP_TOKEN_FACTORY                 	= "TOKEN_FACTORY";
+  public static final String USEROPTION__CPP_TOKEN_INCLUDE  	           	= "TOKEN_INCLUDE";
+  public static final String USEROPTION__CPP_TOKEN_CLASS	                = "TOKEN_CLASS";
+  public static final String USEROPTION__CPP_TOKEN_NAMESPACE         	    = "TOKEN_NAMESPACE";
+  public static final String USEROPTION__CPP_TOKEN_CONSTANTS         	    = "TOKEN_CONSTANTS";
   
-  public static final String USEROPTION__PARSER_INCLUDE  	              	= "PARSER_INCLUDE";
+  public static final String USEROPTION__CPP_PARSER_INCLUDE  	            = "PARSER_INCLUDE";
   
-  public static final String USEROPTION__TOKEN_MANAGER_INCLUDE         		= "TOKEN_MANAGER_INCLUDE";
+  public static final String USEROPTION__CPP_TOKEN_MANAGER_INCLUDE         	= "TOKEN_MANAGER_INCLUDE";
   public static final String USEROPTION__TOKEN_MANAGER_SUPER_CLASS         	= "TOKEN_MANAGER_SUPER_CLASS";
   
   																				
@@ -187,7 +188,7 @@ public class Options {
 
     temp.add(new OptionInfo(Options.USEROPTION__GRAMMAR_ENCODING, OptionType.STRING, ""));
 
-    temp.add(new OptionInfo(Options.USEROPTION__NAMESPACE, OptionType.STRING, ""));
+    temp.add(new OptionInfo(Options.USEROPTION__CPP_NAMESPACE, OptionType.STRING, ""));
     temp.add(new OptionInfo(Options.NONUSER_OPTION__HAS_NAMESPACE, OptionType.BOOLEAN, Boolean.FALSE));
     
     temp.add(new OptionInfo(Options.USEROPTION__IGNORE_ACTIONS, OptionType.BOOLEAN, Boolean.FALSE));
@@ -195,19 +196,19 @@ public class Options {
 
     temp.add(new OptionInfo(Options.USEROPTION__DEPTH_LIMIT, OptionType.INTEGER, Integer.valueOf(0)));
     temp.add(new OptionInfo(Options.USEROPTION__CPP_STACK_LIMIT, OptionType.STRING, ""));
-    temp.add(new OptionInfo(Options.USEROPTION__CPP_PARSER_ATTRIBUTE, OptionType.STRING, ""));
     temp.add(new OptionInfo(Options.USEROPTION__CPP_USE_ARRAY, OptionType.BOOLEAN, false));
+    temp.add(new OptionInfo(Options.USEROPTION__CPP_LIBRARY, OptionType.STRING, ""));
 
-    
+        
     temp.add(new OptionInfo(Options.USEROPTION__TOKEN_EXTENDS, OptionType.STRING, ""));
-    temp.add(new OptionInfo(Options.USEROPTION__TOKEN_FACTORY, OptionType.STRING, ""));
-    temp.add(new OptionInfo(Options.USEROPTION__TOKEN_CLASS, OptionType.STRING, ""));
-    temp.add(new OptionInfo(Options.USEROPTION__TOKEN_NAMESPACE, OptionType.STRING, ""));
-    temp.add(new OptionInfo(Options.USEROPTION__TOKEN_CONSTANTS, OptionType.STRING, ""));
+    temp.add(new OptionInfo(Options.USEROPTION__CPP_TOKEN_FACTORY, OptionType.STRING, ""));
+    temp.add(new OptionInfo(Options.USEROPTION__CPP_TOKEN_CLASS, OptionType.STRING, ""));
+    temp.add(new OptionInfo(Options.USEROPTION__CPP_TOKEN_NAMESPACE, OptionType.STRING, ""));
+    temp.add(new OptionInfo(Options.USEROPTION__CPP_TOKEN_CONSTANTS, OptionType.STRING, ""));
     
-    temp.add(new OptionInfo(Options.USEROPTION__TOKEN_INCLUDE, OptionType.STRING, ""));
-    temp.add(new OptionInfo(Options.USEROPTION__PARSER_INCLUDE, OptionType.STRING, ""));   
-    temp.add(new OptionInfo(Options.USEROPTION__TOKEN_MANAGER_INCLUDE, OptionType.STRING, ""));   
+    temp.add(new OptionInfo(Options.USEROPTION__CPP_TOKEN_INCLUDE, OptionType.STRING, ""));
+    temp.add(new OptionInfo(Options.USEROPTION__CPP_PARSER_INCLUDE, OptionType.STRING, ""));   
+    temp.add(new OptionInfo(Options.USEROPTION__CPP_TOKEN_MANAGER_INCLUDE, OptionType.STRING, ""));   
 
     temp.add(new OptionInfo(Options.USEROPTION__TOKEN_MANAGER_USES_PARSER, OptionType.BOOLEAN, Boolean.FALSE));
 
@@ -410,7 +411,7 @@ public class Options {
       boolean isLegacy = Options.JAVA_TEMPLATE_TYPE_CLASSIC.equals(templateType);
       Options.optionValues.put(Options.NONUSER_OPTION__LEGACY_EXCEPTION_HANDLING, isLegacy);
     } else 
-    if (nameUpperCase.equalsIgnoreCase(Options.USEROPTION__NAMESPACE)) {
+    if (nameUpperCase.equalsIgnoreCase(Options.USEROPTION__CPP_NAMESPACE)) {
       Options.processCPPNamespaceOption((String) value);
     }
   }
@@ -512,7 +513,7 @@ public class Options {
 
     Options.optionValues.put(name, Val);
     Options.cmdLineSetting.add(name);
-    if (name.equalsIgnoreCase(Options.USEROPTION__NAMESPACE)) {
+    if (name.equalsIgnoreCase(Options.USEROPTION__CPP_NAMESPACE)) {
       Options.processCPPNamespaceOption((String) Val);
     }
   }
@@ -727,7 +728,7 @@ public class Options {
    * @return The requested parser includes;
    */
   public static String getParserInclude() {
-    return Options.stringValue(Options.USEROPTION__PARSER_INCLUDE);
+    return Options.stringValue(Options.USEROPTION__CPP_PARSER_INCLUDE);
   }
 
   /**
@@ -736,7 +737,7 @@ public class Options {
    * @return The requested token include;
    */
   public static String getTokenInclude() {
-    return Options.stringValue(Options.USEROPTION__TOKEN_INCLUDE);
+    return Options.stringValue(Options.USEROPTION__CPP_TOKEN_INCLUDE);
   }
 
   /**
@@ -745,7 +746,7 @@ public class Options {
    * @return The requested token include;
    */
   public static String getTokenClass() {
-    return Options.stringValue(Options.USEROPTION__TOKEN_CLASS);
+    return Options.stringValue(Options.USEROPTION__CPP_TOKEN_CLASS);
   }
 
   /**
@@ -754,7 +755,7 @@ public class Options {
    * @return The requested token include;
    */
   public static String getTokenNamespace() {
-    return Options.stringValue(Options.USEROPTION__TOKEN_NAMESPACE);
+    return Options.stringValue(Options.USEROPTION__CPP_TOKEN_NAMESPACE);
   }
 
   /**
@@ -763,7 +764,7 @@ public class Options {
    * @return The requested token include;
    */
   public static String getTokenConstants() {
-    return Options.stringValue(Options.USEROPTION__TOKEN_CONSTANTS);
+    return Options.stringValue(Options.USEROPTION__CPP_TOKEN_CONSTANTS);
   }
 
   /**
@@ -772,7 +773,7 @@ public class Options {
    * @return The requested token manager includes;
    */
   public static String getTokenManagerInclude() {
-    return Options.stringValue(Options.USEROPTION__TOKEN_MANAGER_INCLUDE);
+    return Options.stringValue(Options.USEROPTION__CPP_TOKEN_MANAGER_INCLUDE);
   }
 
   /**
@@ -933,7 +934,7 @@ public class Options {
    * @return The required factory class for Token.
    */
   public static String getTokenFactory() {
-    return Options.stringValue(Options.USEROPTION__TOKEN_FACTORY);
+    return Options.stringValue(Options.USEROPTION__CPP_TOKEN_FACTORY);
   }
 
   /**
@@ -950,42 +951,29 @@ public class Options {
     }
   }
 
-  /**
-   * get the c++ namespace.
-   *
-   * @return The requested namespace.
-   */
   public static String getNamespace() {
-    return Options.stringValue(Options.USEROPTION__NAMESPACE);
+    return Options.stringValue(Options.USEROPTION__CPP_NAMESPACE);
   }
 
   public static boolean hasNamespace() {
 	  return Options.booleanValue(NONUSER_OPTION__HAS_NAMESPACE);
   }
 
-  /**
-   * get the c++ dll macro.
-   *
-   * @return The requested namespace.
-   */
-  public static String getParserAttribute() {
-    return Options.stringValue(Options.USEROPTION__CPP_PARSER_ATTRIBUTE);
-  }
-  
-  /**
-   * get the use cpp array
-   *
-   * @return The requested namespace.
-   */
   public static boolean getCppUseArray() {
     return Options.booleanValue(Options.USEROPTION__CPP_USE_ARRAY);
   }
   
-  /**
-   * Find the output directory.
-   *
-   * @return The requested output directory.
-   */
+  public static String getLibrary() {
+    return Options.stringValue(Options.USEROPTION__CPP_LIBRARY);
+  }
+	  
+//  public static boolean isBinaryExe() {
+//	return Options.stringValue(Options.USEROPTION__CPP_LIBRARY).equalsIgnoreCase("exe");
+//  }
+//  public static boolean isBinaryLib() {
+//	return Options.stringValue(Options.USEROPTION__CPP_LIBRARY).equalsIgnoreCase("lib");
+//  }
+//	  
   public static File getOutputDirectory() {
     return new File(Options.stringValue(Options.USEROPTION__OUTPUT_DIRECTORY));
   }
@@ -1011,8 +999,12 @@ public class Options {
 
   static void setStringOption(String optionName, String optionValue) {
     Options.optionValues.put(optionName, optionValue);
-    if (optionName.equalsIgnoreCase(Options.USEROPTION__NAMESPACE)) {
+    if (optionName.equalsIgnoreCase(Options.USEROPTION__CPP_NAMESPACE)) {
       Options.processCPPNamespaceOption(optionValue);
+    }
+    if (optionName.equalsIgnoreCase(Options.NONUSER_OPTION__PARSER_NAME)) {
+    	Options.setStringOption(Options.NONUSER_OPTION__PARSER_NAME_UPPER_CASE, 
+    		Options.stringValue(Options.NONUSER_OPTION__PARSER_NAME).toUpperCase());
     }
   }
 

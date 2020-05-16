@@ -39,7 +39,7 @@ public class JJTreeContext extends Context {
     Options.optionValues.put(Options.USEROPTION__JDK_VERSION, "1.5");
 
     // Also appears to be a duplicate
-    Options.optionValues.put(Options.USEROPTION__NAMESPACE, "");
+    Options.optionValues.put(Options.USEROPTION__CPP_NAMESPACE, "");
 
     // Also appears to be a duplicate
     Options.optionValues.put(Options.USEROPTION__IGNORE_ACTIONS, Boolean.FALSE);
