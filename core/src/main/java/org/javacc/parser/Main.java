@@ -30,11 +30,12 @@
 
 package org.javacc.parser;
 
+import java.util.Set;
+
+import org.javacc.Version;
 import org.javacc.utils.CodeBuilder;
 import org.javacc.utils.OptionInfo;
 import org.javacc.utils.OptionType;
-
-import java.util.Set;
 
 /**
  * Entry point.
@@ -161,6 +162,11 @@ public class Main {
    */
   public static int mainProgram(String args[]) throws Exception {
 
+	if (args.length == 1 && args[args.length -1].equalsIgnoreCase("-version")) {
+		System.out.println(Version.fullVersion);
+		return 0;
+	}
+	    
     // Initialize all static state
     Context context = Main.reInitAll();
 
