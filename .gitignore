@@ -1,6 +1,6 @@
 **/local-repo/
-*.err
-*.out
+**/*.err
+**/*.out
 
 **/generated-sources/
 .gradle
