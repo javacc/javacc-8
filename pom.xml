@@ -114,6 +114,45 @@
 			<organization>Kampbell</organization>
 		</developer>
 	</developers>
+	<contributors>
+		<contributor>
+			<name>Markus Brigl</name>
+			<email />
+		</contributor>
+		<contributor>
+			<name>Martin Swanson</name>
+		</contributor>
+		<contributor>
+			<name>Anton Rybochkin</name>
+		</contributor>
+		<contributor>
+			<name>Jean-Bernard DAMIANO</name>
+		</contributor>
+		<contributor>
+			<name>Dusan Malusev</name>
+		</contributor>
+		<contributor>
+			<name>Dave Benson</name>
+		</contributor>
+		<contributor>
+			<name>Eric Spishak-Thomas</name>
+		</contributor>
+		<contributor>
+			<name>Roman Leventov</name>
+		</contributor>
+		<contributor>
+			<name>Philip Helger</name>
+		</contributor>
+		<contributor>
+			<name>Eitan Adler</name>
+		</contributor>
+		<contributor>
+			<name>Anton Rybochkin</name>
+		</contributor>
+		<contributor>
+			<name>Marc Mazas</name>
+		</contributor>
+	</contributors>
 
 	<licenses>
 		<license>
@@ -139,13 +178,23 @@
 
 	<properties>
 		<doclint>none</doclint>
+
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
+
 		<javacc.core>8.0.0-SNAPSHOT</javacc.core>
 		<javacc.java>8.0.0-SNAPSHOT</javacc.java>
 		<javacc.cpp>8.0.0-SNAPSHOT</javacc.cpp>
 		<javacc.csharp>8.0.0-SNAPSHOT</javacc.csharp>
+
 		<skipTests>false</skipTests>
+
+		<keystore.path>keystore</keystore.path>
+		<keystore.type>PKCS12</keystore.type>
+		<keystore.alias>release</keystore.alias>
+		<keystore.password>javacc</keystore.password>
+		<keystore.store.password>javacc</keystore.store.password>
+		<keystore.key.password>javacc</keystore.key.password>
 	</properties>
 
 	<dependencyManagement>
@@ -306,6 +355,34 @@
 					</includes>
 					<excludes>
 					</excludes>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-jarsigner-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>verify</phase>
+						<goals>
+							<goal>sign</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<keystore>${keystore.path}</keystore>
+					<storetype>${keystore.type}</storetype>
+					<alias>${keystore.alias}</alias>
+					<storepass>${keystore.store.password}</storepass>
+					<keypass>${keystore.key.password}</keypass>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.sonatype.plugins</groupId>
+				<artifactId>nexus-staging-maven-plugin</artifactId>
+				<extensions>true</extensions>
+				<configuration>
+					<serverId>ossrh</serverId>
+					<nexusUrl>https://oss.sonatype.org/</nexusUrl>
+					<autoReleaseAfterClose>true</autoReleaseAfterClose>
 				</configuration>
 			</plugin>
 		</plugins>
