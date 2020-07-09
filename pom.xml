@@ -195,6 +195,7 @@
 		<keystore.password>javacc</keystore.password>
 		<keystore.store.password>javacc</keystore.store.password>
 		<keystore.key.password>javacc</keystore.key.password>
+		<root>${basedir}</root>
 	</properties>
 
 	<dependencyManagement>
@@ -330,6 +331,11 @@
 -->
 					</dependencies>
 				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-jarsigner-plugin</artifactId>
+					<version>3.0.0</version>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 		<plugins>
@@ -361,7 +367,7 @@
 				<artifactId>maven-jarsigner-plugin</artifactId>
 				<executions>
 					<execution>
-						<phase>verify</phase>
+						<phase>deploy</phase>
 						<goals>
 							<goal>sign</goal>
 						</goals>
@@ -373,6 +379,9 @@
 					<alias>${keystore.alias}</alias>
 					<storepass>${keystore.store.password}</storepass>
 					<keypass>${keystore.key.password}</keypass>
+					<verbose>true</verbose>
+					<removeExistingSignatures>true</removeExistingSignatures>
+					<keystore>${root}/keystore</keystore>
 				</configuration>
 			</plugin>
 			<plugin>
