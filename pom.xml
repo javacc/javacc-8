@@ -10,7 +10,7 @@
 
 	<name>JavaCC</name>
 	<description>JavaCC is a core/scanner generator for java.</description>
-	<url>https://github.com/javacc/javacc</url>
+	<url>https://github.com/javacc/newJavaCC</url>
 	<inceptionYear>1996</inceptionYear>
 	<organization>
 		<name>javacc.org</name>
@@ -18,15 +18,15 @@
 	</organization>
 
 	<scm>
-		<url>git@github.com/javacc/javacc.git</url>
-		<connection>scm:git:git@github.com/javacc/javacc.git</connection>
-		<developerConnection>scm:git:git@github.com/javacc/javacc.git</developerConnection>
+		<url>https://github.com/javacc/newJavaCC</url>
+		<connection>scm:git:https://github.com/javacc/newJavaCC.git</connection>
+		<developerConnection>scm:git:ssh://git@github.com/javacc/newJavaCC.git</developerConnection>
 		<tag>HEAD</tag>
 	</scm>
 
 	<issueManagement>
 		<system>GitHub</system>
-		<url>https://github.com/javacc/javacc/issues</url>
+		<url>https://github.com/javacc/newJavaCC/issues</url>
 	</issueManagement>
 
 	<distributionManagement>
