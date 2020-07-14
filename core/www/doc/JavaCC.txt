@@ -268,93 +268,93 @@ NON-TERMINALS
  * THE JAVACC GRAMMAR SPECIFICATION STARTS HERE *
  ************************************************/                                                   
  
-	javacc_input	:=	javacc_options "PARSER_BEGIN" "(" identifier ")" CompilationUnit "PARSER_END" "(" identifier ")" ( production )+ <EOF>
+	javacc_input	:=	 javacc_options "PARSER_BEGIN" "(" identifier ")" CompilationUnit "PARSER_END" "(" identifier ")" (  production )+ <EOF>
   
  
-	javacc_options	:=	( <IDENTIFIER> "{" ( option_binding )* "}" )?
+	javacc_options	:=	 (  <IDENTIFIER> "{" (  option_binding )* "}" )?
   
  
-	option_binding	:=	( <IDENTIFIER> | "LOOKAHEAD" | "IGNORE_CASE" | "static" | "PARSER_BEGIN" ) "=" ( IntegerLiteral | BooleanLiteral | StringLiteral | StringList ) ";"
+	option_binding	:=	 (  <IDENTIFIER> |  "LOOKAHEAD" |  "IGNORE_CASE" |  "static" |  "PARSER_BEGIN" ) "=" (  IntegerLiteral |  BooleanLiteral |  StringLiteral |  StringList ) ";"
   
  
-	StringList	:=	"(" StringLiteral ( "," StringLiteral )* ")"
+	StringList	:=	 "(" StringLiteral (  "," StringLiteral )* ")"
   
-	production	:=	javacode_production
-		|	cppcode_production
-		|	regular_expr_production
-		|	token_manager_decls
-		|	bnf_production
-  
- 
-	javacode_production	:=	<_JAVACODE> AccessModifier ResultType identifier FormalParameters ( "throws" Name ( "," Name )* )? Block
+	production	:=	 javacode_production
+		|	 cppcode_production
+		|	 regular_expr_production
+		|	 token_manager_decls
+		|	 bnf_production
   
  
-	cppcode_production	:=	"CODE_RULE" AccessModifier ResultType identifier FormalParameters ( "throws" Name ( "," Name )* )? Block
+	javacode_production	:=	 <_JAVACODE> AccessModifier ResultType identifier FormalParameters (  "throws" Name (  "," Name )* )? Block
   
  
-	bnf_production	:=	AccessModifier ResultType identifier FormalParameters ( "throws" Name ( "," Name )* )? ":" Block "{" expansion_choices "}"
+	cppcode_production	:=	 "CODE_RULE" AccessModifier ResultType identifier FormalParameters (  "throws" Name (  "," Name )* )? Block
   
  
-	AccessModifier	:=	( "public" | "protected" | "private" )?
+	bnf_production	:=	 AccessModifier ResultType identifier FormalParameters (  "throws" Name (  "," Name )* )? ":" Block "{" expansion_choices "}"
   
  
-	regular_expr_production	:=	( "<" "*" ">" | "<" <IDENTIFIER> ( "," <IDENTIFIER> )* ">" )? regexpr_kind ( "[" "IGNORE_CASE" "]" )? ":" "{" regexpr_spec ( "|" regexpr_spec )* "}"
+	AccessModifier	:=	 (  "public" |  "protected" |  "private" )?
   
  
-	token_manager_decls	:=	"TOKEN_MGR_DECLS" ":" ( ClassOrInterfaceBody )?
+	regular_expr_production	:=	 (  "<" "*" ">" |  "<" <IDENTIFIER> (  "," <IDENTIFIER> )* ">" )? regexpr_kind (  "[" "IGNORE_CASE" "]" )? ":" "{" regexpr_spec (  "|" regexpr_spec )* "}"
   
  
-	regexpr_kind	:=	"TOKEN"
-		|	"SPECIAL_TOKEN"
-		|	"SKIP"
-		|	"MORE"
+	token_manager_decls	:=	 "TOKEN_MGR_DECLS" ":" (  ClassOrInterfaceBody )?
   
  
-	regexpr_spec	:=	regular_expression ( Block )? ( ":" <IDENTIFIER> )?
+	regexpr_kind	:=	 "TOKEN"
+		|	 "SPECIAL_TOKEN"
+		|	 "SKIP"
+		|	 "MORE"
   
  
-	expansion_choices	:=	expansion ( "|" expansion )*
+	regexpr_spec	:=	 regular_expression (  Block )? (  ":" <IDENTIFIER> )?
   
  
-	expansion	:=	( "LOOKAHEAD" "(" local_lookahead ")" )? ( expansion_unit )+
+	expansion_choices	:=	 expansion (  "|" expansion )*
   
  
-	local_lookahead	:=	( IntegerLiteral )? ( "," )? ( expansion_choices )? ( "," )? ( "{" ( Expression )? "}" )?
+	expansion	:=	 (  "LOOKAHEAD" "(" local_lookahead ")" )? (  expansion_unit )+
   
  
-	expansion_unit	:=	"LOOKAHEAD" "(" local_lookahead ")"
-		|	Block
-		|	"[" expansion_choices "]"
-		|	"try" "{" expansion_choices "}" ( "catch" "(" ")" Block )* ( "finally" Block )?
-		|	( PrimaryExpression "=" )? ( identifier ( TypeArguments )? Arguments | regular_expression ( "." <IDENTIFIER> )? )
-		|	"(" expansion_choices ")" ( "+" | "*" | "?" )?
+	local_lookahead	:=	 (  IntegerLiteral )? (  "," )? (  expansion_choices )? (  "," )? (  "{" (  Expression )? "}" )?
   
  
-	regular_expression	:=	StringLiteral
-		|	<LANGLE: "<"> ( ( "#" )? identifier ":" )? complex_regular_expression_choices <RANGLE: ">">
-		|	"<" identifier ">"
-		|	"<" "EOF" ">"
+	expansion_unit	:=	 "LOOKAHEAD" "(" local_lookahead ")"
+		|	 Block
+		|	 "[" expansion_choices "]"
+		|	 "try" "{" expansion_choices "}" (  "catch" "(" ")" Block )* (  "finally" Block )?
+		|	 (  PrimaryExpression "=" )? (  identifier (  TypeArguments )? Arguments |  regular_expression (  "." <IDENTIFIER> )? )
+		|	 "(" expansion_choices ")" (  "+" |  "*" |  "?" )?
   
  
-	complex_regular_expression_choices	:=	complex_regular_expression ( "|" complex_regular_expression )*
+	regular_expression	:=	 StringLiteral
+		|	 <LANGLE: "<"> (  (  "#" )? identifier ":" )? complex_regular_expression_choices <RANGLE: ">">
+		|	 "<" identifier ">"
+		|	 "<" "EOF" ">"
   
  
-	complex_regular_expression	:=	( complex_regular_expression_unit )+
+	complex_regular_expression_choices	:=	 complex_regular_expression (  "|" complex_regular_expression )*
   
  
-	complex_regular_expression_unit	:=	StringLiteral
-		|	"<" identifier ">"
-		|	character_list
-		|	"(" complex_regular_expression_choices ")" ( "+" | "*" | "?" | "{" IntegerLiteral ( "," ( IntegerLiteral )? )? "}" )?
+	complex_regular_expression	:=	 (  complex_regular_expression_unit )+
   
  
-	character_list	:=	( "~" )? "[" ( character_descriptor ( "," character_descriptor )* )? "]"
+	complex_regular_expression_unit	:=	 StringLiteral
+		|	 "<" identifier ">"
+		|	 character_list
+		|	 "(" complex_regular_expression_choices ")" (  "+" |  "*" |  "?" |  "{" IntegerLiteral (  "," (  IntegerLiteral )? )? "}" )?
   
  
-	character_descriptor	:=	StringLiteral ( "-" StringLiteral )?
+	character_list	:=	 (  "~" )? "[" (  character_descriptor (  "," character_descriptor )* )? "]"
   
  
-	identifier	:=	<IDENTIFIER>
+	character_descriptor	:=	 StringLiteral (  "-" StringLiteral )?
+  
+ 
+	identifier	:=	 <IDENTIFIER>
   
  
 /**********************************************
@@ -371,20 +371,20 @@ NON-TERMINALS
  * includes the reserved words of JavaCC also.
  */    
  
-	JavaIdentifier	:=	( <IDENTIFIER> | "LOOKAHEAD" | "IGNORE_CASE" | "PARSER_BEGIN" | "PARSER_END" | "JAVACODE" | "TOKEN" | "SPECIAL_TOKEN" | "MORE" | "SKIP" | "TOKEN_MGR_DECLS" | "EOF" | "template" | "DCL_PARSER_BEGIN" | "DCL_PARSER_END" | "INC_PARSER_BEGIN" | "INC_PARSER_END" | "DEF_PARSER_BEGIN" | "DEF_PARSER_END" )
+	JavaIdentifier	:=	 (  <IDENTIFIER> |  "LOOKAHEAD" |  "IGNORE_CASE" |  "PARSER_BEGIN" |  "PARSER_END" |  "JAVACODE" |  "TOKEN" |  "SPECIAL_TOKEN" |  "MORE" |  "SKIP" |  "TOKEN_MGR_DECLS" |  "EOF" |  "template" |  "DCL_PARSER_BEGIN" |  "DCL_PARSER_END" |  "INC_PARSER_BEGIN" |  "INC_PARSER_END" |  "DEF_PARSER_BEGIN" |  "DEF_PARSER_END" )
   
  
 /*
  * Program structuring syntax follows.
  */    
  
-	CompilationUnit	:=	( PackageDeclaration )? ( ImportDeclaration )* ( TypeDeclaration )*
+	CompilationUnit	:=	 (  PackageDeclaration )? (  ImportDeclaration )* (  TypeDeclaration )*
   
  
-	PackageDeclaration	:=	Modifiers "package" Name ";"
+	PackageDeclaration	:=	 Modifiers "package" Name ";"
   
  
-	ImportDeclaration	:=	"import" ( "static" )? Name ( "." "*" )? ";"
+	ImportDeclaration	:=	 "import" (  "static" )? Name (  "." "*" )? ";"
   
  
 /*
@@ -393,88 +393,88 @@ NON-TERMINALS
  * better error messages.
  */    
  
-	Modifiers	:=	( ( "public" | "static" | "protected" | "private" | "final" | "abstract" | "synchronized" | "native" | "transient" | "volatile" | "strictfp" | Annotation ) )*
+	Modifiers	:=	 (  (  "public" |  "static" |  "protected" |  "private" |  "final" |  "abstract" |  "synchronized" |  "native" |  "transient" |  "volatile" |  "strictfp" |  Annotation ) )*
   
  
 /*
  * Declaration syntax follows.
  */    
-	TypeDeclaration	:=	";"
-		|	Modifiers ( ClassOrInterfaceDeclaration | EnumDeclaration | AnnotationTypeDeclaration )
+	TypeDeclaration	:=	 ";"
+		|	 Modifiers (  ClassOrInterfaceDeclaration |  EnumDeclaration |  AnnotationTypeDeclaration )
   
  
  
-	ClassOrInterfaceDeclaration	:=	( "class" | "interface" ) JavaIdentifier ( TypeParameters )? ( ExtendsList )? ( ImplementsList )? ClassOrInterfaceBody
+	ClassOrInterfaceDeclaration	:=	 (  "class" |  "interface" ) JavaIdentifier (  TypeParameters )? (  ExtendsList )? (  ImplementsList )? ClassOrInterfaceBody
   
  
-	ExtendsList	:=	"extends" ClassOrInterfaceType ( "," ClassOrInterfaceType )*
+	ExtendsList	:=	 "extends" ClassOrInterfaceType (  "," ClassOrInterfaceType )*
   
  
-	ImplementsList	:=	"implements" ClassOrInterfaceType ( "," ClassOrInterfaceType )*
+	ImplementsList	:=	 "implements" ClassOrInterfaceType (  "," ClassOrInterfaceType )*
   
  
-	EnumDeclaration	:=	"enum" JavaIdentifier ( ImplementsList )? EnumBody
+	EnumDeclaration	:=	 "enum" JavaIdentifier (  ImplementsList )? EnumBody
   
  
-	EnumBody	:=	"{" ( EnumConstant ( "," EnumConstant )* )? ( "," )? ( ";" ( ClassOrInterfaceBodyDeclaration )* )? "}"
+	EnumBody	:=	 "{" (  EnumConstant (  "," EnumConstant )* )? (  "," )? (  ";" (  ClassOrInterfaceBodyDeclaration )* )? "}"
   
  
-	EnumConstant	:=	Modifiers JavaIdentifier ( Arguments )? ( ClassOrInterfaceBody )?
+	EnumConstant	:=	 Modifiers JavaIdentifier (  Arguments )? (  ClassOrInterfaceBody )?
   
  
-	TypeParameters	:=	"<" TypeParameter ( "," TypeParameter )* ">"
+	TypeParameters	:=	 "<" TypeParameter (  "," TypeParameter )* ">"
   
  
-	TypeParameter	:=	JavaIdentifier ( TypeBound )?
+	TypeParameter	:=	 JavaIdentifier (  TypeBound )?
   
  
-	TypeBound	:=	"extends" ClassOrInterfaceType ( "&" ClassOrInterfaceType )*
+	TypeBound	:=	 "extends" ClassOrInterfaceType (  "&" ClassOrInterfaceType )*
   
  
-	ClassOrInterfaceBody	:=	"{" ( ClassOrInterfaceBodyDeclaration )* "}"
+	ClassOrInterfaceBody	:=	 "{" (  ClassOrInterfaceBodyDeclaration )* "}"
   
  
-	ClassOrInterfaceBodyDeclaration	:=	Initializer
-		|	Modifiers ( ClassOrInterfaceDeclaration | EnumDeclaration | ConstructorDeclaration | FieldDeclaration | MethodDeclaration )
-		|	";"
+	ClassOrInterfaceBodyDeclaration	:=	 Initializer
+		|	 Modifiers (  ClassOrInterfaceDeclaration |  EnumDeclaration |  ConstructorDeclaration |  FieldDeclaration |  MethodDeclaration )
+		|	 ";"
   
  
-	FieldDeclaration	:=	Type VariableDeclarator ( "," VariableDeclarator )* ";"
+	FieldDeclaration	:=	 Type VariableDeclarator (  "," VariableDeclarator )* ";"
   
  
-	VariableDeclarator	:=	VariableDeclaratorId ( "=" VariableInitializer )?
+	VariableDeclarator	:=	 VariableDeclaratorId (  "=" VariableInitializer )?
   
  
-	VariableDeclaratorId	:=	JavaIdentifier ( "[" "]" )*
+	VariableDeclaratorId	:=	 JavaIdentifier (  "[" "]" )*
   
  
-	VariableInitializer	:=	ArrayInitializer
-		|	Expression
+	VariableInitializer	:=	 ArrayInitializer
+		|	 Expression
   
  
-	ArrayInitializer	:=	"{" ( VariableInitializer ( "," VariableInitializer )* )? ( "," )? "}"
+	ArrayInitializer	:=	 "{" (  VariableInitializer (  "," VariableInitializer )* )? (  "," )? "}"
   
  
-	MethodDeclaration	:=	( TypeParameters )? ResultType MethodDeclarator ( "throws" NameList )? ( Block | ";" )
+	MethodDeclaration	:=	 (  TypeParameters )? ResultType MethodDeclarator (  "throws" NameList )? (  Block |  ";" )
   
  
-	MethodDeclarator	:=	JavaIdentifier FormalParameters ( "[" "]" )*
+	MethodDeclarator	:=	 JavaIdentifier FormalParameters (  "[" "]" )*
   
  
-	FormalParameters	:=	"(" ( FormalParameter ( "," FormalParameter )* )? ")"
+	FormalParameters	:=	 "(" (  FormalParameter (  "," FormalParameter )* )? ")"
   
  
-	FormalParameter	:=	Modifiers Type ( ( "&" | "*" ) | "..." )? VariableDeclaratorId
+	FormalParameter	:=	 Modifiers Type (  (  "&" |  "*" ) |  "..." )? VariableDeclaratorId
   
  
-	ConstructorDeclaration	:=	( TypeParameters )? JavaIdentifier FormalParameters ( "throws" NameList )? "{" ( ExplicitConstructorInvocation )? ( BlockStatement )* "}"
+	ConstructorDeclaration	:=	 (  TypeParameters )? JavaIdentifier FormalParameters (  "throws" NameList )? "{" (  ExplicitConstructorInvocation )? (  BlockStatement )* "}"
   
  
-	ExplicitConstructorInvocation	:=	"this" Arguments ";"
-		|	( PrimaryExpression "." )? "super" Arguments ";"
+	ExplicitConstructorInvocation	:=	 "this" Arguments ";"
+		|	 (  PrimaryExpression "." )? "super" Arguments ";"
   
  
-	Initializer	:=	( "static" )? Block
+	Initializer	:=	 (  "static" )? Block
   
  
  
@@ -482,56 +482,56 @@ NON-TERMINALS
  * Type, name and expression syntax follows.
  */    
  
-	Type	:=	( "const" )? ( ReferenceType | PrimitiveType )
+	Type	:=	 (  "const" )? (  ReferenceType |  PrimitiveType )
   
  
-	ReferenceType	:=	PrimitiveType ( "[" "]" )+
-		|	( ( Template )? ClassOrInterfaceType ) ( "[" "]" )*
+	ReferenceType	:=	 PrimitiveType (  "[" "]" )+
+		|	 (  (  Template )? ClassOrInterfaceType ) (  "[" "]" )*
   
  
-	Template	:=	"template" "<" TemplateBase ( "," TemplateBase )* ">"
+	Template	:=	 "template" "<" TemplateBase (  "," TemplateBase )* ">"
   
  
-	TemplateBase	:=	TemplatePack ( "..." )? <IDENTIFIER>
+	TemplateBase	:=	 TemplatePack (  "..." )? <IDENTIFIER>
   
  
-	TemplatePack	:=	( "class" | "typename" )
+	TemplatePack	:=	 (  "class" |  "typename" )
   
  
-	ClassOrInterfaceType	:=	( "::" )? <IDENTIFIER> ( TypeArguments )? ( ( "." | "::" ) <IDENTIFIER> ( TypeArguments )? )*
+	ClassOrInterfaceType	:=	 (  "::" )? <IDENTIFIER> (  TypeArguments )? (  (  "." |  "::" ) <IDENTIFIER> (  TypeArguments )? )*
   
  
-	TypeArguments	:=	"<" ( TypeArgument ( "," TypeArgument ( "..." )? )* )? ">"
+	TypeArguments	:=	 "<" (  TypeArgument (  "," TypeArgument (  "..." )? )* )? ">"
   
  
-	TypeArgument	:=	ReferenceType
-		|	"?" ( WildcardBounds )?
+	TypeArgument	:=	 ReferenceType
+		|	 "?" (  WildcardBounds )?
   
  
-	WildcardBounds	:=	"extends" ReferenceType
-		|	"super" ReferenceType
-  
- 
- 
-	PrimitiveType	:=	"boolean"
-		|	"char"
-		|	"byte"
-		|	"short"
-		|	"int"
-		|	"long"
-		|	"float"
-		|	"double"
+	WildcardBounds	:=	 "extends" ReferenceType
+		|	 "super" ReferenceType
   
  
  
-	ResultType	:=	( "void" ( "*" )? | Type ( "*" | "&" )? )
+	PrimitiveType	:=	 "boolean"
+		|	 "char"
+		|	 "byte"
+		|	 "short"
+		|	 "int"
+		|	 "long"
+		|	 "float"
+		|	 "double"
   
  
-	Name	:=	JavaIdentifier ( "." JavaIdentifier )*
+ 
+	ResultType	:=	 (  "void" (  "*" )? |  Type (  "*" |  "&" )? )
+  
+ 
+	Name	:=	 JavaIdentifier (  "." JavaIdentifier )*
   
  
  
-	NameList	:=	Name ( "," Name )*
+	NameList	:=	 Name (  "," Name )*
   
  
  
@@ -539,152 +539,152 @@ NON-TERMINALS
  * Expression syntax follows.
  */    
  
-	Expression	:=	ConditionalExpression ( AssignmentOperator Expression )?
+	Expression	:=	 ConditionalExpression (  AssignmentOperator Expression )?
   
  
  
-	AssignmentOperator	:=	"="
-		|	"*="
-		|	"/="
-		|	"%="
-		|	"+="
-		|	"-="
-		|	"<<="
-		|	">>="
-		|	">>>="
-		|	"&="
-		|	"^="
-		|	"|="
+	AssignmentOperator	:=	 "="
+		|	 "*="
+		|	 "/="
+		|	 "%="
+		|	 "+="
+		|	 "-="
+		|	 "<<="
+		|	 ">>="
+		|	 ">>>="
+		|	 "&="
+		|	 "^="
+		|	 "|="
   
  
-	ConditionalExpression	:=	ConditionalOrExpression ( "?" Expression ":" Expression )?
+	ConditionalExpression	:=	 ConditionalOrExpression (  "?" Expression ":" Expression )?
   
  
-	ConditionalOrExpression	:=	ConditionalAndExpression ( "||" ConditionalAndExpression )*
+	ConditionalOrExpression	:=	 ConditionalAndExpression (  "||" ConditionalAndExpression )*
   
  
-	ConditionalAndExpression	:=	InclusiveOrExpression ( "&&" InclusiveOrExpression )*
+	ConditionalAndExpression	:=	 InclusiveOrExpression (  "&&" InclusiveOrExpression )*
   
  
-	InclusiveOrExpression	:=	ExclusiveOrExpression ( "|" ExclusiveOrExpression )*
+	InclusiveOrExpression	:=	 ExclusiveOrExpression (  "|" ExclusiveOrExpression )*
   
  
-	ExclusiveOrExpression	:=	AndExpression ( "^" AndExpression )*
+	ExclusiveOrExpression	:=	 AndExpression (  "^" AndExpression )*
   
  
-	AndExpression	:=	EqualityExpression ( "&" EqualityExpression )*
+	AndExpression	:=	 EqualityExpression (  "&" EqualityExpression )*
   
  
-	EqualityExpression	:=	InstanceOfExpression ( ( "==" | "!=" ) InstanceOfExpression )*
+	EqualityExpression	:=	 InstanceOfExpression (  (  "==" |  "!=" ) InstanceOfExpression )*
   
  
-	InstanceOfExpression	:=	RelationalExpression ( "instanceof" Type )?
+	InstanceOfExpression	:=	 RelationalExpression (  "instanceof" Type )?
   
  
-	RelationalExpression	:=	ShiftExpression ( ( "<" | ">" | "<=" | ">=" ) ShiftExpression )*
+	RelationalExpression	:=	 ShiftExpression (  (  "<" |  ">" |  "<=" |  ">=" ) ShiftExpression )*
   
  
-	ShiftExpression	:=	AdditiveExpression ( ( "<<" | RSIGNEDSHIFT | RUNSIGNEDSHIFT ) AdditiveExpression )*
+	ShiftExpression	:=	 AdditiveExpression (  (  "<<" |  RSIGNEDSHIFT |  RUNSIGNEDSHIFT ) AdditiveExpression )*
   
  
-	AdditiveExpression	:=	MultiplicativeExpression ( ( "+" | "-" ) MultiplicativeExpression )*
+	AdditiveExpression	:=	 MultiplicativeExpression (  (  "+" |  "-" ) MultiplicativeExpression )*
   
  
-	MultiplicativeExpression	:=	UnaryExpression ( ( "*" | "/" | "%" ) UnaryExpression )*
+	MultiplicativeExpression	:=	 UnaryExpression (  (  "*" |  "/" |  "%" ) UnaryExpression )*
   
  
-	UnaryExpression	:=	( "+" | "-" ) UnaryExpression
-		|	PreIncrementExpression
-		|	PreDecrementExpression
-		|	UnaryExpressionNotPlusMinus
+	UnaryExpression	:=	 (  "+" |  "-" ) UnaryExpression
+		|	 PreIncrementExpression
+		|	 PreDecrementExpression
+		|	 UnaryExpressionNotPlusMinus
   
  
-	PreIncrementExpression	:=	"++" PrimaryExpression
+	PreIncrementExpression	:=	 "++" PrimaryExpression
   
  
-	PreDecrementExpression	:=	"--" PrimaryExpression
+	PreDecrementExpression	:=	 "--" PrimaryExpression
   
  
-	UnaryExpressionNotPlusMinus	:=	( "~" | "!" ) UnaryExpression
-		|	CastExpression
-		|	PostfixExpression
+	UnaryExpressionNotPlusMinus	:=	 (  "~" |  "!" ) UnaryExpression
+		|	 CastExpression
+		|	 PostfixExpression
   
  
 // This production is to determine lookahead only.  The LOOKAHEAD specifications
 // below are not used, but they are there just to indicate that we know about
 // this.
-	CastLookahead	:=	"(" PrimitiveType
-		|	"(" Type "[" "]"
-		|	"(" Type ")" ( "~" | "!" | "(" | JavaIdentifier | "this" | "super" | "new" | Literal )
+	CastLookahead	:=	 "(" PrimitiveType
+		|	 "(" Type "[" "]"
+		|	 "(" Type ")" (  "~" |  "!" |  "(" |  JavaIdentifier |  "this" |  "super" |  "new" |  Literal )
   
  
-	PostfixExpression	:=	PrimaryExpression ( "++" | "--" )?
+	PostfixExpression	:=	 PrimaryExpression (  "++" |  "--" )?
   
  
-	CastExpression	:=	"(" Type ")" UnaryExpression
-		|	"(" Type ")" UnaryExpressionNotPlusMinus
+	CastExpression	:=	 "(" Type ")" UnaryExpression
+		|	 "(" Type ")" UnaryExpressionNotPlusMinus
   
  
-	PrimaryExpression	:=	PrimaryPrefix ( PrimarySuffix )*
+	PrimaryExpression	:=	 PrimaryPrefix (  PrimarySuffix )*
   
  
-	MemberSelector	:=	"." TypeArguments JavaIdentifier
+	MemberSelector	:=	 "." TypeArguments JavaIdentifier
   
  
-	PrimaryPrefix	:=	Literal
-		|	"this"
-		|	"super" "." JavaIdentifier
-		|	"(" Expression ")"
-		|	AllocationExpression
-		|	ResultType "." "class"
-		|	Name
+	PrimaryPrefix	:=	 Literal
+		|	 "this"
+		|	 "super" "." JavaIdentifier
+		|	 "(" Expression ")"
+		|	 AllocationExpression
+		|	 ResultType "." "class"
+		|	 Name
   
  
-	PrimarySuffix	:=	"." "this"
-		|	"." AllocationExpression
-		|	MemberSelector
-		|	"[" Expression "]"
-		|	"." JavaIdentifier
-		|	Arguments
+	PrimarySuffix	:=	 "." "this"
+		|	 "." AllocationExpression
+		|	 MemberSelector
+		|	 "[" Expression "]"
+		|	 "." JavaIdentifier
+		|	 Arguments
   
  
-	Literal	:=	<INTEGER_LITERAL>
-		|	<FLOATING_POINT_LITERAL>
-		|	<CHARACTER_LITERAL>
-		|	<STRING_LITERAL>
-		|	BooleanLiteral
-		|	NullLiteral
+	Literal	:=	 <INTEGER_LITERAL>
+		|	 <FLOATING_POINT_LITERAL>
+		|	 <CHARACTER_LITERAL>
+		|	 <STRING_LITERAL>
+		|	 BooleanLiteral
+		|	 NullLiteral
   
  
-	IntegerLiteral	:=	<INTEGER_LITERAL>
+	IntegerLiteral	:=	 <INTEGER_LITERAL>
   
  
-	BooleanLiteral	:=	"true"
-		|	"false"
+	BooleanLiteral	:=	 "true"
+		|	 "false"
   
  
-	StringLiteral	:=	<STRING_LITERAL>
+	StringLiteral	:=	 <STRING_LITERAL>
   
  
-	NullLiteral	:=	"null"
+	NullLiteral	:=	 "null"
   
  
-	Arguments	:=	"(" ( ArgumentList )? ")"
+	Arguments	:=	 "(" (  ArgumentList )? ")"
   
  
-	ArgumentList	:=	Expression ( "," Expression )*
+	ArgumentList	:=	 Expression (  "," Expression )*
   
  
-	AllocationExpression	:=	"new" PrimitiveType ArrayDimsAndInits
-		|	"new" ClassOrInterfaceType ( TypeArguments )? ( ArrayDimsAndInits | Arguments ( ClassOrInterfaceBody )? )
+	AllocationExpression	:=	 "new" PrimitiveType ArrayDimsAndInits
+		|	 "new" ClassOrInterfaceType (  TypeArguments )? (  ArrayDimsAndInits |  Arguments (  ClassOrInterfaceBody )? )
   
  
 /*
  * The third LOOKAHEAD specification below is to parse to PrimarySuffix
  * if there is an expression between the "[...]".
  */    
-	ArrayDimsAndInits	:=	( "[" Expression "]" )+ ( "[" "]" )*
-		|	( "[" "]" )+ ArrayInitializer
+	ArrayDimsAndInits	:=	 (  "[" Expression "]" )+ (  "[" "]" )*
+		|	 (  "[" "]" )+ ArrayInitializer
   
  
  
@@ -692,155 +692,155 @@ NON-TERMINALS
  * Statement syntax follows.
  */    
  
-	Statement	:=	LabeledStatement
-		|	AssertStatement
-		|	Block
-		|	EmptyStatement
-		|	StatementExpression ";"
-		|	SwitchStatement
-		|	IfStatement
-		|	WhileStatement
-		|	DoStatement
-		|	ForStatement
-		|	BreakStatement
-		|	ContinueStatement
-		|	ReturnStatement
-		|	ThrowStatement
-		|	SynchronizedStatement
-		|	TryStatement
+	Statement	:=	 LabeledStatement
+		|	 AssertStatement
+		|	 Block
+		|	 EmptyStatement
+		|	 StatementExpression ";"
+		|	 SwitchStatement
+		|	 IfStatement
+		|	 WhileStatement
+		|	 DoStatement
+		|	 ForStatement
+		|	 BreakStatement
+		|	 ContinueStatement
+		|	 ReturnStatement
+		|	 ThrowStatement
+		|	 SynchronizedStatement
+		|	 TryStatement
   
  
-	AssertStatement	:=	"assert" Expression ( ":" Expression )? ";"
+	AssertStatement	:=	 "assert" Expression (  ":" Expression )? ";"
   
  
-	LabeledStatement	:=	JavaIdentifier ":" Statement
+	LabeledStatement	:=	 JavaIdentifier ":" Statement
   
  
-	Block	:=	"{" ( BlockStatement )* "}"
+	Block	:=	 "{" (  BlockStatement )* "}"
   
  
-	BlockStatement	:=	LocalVariableDeclaration ";"
-		|	Statement
-		|	ClassOrInterfaceDeclaration
+	BlockStatement	:=	 LocalVariableDeclaration ";"
+		|	 Statement
+		|	 ClassOrInterfaceDeclaration
   
  
-	LocalVariableDeclaration	:=	Modifiers Type VariableDeclarator ( "," VariableDeclarator )*
+	LocalVariableDeclaration	:=	 Modifiers Type VariableDeclarator (  "," VariableDeclarator )*
   
  
-	EmptyStatement	:=	";"
+	EmptyStatement	:=	 ";"
   
  
-	StatementExpression	:=	PreIncrementExpression
-		|	PreDecrementExpression
-		|	PrimaryExpression ( "++" | "--" | AssignmentOperator Expression )?
+	StatementExpression	:=	 PreIncrementExpression
+		|	 PreDecrementExpression
+		|	 PrimaryExpression (  "++" |  "--" |  AssignmentOperator Expression )?
   
  
-	SwitchStatement	:=	"switch" "(" Expression ")" "{" ( SwitchLabel ( BlockStatement )* )* "}"
+	SwitchStatement	:=	 "switch" "(" Expression ")" "{" (  SwitchLabel (  BlockStatement )* )* "}"
   
  
-	SwitchLabel	:=	"case" Expression ":"
-		|	"default" ":"
+	SwitchLabel	:=	 "case" Expression ":"
+		|	 "default" ":"
   
  
-	IfStatement	:=	"if" "(" Expression ")" Statement ( "else" Statement )?
+	IfStatement	:=	 "if" "(" Expression ")" Statement (  "else" Statement )?
   
  
-	WhileStatement	:=	"while" "(" Expression ")" Statement
+	WhileStatement	:=	 "while" "(" Expression ")" Statement
   
  
-	DoStatement	:=	"do" Statement "while" "(" Expression ")" ";"
+	DoStatement	:=	 "do" Statement "while" "(" Expression ")" ";"
   
  
-	ForStatement	:=	"for" "(" ( Modifiers Type JavaIdentifier ":" Expression | ( ForInit )? ";" ( Expression )? ";" ( ForUpdate )? ) ")" Statement
+	ForStatement	:=	 "for" "(" (  Modifiers Type JavaIdentifier ":" Expression |  (  ForInit )? ";" (  Expression )? ";" (  ForUpdate )? ) ")" Statement
   
  
-	ForInit	:=	LocalVariableDeclaration
-		|	StatementExpressionList
+	ForInit	:=	 LocalVariableDeclaration
+		|	 StatementExpressionList
   
  
-	StatementExpressionList	:=	StatementExpression ( "," StatementExpression )*
+	StatementExpressionList	:=	 StatementExpression (  "," StatementExpression )*
   
  
-	ForUpdate	:=	StatementExpressionList
+	ForUpdate	:=	 StatementExpressionList
   
  
-	BreakStatement	:=	"break" ( JavaIdentifier )? ";"
+	BreakStatement	:=	 "break" (  JavaIdentifier )? ";"
   
  
-	ContinueStatement	:=	"continue" ( JavaIdentifier )? ";"
+	ContinueStatement	:=	 "continue" (  JavaIdentifier )? ";"
   
  
-	ReturnStatement	:=	"return" ( Expression )? ";"
+	ReturnStatement	:=	 "return" (  Expression )? ";"
   
  
-	ThrowStatement	:=	"throw" Expression ";"
+	ThrowStatement	:=	 "throw" Expression ";"
   
  
-	SynchronizedStatement	:=	"synchronized" "(" Expression ")" Block
+	SynchronizedStatement	:=	 "synchronized" "(" Expression ")" Block
   
  
-	ResourceDeclaration	:=	Type VariableDeclaratorId "=" Expression
+	ResourceDeclaration	:=	 Type VariableDeclaratorId "=" Expression
   
  
-	CatchParameter	:=	Modifiers Type ( ( "&" | "*" ) | "..." )? ( "|" Type )* VariableDeclaratorId
+	CatchParameter	:=	 Modifiers Type (  (  "&" |  "*" ) |  "..." )? (  "|" Type )* VariableDeclaratorId
   
  
-	TryStatement	:=	"try" ( "(" ResourceDeclaration ( ";" ResourceDeclaration )* ( ";" )? ")" )? Block ( "catch" "(" CatchParameter ")" Block )* ( "finally" Block )?
+	TryStatement	:=	 "try" (  "(" ResourceDeclaration (  ";" ResourceDeclaration )* (  ";" )? ")" )? Block (  "catch" "(" CatchParameter ")" Block )* (  "finally" Block )?
   
  
 /* We use productions to match >>>, >> and > so that we can keep the
  * type declaration syntax with generics clean
  */    
  
-	RUNSIGNEDSHIFT	:=	( ">" ">" ">" )
+	RUNSIGNEDSHIFT	:=	 (  ">" ">" ">" )
   
  
-	RSIGNEDSHIFT	:=	( ">" ">" )
+	RSIGNEDSHIFT	:=	 (  ">" ">" )
   
  
 /* Annotation syntax follows. */                                 
  
-	Annotation	:=	NormalAnnotation
-		|	SingleMemberAnnotation
-		|	MarkerAnnotation
+	Annotation	:=	 NormalAnnotation
+		|	 SingleMemberAnnotation
+		|	 MarkerAnnotation
   
  
-	NormalAnnotation	:=	"@" Name "(" ( MemberValuePairs )? ")"
+	NormalAnnotation	:=	 "@" Name "(" (  MemberValuePairs )? ")"
   
  
-	MarkerAnnotation	:=	"@" Name
+	MarkerAnnotation	:=	 "@" Name
   
  
-	SingleMemberAnnotation	:=	"@" Name "(" MemberValue ")"
+	SingleMemberAnnotation	:=	 "@" Name "(" MemberValue ")"
   
  
-	MemberValuePairs	:=	MemberValuePair ( "," MemberValuePair )*
+	MemberValuePairs	:=	 MemberValuePair (  "," MemberValuePair )*
   
  
-	MemberValuePair	:=	JavaIdentifier "=" MemberValue
+	MemberValuePair	:=	 JavaIdentifier "=" MemberValue
   
  
-	MemberValue	:=	Annotation
-		|	MemberValueArrayInitializer
-		|	ConditionalExpression
+	MemberValue	:=	 Annotation
+		|	 MemberValueArrayInitializer
+		|	 ConditionalExpression
   
  
-	MemberValueArrayInitializer	:=	"{" MemberValue ( "," MemberValue )* ( "," )? "}"
+	MemberValueArrayInitializer	:=	 "{" MemberValue (  "," MemberValue )* (  "," )? "}"
   
  
  
 /* Annotation Types. */                        
  
-	AnnotationTypeDeclaration	:=	"@" "interface" JavaIdentifier AnnotationTypeBody
+	AnnotationTypeDeclaration	:=	 "@" "interface" JavaIdentifier AnnotationTypeBody
   
  
-	AnnotationTypeBody	:=	"{" ( AnnotationTypeMemberDeclaration )* "}"
+	AnnotationTypeBody	:=	 "{" (  AnnotationTypeMemberDeclaration )* "}"
   
  
-	AnnotationTypeMemberDeclaration	:=	Modifiers ( Type JavaIdentifier "(" ")" ( DefaultValue )? ";" | ClassOrInterfaceDeclaration | EnumDeclaration | AnnotationTypeDeclaration | FieldDeclaration )
-		|	( ";" )
+	AnnotationTypeMemberDeclaration	:=	 Modifiers (  Type JavaIdentifier "(" ")" (  DefaultValue )? ";" |  ClassOrInterfaceDeclaration |  EnumDeclaration |  AnnotationTypeDeclaration |  FieldDeclaration )
+		|	 (  ";" )
   
  
-	DefaultValue	:=	"default" MemberValue
+	DefaultValue	:=	 "default" MemberValue
 
 DOCUMENT END
