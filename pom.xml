@@ -10,7 +10,7 @@
 
 	<name>JavaCC</name>
 	<description>JavaCC is a core/scanner generator for java.</description>
-	<url>https://github.com/javacc/newJavaCC</url>
+	<url>https://github.com/javacc/newjavacc</url>
 	<inceptionYear>1996</inceptionYear>
 	<organization>
 		<name>javacc.org</name>
@@ -18,15 +18,15 @@
 	</organization>
 
 	<scm>
-		<url>https://github.com/javacc/newJavaCC</url>
-		<connection>scm:git:https://github.com/javacc/newJavaCC.git</connection>
-		<developerConnection>scm:git:ssh://git@github.com/javacc/newJavaCC.git</developerConnection>
+		<url>https://github.com/javacc/newjavacc</url>
+		<connection>scm:git:https://github.com/javacc/newjavacc.git</connection>
+		<developerConnection>scm:git:ssh://git@github.com/javacc/newjavacc.git</developerConnection>
 		<tag>HEAD</tag>
 	</scm>
 
 	<issueManagement>
 		<system>GitHub</system>
-		<url>https://github.com/javacc/newJavaCC/issues</url>
+		<url>https://github.com/javacc/newjavacc/issues</url>
 	</issueManagement>
 
 	<distributionManagement>
@@ -117,7 +117,6 @@
 	<contributors>
 		<contributor>
 			<name>Markus Brigl</name>
-			<email />
 		</contributor>
 		<contributor>
 			<name>Martin Swanson</name>
@@ -182,11 +181,6 @@
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 
-		<javacc.core>8.0.0-SNAPSHOT</javacc.core>
-		<javacc.java>8.0.0-SNAPSHOT</javacc.java>
-		<javacc.cpp>8.0.0-SNAPSHOT</javacc.cpp>
-		<javacc.csharp>8.0.0-SNAPSHOT</javacc.csharp>
-
 		<skipTests>false</skipTests>
 
 		<keystore.path>keystore</keystore.path>
@@ -222,8 +216,8 @@
 	<modules>
 		<module>core</module>
 <!-- 
-		<module>codegen</module>
  -->
+		<module>codegen</module>
  	</modules>
 
 
