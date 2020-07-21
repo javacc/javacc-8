@@ -116,7 +116,8 @@ public class Options {
   public static final String USEROPTION__CPP_TOKEN_INCLUDE  	           	= "TOKEN_INCLUDE";
   public static final String USEROPTION__CPP_TOKEN_CLASS	                = "TOKEN_CLASS";
   public static final String USEROPTION__CPP_TOKEN_NAMESPACE         	    = "TOKEN_NAMESPACE";
-  public static final String USEROPTION__CPP_TOKEN_CONSTANTS         	    = "TOKEN_CONSTANTS";
+  public static final String USEROPTION__CPP_TOKEN_CONSTANTS_INCLUDE        = "TOKEN_CONSTANTS_INCLUDE";
+  public static final String USEROPTION__CPP_TOKEN_CONSTANTS_NAMESPACE 	    = "TOKEN_CONSTANTS_NAMESPACE";
   
   public static final String USEROPTION__CPP_PARSER_INCLUDE  	            = "PARSER_INCLUDE";
   
@@ -204,7 +205,8 @@ public class Options {
     temp.add(new OptionInfo(Options.USEROPTION__CPP_TOKEN_FACTORY, OptionType.STRING, ""));
     temp.add(new OptionInfo(Options.USEROPTION__CPP_TOKEN_CLASS, OptionType.STRING, ""));
     temp.add(new OptionInfo(Options.USEROPTION__CPP_TOKEN_NAMESPACE, OptionType.STRING, ""));
-    temp.add(new OptionInfo(Options.USEROPTION__CPP_TOKEN_CONSTANTS, OptionType.STRING, ""));
+    temp.add(new OptionInfo(Options.USEROPTION__CPP_TOKEN_CONSTANTS_INCLUDE, OptionType.STRING, ""));
+    temp.add(new OptionInfo(Options.USEROPTION__CPP_TOKEN_CONSTANTS_NAMESPACE, OptionType.STRING, ""));
     
     temp.add(new OptionInfo(Options.USEROPTION__CPP_TOKEN_INCLUDE, OptionType.STRING, ""));
     temp.add(new OptionInfo(Options.USEROPTION__CPP_PARSER_INCLUDE, OptionType.STRING, ""));   
@@ -759,12 +761,21 @@ public class Options {
   }
 
   /**
-   * Find the token constant include
+   * Find the token constants 
    *
-   * @return The requested token include;
+   * @return The requested token ;
    */
-  public static String getTokenConstants() {
-    return Options.stringValue(Options.USEROPTION__CPP_TOKEN_CONSTANTS);
+  public static String getTokenConstantsInclude() {
+    return Options.stringValue(Options.USEROPTION__CPP_TOKEN_CONSTANTS_INCLUDE);
+  }
+
+  /**
+   * Find the token constants namespace
+   *
+   * @return The requested token namespace;
+   */
+  public static String getTokenConstantsNamespace() {
+    return Options.stringValue(Options.USEROPTION__CPP_TOKEN_CONSTANTS_NAMESPACE);
   }
 
   /**
