@@ -257,7 +257,6 @@ public class Main {
         if (Options.isGenerateBoilerplateCode()) {
         	CodeGeneratorSettings cgs = CodeGeneratorSettings.of(Options.getOptions());
           if (!codeGenerator.getTokenCodeGenerator(context).generateCodeForToken(cgs) || 
-              !codeGenerator.getTokenCodeGenerator(context).generateCodeForDefaultToken(cgs)  || 
               !codeGenerator.generateHelpers(context, cgs,  tokenizerData)
               )
           {
