@@ -8,7 +8,7 @@
   <artifactId>imports</artifactId>
   <packaging>jar</packaging>
   <groupId>org.javacc.tests.cpp</groupId>
-  <name>JavaCC tests C++ test imports</name>
+  <name>JavaCC tests C# test imports</name>
 	<build>
 		<plugins>
 			<plugin>
@@ -39,7 +39,7 @@
 							<goal>javacc</goal>
 						</goals>
 						<configuration>
-							<codeGenerator>C++</codeGenerator>
+							<codeGenerator>C#</codeGenerator>
 							<outputDirectory>target/generated-sources/cpp</outputDirectory>
 						</configuration>
 					</execution>

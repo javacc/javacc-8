@@ -8,5 +8,5 @@
   <groupId>org.javacc.tests.cpp</groupId>
   <artifactId>newToken</artifactId>
   <packaging>pom</packaging>
-  <name>JavaCC tests C++ test newToken</name>
+  <name>JavaCC tests C# test newToken</name>
 </project>

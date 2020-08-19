@@ -8,5 +8,5 @@
   <artifactId>javacodeLA</artifactId>
   <packaging>pom</packaging>
   <groupId>org.javacc.tests.cpp</groupId>
-  <name>JavaCC tests C++ test javacodeLA</name>
+  <name>JavaCC tests C# test javacodeLA</name>
 </project>

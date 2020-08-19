@@ -26,12 +26,12 @@
 				<compilerarg value="-Wall" />
 				<compilerarg value="-fpermissive" />
 				<compilerarg value="-O2" />
-				<compilerarg value="-std=c++11" />
+				<compilerarg value="-std=C#11" />
 			</compiler>
 			
 			<linker id="LinuxLinker" name="g++" libtool="true">
 				<linkerarg value="-g" if="debug" />
-				<libset libs="stdc++" />
+				<libset libs="stdC#" />
 			</linker>
 		</cpptasks:cc>
 		<exec executable="eg1/eg1.exe"/>
@@ -61,12 +61,12 @@
 				<compilerarg value="-Wall" />
 				<compilerarg value="-fpermissive" />
 				<compilerarg value="-O2" />
-				<compilerarg value="-std=c++11" />
+				<compilerarg value="-std=C#11" />
 			</compiler>
 			
 			<linker id="LinuxLinker" name="g++" libtool="true">
 				<linkerarg value="-g" if="debug" />
-				<libset libs="stdc++" />
+				<libset libs="stdC#" />
 			</linker>
 		</cpptasks:cc>
 		<exec executable="eg2/eg2.exe"/>
@@ -96,12 +96,12 @@
 				<compilerarg value="-Wall" />
 				<compilerarg value="-fpermissive" />
 				<compilerarg value="-O2" />
-				<compilerarg value="-std=c++11" />
+				<compilerarg value="-std=C#11" />
 			</compiler>
 			
 			<linker id="LinuxLinker" name="g++" libtool="true">
 				<linkerarg value="-g" if="debug" />
-				<libset libs="stdc++" />
+				<libset libs="stdC#" />
 			</linker>
 		</cpptasks:cc>
 		<exec executable="eg3/eg3.exe"/>
@@ -161,12 +161,12 @@
 				<compilerarg value="-Wall" />
 				<compilerarg value="-fpermissive" />
 				<compilerarg value="-O2" />
-				<compilerarg value="-std=c++11" />
+				<compilerarg value="-std=C#11" />
 			</compiler>
 			
 			<linker id="LinuxLinker" name="g++" libtool="true">
 				<linkerarg value="-g" if="debug" />
-				<libset libs="stdc++" />
+				<libset libs="stdC#" />
 			</linker>
 		</cpptasks:cc>
 		<exec executable="eg4/eg4.exe"/>

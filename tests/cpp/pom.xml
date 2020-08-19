@@ -20,5 +20,5 @@
   	<module>TestTokenManagerUsesParser</module>
   	<module>TestTokenManagerUsesParser2</module>
   </modules>
-  <name>JavaCC tests C++ test</name>
+  <name>JavaCC tests C# test</name>
 </project>

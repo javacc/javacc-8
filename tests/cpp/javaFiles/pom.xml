@@ -8,5 +8,5 @@
   <groupId>org.javacc.tests.cpp</groupId>
   <artifactId>javaFiles</artifactId>
   <packaging>pom</packaging>
-  <name>JavaCC tests C++ test javaFiles</name>
+  <name>JavaCC tests C# test javaFiles</name>
 </project>
