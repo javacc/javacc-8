@@ -414,7 +414,7 @@ public class Options {
       Options.optionValues.put(Options.NONUSER_OPTION__LEGACY_EXCEPTION_HANDLING, isLegacy);
     } else 
     if (nameUpperCase.equalsIgnoreCase(Options.USEROPTION__CPP_NAMESPACE)) {
-      Options.processCPPNamespaceOption((String) value);
+      Options.processNamespaceOption((String) value);
     }
   }
 
@@ -516,7 +516,7 @@ public class Options {
     Options.optionValues.put(name, Val);
     Options.cmdLineSetting.add(name);
     if (name.equalsIgnoreCase(Options.USEROPTION__CPP_NAMESPACE)) {
-      Options.processCPPNamespaceOption((String) Val);
+      Options.processNamespaceOption((String) Val);
     }
   }
 
@@ -1011,7 +1011,7 @@ public class Options {
   static void setStringOption(String optionName, String optionValue) {
     Options.optionValues.put(optionName, optionValue);
     if (optionName.equalsIgnoreCase(Options.USEROPTION__CPP_NAMESPACE)) {
-      Options.processCPPNamespaceOption(optionValue);
+      Options.processNamespaceOption(optionValue);
     }
     if (optionName.equalsIgnoreCase(Options.NONUSER_OPTION__PARSER_NAME)) {
     	Options.setStringOption(Options.NONUSER_OPTION__PARSER_NAME_UPPER_CASE, 
@@ -1033,7 +1033,7 @@ public class Options {
 	    }
 	  return pair;
   }
-  private static void processCPPNamespaceOption(String optionValue) {
+  private static void processNamespaceOption(String optionValue) {
 	  Pair<String,String> pair = getOpenCloseNamespace(optionValue);
 	  if (pair != null) {
       Options.optionValues.put(Options.NONUSER_OPTION__NAMESPACE_OPEN, pair.getFirst());
