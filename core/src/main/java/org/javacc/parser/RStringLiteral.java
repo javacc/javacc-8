@@ -334,7 +334,8 @@ public class RStringLiteral extends RegularExpression {
   static void UpdateStringLiteralData(int generatedNfaStates, LexerContext lexerContext) {
     for (int kind = 0; kind < lexerContext.allImages.length; kind++) {
       if ((lexerContext.allImages[kind] == null) || lexerContext.allImages[kind].equals("")
-          || (lexerContext.lexStates[kind] != lexerContext.lexStateIndex)) {
+          || (lexerContext.lexStates[kind] != lexerContext.lexStateIndex) ||
+          lexerContext.mixed[lexerContext.lexStates[kind]]) {
         continue;
       }
       String s = lexerContext.allImages[kind];
