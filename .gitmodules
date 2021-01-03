@@ -1,4 +1,0 @@
-[submodule "codegen"]
-	path = codegen
-	url = https://github.com/javacc/codegenerator.git
-	branch = master
