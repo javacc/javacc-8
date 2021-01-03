@@ -1,0 +1,65 @@
+#ifndef TYPER_JJH_
+#define TYPER_JJH_
+
+//
+// Ensure that TYPER_DLL is default unless TYPER_STATIC is defined
+//
+#if defined(_WIN32) && defined(_DLL)
+	#if !defined(TYPER_DLL) && !defined(TYPER_STATIC)
+		#define TYPER_DLL
+	#endif
+#endif
+
+#if defined(_MSC_VER)
+	#if defined(TYPER_DLL)
+		#if defined(_DEBUG)
+			#define TYPER_LIB_SUFFIX "d.lib"
+		#else
+			#define TYPER_LIB_SUFFIX ".lib"
+		#endif
+	#elif defined(_DLL)
+		#if defined(_DEBUG)
+			#define TYPER_LIB_SUFFIX "MDd.lib"
+		#else
+			#define TYPER_LIB_SUFFIX "Md.lib"
+		#endif
+	#else
+		#if defined(_DEBUG)
+			#define TYPER_LIB_SUFFIX "MTd.lib"
+		#else
+			#define TYPER_LIB_SUFFIX "Mt.lib"
+		#endif
+	#endif
+#endif
+
+//
+// The following block is the standard way of creating macros which make exporting
+// from a DLL simpler. All files within this DLL are compiled with the TYPER_EXPORTS
+// symbol defined on the command line. this symbol should not be defined on any project
+// that uses this DLL. This way any other project whose source files include this file see
+// TYPER_API functions as being imported from a DLL, wheras this DLL sees symbols
+// defined with this macro as being exported.
+//
+#if defined(_WIN32) && defined(TYPER_DLL)
+	#if defined(TYPER_EXPORTS)
+		#define TYPER_API __declspec(dllexport)
+	#else
+		#define TYPER_API __declspec(dllimport)
+	#endif
+#endif
+
+
+#if !defined(TYPER_API)
+	#define TYPER_API
+#endif
+
+
+//
+// Automatically link TYPER library.
+//
+#if defined(_MSC_VER)
+	#if !defined(TYPER_NO_AUTOMATIC_LIBS) && !defined(TYPER_EXPORTS)
+		#pragma comment(lib, "ASN1Typer" TYPER_LIB_SUFFIX)
+	#endif
+#endif
+#endif

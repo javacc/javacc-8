@@ -1,0 +1,96 @@
+\#ifndef JAVACC_${PARSER_NAME_UPPER_CASE}_TOKEN_MANAGER_H
+\#define JAVACC_${PARSER_NAME_UPPER_CASE}_TOKEN_MANAGER_H
+
+#if LIBRARY
+\#include "ImportExport.h"
+#fi
+\#include "JavaCC.h"
+\#include "CharStream.h"
+#if tokenInclude
+\#include "${tokenInclude}"
+#fi
+\#include "ParserErrorHandler.h"
+\#include "TokenManager.h"
+\#include "${parserName}Constants.h"
+
+
+#if TOKEN_MANAGER_USES_PARSER
+\#include "${parserName}.h"
+#fi
+
+#if NAMESPACE
+namespace ${NAMESPACE_OPEN}
+#fi
+
+#if LIBRARY
+class ${PARSER_NAME_UPPER_CASE}_API ${parserName}TokenManager : public TokenManager
+#else
+class ${parserName}TokenManager : public TokenManager
+#fi
+{
+private:
+  int defaultLexState;
+  int curLexState = ${defaultLexState};
+  int jjmatchedPos;
+  int jjmatchedKind;
+
+  int moveIndex;
+#if CPP_USE_ARRAY
+  Array<${nfaSize}, Array<${charsVectorSize}, unsigned long long>>        jjChars;//[${nfaSize}][${charsVectorSize}];
+#else
+  unsigned long long		jjChars[${nfaSize}][${charsVectorSize}];
+#fi
+  JJString                  jjimage;
+  JJString                  image;
+  int                       jjimageLen;
+  int                       lengthOfMatch;
+  JJChar                    curChar;
+  CharStream*        		input_stream;
+  bool 						delete_eh;
+  TokenManagerErrorHandler* errorHandler;
+
+  int                       jjrounds[${stateSetSize}];
+  int                       jjstateSet[2 * ${stateSetSize}];
+
+public: 
+  ${parserName}TokenManager(CharStream* stream, int lexState = 0);
+  virtual ~${parserName}TokenManager() {}
+
+  Token* getNextToken();
+#if COMMON_TOKEN_ACTION
+  void CommonTokenAction(Token* token);
+#fi
+#if TOKEN_MANAGER_USES_PARSER
+  void   setParser(void* parser);
+
+protected:	
+  ${parserName}*   parser;
+#fi
+protected:
+  bool   moveToNextChar();
+  
+  void   ReInit(CharStream* stream, int lexState = 0);
+  void   SwitchTo(int lexState);
+
+
+private:
+  void   tokenLexicalActions(Token* matchedToken);
+  void   skipLexicalActions(const Token* matchedToken);
+  void   moreLexicalActions();
+
+  int    getStartAndSize(int index, int isCount);
+  int    jjRunStringLiteralMatch();
+
+  int    jjMoveNfa(int startState, int curPos);
+  Token* jjFillToken();
+  
+public:
+  void	 lexicalError();
+  const  TokenManagerErrorHandler*	 getErrorHandler() const;
+};
+
+#if NAMESPACE
+${NAMESPACE_CLOSE}
+#fi
+
+\#endif

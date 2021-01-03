@@ -1,0 +1,38 @@
+\#ifndef JAVACC_PARSER_ERROR_HANDLER_H
+\#define JAVACC_PARSER_ERROR_HANDLER_H
+
+#if BUILD_PARSER
+\#include "JavaCC.h"
+\#include "Token.h"
+
+namespace JavaCC {
+
+class ParserErrorHandler {
+public:
+             ParserErrorHandler() : error_count(0) {}
+    virtual ~ParserErrorHandler() {}
+      
+  // Called when the parser encounters a different token when expecting to consume a specific kind of token.
+  // expectedKind  - token kind that the parser was trying to consume.
+  // expectedToken - the image of the token - tokenImages[expectedKind].
+  // actual        - the actual token that the parser got instead.
+  virtual void unexpectedToken(const JJString& expectedImage, const JJString& expectedLabel, const JJString& actualImage, const JJString& actualLabel, const Token* actualToken) = 0;
+      
+      
+  // Called when the parser cannot continue parsing.
+  // last         - the last token successfully parsed.
+  // unexpected   - the token at which the error occurs.
+  // production   - the production in which this error occurs.
+  virtual void parseError(const Token* last, const Token* unexpected, const JJSimpleString& production) = 0;
+  virtual void otherError(const JJString& message) = 0;
+          int  getErrorCount() const { return error_count; }
+
+protected:
+  int error_count;
+      
+};
+}
+using JavaCC::ParserErrorHandler;
+#fi
+
+\#endif

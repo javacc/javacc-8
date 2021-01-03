@@ -1,0 +1,29 @@
+options {
+	BUILD_PARSER=true;
+	BUILD_TOKEN_MANAGER=false;
+	USER_TOKEN_MANAGER=true;
+	NAMESPACE="Basic";
+	DEBUG_PARSER=true;
+	TOKEN_CLASS="MyToken";
+	TOKEN_NAMESPACE="FOO::BAR";
+	TOKEN_INCLUDE="MyToken.h";
+	TOKEN_CONSTANTS_INCLUDE="MyTokenConstants.h";
+	TOKEN_CONSTANTS_NAMESPACE="BAR::BAZ";
+}	
+PARSER_BEGIN(Matcher)
+static const int simple = 4;
+PARSER_END(Matcher)
+
+
+void Input() :
+{}
+{
+  MatchedBraces() (<NL> | <LF>)* <EOF>
+}
+
+/** Brace matching production. */
+void MatchedBraces() :
+{}
+{
+  <LBRACE> [ MatchedBraces() ] <RBRACE>
+}

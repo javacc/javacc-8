@@ -1,0 +1,1318 @@
+PARSER_BEGIN(AsnParser)
+PARSER_END(AsnParser)
+
+TOKEN_MGR_DECLS :
+{
+  int braceCount = 0;
+  int bracketCount = 0;
+  int parenthesisCount = 0;
+  int stringSize;
+  int linesCommentCount = 0;
+}
+
+SKIP:{" "|"\t"|"\n"|"\r"|"\f"
+}
+
+SKIP:{"/*"{linesCommentCount=1;}:LinesComment
+}
+
+<LinesComment>SKIP:{"/*"{linesCommentCount+=1;}
+}
+
+<LinesComment>SKIP:{"*/"{linesCommentCount-=1;SwitchTo(linesCommentCount==0?DEFAULT:LinesComment);}
+}
+
+<LinesComment>SKIP:{<~[]>
+}
+
+TOKEN:
+{
+<#NA:~["-","\r","\n"]>
+|<#EOL:("\n"|"\r"|"\r\n")>
+}
+
+SPECIAL_TOKEN:{"--":LineComment
+}
+
+<LineComment>SPECIAL_TOKEN:{<(<NA>|"-"<NA>)*(<EOL>|"-"<EOL>|"-""-")?>:DEFAULT
+}
+
+TOKEN:
+{<DBLLBRACKET:"[[">
+|<CTAG:"/>">
+|<ETAG:"</">
+|<LBRACKET:"[">
+|<RBRACKET:"]">
+|<LBRACE:"{">
+|<RBRACE:"}">
+|<LPAREN:"(">
+|<RPAREN:")">
+|<CIRCONFLEX:"^">
+|<VERTICAL:"|">
+|<COMMA:",">
+|<LESS:"<">
+|<GREATER:">">
+|<ASSIGN:"::=">
+|<EXCLAMATION:"!">
+|<AMPERSAND:"&">
+|<ASTERISK:"*">
+|<SLASH:"/">
+|<HYPHEN:"-">
+|<COLON:":">
+|<SEMICOLON:";">
+|<DOT:".">
+|<DOTDOT:"..">
+|<DOTDOTDOT:"...">
+|<ARROBASE:"@">
+|<ARROBASEDOT:"@.">
+}
+
+TOKEN:
+{
+<ABSENT:"ABSENT">
+|<ABSTRACT_SYNTAX:"ABSTRACT-SYNTAX">
+|<ACCESS:"ACCESS">
+|<ALL:"ALL">
+|<ANY:"ANY">
+|<APPLICATION:"APPLICATION">
+|<AUTOMATIC:"AUTOMATIC">
+|<BEGIN:"BEGIN">
+|<BIT:"BIT">
+|<BOOLEAN:"BOOLEAN">
+|<BY:"BY">
+|<CHARACTER:"CHARACTER">
+|<CHOICE:"CHOICE">
+|<CLASS:"CLASS">
+|<COMPONENT:"COMPONENT">
+|<CONTAINING:"CONTAINING">
+|<CONSTRAINED:"CONSTRAINED">
+|<COMPONENTS:"COMPONENTS">
+|<DATE:"DATE">
+|<DATE_TIME:"DATE-TIME">
+|<DEFAULT_:"DEFAULT">
+|<DEFINED:"DEFINED">
+|<DEFINITIONS:"DEFINITIONS">
+|<DESCRIPTION:"DESCRIPTION">
+|<DURATION:"DURATION">
+|<EMBEDDED:"EMBEDDED">
+|<ENCODED:"ENCODED">
+|<END:"END">
+|<ENUMERATED:"ENUMERATED">
+|<EXCEPT:"EXCEPT">
+|<EXPLICIT:"EXPLICIT">
+|<EXPORTS:"EXPORTS">
+|<EXTENSIBILITY:"EXTENSIBILITY">
+|<EXTERNAL:"EXTERNAL">
+|<FROM:"FROM">
+|<IDENTIFIER:"IDENTIFIER">
+|<IMPLICIT:"IMPLICIT">
+|<IMPLIED:"IMPLIED">
+|<IMPORTS:"IMPORTS">
+|<INCLUDES:"INCLUDES">
+|<INSTANCE:"INSTANCE">
+|<INSTRUCTIONS:"INSTRUCTIONS">
+|<INTEGER:"INTEGER">
+|<INTERSECTION:"INTERSECTION">
+|<MACRO:"MACRO">
+|<MAX:"MAX">
+|<MIN:"MIN">
+|<MINUS_INFINITY:"MINUS-INFINITY">
+|<NULLL:"NULL">
+|<OBJECT_TYPE:"OBJECT-TYPE">
+|<OBJECT:"OBJECT">
+|<OID_IRI:"OID-IRI">
+|<OCTET:"OCTET">
+|<OF:"OF">
+|<OPTIONAL:"OPTIONAL">
+|<PATTERN:"PATTERN">
+|<PDV:"PDV">
+|<PLUS_INFINITY:"PLUS-INFINITY">
+|<PRESENT:"PRESENT">
+|<PRIVATE:"PRIVATE">
+|<REAL:"REAL">
+|<RELATIVE_OID:"RELATIVE-OID">
+|<RELATIVE_OID_IRI:"RELATIVE-OID-IRI">
+|<SEQUENCE:"SEQUENCE">
+|<SET:"SET">
+|<SETTINGS:"SETTINGS">
+|<SIZE:"SIZE">
+|<STATUS:"STATUS">
+|<STRING:"STRING">
+|<SYNTAX:"SYNTAX">
+|<TAGS:"TAGS">
+|<TIME:"TIME">
+|<TIME_OF_DAY:"TIME-OF-DAY">
+|<TYPE_IDENTIFIER:"TYPE-IDENTIFIER">
+|<UNION:"UNION">
+|<UNIQUE:"UNIQUE">
+|<UNIVERSAL:"UNIVERSAL">
+|<WITH:"WITH">
+|<BMPString:"BMPString">
+|<GeneralString:"GeneralString">
+|<GraphicString:"GraphicString">
+|<IA5String:"IA5String">
+|<ISO646String:"ISO646String">
+|<NumericString:"NumericString">
+|<PrintableString:"PrintableString">
+|<TeletexString:"TeletexString">
+|<T61String:"T61String">
+|<UniversalString:"UniversalString">
+|<UTF8String:"UTF8String">
+|<VideotexString:"VideotexString">
+|<VisibleString:"VisibleString">
+|<LOWERTRUE:"true">
+|<LOWERFALSE:"false">
+|<UPPERTRUE:"TRUE">
+|<UPPERFALSE:"FALSE">
+|<GeneralizedTime:"GeneralizedTime">
+|<UTCTime:"UTCTime">
+|<ObjectDescriptor:"ObjectDescriptor">
+}
+
+TOKEN:
+{
+<#UPPER:["A"-"Z"]>
+|<#LOWER:["a"-"z"]>
+|<#DIGIT:["0"-"9"]>
+|<#QUOTE:"\"">
+|<#DOUBLEDQUOTE:"\"\"">
+|<BSTRING:"'"(["0"-"1"])*"'B">
+|<HSTRING:"'"(<DIGIT>|["A"-"F"]|["a"-"f"])*"'H">
+|<CSTRING:<QUOTE>(~["\""]|<DOUBLEDQUOTE>)*<QUOTE>>
+|<NUMBER:("0"|["1"-"9"](<DIGIT>)*)>
+|<FLOAT:<NUMBER>"."<NUMBER>>
+|<#LOWERCASEFIRSTREF:"&"<LOWERCASEFIRST>>
+|<#UPPERCASEFIRSTREF:"&"<UPPERCASEFIRST>>
+|<#UPPERCASEDIGIT:<UPPER>("-"(<UPPER>|<DIGIT>)|(<UPPER>|<DIGIT>))*>
+|<#LOWERCASEFIRST:<LOWER>("-"(<LOWER>|<UPPER>|<DIGIT>)|(<LOWER>|<UPPER>|<DIGIT>))*>
+|<#UPPERCASEFIRST:<UPPER>("-"(<LOWER>|<UPPER>|<DIGIT>)|(<LOWER>|<UPPER>|<DIGIT>))*>
+}
+
+TOKEN:{
+<WOULDBE_OBJECTCLASSREFERENCE:<UPPERCASEDIGIT>>
+|<OBJECTCLASSREFERENCE:<UPPERCASEDIGIT>>
+|<TYPEREFERENCE:<UPPERCASEFIRST>>
+|<IDENTIFIANT:<LOWERCASEFIRST>>
+|<VALUEREFERENCE:<LOWERCASEFIRST>>
+|<MODULEREFERENCE:<UPPERCASEFIRST>>
+|<FIELDREFERENCE:<LOWERCASEFIRSTREF>>
+|<FIELDSETREFERENCE:<UPPERCASEFIRSTREF>>
+|<WORD:<LOWERCASEFIRST>>
+|<OBJECTREFERENCE:<LOWERCASEFIRST>>
+|<OBJECTSETREFERENCE:<TYPEREFERENCE>>
+|<PARAMETERIZEDTYPEREFERENCE:<TYPEREFERENCE>>
+|<PARAMETERIZEDOBJECTCLASSREFERENCE:<UPPERCASEDIGIT>>
+|<PARAMETERIZEDVALUEREFERENCE:<LOWERCASEFIRST>>
+|<PARAMETERIZEDOBJECTREFERENCE:<LOWERCASEFIRST>>
+|<PARAMETERIZEDOBJECTSETREFERENCE:<TYPEREFERENCE>>
+|<PARAMETERIZEDVALUESETTYPEREFERENCE:<UPPERCASEFIRST>>
+|<FIXEDTYPEVALUEFIELDREFERENCE:<LOWERCASEFIRSTREF>>
+|<VARIABLETYPEVALUEFIELDREFERENCE:<LOWERCASEFIRSTREF>>
+|<OBJECTFIELDREFERENCE:<LOWERCASEFIRSTREF>>
+|<TYPEFIELDREFERENCE:<UPPERCASEFIRSTREF>>
+|<OBJECTSETFIELDREFERENCE:<UPPERCASEFIRSTREF>>
+|<FIXEDTYPEVALUESETFIELDREFERENCE:<UPPERCASEFIRSTREF>>
+|<VARIABLETYPEVALUESETFIELDREFERENCE:<UPPERCASEFIRSTREF>>
+}
+
+TOKEN:{
+<OBJECT_IDENTIFIER:<UPPERCASEDIGIT>>
+|<EMBEDDED_PDV:<UPPERCASEDIGIT>>
+|<OCTECT_STRING:<UPPERCASEDIGIT>>
+|<SEQUENCE_OF:<UPPERCASEFIRST>>
+|<SET_OF:<UPPERCASEFIRST>>
+|<OCTET_STRING:<UPPERCASEFIRST>>
+|<TAGGED_TYPE:<UPPERCASEFIRST>>
+|<INSTANCE_OF:<UPPERCASEFIRST>>
+|<OBJECT_CLASS_FIELD:<UPPERCASEFIRST>>
+|<LBRACE_VALUESET:<LBRACE>>
+|<LBRACE_OBJECT:<LBRACE>>
+|<LBRACE_OBJECTSET:<LBRACE>>
+|<LBRACE_OID:<LBRACE>>
+}
+void ModuleDefinitionList() : {} {
+   (  ModuleDefinition() )+
+}
+void ModuleDefinition() : {} {
+   ModuleIdentifier() <DEFINITIONS> (  TagDefault() )? (  ExtensionDefault() )? <ASSIGN> <BEGIN> (  ModuleBody() )? <END>
+}
+void ModuleIdentifier() : {} {
+   modulereference() (  DefinitiveIdentifier() )?
+}
+void DefinitiveIdentifier() : {} {
+   <LBRACE> DefinitiveObjIdComponentList() <RBRACE>
+}
+void DefinitiveObjIdComponentList() : {} {
+   DefinitiveObjIdComponent() (  DefinitiveObjIdComponent() )*
+}
+void DefinitiveObjIdComponent() : {} {
+   ( LOOKAHEAD(2)  DefinitiveNameAndNumberForm() |  DefinitiveNumberForm() |  DefinitiveNameForm() )
+}
+void DefinitiveNameAndNumberForm() : {} {
+   identifier() <LPAREN> DefinitiveNumberForm() <RPAREN>
+}
+void DefinitiveNumberForm() : {} {
+   number()
+}
+void DefinitiveNameForm() : {} {
+   (  identifier() |  valuereference() )
+}
+void TagDefault() : {} {
+   <EXPLICIT> <TAGS>   <IMPLICIT> <TAGS>   <AUTOMATIC> <TAGS>
+}
+void ExtensionDefault() : {} {
+   <EXTENSIBILITY> <IMPLIED>
+}
+void ModuleBody() : {} {
+   (  Exports() )? (  Imports() )? AssignmentList()
+}
+void Exports() : {} {
+   <EXPORTS> (  <ALL> |  (  SymbolsExported() )? ) <SEMICOLON>
+}
+void SymbolsExported() : {} {
+   SymbolList()
+}
+void Imports() : {} {
+   <IMPORTS> (  SymbolsImported() )? <SEMICOLON>
+}
+void SymbolsImported() : {} {
+   SymbolsFromModuleList()
+}
+void SymbolsFromModuleList() : {} {
+   (  SymbolsFromModule() )+
+}
+void SymbolsFromModule() : {} {
+   SymbolList() <FROM> GlobalModuleReference()
+}
+void GlobalModuleReference() : {} {
+   modulereference() ( LOOKAHEAD(2)  AssignedIdentifier() )?
+}
+void AssignedIdentifier() : {} {
+   (  ObjectIdentifierValue() |  DefinedValue() )
+}
+void SymbolList() : {} {
+   Symbol() (  <COMMA> Symbol() )*
+}
+void Symbol() : {} {
+   Reference()
+}
+void Reference() : {} {
+   (  typereference() |  valuereference() |  objectclassreference() |  objectreference() |  objectsetreference() |  parameterizedtypereference() <LBRACE> <RBRACE> |  parameterizedvaluereference() <LBRACE> <RBRACE> |  parameterizedobjectclassreference() <LBRACE> <RBRACE> |  parameterizedobjectreference() <LBRACE> <RBRACE> |  parameterizedobjectsetreference() <LBRACE> <RBRACE> |  identifier() |  wouldbeobjectclassreference() )
+}
+void AssignmentList() : {} {
+   (  Assignment() <EOF> )+
+}
+void Assignment() : {} {
+   ( LOOKAHEAD(2)  TypeAssignment() | LOOKAHEAD(2)  ValueAssignment() | LOOKAHEAD(2)  ValueSetTypeAssignment() | LOOKAHEAD(2)  ObjectClassAssignment() | LOOKAHEAD(2)  ObjectAssignment() |  ObjectSetAssignment() |  ParameterizedAssignment() |  XMLValueAssignment() )
+}
+void DefinedType() : {} {
+   ( LOOKAHEAD(3)  ExternalTypeReference() | LOOKAHEAD(3)  ParameterizedType() | LOOKAHEAD(2)  ParameterizedValueSetType() |  (  typereference() |  wouldbeobjectclassreference() ) )
+}
+void ExternalTypeReference() : {} {
+   modulereference() <DOT> typereference()
+}
+void NonParameterizedTypeName() : {} {
+   (  ExternalTypeReference() |  typereference() |  xmlasn1typename() )
+}
+void DefinedValue() : {} {
+   ( LOOKAHEAD(3)  ParameterizedValue() |  valuereference() |  ExternalValueReference() )
+}
+void ExternalValueReference() : {} {
+   modulereference() <DOT> valuereference()
+}
+void AbsoluteReference() : {} {
+   <ARROBASE> ModuleIdentifier() <DOT> ItemSpec()
+}
+void ItemSpec() : {} {
+   typereference() (  <DOT> ComponentId() )*
+}
+void ComponentId() : {} {
+   (  identifier() |  number() |  <ASTERISK> )
+}
+void TypeAssignment() : {} {
+   typereference() <ASSIGN> Type()
+}
+void ValueAssignment() : {} {
+   valuereference() Type() <ASSIGN> Value()
+}
+void XMLValueAssignment() : {} {
+   valuereference() <ASSIGN> XMLTypedValue()
+}
+void XMLTypedValue() : {} {
+   <LESS> <AMPERSAND> NonParameterizedTypeName() (  <GREATER> XMLValue() <ETAG> <AMPERSAND> NonParameterizedTypeName() <GREATER> |  <CTAG> )
+}
+void ValueSetTypeAssignment() : {} {
+   typereference() Type() <ASSIGN> ValueSet()
+}
+void ValueSet() : {} {
+   <LBRACE> ElementSetSpecs() <RBRACE>
+}
+void Type() : {} {
+   ( LOOKAHEAD(3)  BuiltinType() ( LOOKAHEAD(2)  Constraint() )* |  ReferencedType() ( LOOKAHEAD(2)  Constraint() )* |  ConstrainedType() )
+}
+void ConstrainedType() : {} {
+   TypeWithConstraint()
+}
+void BuiltinType() : {} {
+   (  BitStringType() |  BooleanType() |  CharacterStringType() |  ChoiceType() |  DateType() |  DateTimeType() |  DurationType() |  EmbeddedPDVType() |  EnumeratedType() |  ExternalType() |  InstanceOfType() |  IntegerType() |  NullType() |  ObjectClassFieldType() |  ObjectIdentifierType() |  OctetStringType() |  RealType() |  RelativeOIDType() | LOOKAHEAD(2147483647)  SequenceOfType() |  SequenceType() | LOOKAHEAD(2147483647)  SetOfType() |  SetType() |  TaggedType() |  TimeType() |  TimeOfDayType() )
+}
+void TypeOrNamedType() : {} {
+   ( LOOKAHEAD(2)  Type() |  NamedType() )
+}
+void NamedType() : {} {
+   (  identifier() |  valuereference() ) Type()
+}
+void ReferencedType() : {} {
+   ( LOOKAHEAD(3)  DefinedType() |  UsefulType() |  SelectionType() | LOOKAHEAD(3)  TypeFromObject() |  ValueSetFromObjects() )
+}
+void Value() : {} {
+   ( LOOKAHEAD(3)  BuiltinValue() | LOOKAHEAD(3)  ReferencedValue() |  ObjectClassFieldValue() )
+}
+void BuiltinValue() : {} {
+   ( LOOKAHEAD(3)  BitStringValue() |  BooleanValue() | LOOKAHEAD(3)  CharacterStringValue() | LOOKAHEAD(2)  ChoiceValue() | LOOKAHEAD(3)  EmbeddedPDVValue() | LOOKAHEAD(3)  ExternalValue() | LOOKAHEAD(3)  IntegerValue() |  NullValue() | LOOKAHEAD(3)  ObjectIdentifierValue() |  OctetStringValue() | LOOKAHEAD(3)  RealValue() | LOOKAHEAD(3)  RelativeOIDValue() | LOOKAHEAD(3)  SequenceValue() | LOOKAHEAD(3)  SequenceOfValue() | LOOKAHEAD(3)  SetValue() | LOOKAHEAD(3)  SetOfValue() |  EnumeratedValue() )
+}
+void XMLValue() : {} {
+   ( LOOKAHEAD(2147483647)  XMLBuiltinValue() |  XMLObjectClassFieldValue() )
+}
+void XMLBuiltinValue() : {} {
+   ( LOOKAHEAD(2147483647)  XMLBitStringValue() | LOOKAHEAD(2147483647)  XMLBooleanValue() | LOOKAHEAD(2147483647)  XMLCharacterStringValue() | LOOKAHEAD(2147483647)  XMLChoiceValue() | LOOKAHEAD(2147483647)  XMLEmbeddedPDVValue() | LOOKAHEAD(2147483647)  XMLEnumeratedValue() | LOOKAHEAD(2147483647)  XMLExternalValue() | LOOKAHEAD(2147483647)  XMLIntegerValue() |  XMLNullValue() | LOOKAHEAD(2147483647)  XMLObjectIdentifierValue() | LOOKAHEAD(2147483647)  XMLOctetStringValue() | LOOKAHEAD(2147483647)  XMLRealValue() | LOOKAHEAD(2147483647)  XMLRelativeOIDValue() | LOOKAHEAD(2147483647)  XMLSequenceValue() | LOOKAHEAD(2147483647)  XMLSequenceOfValue() | LOOKAHEAD(2147483647)  XMLSetValue() | LOOKAHEAD(2147483647)  XMLSetOfValue() )
+}
+void ReferencedValue() : {} {
+   ( LOOKAHEAD(3)  DefinedValue() |  ValueFromObject() )
+}
+void NamedValue() : {} {
+   identifier() Value()
+}
+void XMLNamedValue() : {} {
+   <LESS> <AMPERSAND> identifier() <GREATER> XMLValue() <ETAG> <AMPERSAND> identifier() <GREATER>
+}
+void BooleanType() : {} {
+   <BOOLEAN>
+}
+void TimeType() : {} {
+   <TIME>
+}
+void TimeValue() : {} {
+   <CSTRING>
+}
+void DateType() : {} {
+   <DATE>
+}
+void TimeOfDayType() : {} {
+   <TIME_OF_DAY>
+}
+void DateTimeType() : {} {
+   <DATE_TIME>
+}
+void DurationType() : {} {
+   <DURATION>
+}
+void BooleanValue() : {} {
+   (  <UPPERTRUE> |  <UPPERFALSE> )
+}
+void XMLBooleanValue() : {} {
+   <LESS> <AMPERSAND> (  <LOWERTRUE> |  <LOWERFALSE> ) <CTAG>
+}
+void IntegerType() : {} {
+   <INTEGER> ( LOOKAHEAD(2)  <LBRACE> NamedNumberList() <RBRACE> )?
+}
+void NamedNumberList() : {} {
+   NamedNumber() (  <COMMA> NamedNumber() )*
+}
+void NamedNumber() : {} {
+   (  identifier() |  valuereference() ) <LPAREN> (  SignedNumber() |  DefinedValue() ) <RPAREN>
+}
+void SignedNumber() : {} {
+   (  number() |  <HYPHEN> number() )
+}
+void IntegerValue() : {} {
+   SignedNumber()
+}
+void XMLIntegerValue() : {} {
+   SignedNumber()   <LESS> <AMPERSAND> identifier() <CTAG>
+}
+void EnumeratedType() : {} {
+   <ENUMERATED> <LBRACE> Enumerations() <RBRACE>
+}
+void Enumerations() : {} {
+   RootEnumeration() (  <COMMA> <DOTDOTDOT> (  ExceptionSpec() )? (  <COMMA> AdditionalEnumeration() )? )?
+}
+void RootEnumeration() : {} {
+   Enumeration()
+}
+void AdditionalEnumeration() : {} {
+   Enumeration()
+}
+void Enumeration() : {} {
+   EnumerationItem() ( LOOKAHEAD(2)  <COMMA> EnumerationItem() )*
+}
+void EnumerationItem() : {} {
+   ( LOOKAHEAD(2)  NamedNumber() |  identifier() )
+}
+void EnumeratedValue() : {} {
+   identifier()
+}
+void XMLEnumeratedValue() : {} {
+   <LESS> <AMPERSAND> identifier() <CTAG>
+}
+void RealType() : {} {
+   <REAL>
+}
+void RealValue() : {} {
+   NumericRealValue()   SpecialRealValue()
+}
+void NumericRealValue() : {} {
+   realnumber()   <HYPHEN> realnumber()   SequenceValue()
+}
+void SpecialRealValue() : {} {
+   <PLUS_INFINITY>   <MINUS_INFINITY>
+}
+void XMLRealValue() : {} {
+   XMLNumericRealValue()   XMLSpecialRealValue()
+}
+void XMLNumericRealValue() : {} {
+   realnumber()   <HYPHEN> realnumber()
+}
+void XMLSpecialRealValue() : {} {
+   <LESS> <AMPERSAND> (  <PLUS_INFINITY> |  <MINUS_INFINITY> ) <CTAG>
+}
+void BitStringType() : {} {
+   <BIT> <STRING> ( LOOKAHEAD(2)  <LBRACE> NamedBitList() <RBRACE> )?
+}
+void NamedBitList() : {} {
+   NamedBit() (  <COMMA> NamedBit() )*
+}
+void NamedBit() : {} {
+   identifier() <LPAREN> (  number() |  DefinedValue() ) <RPAREN>
+}
+void BitStringValue() : {} {
+   (  <BSTRING> |  <HSTRING> |  <LBRACE> (  IdentifierList() )? <RBRACE> |  <CONTAINING> Value() )
+}
+void IdentifierList() : {} {
+   identifier() (  <COMMA> identifier() )*
+}
+void XMLBitStringValue() : {} {
+   (  <BSTRING> | LOOKAHEAD(2147483647)  XMLTypedValue() |  XMLIdentifierList() )
+}
+void XMLIdentifierList() : {} {
+   <LESS> <AMPERSAND> identifier() <CTAG> (  <LESS> <AMPERSAND> identifier() <CTAG> )*
+}
+void OctetStringType() : {} {
+   <OCTET> <STRING>
+}
+void OctetStringValue() : {} {
+   (  <BSTRING> |  <HSTRING> |  <CONTAINING> Value() )
+}
+void XMLOctetStringValue() : {} {
+   XMLTypedValue()   <HSTRING>
+}
+void NullType() : {} {
+   <NULLL>
+}
+void NullValue() : {} {
+   <NULLL>
+}
+void XMLNullValue() : {} {
+   <NULLL>
+}
+void SequenceType() : {} {
+   <SEQUENCE> <LBRACE> (  <RBRACE> | LOOKAHEAD(3)  ComponentTypeLists() <RBRACE> |  ExtensionAndException() (  OptionalExtensionMarker() )? <RBRACE> )
+}
+void ExtensionAndException() : {} {
+   <DOTDOTDOT> (  ExceptionSpec() )?
+}
+void OptionalExtensionMarker() : {} {
+   <COMMA> <DOTDOTDOT>
+}
+void ExceptionSpec() : {} {
+   <EXCLAMATION> ExceptionIdentification()
+}
+void ExceptionIdentification() : {} {
+   (  SignedNumber() | LOOKAHEAD(3)  DefinedValue() |  Type() <COLON> Value() )
+}
+void ComponentTypeLists() : {} {
+   (  RootComponentTypeList() (  <COMMA> ExtensionAndException() ( LOOKAHEAD(2)  ExtensionAdditions() )? ( LOOKAHEAD(3)  ExtensionEndMarker() <COMMA> RootComponentTypeList() |  (  OptionalExtensionMarker() )? ) )? |  ExtensionAndException() ( LOOKAHEAD(2)  ExtensionAdditions() )? ( LOOKAHEAD(3)  ExtensionEndMarker() <COMMA> RootComponentTypeList() |  (  OptionalExtensionMarker() )? ) )
+}
+void RootComponentTypeList() : {} {
+   ComponentTypeList()
+}
+void ExtensionEndMarker() : {} {
+   <COMMA> <DOTDOTDOT>
+}
+void ExtensionAdditions() : {} {
+   <COMMA> ExtensionAdditionList()
+}
+void ExtensionAdditionList() : {} {
+   ExtensionAddition() ( LOOKAHEAD(2)  <COMMA> ExtensionAddition() )*
+}
+void ExtensionAddition() : {} {
+   (  ComponentType() |  ExtensionAdditionGroup() )
+}
+void ExtensionAdditionGroup() : {} {
+   <DBLLBRACKET> (  VersionNumber() )? ComponentTypeList() <RBRACKET> <RBRACKET>
+}
+void VersionNumber() : {} {
+   number() <COLON>
+}
+void ComponentTypeList() : {} {
+   ComponentType() ( LOOKAHEAD(2)  <COMMA> ComponentType() )*
+}
+void ComponentType() : {} {
+   (  NamedType() (  (  <OPTIONAL> |  <DEFAULT_> Value() ) )? |  <COMPONENTS> <OF> Type() )
+}
+void SequenceValue() : {} {
+   <LBRACE> (  ComponentValueList() )? <RBRACE>
+}
+void ComponentValueList() : {} {
+   NamedValue() (  <COMMA> NamedValue() )*
+}
+void XMLSequenceValue() : {} {
+   XMLComponentValueList()
+}
+void XMLComponentValueList() : {} {
+   XMLNamedValue() (  XMLNamedValue() )*
+}
+void SequenceOfType() : {} {
+   <SEQUENCE> <OF> TypeOrNamedType()
+}
+void SequenceOfValue() : {} {
+   <LBRACE> (  ( LOOKAHEAD(2)  ValueList() |  NamedValueList() ) )? <RBRACE>
+}
+void ValueList() : {} {
+   Value() (  <COMMA> Value() )*
+}
+void NamedValueList() : {} {
+   NamedValue() (  <COMMA> NamedValue() )*
+}
+void XMLSequenceOfValue() : {} {
+   ( LOOKAHEAD(2147483647)  XMLValueList() | LOOKAHEAD(2147483647)  XMLDelimitedItemList() |  XMLSpaceSeparatedList() )
+}
+void XMLValueList() : {} {
+   (  XMLValueOr() )+
+}
+void XMLValueOr() : {} {
+   <LESS> <AMPERSAND> NonParameterizedTypeName() <CTAG>
+}
+void XMLSpaceSeparatedList() : {} {
+   (  XMLValueOr() )+
+}
+void XMLDelimitedItemList() : {} {
+   (  XMLDelimitedItem() )+
+}
+void XMLDelimitedItem() : {} {
+   <LESS> <AMPERSAND> ( LOOKAHEAD(2147483647)  NonParameterizedTypeName() <GREATER> XMLValue() <ETAG> <AMPERSAND> NonParameterizedTypeName() <GREATER> |  identifier() <GREATER> XMLValue() <ETAG> <AMPERSAND> identifier() <GREATER> )
+}
+void SetType() : {} {
+   <SET> <LBRACE> (  <RBRACE> | LOOKAHEAD(3)  ExtensionAndException() (  OptionalExtensionMarker() )? <RBRACE> |  ComponentTypeLists() <RBRACE> )
+}
+void SetValue() : {} {
+   <LBRACE> (  ComponentValueList() )? <RBRACE>
+}
+void XMLSetValue() : {} {
+   XMLComponentValueList()
+}
+void SetOfType() : {} {
+   <SET> <OF> TypeOrNamedType()
+}
+void SetOfValue() : {} {
+   <LBRACE> (  ( LOOKAHEAD(2)  ValueList() |  NamedValueList() ) )? <RBRACE>
+}
+void XMLSetOfValue() : {} {
+   ( LOOKAHEAD(2147483647)  XMLValueList() | LOOKAHEAD(2147483647)  XMLDelimitedItemList() |  XMLSpaceSeparatedList() )
+}
+void ChoiceType() : {} {
+   <CHOICE> <LBRACE> AlternativeTypeLists() <RBRACE>
+}
+void AlternativeTypeLists() : {} {
+   RootAlternativeTypeList() (  <COMMA> ExtensionAndException() ( LOOKAHEAD(2)  ExtensionAdditionAlternatives() )? (  OptionalExtensionMarker() )? )?
+}
+void RootAlternativeTypeList() : {} {
+   AlternativeTypeList()
+}
+void ExtensionAdditionAlternatives() : {} {
+   <COMMA> ExtensionAdditionAlternativesList()
+}
+void ExtensionAdditionAlternativesList() : {} {
+   ExtensionAdditionAlternative() ( LOOKAHEAD(2)  <COMMA> ExtensionAdditionAlternative() )*
+}
+void ExtensionAdditionAlternative() : {} {
+   ExtensionAdditionAlternativesGroup()   NamedType()
+}
+void ExtensionAdditionAlternativesGroup() : {} {
+   <DBLLBRACKET> (  VersionNumber() )? AlternativeTypeList() <RBRACKET> <RBRACKET>
+}
+void AlternativeTypeList() : {} {
+   NamedType() ( LOOKAHEAD(2)  <COMMA> NamedType() )*
+}
+void ChoiceValue() : {} {
+   identifier() <COLON> Value()
+}
+void XMLChoiceValue() : {} {
+   <LESS> <AMPERSAND> identifier() <GREATER> XMLValue() <ETAG> <AMPERSAND> identifier() <GREATER>
+}
+void SelectionType() : {} {
+   identifier() <LESS> Type()
+}
+void TaggedType() : {} {
+   Tag() (  Type() |  <IMPLICIT> Type() |  <EXPLICIT> Type() )
+}
+void Tag() : {} {
+   <LBRACKET> ( LOOKAHEAD(2)  EncodingReference() )? (  Class() )? ClassNumber() <RBRACKET>
+}
+void EncodingReference() : {} {
+   encodingreference() <COLON>
+}
+void ClassNumber() : {} {
+   (  number() |  DefinedValue() )
+}
+void Class() : {} {
+   (  <UNIVERSAL> |  <APPLICATION> |  <PRIVATE> )
+}
+void TaggedValue() : {} {
+   Value()
+}
+void XMLTaggedValue() : {} {
+   XMLValue()
+}
+void EmbeddedPDVType() : {} {
+   <EMBEDDED> <PDV>
+}
+void EmbeddedPDVValue() : {} {
+   SequenceValue()
+}
+void XMLEmbeddedPDVValue() : {} {
+   XMLSequenceValue()
+}
+void ExternalType() : {} {
+   <EXTERNAL>
+}
+void ExternalValue() : {} {
+   SequenceValue()
+}
+void XMLExternalValue() : {} {
+   XMLSequenceValue()
+}
+void ObjectIdentifierType() : {} {
+   <OBJECT> <IDENTIFIER>
+}
+void ObjectIdentifierValue() : {} {
+   <LBRACE_OID> ( LOOKAHEAD(3)  ObjIdComponentsList() |  DefinedValue() ObjIdComponentsList() ) <RBRACE>
+}
+void ObjIdComponentsList() : {} {
+   ObjIdComponents() (  ObjIdComponents() )*
+}
+void ObjIdComponents() : {} {
+   ( LOOKAHEAD(2)  NameAndNumberForm() |  NumberForm() | LOOKAHEAD(2)  NameForm() |  DefinedValue() )
+}
+void NameForm() : {} {
+   (  identifier() |  valuereference() )
+}
+void NumberForm() : {} {
+   number()
+}
+void NameAndNumberForm() : {} {
+   (  identifier() |  valuereference() ) <LPAREN> NumberForm() <RPAREN>
+}
+void XMLObjectIdentifierValue() : {} {
+   XMLObjIdComponentList()
+}
+void XMLObjIdComponentList() : {} {
+   XMLObjIdComponent() (  <AMPERSAND> <DOT> <AMPERSAND> XMLObjIdComponentList() )?
+}
+void XMLObjIdComponent() : {} {
+   ( LOOKAHEAD(2147483647)  NameForm() | LOOKAHEAD(2147483647)  XMLNumberForm() |  XMLNameAndNumberForm() )
+}
+void XMLNumberForm() : {} {
+   number()
+}
+void XMLNameAndNumberForm() : {} {
+   identifier() <AMPERSAND> <LPAREN> <AMPERSAND> XMLNumberForm() <AMPERSAND> <RPAREN>
+}
+void RelativeOIDType() : {} {
+   <RELATIVE_OID>
+}
+void RelativeOIDValue() : {} {
+   <LBRACE> RelativeOIDComponentsList() <RBRACE>
+}
+void RelativeOIDComponentsList() : {} {
+   RelativeOIDComponents() (  RelativeOIDComponentsList() )?
+}
+void RelativeOIDComponents() : {} {
+   (  NumberForm() | LOOKAHEAD(2)  NameAndNumberForm() |  DefinedValue() )
+}
+void XMLRelativeOIDValue() : {} {
+   XMLRelativeOIDComponentList()
+}
+void XMLRelativeOIDComponentList() : {} {
+   XMLRelativeOIDComponent() (  <AMPERSAND> <DOT> <AMPERSAND> XMLRelativeOIDComponentList() )?
+}
+void XMLRelativeOIDComponent() : {} {
+   XMLNumberForm()   XMLNameAndNumberForm()
+}
+void CharacterStringType() : {} {
+   (  RestrictedCharacterStringType() |  UnrestrictedCharacterStringType() )
+}
+void RestrictedCharacterStringType() : {} {
+   (  <BMPString> |  <GeneralString> |  <GraphicString> |  <IA5String> |  <ISO646String> |  <NumericString> |  <PrintableString> |  <TeletexString> |  <T61String> |  <UniversalString> |  <UTF8String> |  <VideotexString> |  <VisibleString> )
+}
+void RestrictedCharacterStringValue() : {} {
+   (  <CSTRING> | LOOKAHEAD(2)  CharacterStringList() | LOOKAHEAD(2147483647)  Quadruple() |  Tuple() )
+}
+void CharacterStringList() : {} {
+   <LBRACE> CharSyms() <RBRACE>
+}
+void CharSyms() : {} {
+   CharsDefn() (  <COMMA> CharsDefn() )*
+}
+void CharsDefn() : {} {
+   (  <CSTRING> | LOOKAHEAD(2147483647)  Quadruple() | LOOKAHEAD(3)  Tuple() |  DefinedValue() )
+}
+void Quadruple() : {} {
+   <LBRACE> Group() <COMMA> Plane() <COMMA> Row() <COMMA> Cell() <RBRACE>
+}
+void Group() : {} {
+   number()
+}
+void Plane() : {} {
+   number()
+}
+void Row() : {} {
+   number()
+}
+void Cell() : {} {
+   number()
+}
+void Tuple() : {} {
+   <LBRACE> TableColumn() <COMMA> TableRow() <RBRACE>
+}
+void TableColumn() : {} {
+   number()
+}
+void TableRow() : {} {
+   number()
+}
+void XMLRestrictedCharacterStringValue() : {} {
+   <CSTRING>
+}
+void UnrestrictedCharacterStringType() : {} {
+   <CHARACTER> <STRING>
+}
+void CharacterStringValue() : {} {
+   ( LOOKAHEAD(2)  RestrictedCharacterStringValue() |  UnrestrictedCharacterStringValue() )
+}
+void XMLCharacterStringValue() : {} {
+   XMLRestrictedCharacterStringValue()   XMLUnrestrictedCharacterStringValue()
+}
+void UnrestrictedCharacterStringValue() : {} {
+   SequenceValue()
+}
+void XMLUnrestrictedCharacterStringValue() : {} {
+   XMLSequenceValue()
+}
+void UsefulType() : {} {
+   (  GeneralizedTimeType() |  UTCTimeType() |  ObjectDescriptorType() )
+}
+void GeneralizedTimeType() : {} {
+   <GeneralizedTime>
+}
+void UTCTimeType() : {} {
+   <UTCTime>
+}
+void ObjectDescriptorType() : {} {
+   <ObjectDescriptor>
+}
+void TypeWithConstraint() : {} {
+   (  <SET> (  Constraint() |  SizeConstraint() ) <OF> Type() |  <SEQUENCE> (  Constraint() |  SizeConstraint() ) <OF> Type() )
+}
+void Constraint() : {} {
+   <LPAREN> ConstraintSpec() (  ExceptionSpec() )? <RPAREN>
+}
+void ConstraintSpec() : {} {
+   ( LOOKAHEAD(3)  GeneralConstraint() |  SubtypeConstraint() )
+}
+void GeneralConstraint() : {} {
+   (  UserDefinedConstraint() |  TableConstraint() |  ContentsConstraint() )
+}
+void UserDefinedConstraint() : {} {
+   <CONSTRAINED> <BY> <LBRACE> (  UserDefinedConstraintParameterList() )? <RBRACE>
+}
+void UserDefinedConstraintParameterList() : {} {
+   UserDefinedConstraintParameters()
+}
+void UserDefinedConstraintParameters() : {} {
+   UserDefinedConstraintParameter() (  <COMMA> UserDefinedConstraintParameter() )*
+}
+void UserDefinedConstraintParameter() : {} {
+   ( LOOKAHEAD(3)  Governor() <COLON> ( LOOKAHEAD(3)  Value() | LOOKAHEAD(3)  Object() ) | LOOKAHEAD(3)  DefinedObjectSet() | LOOKAHEAD(3)  Type() |  DefinedObjectClass() )
+}
+void TableConstraint() : {} {
+   ComponentRelationConstraint()
+}
+void SimpleTableConstraint() : {} {
+   ObjectSet()
+}
+void ComponentRelationConstraint() : {} {
+   <LBRACE> DefinedObjectSet() <RBRACE> (  <LBRACE> AtNotations() <RBRACE> )?
+}
+void AtNotations() : {} {
+   AtNotation() (  <COMMA> AtNotation() )*
+}
+void AtNotation() : {} {
+   (  <ARROBASE> ComponentIdList() |  <ARROBASEDOT> Level() ComponentIdList() )
+}
+void Level() : {} {
+   (  (  <DOT> |  <DOTDOT> |  <DOTDOTDOT> ) Level() )?
+}
+void ComponentIdList() : {} {
+   identifier() (  <DOT> identifier() )*
+}
+void ContentsConstraint() : {} {
+   (  <CONTAINING> Type() (  <ENCODED> <BY> Value() )? |  <ENCODED> <BY> Value() )
+}
+void SubtypeConstraint() : {} {
+   ElementSetSpecs()
+}
+void ElementSetSpecs() : {} {
+   RootElementSetSpec() (  <COMMA> <DOTDOTDOT> (  <COMMA> AdditionalElementSetSpec() )? )?
+}
+void RootElementSetSpec() : {} {
+   ElementSetSpec()
+}
+void AdditionalElementSetSpec() : {} {
+   ElementSetSpec()
+}
+void ElementSetSpec() : {} {
+   (  Unions() |  <ALL> Exclusions() )
+}
+void Unions() : {} {
+   Intersections() (  UnionMark() Intersections() )*
+}
+void Intersections() : {} {
+   IntersectionElements() (  IntersectionMark() IntersectionElements() )*
+}
+void IntersectionElements() : {} {
+   Elements() (  Exclusions() )?
+}
+void Exclusions() : {} {
+   <EXCEPT> Elements()
+}
+void UnionMark() : {} {
+   <VERTICAL>   <UNION>
+}
+void IntersectionMark() : {} {
+   <CIRCONFLEX>   <INTERSECTION>
+}
+void Elements() : {} {
+   (  <LPAREN> ElementSetSpecs() <RPAREN> | LOOKAHEAD(0)  ObjectSetElements() | LOOKAHEAD(0)  SubtypeElements() )
+}
+void SubtypeElements() : {} {
+   (  InnerTypeConstraints() | LOOKAHEAD(3)  ValueRange() | LOOKAHEAD(3)  SingleValue() | LOOKAHEAD(3)  ContainedSubtype() |  PermittedAlphabet() |  SizeConstraint() |  TypeConstraint() |  PatternConstraint() )
+}
+void SingleValue() : {} {
+   Value()
+}
+void ContainedSubtype() : {} {
+   (  Includes() )? Type()
+}
+void Includes() : {} {
+   <INCLUDES>
+}
+void ValueRange() : {} {
+   LowerEndpoint() <DOTDOT> UpperEndpoint()
+}
+void LowerEndpoint() : {} {
+   LowerEndValue() (  <LESS> )?
+}
+void UpperEndpoint() : {} {
+   (  UpperEndValue() |  <LESS> UpperEndValue() )
+}
+void LowerEndValue() : {} {
+   Value()   <MIN>
+}
+void UpperEndValue() : {} {
+   Value()   <MAX>
+}
+void SizeConstraint() : {} {
+   <SIZE> Constraint()
+}
+void PermittedAlphabet() : {} {
+   <FROM> Constraint()
+}
+void TypeConstraint() : {} {
+   Type()
+}
+void InnerTypeConstraints() : {} {
+   <WITH> (  <COMPONENTS> MultipleTypeConstraints() |  <COMPONENT> SingleTypeConstraint() )
+}
+void SingleTypeConstraint() : {} {
+   Constraint()
+}
+void MultipleTypeConstraints() : {} {
+   ( LOOKAHEAD(2)  FullSpecification() |  PartialSpecification() )
+}
+void FullSpecification() : {} {
+   <LBRACE> TypeConstraints() <RBRACE>
+}
+void PartialSpecification() : {} {
+   <LBRACE> <DOTDOTDOT> <COMMA> TypeConstraints() <RBRACE>
+}
+void TypeConstraints() : {} {
+   NamedConstraint() (  <COMMA> NamedConstraint() )*
+}
+void NamedConstraint() : {} {
+   identifier() ComponentConstraint()
+}
+void ComponentConstraint() : {} {
+   ValueConstraint() PresenceConstraint()
+}
+void ValueConstraint() : {} {
+   (  Constraint() )?
+}
+void PresenceConstraint() : {} {
+   (  <PRESENT> |  <ABSENT> |  <OPTIONAL> )?
+}
+void PatternConstraint() : {} {
+   <PATTERN> Value()
+}
+void number() : {} {
+   <NUMBER>
+}
+void DefinedObjectClass() : {} {
+   (  UsefulObjectClassReference() |  ExternalObjectClassReference() |  objectclassreference() |  parameterizedobjectclassreference() )
+}
+void ExternalObjectClassReference() : {} {
+   modulereference() <DOT> objectclassreference()
+}
+void UsefulObjectClassReference() : {} {
+   (  <TYPE_IDENTIFIER> |  <ABSTRACT_SYNTAX> )
+}
+void ObjectClassAssignment() : {} {
+   objectclassreference() <ASSIGN> ObjectClass()
+}
+void ObjectClass() : {} {
+   ( LOOKAHEAD(3)  DefinedObjectClass() |  ObjectClassDefn() |  ParameterizedObjectClass() )
+}
+void ObjectClassDefn() : {} {
+   <CLASS> <LBRACE> FieldSpecList() <RBRACE> (  WithSyntaxSpec() )?
+}
+void FieldSpecList() : {} {
+   FieldSpec() (  <COMMA> FieldSpec() )*
+}
+void FieldSpec() : {} {
+   ( LOOKAHEAD(2)  FixedTypeValueSetFieldSpec() | LOOKAHEAD(2)  VariableTypeValueSetFieldSpec() | LOOKAHEAD(2)  FixedTypeValueFieldSpec() | LOOKAHEAD(2)  VariableTypeValueFieldSpec() | LOOKAHEAD(2)  TypeFieldSpec() | LOOKAHEAD(2)  ObjectFieldSpec() |  ObjectSetFieldSpec() )
+}
+void PrimitiveFieldName() : {} {
+   (  typefieldreference() |  fixedtypevaluefieldreference() |  fixedtypevaluesetfieldreference() |  objectfieldreference() |  objectsetfieldreference() )
+}
+void FieldName() : {} {
+   PrimitiveFieldName() (  <DOT> PrimitiveFieldName() )*
+}
+void TypeFieldSpec() : {} {
+   typefieldreference() (  TypeOptionalitySpec() )?
+}
+void FixedTypeValueFieldSpec() : {} {
+   fixedtypevaluefieldreference() Type() (  <UNIQUE> )? (  ValueOptionalitySpec() )?
+}
+void VariableTypeValueFieldSpec() : {} {
+   variabletypevaluefieldreference() FieldName() (  ValueOptionalitySpec() )?
+}
+void FixedTypeValueSetFieldSpec() : {} {
+   fixedtypevaluesetfieldreference() Type() (  ValueSetOptionalitySpec() )?
+}
+void VariableTypeValueSetFieldSpec() : {} {
+   variabletypevaluesetfieldreference() FieldName() (  ValueSetOptionalitySpec() )?
+}
+void ObjectFieldSpec() : {} {
+   objectfieldreference() DefinedObjectClass() (  ObjectOptionalitySpec() )?
+}
+void ObjectSetFieldSpec() : {} {
+   objectsetfieldreference() DefinedObjectClass() (  ObjectSetOptionalitySpec() )?
+}
+void TypeOptionalitySpec() : {} {
+   <OPTIONAL>   <DEFAULT_> Type()
+}
+void ValueOptionalitySpec() : {} {
+   (  <OPTIONAL> |  <DEFAULT_> Value() )
+}
+void ValueSetOptionalitySpec() : {} {
+   <OPTIONAL>   <DEFAULT_> ValueSet()
+}
+void ObjectOptionalitySpec() : {} {
+   (  <OPTIONAL> |  <DEFAULT_> Object() )
+}
+void ObjectSetOptionalitySpec() : {} {
+   <OPTIONAL>   <DEFAULT_> ObjectSet()
+}
+void WithSyntaxSpec() : {} {
+   <WITH> <SYNTAX> SyntaxList()
+}
+void SyntaxList() : {} {
+   <LBRACE> (  TokenOrGroupSpec() )+ <RBRACE>
+}
+void TokenOrGroupSpec() : {} {
+   (  RequiredToken() |  OptionalGroup() )
+}
+void OptionalGroup() : {} {
+   <LBRACKET> (  TokenOrGroupSpec() )+ <RBRACKET>
+}
+void RequiredToken() : {} {
+   (  Literal() |  PrimitiveFieldName() )
+}
+void Literal() : {} {
+   (  word() |  <COMMA> |  Keyword() )
+}
+void Keyword() : {} {
+   (  <ABSTRACT_SYNTAX> |  <UNIQUE> |  <OBJECT> |  <DEFAULT_> |  <IDENTIFIER> |  <OF> |  <WITH> |  <SYNTAX> |  <BY> |  <OPTIONAL> |  <APPLICATION> |  <ABSENT> )
+}
+void DefinedObject() : {} {
+   ExternalObjectReference()   objectreference()
+}
+void ExternalObjectReference() : {} {
+   modulereference() <DOT> objectreference()
+}
+void ObjectAssignment() : {} {
+   objectreference() DefinedObjectClass() <ASSIGN> Object()
+}
+void Object() : {} {
+   ( LOOKAHEAD(3)  DefinedObject() | LOOKAHEAD(3)  ObjectFromObject() |  ObjectDefn() |  ParameterizedObject() )
+}
+void ObjectDefn() : {} {
+   ( LOOKAHEAD(2)  DefaultSyntax() |  DefinedSyntax() )
+}
+void DefaultSyntax() : {} {
+   <LBRACE_OBJECT> FieldSettings() <RBRACE>
+}
+void FieldSettings() : {} {
+   FieldSetting() (  <COMMA> FieldSetting() )*
+}
+void FieldSetting() : {} {
+   PrimitiveFieldName() Setting()
+}
+void DefinedSyntaxToken() : {} {
+   ( LOOKAHEAD(2)  Literal() |  Setting() )
+}
+void Setting() : {} {
+   ( LOOKAHEAD(2147483647)  Value() | LOOKAHEAD(2147483647)  Type() | LOOKAHEAD(2147483647)  ValueSet() | LOOKAHEAD(2147483647)  ObjectSet() |  Object() )
+}
+void DefinedSyntax() : {} {
+   <LBRACE_OBJECT> (  DefinedSyntaxToken() )+ <RBRACE>
+}
+void DefinedObjectSet() : {} {
+   (  ExternalObjectSetReference() |  objectsetreference() )
+}
+void ExternalObjectSetReference() : {} {
+   modulereference() <DOT> objectsetreference()
+}
+void ObjectSetAssignment() : {} {
+   objectsetreference() DefinedObjectClass() <ASSIGN> ObjectSet()
+}
+void ObjectSet() : {} {
+   <LBRACE_OBJECTSET> ObjectSetSpec() <RBRACE>
+}
+void ObjectSetSpec() : {} {
+   (  <DOTDOTDOT> (  <COMMA> AdditionalElementSetSpec() )? |  RootElementSetSpec() (  <COMMA> <DOTDOTDOT> (  <COMMA> AdditionalElementSetSpec() )? )? )
+}
+void ObjectSetElements() : {} {
+   ( LOOKAHEAD(3)  Object() | LOOKAHEAD(3)  DefinedObjectSet() | LOOKAHEAD(3)  ObjectSetFromObjects() |  ParameterizedObjectSet() )
+}
+void ObjectClassFieldType() : {} {
+   DefinedObjectClass() <DOT> FieldName()
+}
+void ObjectClassFieldValue() : {} {
+   ( LOOKAHEAD(3)  OpenTypeFieldVal() |  FixedTypeFieldVal() )
+}
+void OpenTypeFieldVal() : {} {
+   Type() <COLON> Value()
+}
+void FixedTypeFieldVal() : {} {
+   (  ReferencedValue() |  BuiltinValue() )
+}
+void XMLObjectClassFieldValue() : {} {
+   ( LOOKAHEAD(2147483647)  XMLOpenTypeFieldVal() |  XMLFixedTypeFieldVal() )
+}
+void XMLOpenTypeFieldVal() : {} {
+   XMLTypedValue()
+}
+void XMLFixedTypeFieldVal() : {} {
+   XMLBuiltinValue()
+}
+void InformationFromObjects() : {} {
+   ( LOOKAHEAD(3)  ValueFromObject() | LOOKAHEAD(3)  ValueSetFromObjects() | LOOKAHEAD(3)  TypeFromObject() | LOOKAHEAD(3)  ObjectFromObject() |  ObjectSetFromObjects() )
+}
+void ReferencedObject() : {} {
+   ( LOOKAHEAD(2147483647)  DefinedObject() | LOOKAHEAD(2147483647)  ParameterizedObject() )
+}
+void ReferencedObjectSet() : {} {
+   ( LOOKAHEAD(2147483647)  DefinedObjectSet() | LOOKAHEAD(2147483647)  DefinedObjectSet() |  ParameterizedObjectSet() )
+}
+void ValueFromObject() : {} {
+   ReferencedObject() <DOT> FieldName()
+}
+void ValueSetFromObjects() : {} {
+   ReferencedObjectSet() <DOT> FieldName()
+}
+void TypeFromObject() : {} {
+   ReferencedObject() <DOT> FieldName()
+}
+void ObjectFromObject() : {} {
+   ReferencedObject() <DOT> FieldName()
+}
+void ObjectSetFromObjects() : {} {
+   ReferencedObjectSet() <DOT> FieldName()
+}
+void InstanceOfType() : {} {
+   <INSTANCE> <OF> DefinedObjectClass()
+}
+void InstanceOfValue() : {} {
+   Value()
+}
+void XMLInstanceOfValue() : {} {
+   XMLValue()
+}
+void ParameterizedAssignment() : {} {
+   (  ParameterizedTypeAssignment() |  ParameterizedValueAssignment() |  ParameterizedValueSetTypeAssignment() |  ParameterizedObjectClassAssignment() |  ParameterizedObjectAssignment() |  ParameterizedObjectSetAssignment() )
+}
+void ParameterizedTypeAssignment() : {} {
+   parameterizedtypereference() ParameterList() <ASSIGN> Type()
+}
+void ParameterizedValueAssignment() : {} {
+   parameterizedvaluereference() ParameterList() Type() <ASSIGN> Value()
+}
+void ParameterizedValueSetTypeAssignment() : {} {
+   parameterizedvaluesettypereference() ParameterList() Type() <ASSIGN> ValueSet()
+}
+void ParameterizedObjectClassAssignment() : {} {
+   parameterizedobjectclassreference() ParameterList() <ASSIGN> ObjectClass()
+}
+void ParameterizedObjectAssignment() : {} {
+   parameterizedobjectreference() ParameterList() DefinedObjectClass() <ASSIGN> Object()
+}
+void ParameterizedObjectSetAssignment() : {} {
+   parameterizedobjectsetreference() ParameterList() DefinedObjectClass() <ASSIGN> ObjectSet()
+}
+void ParameterList() : {} {
+   <LBRACE> Parameter() (  <COMMA> Parameter() )* <RBRACE>
+}
+void Parameter() : {} {
+   ( LOOKAHEAD(2147483647)  ParamGovernor() <COLON> DummyReference() |  DummyReference() )
+}
+void ParamGovernor() : {} {
+   ( LOOKAHEAD(2147483647)  Governor() |  DummyGovernor() )
+}
+void Governor() : {} {
+   ( LOOKAHEAD(2147483647)  Type() |  DefinedObjectClass() )
+}
+void DummyGovernor() : {} {
+   DummyReference()
+}
+void DummyReference() : {} {
+   Reference()
+}
+void ParameterizedReference() : {} {
+   Reference() <LBRACE> <RBRACE>
+}
+void SimpleDefinedType() : {} {
+   (  ExternalTypeReference() |  (  parameterizedtypereference() |  typereference() ) )
+}
+void SimpleDefinedValue() : {} {
+   ExternalValueReference()   valuereference()
+}
+void ParameterizedType() : {} {
+   SimpleDefinedType() ActualParameterList()
+}
+void ParameterizedValue() : {} {
+   SimpleDefinedValue() ActualParameterList()
+}
+void ParameterizedValueSetType() : {} {
+   SimpleDefinedType() ActualParameterList()
+}
+void ParameterizedObjectClass() : {} {
+   DefinedObjectClass() ActualParameterList()
+}
+void ParameterizedObjectSet() : {} {
+   DefinedObjectSet() ActualParameterList()
+}
+void ParameterizedObject() : {} {
+   DefinedObject() ActualParameterList()
+}
+void ActualParameterList() : {} {
+   <LBRACE> ActualParameter() (  <COMMA> ActualParameter() )* <RBRACE>
+}
+void ActualParameter() : {} {
+   ( LOOKAHEAD(3)  Type() | LOOKAHEAD(3)  Value() | LOOKAHEAD(3)  ValueSet() | LOOKAHEAD(3)  DefinedObjectClass() | LOOKAHEAD(3)  Object() |  ObjectSet() )
+}
+void wouldbeobjectclassreference() : {} {
+   <WOULDBE_OBJECTCLASSREFERENCE>
+}
+void typereference() : {} {
+   <TYPEREFERENCE>
+}
+void identifier() : {} {
+   <IDENTIFIANT>
+}
+void modulereference() : {} {
+   <MODULEREFERENCE>
+}
+void valuereference() : {} {
+   <VALUEREFERENCE>
+}
+void encodingreference() : {} {
+   <TYPEREFERENCE>
+}
+void typefieldreference() : {} {
+   <TYPEFIELDREFERENCE>
+}
+void fixedtypevaluefieldreference() : {} {
+   <FIXEDTYPEVALUEFIELDREFERENCE>
+}
+void fixedtypevaluesetfieldreference() : {} {
+   <FIXEDTYPEVALUESETFIELDREFERENCE>
+}
+void objectfieldreference() : {} {
+   <OBJECTFIELDREFERENCE>
+}
+void objectsetfieldreference() : {} {
+   <OBJECTSETFIELDREFERENCE>
+}
+void variabletypevaluesetfieldreference() : {} {
+   <VARIABLETYPEVALUESETFIELDREFERENCE>
+}
+void variabletypevaluefieldreference() : {} {
+   <VARIABLETYPEVALUEFIELDREFERENCE>
+}
+void objectclassreference() : {} {
+   <OBJECTCLASSREFERENCE>
+}
+void objectreference() : {} {
+   <OBJECTREFERENCE>
+}
+void objectsetreference() : {} {
+   <OBJECTSETREFERENCE>
+}
+void parameterizedobjectclassreference() : {} {
+   <PARAMETERIZEDOBJECTCLASSREFERENCE>
+}
+void parameterizedobjectreference() : {} {
+   <PARAMETERIZEDOBJECTREFERENCE>
+}
+void parameterizedobjectsetreference() : {} {
+   <PARAMETERIZEDOBJECTSETREFERENCE>
+}
+void parameterizedtypereference() : {} {
+   <PARAMETERIZEDTYPEREFERENCE>
+}
+void parameterizedvaluereference() : {} {
+   <PARAMETERIZEDVALUEREFERENCE>
+}
+void parameterizedvaluesettypereference() : {} {
+   <PARAMETERIZEDVALUESETTYPEREFERENCE>
+}
+void realnumber() : {} {
+   <FLOAT>
+}
+void word() : {} {
+   <WORD>
+}
+void xmlasn1typename() : {} {
+   identifier()
+}

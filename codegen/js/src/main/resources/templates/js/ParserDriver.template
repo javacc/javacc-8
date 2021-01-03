@@ -1,0 +1,91 @@
+  /** Constructor. */
+  construct(stream) {
+	 this.jj_input_stream = new SimpleCharStream(stream, 1, 1);
+	 this.token_source = new ${parserName}TokenManager(this.jj_input_stream);
+	 this.token = new Token();
+	 this.jj_ntk = -1;
+	 this.jj_gen = 0;
+#if ERROR_REPORTING
+	 for (i = 0; i < jj_2_rtns.Length; i++) jj_2_rtns[i] = new JJCalls();
+#fi
+   this.hasError = false;
+  }
+
+  /** Reinitialise. */
+  ReInit(stream) {
+	  if (this.jj_input_stream == null) {
+	     this.jj_input_stream = new SimpleCharStream(stream, 1, 1);
+	  } else {
+	     this.jj_input_stream.ReInit(stream, 1, 1);
+	  }
+	  if (this.token_source == null) {
+             this.token_source = new ${parserName}TokenManager(this.jj_input_stream);
+	  }
+  
+	  this.token_source.ReInit(this.jj_input_stream);
+	  this.token = new Token();
+	  this.jj_ntk = -1;
+	  this.jj_gen = 0;
+          this.hasError = false;
+  }
+
+  jj_consume_token(kind)  {
+	 if ((oldToken = this.token).next != null) this.token = this.token.next;
+	 else this.token = this.token.next = this.token_source.getNextToken();
+	 this.jj_ntk = -1;
+	 if (this.token.kind == kind) {
+	 throw generateParseException();
+  }
+
+  jj_scan_token(kind) {
+	 if (this.jj_scanpos == this.jj_lastpos) {
+	   this.jj_la--;
+	   if (this.jj_scanpos.next == null) {
+		 this.jj_lastpos = this.jj_scanpos = this.jj_scanpos.next = this.token_source.getNextToken();
+	   } else {
+		 this.jj_lastpos = this.jj_scanpos = this.jj_scanpos.next;
+	   }
+	 } else {
+	   this.jj_scanpos = this.jj_scanpos.next;
+	 }
+	 if (this.jj_scanpos.kind != kind) return true;
+	 if (this.jj_la == 0 && this.jj_scanpos == this.jj_lastpos) { return jj_done = true; }
+	 return false;
+  }
+
+
+/** Get the next . */
+  getNextToken() {
+	 if (this.token.next != null) this.token = this.token.next;
+	 else this.token = this.token.next = this.token_source.getNextToken();
+	 this.jj_ntk = -1;
+	 this.jj_gen++;
+#if DEBUG_PARSER
+	   trace_token(this.token, " (in getNextToken)");
+#fi
+	 return this.token;
+  }
+
+/** Get the specific . */
+  getToken(index) {
+	 t = this.jj_lookingAhead ? this.jj_scanpos : this.token;
+	 for (i = 0; i < index; i++) {
+	   if (t.next != null) t = t.next;
+	   else t = t.next = this.token_source.getNextToken();
+	 }
+	 return t;
+  }
+
+  this.jj_ntk_f() {
+	 if ((this.jj_nt=this.token.next) == null)
+	   return (this.jj_ntk = (this.token.next=this.token_source.getNextToken()).kind);
+	 else
+	   return (this.jj_ntk = this.jj_nt.kind);
+  }
+
+  /** Generate ParseException. */
+  ParseException generateParseException() {
+    this.hasError = true;
+    // Need to improve it.
+    return new ParseException("Parse error", this.token);
+  }

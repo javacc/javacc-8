@@ -1,0 +1,60 @@
+#if BUILD_PARSER
+      
+\#if (JAVACC_CHAR_TYPE_SIZEOF != 1)
+\#include <codecvt>
+\#include <locale>
+\#endif
+\#include "JavaCC.h"
+\#include "Token.h"
+\#include "DefaultParserErrorHandler.h"
+
+#if NAMESPACE
+namespace ${NAMESPACE_OPEN}
+#fi
+
+\#if (JAVACC_CHAR_TYPE_SIZEOF != 1)
+using convert_t = std::codecvt_utf8<wchar_t>;
+static std::wstring_convert<convert_t, wchar_t> strconverter;
+
+static std::string to_string(const std::wstring& wstr)
+{
+    return strconverter.to_bytes(wstr);
+}
+
+static std::wstring to_wstring(const std::string& str)
+{
+    return strconverter.from_bytes(str);
+}
+\#endif
+
+void DefaultParserErrorHandler::unexpectedToken(const JJString& expectedImage, const JJString& expectedLabel, const JJString& actualImage, const JJString& actualLabel, const Token* actualToken) {
+	error_count++;
+	JJLOG 
+       << JJWIDE(Expecting) << JJSPACE << addUnicodeEscapes(expectedLabel) << JJWIDE(:) << JJQUOTE << addUnicodeEscapes(expectedImage) << JJQUOTE
+       << JJSPACE << JJWIDE(at) << JJSPACE << actualToken->beginLine() << JJWIDE(:) << actualToken->beginColumn() << JJSPACE 
+       << JJWIDE(but got) << JJSPACE << JJQUOTE << addUnicodeEscapes(actualImage) << JJQUOTE << std::endl;
+}
+      
+      
+void DefaultParserErrorHandler::parseError(const Token* last, const Token* unexpected, const JJSimpleString& production) {
+    error_count++;
+\#if (JAVACC_CHAR_TYPE_SIZEOF == 1)
+    const JJString& work = production;
+\#else
+    const JJString& work = to_wstring(production);
+\#endif
+    JJLOG 
+        << JJWIDE(Encountered:) << JJSPACE << JJQUOTE << addUnicodeEscapes(unexpected->image()) << JJQUOTE << JJSPACE 
+        << JJWIDE(at) << JJSPACE << unexpected->beginLine() << JJWIDE(:) << unexpected->beginColumn()  << JJSPACE 
+        << JJWIDE(while parsing:) << JJSPACE << work << std::endl;
+}
+      
+void DefaultParserErrorHandler::otherError(const JJString& message) {
+    JJLOG << JJWIDE(Error:) << JJSPACE  << message << std::endl;
+}
+
+
+#if NAMESPACE
+${NAMESPACE_CLOSE}
+#fi
+#fi

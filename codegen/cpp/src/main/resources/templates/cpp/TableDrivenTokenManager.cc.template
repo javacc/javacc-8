@@ -1,0 +1,515 @@
+${decls}
+
+
+/** Constructor. */
+${parserName}TokenManager::${parserName}TokenManager(CharStream* stream, int lexState)
+{
+    ReInit(stream, lexState);
+}
+
+/** Reinitialise parser. */
+void ${parserName}TokenManager::ReInit(CharStream* stream, int lexState)
+{
+    defaultLexState = ${defaultLexState};
+    curLexState = ${defaultLexState};
+    moveIndex = 1;
+    errorHandler = nullptr;
+    delete_eh = false;
+
+#if CPP_USE_ARRAY
+	std::memset(jjChars.base(), 0, sizeof(jjChars));
+#else
+	std::memset(jjChars, 0, sizeof(jjChars));
+#fi 
+    for (int i = 0; i < ${nfaSize}; i++) {
+      int ind = 0;
+      // We originally generate something like RLE for the static arrays and
+      // we actually expand them here.
+      for (int j = 0; j < jjCharData[i][0]; j += 2) {
+        for (int k = 0; k < jjCharData[i][j + 1]; k++) {
+          jjChars[i][ind++] = jjCharData[i][j + 2];
+        }
+      }
+    }
+
+    jjmatchedPos = 0;
+    curLexState = defaultLexState;
+    input_stream = stream;
+    SwitchTo(lexState);
+    errorHandler = new DefaultTokenManagerErrorHandler();
+}
+
+/** Switch to specified lex state. */
+void ${parserName}TokenManager::SwitchTo(int lexState)
+{
+    if (lexState > ${lastLexState} || lexState < ${firstLexState}) {
+      JJString message;
+      message += JJWIDE(Error: Ignoring invalid lexical state : );
+      message += lexState; message += JJWIDE(. State unchanged.);
+      throw new TokenManagerError(message, INVALID_LEXICAL_STATE);
+    } else
+      curLexState = lexState;
+}
+
+bool ${parserName}TokenManager::moveToNextChar() {
+  if(input_stream->endOfInput())
+    return false;
+
+  curChar = input_stream->readChar();
+#if IGNORE_CASE
+  curChar = towlower(curChar);
+#fi
+  return true;
+}
+
+#if !NO_DFA
+int ${parserName}TokenManager::jjRunStringLiteralMatch() {
+  int curPos = 0;
+  int key = (int)curLexState << 16 | curChar;
+  int startState = jjInitStates[curLexState];
+  int index = getStartAndSize(key, 0);
+  if (index != -1) {
+    for (int i = 0; i < getStartAndSize(key, 1); i++) {
+      int len = (int) stringLiterals[index++];
+      int ignoreCase = (int) stringLiterals[index++];
+#if DEBUG_TOKEN_MANAGER
+      if (trace_enabled()) {
+        JJLOG << JJWIDE(Looking for string literal match of kind: ) << stringLiterals[index + len]
+              << JJSPACE << JJWIDE(token image:) << JJSPACE 
+              << JJQUOTE << addUnicodeEscapes(tokenImages[stringLiterals[index + len]]) << JJQUOTE << std::endl;
+      }
+#fi
+      do {
+#if DEBUG_TOKEN_MANAGER
+        if (trace_enabled()) {
+          JJLOG << JJSPACE << JJSPACE << JJWIDE(Current character:) << JJSPACE << JJQUOTE  << ((char)curChar) << JJQUOTE << std::endl;
+        }
+#fi
+        if (curChar != stringLiterals[index + curPos] &&
+            (ignoreCase == 0 || curChar != stringLiterals[index + len + curPos])) break;
+        if (++curPos == len) break;
+        if (!moveToNextChar()) {
+          --curPos;
+          break;
+        }
+      } while(curPos < len);
+      
+      if (curPos == len) {
+        jjmatchedKind = (int) stringLiterals[index + len + (ignoreCase * len)];
+        jjmatchedPos = curPos;
+        startState = (int) stringLiterals[index + len + (ignoreCase * len) + 1];
+#if DEBUG_TOKEN_MANAGER
+        if (trace_enabled()) {
+          JJLOG << JJSPACE << JJSPACE 
+                << JJWIDE(Currently matched the first:) << JJSPACE << jjmatchedPos << JJSPACE
+                << JJWIDE(chars as kind:) << JJSPACE << stringLiterals[index + len] << JJCOMMA
+                << JJWIDE(with image:) << JJSPACE << addUnicodeEscapes(tokenImages[jjmatchedKind]) << std::endl;
+        }
+#fi
+        if (!moveToNextChar()) {
+          return curPos;
+        }
+        curPos++;
+        break;
+      } else {
+        index += len + (ignoreCase * len) + 2;
+        input_stream->backup(curPos + 1);
+        curPos = 0;
+        if (!moveToNextChar()) {
+          assert(false);
+        }
+      }
+    }
+  } else {
+#if DEBUG_TOKEN_MANAGER
+    if (trace_enabled()) {
+	  JJLOG << JJWIDE(No string literal start with char:) << JJSPACE << JJQUOTE << ((char)curChar) << JJQUOTE << std::endl;
+	}
+#fi
+  }
+  return jjMoveNfa(startState, curPos);
+}
+#fi
+
+int ${parserName}TokenManager::jjMoveNfa(int startState, int curPos) {
+
+  if (startState < 0) {
+#if DEBUG_TOKEN_MANAGER
+    if (trace_enabled()) {
+      JJLOG << JJWIDE(No NFA state at pos:) << JJSPACE << curPos << std::endl;
+    }
+#fi
+    return curPos;
+  }
+
+#if CPP_USE_ARRAY
+  Array<${generatedStates}, int> stateSet;
+  Array<${generatedStates}, int> newStateSet;
+  Array<${generatedStates}, int> moved;
+#else
+  int stateSet[${generatedStates}];
+  int newStateSet[${generatedStates}];
+  int moved[${generatedStates}];
+#fi
+  // We have an array indexed by the NFA state number to roughly indicate
+  // the input position so when the input reaches part INT_MAX (which
+  // should be extremely rare), we need to reset them all back to zero.
+  if (++moveIndex == INT_MAX) {
+    for (int i = 0; i < ${generatedStates}; i++) moved[i] = 0;
+    moveIndex = 1;
+  }
+
+  // We initialize the kind to MAX value so that when a match is found, we can
+  // simply check if it's less than the current match and store it in that
+  // case. This helps implement the 'first occurring' rule properly.
+  int cnt = 0;
+  stateSet[cnt++] = startState;
+  moved[startState] = moveIndex;
+ 
+  // Some NFA states have epsilon transitions (move on empty string). So we
+  // just start with all of them. Note that the nextStates array already adds
+  // the epsilon closure. Only the initial state needs to do this explicitly.
+  for (int s : jjcompositeState[startState]) { 
+    if (moved[s] != moveIndex) {
+      stateSet[cnt++] = s;
+      moved[s] = moveIndex;
+    }
+  }
+
+#if DEBUG_TOKEN_MANAGER
+  if (trace_enabled()) {
+    JJLOG << JJWIDE(Starting NFA with start state:) << JJSPACE << startState << std::endl;
+  }
+#fi
+  do {
+#if DEBUG_TOKEN_MANAGER
+    if (trace_enabled()) {
+      JJLOG << JJSPACE << JJSPACE << JJWIDE(Current character:) << JJSPACE << JJQUOTE << (char)curChar << JJQUOTE << std::endl;
+    }
+#fi
+    int newCnt = 0;
+    int kind = INT_MAX;
+    if (++moveIndex == INT_MAX) {
+      for (int i = 0; i < ${generatedStates}; i++) moved[i] = 0;
+      moveIndex = 1;
+    }
+
+    int vectorIndex = curChar >> 6;
+    unsigned long long bitpattern = (1ULL << (curChar & 0x3f));
+    // unsigned long long bitpattern = (1ULL << (curChar & 077)) & 0x7fffffe07fffffeULL;
+    do {
+      int state = stateSet[--cnt];
+#if DEBUG_TOKEN_MANAGER
+      if (trace_enabled()) {
+        JJLOG << JJWIDE(Looking to move from state: ) << JJSPACE << state << JJSPACE << JJWIDE(for:) << JJSPACE
+                 << (jjmatchKinds[state] != INT_MAX
+                    ? addUnicodeEscapes(tokenImages[jjmatchKinds[state]]) : JJWIDE( <UNKNOWN>))
+                 << std::endl;
+        JJLOG << "state=" << state << " vectorindex=" << vectorIndex << " bitpattern=" << bitpattern 
+              << " jjChars[state][vectorIndex]=" << jjChars[state][vectorIndex] << std::endl;
+      }
+#fi
+	  bool canMoveThisNFAState = (jjChars[state][vectorIndex] & bitpattern) != 0L;
+	  if (canMoveThisNFAState) {
+         // Current input character can move this NFA state. So add all the
+        // next states of the current states for use with the next input char.
+        for (int idx = 0; idx < jjnextStateSet[state][0]; idx++) {
+          int newState = jjnextStateSet[state][idx + 1];
+          if (moved[newState] != moveIndex) {
+            // We add each state only once.
+            newStateSet[newCnt++] = newState;
+            moved[newState] = moveIndex;
+          }
+        }
+        int newKind = jjmatchKinds[state];
+        if (kind > newKind) {
+          // It's a state so store the matched kind if it's smaller than
+          // what's already matched.
+          kind = newKind;
+#if DEBUG_TOKEN_MANAGER
+          if (trace_enabled()) {
+            JJLOG << JJWIDE(Found a match of kind: ) << kind << JJWIDE(; kind: ) << JJSPACE
+                  << addUnicodeEscapes(tokenLabels[kind]) << JJSPACE << JJWIDE(using the first:) << JJSPACE
+                  << curPos << JJSPACE << JJWIDE(characters.) << std::endl;
+          }
+#fi
+        }
+      }
+    } while (cnt > 0);
+
+    if (kind != INT_MAX) {
+      // We found a match. So remember the kind and position of the match.
+      jjmatchedKind = kind;
+      jjmatchedPos = curPos;
+      // Reset the kind to max value so we can contine looking for a longer
+      // match.
+      kind = INT_MAX;
+    }
+
+    // Swap the current and next state sets.
+    int tmp;
+    for(int i = 0; i < ${generatedStates}; i++) {
+      tmp = stateSet[i];
+      stateSet[i] = newStateSet[i];
+      newStateSet[i] = tmp;
+    }
+    // Reset the number of states.
+    cnt = newCnt;
+    if (newCnt == 0) {
+      // There were no transitions from any of the current states on the
+      // current input. So we are done.
+#if DEBUG_TOKEN_MANAGER
+      if (trace_enabled()) {
+        JJLOG << JJWIDE(Done with NFA at pos: ) << JJSPACE << curPos << std::endl;
+      }
+#fi
+      return curPos;
+    }
+    // Read the next character and try to continue running the NFA.
+    if (!moveToNextChar()) {
+      // EOF reached!
+#if DEBUG_TOKEN_MANAGER
+      if (trace_enabled()) {
+        JJLOG << JJWIDE(Reached EOF here at pos: ) << JJSPACE << curPos << std::endl;
+      }
+#fi
+      return curPos;
+    }
+    ++curPos;
+  } while (cnt > 0);
+
+  throw "Interal error. Please submit a bug at:https://github.com/javacc/javacc/issues";
+//  return curPos;
+}
+
+static bool isToken(int kind) {
+  return (jjtoToken[kind >> 6] & (1L << (kind & 077))) != 0L;
+}
+
+static bool isSkip(int kind) {
+  return (jjtoSkip[kind >> 6] & (1L << (kind & 077))) != 0L;
+}
+
+static bool isSpecial(int kind) {
+  return (jjtoSpecial[kind >> 6] & (1L << (kind & 077))) != 0L;
+}
+
+static bool isMore(int kind) {
+  return (jjtoMore[kind >> 6] & (1L << (kind & 077))) != 0L;
+}
+
+Token * ${parserName}TokenManager::jjFillToken() {
+  Token * t;
+  JJString curTokenImage;
+#if KEEP_LINE_COLUMN
+  int beginLine;
+  int endLine;
+  int beginColumn;
+  int endColumn;
+#fi
+  if (jjmatchedPos < 0) {
+    if (image.length() == 0) {
+      curTokenImage = JJEMPTY;
+    } else {
+      curTokenImage = image;
+    }
+#if KEEP_LINE_COLUMN
+    beginLine = endLine = input_stream->getEndLine();
+    beginColumn = endColumn = input_stream->getEndColumn();
+#fi
+  } else {
+    JJString im = jjstrLiteralImages[jjmatchedKind];
+    curTokenImage = (im.length() == 0) ? input_stream->getImage() : im;
+#if KEEP_LINE_COLUMN
+    beginLine = input_stream->getBeginLine();
+    beginColumn = input_stream->getBeginColumn();
+    endLine = input_stream->getEndLine();
+    endColumn = input_stream->getEndColumn();
+#fi
+  }
+
+#if TOKEN_FACTORY
+    t = ${TOKEN_FACTORY}::newToken(jjmatchedKind, curTokenImage);
+#else
+    t = ${tokenClass}::newToken(jjmatchedKind, curTokenImage);
+#fi
+
+#if KEEP_LINE_COLUMN
+   t->beginLine() = beginLine;
+   t->endLine() = endLine;
+   t->beginColumn() = beginColumn;
+   t->endColumn() = endColumn;
+#fi
+
+   return t;
+}
+
+/** Get the next Token. */
+Token * ${parserName}TokenManager::getNextToken() {
+  Token * specialToken = nullptr;
+  Token * matchedToken;
+  int lastReadPosition = 0;
+
+  EOFLoop:
+  for (;;) {
+    if(input_stream->endOfInput()) {
+#if DEBUG_TOKEN_MANAGER
+      if (trace_enabled()) {
+        JJLOG << JJWIDE(<) << addUnicodeEscapes(lexStateNames[curLexState]) << JJWIDE(> )  << JJSPACE
+              << JJWIDE(Reached EOF at ) << JJSPACE << input_stream->getBeginLine()
+              << JJWIDE(:) << input_stream->getBeginColumn() << std::endl;
+      }
+#fi
+      // No input. So return EOF token.
+      jjmatchedKind = _EOF;
+      jjmatchedPos = -1;
+      matchedToken = jjFillToken();
+      matchedToken->specialToken() = specialToken;
+      return matchedToken;
+    }
+
+    // First see if we have any input at all.
+    curChar = input_stream->beginToken();
+#if IGNORE_CASE
+    curChar = towlower(curChar);
+#fi
+
+#if DEBUG_TOKEN_MANAGER
+     if (trace_enabled()) {
+       JJLOG << JJWIDE(<) << addUnicodeEscapes(lexStateNames[curLexState]) << JJWIDE(>)  << std::endl 
+      		 << JJSPACE << JJSPACE << JJWIDE( Current character:) << JJSPACE << JJQUOTE << (char)curChar << JJQUOTE << JJSPACE
+             << JJWIDE( at ) << JJSPACE << input_stream->getBeginLine()
+             << JJWIDE(:) << input_stream->getBeginColumn() << std::endl;
+     }
+#fi
+
+    // Set matched kind to a MAX VALUE to implement largest, first occuring rule
+    // i.e., smallest kind value matched should be used.
+    image = jjimage;
+    // image->setLength(0);
+    jjimageLen = 0;
+
+    for (;;) {
+      jjmatchedKind = INT_MAX;
+      jjmatchedPos = 0;
+#if !NO_DFA
+      lastReadPosition = jjRunStringLiteralMatch();
+#else
+      lastReadPosition = jjMoveNfa(0, 0);
+#fi
+      if (jjmatchedPos == 0 && jjmatchedKind > canMatchAnyChar[curLexState]) {
+        jjmatchedKind = canMatchAnyChar[curLexState];
+#if DEBUG_TOKEN_MANAGER
+        if (trace_enabled()) {
+          JJLOG << JJWIDE(Matched current char:) << JJSPACE << JJQUOTE << (char)curChar << JJQUOTE << JJSPACE 
+                << JJWIDE(as a wildcard kind:)  << JJSPACE << jjmatchedKind
+                << std::endl;
+        }
+#fi
+      }
+
+      if (jjmatchedKind != INT_MAX) {
+        // We have a match!
+  
+        // Put back any characters looked ahead.
+        input_stream->backup(lastReadPosition - jjmatchedPos);
+        if (isToken(jjmatchedKind)) {
+          // Matched kind is a real TOKEN.
+          matchedToken = jjFillToken();
+          matchedToken->specialToken() = specialToken;
+          tokenLexicalActions(matchedToken);
+          if (jjnewLexState[jjmatchedKind] != -1) {
+            curLexState = jjnewLexState[jjmatchedKind];
+          }
+#if COMMON_TOKEN_ACTION
+          CommonTokenAction(matchedToken);
+#fi
+#if DEBUG_TOKEN_MANAGER
+          if (trace_enabled()) {
+            JJLOG << JJWIDE(Returning token:) << JJSPACE << JJQUOTE
+                  << addUnicodeEscapes(matchedToken->image()) << JJQUOTE << JJSPACE
+                  << std::endl;
+          }
+#fi
+          return matchedToken;
+        } else
+        if (isSkip(jjmatchedKind) || isSpecial(jjmatchedKind)) {
+#if DEBUG_TOKEN_MANAGER
+          if (trace_enabled()) {
+            JJLOG << JJWIDE(Found a SKIP match.) << std::endl;
+          }
+#fi
+          // Matched kind is a SKIP or SPECIAL_TOKEN.
+          if (isSpecial(jjmatchedKind)) {
+            matchedToken = jjFillToken();
+            if (specialToken == nullptr) {
+              specialToken = matchedToken;
+            } else {
+              matchedToken->specialToken() = specialToken;
+              specialToken = (specialToken->next() = matchedToken);
+            }
+            skipLexicalActions(matchedToken);
+          } else {
+            skipLexicalActions(nullptr);
+          }
+          if (jjnewLexState[jjmatchedKind] != -1) {
+            curLexState = jjnewLexState[jjmatchedKind];
+          }
+          goto EOFLoop;
+        }
+#if DEBUG_TOKEN_MANAGER
+        if (trace_enabled()) {
+        	JJLOG << JJWIDE(Found a MORE match.) << std::endl;
+        }
+#fi
+        // Here it's a MORE.
+        moreLexicalActions();
+        if (jjnewLexState[jjmatchedKind] != -1) {
+          curLexState = jjnewLexState[jjmatchedKind];
+        }
+        lastReadPosition = 0;
+        jjmatchedKind = INT_MAX;
+        do {
+          curChar = input_stream->readChar();
+#if IGNORE_CASE
+          curChar = towlower(curChar);
+#fi
+        } while(curChar >= 0);
+      }
+      int error_line = input_stream->getEndLine();
+      int error_column = input_stream->getEndColumn();
+      JJString error_after = JJEMPTY;
+      bool EOFSeen = false;
+
+      if(input_stream->endOfInput()) {
+        EOFSeen = true;
+        error_after = lastReadPosition <= 1 ? JJEMPTY : input_stream->getImage();
+        if (curChar == '\n' || curChar == '\r') {
+           error_line++;
+           error_column = 0;
+        }
+        else
+           error_column++;
+      }
+      if (!EOFSeen) {
+        error_after = lastReadPosition <= 1 ? JJEMPTY : input_stream->getImage();
+      }
+      errorHandler->lexicalError(EOFSeen, curLexState, error_line, error_column, error_after, curChar);
+      goto EOFLoop;
+    }
+  }
+}
+#if TOKEN_MANAGER_USES_PARSER
+void ${parserName}TokenManager::setParser(void* parser) {
+	this->parser = static_cast<${parserName}*>(parser);
+}
+#fi
+
+void ${parserName}TokenManager::lexicalError() {
+	std::clog << "Lexical error encountered." << std::endl;
+}
+const  TokenManagerErrorHandler* ${parserName}TokenManager::getErrorHandler() const {
+  return errorHandler;
+}
+
+

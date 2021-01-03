@@ -1,0 +1,66 @@
+\#ifndef JAVACC_${PARSER_NAME_UPPER_CASE}_EXPORT_H
+\#define JAVACC_${PARSER_NAME_UPPER_CASE}_EXPORT_H
+
+//
+// Ensure that ${PARSER_NAME_UPPER_CASE}_DLL is default unless ${PARSER_NAME_UPPER_CASE}_STATIC is defined
+//
+\#if defined(_WIN32) && defined(_DLL)
+	\#if !defined(${PARSER_NAME_UPPER_CASE}_DLL) && !defined(${PARSER_NAME_UPPER_CASE}_STATIC)
+		\#define ${PARSER_NAME_UPPER_CASE}_DLL
+	\#endif
+\#endif
+
+\#if defined(_MSC_VER)
+	\#if defined(${PARSER_NAME_UPPER_CASE}_DLL)
+		\#if defined(_DEBUG)
+			\#define ${PARSER_NAME_UPPER_CASE}_LIB_SUFFIX "d.lib"
+		\#else
+			\#define ${PARSER_NAME_UPPER_CASE}_LIB_SUFFIX ".lib"
+		\#endif
+	\#elif defined(_DLL)
+		\#if defined(_DEBUG)
+			\#define ${PARSER_NAME_UPPER_CASE}_LIB_SUFFIX "MDd.lib"
+		\#else
+			\#define ${PARSER_NAME_UPPER_CASE}_LIB_SUFFIX "MD.lib"
+		\#endif
+	\#else
+		\#if defined(_DEBUG)
+			\#define ${PARSER_NAME_UPPER_CASE}_LIB_SUFFIX "MTd.lib"
+		\#else
+			\#define ${PARSER_NAME_UPPER_CASE}_LIB_SUFFIX "MT.lib"
+		\#endif
+	\#endif
+\#endif
+
+//
+// The following block is the standard way of creating macros which make exporting
+// from a DLL simpler. All files within this DLL are compiled with the ${PARSER_NAME_UPPER_CASE}_EXPORTS
+// symbol defined on the command line. this symbol should not be defined on any project
+// that uses this DLL. This way any other project whose source files include this file see
+// ${PARSER_NAME_UPPER_CASE}_API functions as being imported from a DLL, wheras this DLL sees symbols
+// defined with this macro as being exported.
+//
+\#if defined(_WIN32) && defined(${PARSER_NAME_UPPER_CASE}_DLL)
+	\#if defined(${PARSER_NAME_UPPER_CASE}_EXPORTS)
+		\#define ${PARSER_NAME_UPPER_CASE}_API __declspec(dllexport)
+	\#else
+		\#define ${PARSER_NAME_UPPER_CASE}_API __declspec(dllimport)
+	\#endif
+\#endif
+
+
+\#if !defined(${PARSER_NAME_UPPER_CASE}_API)
+	\#define ${PARSER_NAME_UPPER_CASE}_API
+\#endif
+
+
+//
+// Automatically link ${PARSER_NAME_UPPER_CASE} library.
+//
+\#if defined(_MSC_VER)
+	\#if !defined(${PARSER_NAME_UPPER_CASE}_NO_AUTOMATIC_LIBS) && !defined(${PARSER_NAME_UPPER_CASE}_EXPORTS)
+		\#pragma comment(lib, "${LIBRARY}" ${PARSER_NAME_UPPER_CASE}_LIB_SUFFIX)
+	\#endif
+	\#pragma warning(disable:4251)	// class needs to have dll - interface
+\#endif
+\#endif

@@ -1,0 +1,35 @@
+\#ifndef JAVACC_DEFAULT_TOKEN_MANAGER_ERROR_HANDLER_H
+\#define JAVACC_DEFAULT_TOKEN_MANAGER_ERROR_HANDLER_H
+
+#if BUILD_TOKEN_MANAGER
+\#include "JavaCC.h"
+\#include "TokenManagerErrorHandler.h"
+
+#if NAMESPACE
+namespace ${NAMESPACE_OPEN}
+#fi
+
+class DefaultTokenManagerErrorHandler : public TokenManagerErrorHandler {
+public:
+  virtual ~DefaultTokenManagerErrorHandler() {}
+
+  // Returns a detailed message for the Error when it is thrown by the
+  // token manager to indicate a lexical error.
+  // Parameters :
+  //    EOFSeen     : indicates if EOF caused the lexical error
+  //    curLexState : lexical state in which this error occurred
+  //    errorLine   : line number when the error occurred
+  //    errorColumn : column number when the error occurred
+  //    errorAfter  : prefix that was seen before this error occurred
+  //    curchar     : the offending character
+  //
+  virtual void lexicalError(bool EOFSeen, int lexState, int errorLine, int errorColumn, JJString errorAfter, JJChar curChar);
+  virtual void lexicalError(const JJString& errorMessage);
+};
+
+
+#if NAMESPACE
+${NAMESPACE_CLOSE}
+#fi
+#fi
+\#endif

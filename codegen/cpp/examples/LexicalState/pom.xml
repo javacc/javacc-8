@@ -1,0 +1,61 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.javacc.codegen.cpp</groupId>
+		<artifactId>examples</artifactId>
+		<version>8.0.0-SNAPSHOT</version>
+	</parent>
+	<artifactId>lexicalstate</artifactId>
+	<packaging>nar</packaging>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>com.github.maven-nar</groupId>
+				<artifactId>nar-maven-plugin</artifactId>
+				<extensions>true</extensions>
+				<configuration>
+					<libraries>
+						<library>
+							<type>executable</type>
+							<run>false</run>
+							<args>
+								<arg>${project.basedir}/idl/Hello.idl</arg>
+								<arg>${project.basedir}/idl/idl.in</arg>
+								<arg>${project.basedir}/idl/idl.out</arg>
+								<arg>${project.basedir}/idl/idl.err</arg>
+							</args>
+						</library>
+					</libraries>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>compare-out</id>
+						<phase>test</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<skip>true</skip>
+							<target unless="maven.test.skip">
+								<available file="${project.basedir}/idl/idl.out" property="isActualAvailable" />
+								<fail unless="isActualAvailable" message="${project.basedir}/idl/idl.out does not exist!" />
+								<available file="${project.basedir}/idl/idl.ref" property="isExpectedAvailable" />
+								<fail unless="isExpectedAvailable" message="${project.basedir}/idl/idl.ref does not exist!" />
+								<condition property="files.match">
+									<filesmatch file1="${project.basedir}/idl/idl.out" file2="${project.basedir}/idl/idl.ref" />
+								</condition>
+								<fail unless="files.match" message="${project.basedir}/idl/idl.out does not match ${project.basedir}/idl/idl.ref!" />
+							</target>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+	<groupId>org.javacc.codegen.cpp.examples</groupId>
+</project>
