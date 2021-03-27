@@ -73,7 +73,6 @@ class NfaState {
   int                         inNextOf;
   boolean                     isFinal            = false;
 
-
   public NfaState(LexerContext lexerContext) {
     id = lexerContext.idCnt++;
     lexerContext.allStates.add(this);
@@ -920,8 +919,24 @@ class NfaState {
         if (state.stateName == -1) {
           continue;
         }
+        assert(state.stateName >= 0 && state.stateName < states.size());
         state.stateName += offset;
       }
+
+      // Some of the NFA states that are epsilon move are mapped to others in the same lexical states so adjust those as well here.
+      // See the GenerateCode method where we set the name one state to be that of an equivalent state.
+      for (int i = 0; i < states.size(); i++) {
+        NfaState s = states.get(i);
+        if (s.next != null) {
+          for (NfaState next : s.next.epsilonMoveArray) {
+            assert (s.lexState == s.next.lexState);
+            if (!states.contains(next)) {
+              next.stateName += offset;
+            }
+          }
+        }
+      }
+
       cleanStateList.addAll(states);
     }
 
@@ -946,6 +961,7 @@ class NfaState {
           nextStates.add(next.stateName);
         }
       }
+
       Set<Integer> composite = new TreeSet<>();
       if (s.isComposite) {
         for (NfaState c : s.compositeStateSet) {

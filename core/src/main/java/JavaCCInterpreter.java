@@ -132,7 +132,7 @@ public class JavaCCInterpreter {
     System.out.println("*** Starting in lexical state: " + tokenizerData.lexStateNames[curLexState]);
     while (curPos < input_size) {
       int beg = curPos;
-      int matchedPos = beg;
+      int matchedPos = beg - 1;
       int matchedKind = Integer.MAX_VALUE;
       int nfaStartState = tokenizerData.initialStates.get(curLexState);
 
@@ -177,7 +177,9 @@ public class JavaCCInterpreter {
       if (nfaStartState != -1) {
         // We need to add the composite states first.
         curStates.add(nfaStartState);
-        curStates.addAll(tokenizerData.nfa.get(nfaStartState).compositeStates);
+        if (tokenizerData.nfa.get(nfaStartState).compositeStates != null) {
+          curStates.addAll(tokenizerData.nfa.get(nfaStartState).compositeStates);
+        }
         do {
           int kind = Integer.MAX_VALUE;
           c = input.charAt(curPos);
@@ -188,7 +190,8 @@ public class JavaCCInterpreter {
 
           for (int state : curStates) {
             TokenizerData.NfaState nfaState = tokenizerData.nfa.get(state);
-            if (nfaState.characters.contains(c)) {
+            if (nfaState != null &&
+                nfaState.characters.contains(c)) {
               if (kind > nfaState.kind) {
                 kind = nfaState.kind;
               }
@@ -216,6 +219,14 @@ public class JavaCCInterpreter {
         if (matchInfo.action != null) {
           System.err.println("Actions not implemented (yet) in intererpreted mode");
         }
+        if (matchInfo.matchType == TokenizerData.MatchType.SKIP) {
+          String label = tokenizerData.labels.get(matchedKind);
+          if (label == null) {
+            label = "Token kind: " + matchedKind;
+          }
+          System.out.println("SKIPPING: " + label + "; image: \"" + input.substring(beg, matchedPos + 1) + "\" at: "
+              + tokline + ":" + tokcol);
+        }
         if (matchInfo.matchType == TokenizerData.MatchType.TOKEN) {
           String label = tokenizerData.labels.get(matchedKind);
           if (label == null) {
@@ -225,6 +236,9 @@ public class JavaCCInterpreter {
               + tokline + ":" + tokcol);
         }
         if (matchInfo.newLexState != -1) {
+          if (curLexState != matchInfo.newLexState) {
+            System.out.println("Switching to lexical state: " + tokenizerData.lexStateNames[matchInfo.newLexState]);
+          }
           curLexState = matchInfo.newLexState;
         }
         curPos = matchedPos + 1;
