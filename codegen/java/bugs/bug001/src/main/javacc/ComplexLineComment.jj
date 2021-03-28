@@ -1,12 +1,12 @@
-PARSER_BEGIN(IdList)
-package idlist;
+PARSER_BEGIN(ComplexLineComment)
+package clc;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.PrintStream;
 
-public class IdList {
+public class ComplexLineComment {
 
   public static void main(String args[]) throws FileNotFoundException {
     InputStream input = System.in;
@@ -24,7 +24,7 @@ public class IdList {
        	System.setErr(error);
     }
     try {
-	    IdList parser = new IdList(System.in);
+	    ComplexLineComment parser = new ComplexLineComment(System.in);
     	parser.Input();
     } catch (Exception e) {
       	error.println(e.getMessage());
@@ -37,7 +37,7 @@ public class IdList {
 
 }
 
-PARSER_END(IdList)
+PARSER_END(ComplexLineComment)
 
 SKIP 	: {  " " | "\t" | "\n" | "\r" }
 
