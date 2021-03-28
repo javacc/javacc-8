@@ -68,9 +68,6 @@
 								<configuration>
 									<projectsDirectory>bugs</projectsDirectory>
 									<settingsFile>bugs/settings.xml</settingsFile>
-									<pomExcludes>
-										<pomExclude>bug001/pom.xml</pomExclude>
-									</pomExcludes>
 								</configuration>
 							</execution>
 
