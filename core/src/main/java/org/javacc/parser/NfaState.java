@@ -914,6 +914,8 @@ class NfaState {
     for (int l = 0; l < tokenizerData.lexStateNames.length; l++) {
       int offset = lexerContext.nfaStateOffset.get(l);
       List<NfaState> states = lexerContext.statesForLexicalState.get(l);
+      int maxStateName = 0;
+      int minStateName = 0;
       for (int i = 0; i < states.size(); i++) {
         NfaState state = states.get(i);
         if (state.stateName == -1) {
@@ -921,6 +923,8 @@ class NfaState {
         }
         assert(state.stateName >= 0 && state.stateName < states.size());
         state.stateName += offset;
+        maxStateName = Math.max(state.stateName, maxStateName);
+        minStateName = Math.min(state.stateName, minStateName);
       }
 
       // Some of the NFA states that are epsilon move are mapped to others in the same lexical states so adjust those as well here.
@@ -928,10 +932,13 @@ class NfaState {
       for (int i = 0; i < states.size(); i++) {
         NfaState s = states.get(i);
         if (s.next != null) {
+          assert (s.lexState == s.next.lexState);
           for (NfaState next : s.next.epsilonMoveArray) {
-            assert (s.lexState == s.next.lexState);
-            if (!states.contains(next)) {
+            if (next.stateName != -1 && !states.contains(next)) {
               next.stateName += offset;
+              if (!(next.stateName >= minStateName && next.stateName <= maxStateName)) {
+                throw new Error("Bug: epsilon move nfa state: " + next.stateName + " not mapped to a valid state in rangE: " + minStateName + "-" + maxStateName);
+              }
             }
           }
         }
