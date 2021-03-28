@@ -1,0 +1,25 @@
+PARSER_BEGIN(ComplexLineComment)
+
+PARSER_END(ComplexLineComment)
+
+SKIP 	: {  " " | "\t" | "\n" | "\r" }
+
+TOKEN:
+{ <#NA	: ~["-","\r","\n"] >
+| <#EOL	: ("\n"|"\r"|"\r\n") >
+}
+
+SPECIAL_TOKEN				: {"--":LineComment}
+<LineComment>SPECIAL_TOKEN	:{<(<NA>|"-"<NA>)*(<EOL>|"-"<EOL>|"-""-")?>:DEFAULT}
+
+
+TOKEN :
+{
+  < Id: ["a"-"z","A"-"Z"] ( ["a"-"z","A"-"Z","0"-"9", "-"] )* > { std::cout  << matchedToken->toString() << std::endl; }
+}
+
+void Input() :
+{}
+{
+  ( <Id> )+ <EOF>
+}

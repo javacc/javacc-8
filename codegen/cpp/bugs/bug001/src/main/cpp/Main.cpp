@@ -4,7 +4,7 @@
 #include <string>
 
 #include "JavaCC.h"
-#include "TyperTokenManager.h"
+#include "ComplexLineCommentTokenManager.h"
 #include "ParseException.h"
 #include "StreamReader.h"
 #if !defined(JJ8) && !defined(JJ7)
@@ -17,10 +17,9 @@
 #include "CharStream.h"
 #define CHARSTREAM CharStream
 #endif
-#include "Typer.h"
+#include "ComplexLineComment.h"
 
 using namespace std;
-using namespace ASN1::Typer;
 
 JJString ReadFileFully() {
 	JJString code;
@@ -36,45 +35,12 @@ JJString ReadFileFully() {
 "IMPORTS -- n-o --;\n"
 "END\n"
 ;
-#else
-"\r\n"
-"-- OK: Everything is fine\r\n"
-"\r\n"
-"-- iso.org.dod.internet.private.enterprise (1.3.6.1.4.1)\r\n"
-"-- .spelio.software.asn1c.test (9363.1.5.1)\r\n"
-"-- .10\r\n"
-"\r\n"
-"ModuleTestInt-10\r\n"
-"	{ iso org(3) dod(6) internet (1) private(4) enterprise(1)\r\n"
-"		spelio(9363) software(1) asn1c(5) test(1) 10 }\r\n"
-"	DEFINITIONS ::=\r\n"
-"BEGIN\r\n"
-"\r\n"
-"	alpha INTEGER ::= 1\r\n"
-
-"	Type1 ::= INTEGER { alpha(2) }\r\n"
-"	Type2 ::= INTEGER { alpha(3), beta(alpha) }\r\n"
-"	gamma Type2 ::= beta	-- equals 1 --\r\n"
-"	delta Type2 ::= alpha	-- equals 3 --\r\n"
-"\r\n"
-
-"	/*\r\n"
-"	 *  The following are for post-fix checking by the check_fixer.\r\n"
-"	 * It will be able to pick-up these values if the file is parseable,\r\n"
-"	 * even if it contains some semantic errors.\r\n"
-"	 */\r\n"
-"\r\n"
-"	check-gamma INTEGER ::= 1	-- check value\r\n"
-"	check-delta INTEGER ::= 3	-- check value\r\n"
-"\r\n"
-
-"END\r\n"
 #endif
 
 	return code;
 }
 static void usage(int argc, char**argv) {
-	cerr << "Parser" << " [ in [ out [ err ] ] ]" << endl;
+	cerr << "ComplexLineComment" << " [ in [ out [ err ] ] ]" << endl;
 }
 int main(int argc, char**argv) {
 	istream*	input  = &cin;
@@ -118,11 +84,11 @@ int main(int argc, char**argv) {
 			usage(argc, argv);
 			return 0;
 		}
-		TyperTokenManager *scanner = new TyperTokenManager(cs);
+		ComplexLineCommentTokenManager *scanner = new ComplexLineCommentTokenManager(cs);
 		scanner->disable_tracing();
-		Typer parser(scanner);
+		ComplexLineComment parser(scanner);
 
-		parser.ModuleDefinitionList();
+		parser.Input();
      	*output << "Parser Version 0.1:  file parsed successfully." << endl;
 	} catch (const ParseException& e) {
 		clog << e.expectedTokenSequences << endl;
@@ -138,3 +104,42 @@ int main(int argc, char**argv) {
 
 	return 0;
 }
+#if 0
+package clc;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.PrintStream;
+
+public class ComplexLineComment {
+
+  public static void main(String args[]) throws FileNotFoundException {
+    InputStream input = System.in;
+    PrintStream output = System.out;
+    PrintStream error = System.err;
+    InputStream prevInput = null;
+    PrintStream prevOutput = null;
+    PrintStream prevError = null;
+    if (args.length == 3) {
+    	prevInput = input;   	input = new FileInputStream(args[0]);
+    	prevOutput = output;   	output = new PrintStream(args[1]);
+    	prevError = error;   	error  = new PrintStream(args[2]);
+       	System.setIn(input);
+       	System.setOut(output);
+       	System.setErr(error);
+    }
+    try {
+	    ComplexLineComment parser = new ComplexLineComment(System.in);
+    	parser.Input();
+    } catch (Exception e) {
+      	error.println(e.getMessage());
+    } finally {
+        if (prevInput != null)  System.setIn(prevInput);
+        if (prevOutput != null) System.setOut(prevOutput);
+        if (prevError != null)  System.setErr(prevError);
+    }
+  }
+
+}
+
+#endif

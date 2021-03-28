@@ -12,6 +12,57 @@
 	<build>
 		<plugins>
 			<plugin>
+				<groupId>com.github.maven-nar</groupId>
+				<artifactId>nar-maven-plugin</artifactId>
+				<extensions>true</extensions>
+				<configuration>
+					<libraries>
+						<library>
+							<type>executable</type>
+							<run>true</run>
+<!-- 
+ -->
+						<args>
+							<arg>${project.basedir}/test/clc2.in</arg>
+							<arg>${project.basedir}/test/clc2.out</arg>
+							<arg>${project.basedir}/test/clc2.err</arg>
+						</args>
+						</library>
+ 					</libraries>
+<!-- 
+ <tests>
+    <test>
+      <name/>
+      <link/>
+      <run/>
+      <args>
+        <arg/>
+      </args>
+    </test>
+  </tests>
+  -->
+   					<cpp>
+						<debug>false</debug>
+						<defines>
+							<define>JJ8</define>
+						</defines>
+						<includePaths>
+							<includePath>
+								<path>${project.basedir}/src/main/cpp</path>
+							</includePath>
+							<includePath>
+								<path>${project.basedir}/target/generated-sources/cpp</path>
+							</includePath>
+						</includePaths>
+						<options>
+							<option>${cliargs}</option>
+							<option>${bigobj}</option>
+							<option>${std}</option>
+						</options>
+					</cpp>
+				</configuration>
+			</plugin>
+			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-antrun-plugin</artifactId>
 				<executions>
@@ -21,16 +72,17 @@
 						<goals>
 							<goal>run</goal>
 						</goals>
-						<configuration><skip>true</skip>
+						<configuration>
+							<skip>true</skip>
 							<target unless="maven.test.skip">
-								<available file="${project.basedir}/idl/idl.out" property="isActualAvailable" />
-								<fail unless="isActualAvailable" message="${project.basedir}/idl/idl.out does not exist!" />
-								<available file="${project.basedir}/idl/idl.ref" property="isExpectedAvailable" />
-								<fail unless="isExpectedAvailable" message="${project.basedir}/idl/idl.ref does not exist!" />
+								<available file="${project.basedir}/test/clc2.out" property="isActualAvailable" />
+								<fail unless="isActualAvailable" message="${project.basedir}/test/clc2.out does not exist!" />
+								<available file="${project.basedir}/test/clc2.ref" property="isExpectedAvailable" />
+								<fail unless="isExpectedAvailable" message="${project.basedir}/test/clc2.ref does not exist!" />
 								<condition property="files.match">
-									<filesmatch file1="${project.basedir}/idl/idl.out" file2="${project.basedir}/idl/idl.ref" />
+									<filesmatch file1="${project.basedir}/test/clc2.out" file2="${project.basedir}/test/clc2.ref" />
 								</condition>
-								<fail unless="files.match" message="${project.basedir}/idl/idl.out does not match ${project.basedir}/idl/idl.ref!" />
+								<fail unless="files.match" message="${project.basedir}/test/clc2.out does not match ${project.basedir}/test/clc2.ref!" />
 							</target>
 						</configuration>
 					</execution>
