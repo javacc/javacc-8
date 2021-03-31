@@ -216,8 +216,8 @@
 	<modules>
 		<module>core</module>
 <!-- 
- -->
 		<module>codegen</module>
+ -->
  	</modules>
 
 
