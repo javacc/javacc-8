@@ -7,8 +7,8 @@ Created from:
 
 # <a name="top"></a>JavaCC
 
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/net.java.dev.javacc/javacc/badge.svg)](https://maven-badges.herokuapp.com/maven-central/net.java.dev.javacc/javacc)
-[![Javadocs](https://www.javadoc.io/badge/net.java.dev.javacc/javacc.svg)](https://www.javadoc.io/doc/net.java.dev.javacc/javacc)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.javacc.core/javacc/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.javacc.core/javacc)
+[![Javadocs](https://www.javadoc.io/badge/org.javacc.core/javacc.svg)](https://www.javadoc.io/doc/org.javacc.core/javacc)
 
 Java Compiler Compiler (JavaCC) is the most popular parser generator for use with Java applications.
 

@@ -152,9 +152,9 @@ This guide will walk you through locally building the project, running an existi
 
 ### <a name="download"></a>Download & Installation
 
-JavaCC 7.0.10 is our latest stable release.
+JavaCC 8.0.0 is our latest stable release.
 
-* JavaCC 7.0.10 - ([Source (zip)](https://github.com/javacc/javacc/archive/javacc-7.0.10.zip), [Source (tar.gz)](https://github.com/javacc/javacc/archive/javacc-7.0.10.tar.gz), [Binaries](https://repo1.maven.org/maven2/net/java/dev/javacc/javacc/7.0.10/javacc-7.0.10.jar), [Javadocs](https://repo1.maven.org/maven2/net/java/dev/javacc/javacc/7.0.10/javacc-7.0.10-javadoc.jar), [Release Notes](docs/release-notes.md#javacc-7.0.10))
+* JavaCC 8.0.0 - ([Source (zip)](https://github.com/javacc/javacc/archive/javacc-8.0.0.zip), [Source (tar.gz)](https://github.com/javacc/javacc/archive/javacc-8.0.0.tar.gz), [Binaries](https://repo1.maven.org/maven2/net/java/dev/javacc/javacc/8.0.0/javacc-8.0.0.jar), [Javadocs](https://repo1.maven.org/maven2/net/java/dev/javacc/javacc/8.0.0/javacc-8.0.0-javadoc.jar), [Release Notes](docs/release-notes.md#javacc-8.0.0))
 
 All JavaCC releases are available via [GitHub](https://github.com/javacc/javacc/releases) and [Maven](https://mvnrepository.com/artifact/net.java.dev.javacc/javacc) including checksums and cryptographic signatures.
 
@@ -167,16 +167,16 @@ The GitHub  8.0 branch contains the next generation of JavaCC that splits the fr
 To install JavaCC, navigate to the download directory and type:
 
 ```
-$ unzip javacc-7.0.10.zip
+$ unzip javacc-8.0.0.zip
 or
-$ tar xvf javacc-7.0.10.tar.gz
+$ tar xvf javacc-8.0.0.tar.gz
 ```
 
-Then place the binary `javacc-7.0.10.jar` in a new `target/` folder, and rename to `javacc.jar`.
+Then place the binary `javacc-8.0.0.jar` in a new `target/` folder, and rename to `javacc.jar`.
 
 Once you have completed installation add the `scripts/` directory in the JavaCC installation to your `PATH`. The JavaCC, JJTree, and JJDoc invocation scripts/executables reside in this directory.
 
-On UNIX based systems, the scripts may not be executable immediately. This can be solved by using the command from the `javacc-7.0.10/` directory:
+On UNIX based systems, the scripts may not be executable immediately. This can be solved by using the command from the `javacc-8.0.0/` directory:
 
 ```
 chmod +x scripts/javacc
