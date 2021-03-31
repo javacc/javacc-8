@@ -20,19 +20,27 @@
 		<javacc.java>8.0.0-SNAPSHOT</javacc.java>
 		<javacc.cpp>8.0.0-SNAPSHOT</javacc.cpp>
 		<javacc.csharp>8.0.0-SNAPSHOT</javacc.csharp>
-	</properties>
+ 	</properties>
 
+	<dependencyManagement>
+		<dependencies>
+		<dependency>
+			<groupId>org.javacc</groupId>
+			<artifactId>core</artifactId>
+			<version>${javacc.core}</version>
+		</dependency>
+		</dependencies>
+	</dependencyManagement>
+	<dependencies>
+		<dependency>
+			<groupId>org.javacc</groupId>
+			<artifactId>core</artifactId>
+		</dependency>
+	</dependencies>
 	<modules>
 		<module>cpp</module>
 		<module>csharp</module>
 		<module>java</module>
 	</modules>
 
-	<dependencies>
-		<dependency>
-			<groupId>org.javacc</groupId>
-			<artifactId>core</artifactId>
-			<version>${javacc.core}</version>
-		</dependency>
-	</dependencies>
 </project>
