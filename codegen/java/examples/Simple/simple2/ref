@@ -1,0 +1,12 @@
+Call: Input
+  Call: MatchedBraces
+    Consumed token: <"{" at line 1 column 1>
+    Call: MatchedBraces
+      Consumed token: <"{" at line 1 column 2>
+      Consumed token: <"}" at line 1 column 5>
+    Return: MatchedBraces
+    Consumed token: <"}" at line 2 column 1>
+  Return: MatchedBraces
+  Consumed token: <<EOF> at line 2 column 3>
+Return: Input
+matched

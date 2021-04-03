@@ -1,0 +1,38 @@
+\#ifndef JAVACC_DEFAULT_PARSER_ERROR_HANDLER_H
+\#define JAVACC_DEFAULT_PARSER_ERROR_HANDLER_H
+
+#if BUILD_PARSER
+\#include "JavaCC.h"
+\#include "ParserErrorHandler.h"
+
+#if NAMESPACE
+namespace ${NAMESPACE_OPEN}
+#fi
+
+class DefaultParserErrorHandler : public ParserErrorHandler {
+public:
+             DefaultParserErrorHandler() {}
+    virtual ~DefaultParserErrorHandler() {}
+      
+  // Called when the parser encounters a different token when expecting to consume a specific kind of token.
+  // expectedKind  - token kind that the parser was trying to consume.
+  // expectedToken - the image of the token - tokenImages[expectedKind].
+  // actual        - the actual token that the parser got instead.
+  virtual void unexpectedToken(const JJString& expectedImage, const JJString& expectedLabel, const JJString& actualImage, const JJString& actualLabel, const Token* actualToken);      
+      
+  // Called when the parser cannot continue parsing.
+  // last         - the last token successfully parsed.
+  // unexpected   - the token at which the error occurs.
+  // production   - the production in which this error occurs.
+  virtual void parseError(const Token* last, const Token* unexpected, const JJSimpleString& production);
+  virtual void otherError(const JJString& message);
+
+};
+
+
+#if NAMESPACE
+${NAMESPACE_CLOSE}
+#fi
+#fi
+
+\#endif

@@ -1,0 +1,11 @@
+/** Token Manager Error. */
+class TokenMgrError extends Error
+{
+   constructor(message, token)
+   {
+     super(message);
+     this.errorAfter = token;
+   }
+}
+
+

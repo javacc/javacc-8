@@ -1,0 +1,117 @@
+class JJT${PARSER_NAME}State {
+  constructor() {
+    this.nodes = new System.Collections.Generic.List<Node>();
+    this.marks = new System.Collections.Generic.List<>();
+  }
+
+  /* Determines whether the current node was actually closed and
+     pushed.  This should only be called in the final user action of a
+     node scope.  */
+  nodeCreated() {
+    return this.node_created;
+  }
+
+  /* Call this to reinitialize the node stack.  It is called
+     automatically by the parser's ReInit() method. */
+  reset() {
+    this.nodes.Clear();
+    this.marks.Clear();
+    this.sp = 0;
+    this.mk = 0;
+  }
+
+  /* Returns the root node of the AST.  It only makes sense to call
+     this after a successful parse. */
+  rootNode() {
+    return this.nodes[0];
+  }
+
+  /* Pushes a node on to the stack. */
+  pushNode(n) {
+    this.nodes.Add(n);
+    ++this.sp;
+  }
+
+  /* Returns the node on the top of the stack, and remove it from the
+     stack.  */
+  popNode() {
+    if (--this.sp < this.mk) {
+      this.mk = this.marks[this.marks.Count-1];
+      this.marks.RemoveAt(this.marks.Count-1);
+    }
+    ret = this.nodes[this.nodes.Count-1];
+    this.nodes.RemoveAt(this.nodes.Count-1);
+    return ret;
+  }
+
+  /* Returns the node currently on the top of the stack. */
+  peekNode() {
+    return this.nodes[this.nodes.Count-1];
+  }
+
+  /* Returns the number of children on the stack in the current node
+     scope. */
+  nodeArity() {
+    return this.sp - this.mk;
+  }
+
+
+  clearNodeScope(n) {
+    while (this.sp > this.mk) {
+      popNode();
+    }
+    this.mk = this.marks[this.marks.Count-1];
+    this.marks.RemoveAt(this.marks.Count-1);
+  }
+
+
+  openNodeScope(n) {
+    this.marks.Add(this.mk);
+    this.mk = this.sp;
+    n.jjtOpen();
+  }
+
+
+  /* A definite node is constructed from a specified number of
+     children.  That number of this.nodes are popped from the stack and
+     made the children of the definite node.  Then the definite node
+     is pushed on to the stack. */
+  closeNodeScope(n, num) {
+    this.mk = this.marks[this.marks.Count-1];
+    this.marks.RemoveAt(this.marks.Count-1);
+    while (num-- > 0) {
+      c = popNode();
+      c.jjtSetParent(n);
+      n.jjtAddChild(c, num);
+    }
+    n.jjtClose();
+    pushNode(n);
+    this.node_created = true;
+  }
+
+
+  /* A conditional node is constructed if its condition is true.  All
+     the this.nodes that have been pushed since the node was opened are
+     made children of the conditional node, which is then pushed
+     on to the stack.  If the condition is false the node is not
+     constructed and they are left on the stack. */
+  closeNodeScope(n, condition) {
+    if (condition) {
+      a = nodeArity();
+      this.mk = this.marks[this.marks.Count-1];
+      this.marks.RemoveAt(this.marks.Count-1);
+      while (a-- > 0) {
+        c = popNode();
+        c.jjtSetParent(n);
+        n.jjtAddChild(c, a);
+      }
+      n.jjtClose();
+      pushNode(n);
+      this.node_created = true;
+    } else {
+      this.mk = this.marks[this.marks.Count-1];
+      this.marks.RemoveAt(this.marks.Count-1);
+      this.node_created = false;
+    }
+  }
+}

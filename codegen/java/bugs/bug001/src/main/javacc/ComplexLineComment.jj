@@ -1,0 +1,62 @@
+PARSER_BEGIN(ComplexLineComment)
+package clc;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.PrintStream;
+
+public class ComplexLineComment {
+
+  public static void main(String args[]) throws FileNotFoundException {
+    InputStream input = System.in;
+    PrintStream output = System.out;
+    PrintStream error = System.err;
+    InputStream prevInput = null;
+    PrintStream prevOutput = null;
+    PrintStream prevError = null;
+    if (args.length == 3) {
+    	prevInput = input;   	input = new FileInputStream(args[0]);
+    	prevOutput = output;   	output = new PrintStream(args[1]);
+    	prevError = error;   	error  = new PrintStream(args[2]);
+       	System.setIn(input);
+       	System.setOut(output);
+       	System.setErr(error);
+    }
+    try {
+	    ComplexLineComment parser = new ComplexLineComment(System.in);
+    	parser.Input();
+    } catch (Exception e) {
+      	error.println(e.getMessage());
+    } finally {
+        if (prevInput != null)  System.setIn(prevInput);
+        if (prevOutput != null) System.setOut(prevOutput);
+        if (prevError != null)  System.setErr(prevError);
+    }
+  }
+
+}
+
+PARSER_END(ComplexLineComment)
+
+SKIP 	: {  " " | "\t" | "\n" | "\r" }
+
+TOKEN:
+{ <#NA	: ~["-","\r","\n"] >
+| <#EOL	: ("\n"|"\r"|"\r\n") >
+}
+
+SPECIAL_TOKEN				: {"--":LineComment}
+<LineComment>SPECIAL_TOKEN	:{<(<NA>|"-"<NA>)*(<EOL>|"-"<EOL>|"-""-")?>:DEFAULT}
+
+
+TOKEN :
+{
+  < Id: ["a"-"z","A"-"Z"] ( ["a"-"z","A"-"Z","0"-"9", "-"] )* > { System.out.println(matchedToken.toString()); }
+}
+
+void Input() :
+{}
+{
+  ( <Id> )+ <EOF>
+}

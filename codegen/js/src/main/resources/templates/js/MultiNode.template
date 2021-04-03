@@ -1,0 +1,14 @@
+class ${NODE_TYPE} extends ${NODE_CLASS:-SimpleNode} {
+  constructor(id) {
+    super(id);
+  }
+
+  ${NODE_TYPE}(${PARSER_NAME} p, id) {
+    super(p, id);
+  }
+
+  /** Accept the visitor. **/
+ jjtAccept(${PARSER_NAME}Visitor visitor, data) {
+    return visitor.Visit(this, data);
+  }
+}

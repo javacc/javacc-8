@@ -1,0 +1,25 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.javacc.codegen.it</groupId>
+		<artifactId>csharp</artifactId>
+		<version>8.0.0-SNAPSHOT</version>
+		<relativePath>../../it/csharp</relativePath>
+	</parent>
+	<name>JavaCC grammars C#</name>
+	<groupId>org.javacc.codegen.csharp</groupId>
+	<artifactId>grammars</artifactId>
+	<packaging>pom</packaging>
+	<modules>
+		<module>asn1</module>
+		<module>c</module>
+		<module>chemical</module>
+		<module>ecma</module>
+		<module>java_1.5</module>
+		<module>java_1.1</module>
+		<module>java_1.1_widechar</module>
+		<module>cobol</module>
+		<module>dtd</module>
+	</modules>
+</project>

@@ -1,0 +1,46 @@
+options {
+	DEBUG_PARSER=true;
+	DEBUG_TOKEN_MANAGER=false;
+}
+PARSER_BEGIN(SpecialToken)
+PARSER_END(SpecialToken)
+
+TOKEN_MGR_DECLS :
+{
+  int linesCommentCount = 0;
+}
+
+SKIP 						: { " " | "\t" | "\n" | "\r" }
+
+/*
+ LinesComment is the standard comment found in c/c++ with slashstar delimiter.
+ it could embeded
+*/
+SKIP 						: {  "/*" { linesCommentCount = 1 ; } : LinesComment } 
+<LinesComment>  SKIP 		: {  "/*" { linesCommentCount += 1 ; } }
+<LinesComment>  SKIP 		: {  "*/" { linesCommentCount -= 1; SwitchTo( linesCommentCount==0 ? DEFAULT : LinesComment ) ; } } 
+<LinesComment>  SKIP 		: { <~[]> }     
+ 
+TOKEN							:
+{
+  <#NA							: ~["-","\r","\n"] >
+| <#EOL							: ("\n" | "\r" | "\r\n") >
+}
+/*
+ LineComment is a simgle line comment starting with '--' until the end of line or a matching '--'
+ thus this line below is valid
+ real code -- in-a-line-comment -- - real code - - real code --line-comment-
+*/
+SPECIAL_TOKEN                   : { "--" : LineComment }
+<LineComment> SPECIAL_TOKEN     : { <(<NA> | "-" <NA> )* (<EOL> | "-" <EOL> | "-" "-")?> : DEFAULT }
+
+TOKEN :
+{
+  < Id: ["a"-"z","A"-"Z"] ( ["a"-"z","A"-"Z","0"-"9"] )* > 
+}
+
+void Input() :
+{}
+{
+  ( <Id> )+ <EOF>
+}

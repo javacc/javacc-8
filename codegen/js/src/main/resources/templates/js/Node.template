@@ -1,0 +1,168 @@
+/* All AST nodes must implement this interface.  It provides basic
+   machinery for constructing the parent and child relationships
+   between nodes. */
+
+class {
+
+  /** This method is called after the node has been made the current
+    node.  It indicates that child nodes can now be added to it. */
+  jjtOpen() {
+    throw new Error("Method  must be implemented.");
+  }
+
+  /** This method is called after all the child nodes have been
+    added. */
+  jjtClose(){
+    throw new Error("Method  must be implemented.");
+  }
+
+
+  /** This pair of methods are used to inform the node of its
+    parent. */
+  jjtSetParent(n){
+    throw new Error("Method  must be implemented.");
+  }
+
+  jjtGetParent(){
+    throw new Error("Method  must be implemented.");
+  }
+
+
+  /** This method tells the node to add its argument to the node's
+    list of children.  */
+  jjtAddChild(n, i){
+    throw new Error("Method  must be implemented.");
+  }
+
+
+  /** This method returns a child node.  The children are numbered
+     from zero, left to right. */
+  jjtGetChild(i){
+    throw new Error("Method  must be implemented.");
+  }
+
+
+  /** Return the number of children the node has. */
+  jjtGetNumChildren(){
+    throw new Error("Method  must be implemented.");
+  }
+
+
+  getId(){
+    throw new Error("Method  must be implemented.");
+  }
+
+#if VISITOR
+
+  /** Accept the visitor. **/
+  jjtAccept(${PARSER_NAME}Visitor visitor, data) {
+    throw new Error("Method  must be implemented.");
+  }
+
+#fi
+}
+
+#if NODE_EXTENDS
+class SimpleNode extends ${NODE_EXTENDS}, {
+#else
+class SimpleNode extends {
+#fi
+
+  SimpleNode(i) {
+    this.id = i;
+  }
+
+  SimpleNode(${PARSER_NAME} p, i) : this(i) {
+    this.parser = p;
+  }
+
+#if NODE_FACTORY
+  static jjtCreate(id) {
+    return new SimpleNode(id);
+  }
+
+  static jjtCreate(${PARSER_NAME} p, id) {
+    return new SimpleNode(p, id);
+  }
+
+#fi
+  jjtOpen() {
+  }
+
+  jjtClose() {
+  }
+
+  jjtSetParent(n) { this.parent = n; }
+  jjtGetParent() { return this.parent; }
+
+  jjtAddChild(n, i) {
+    if (this.children == null) {
+      this.children = [];
+    }
+    if (i >= this.children.length) {
+      c = [];
+      j = 0;
+      for (; j < this.children.length; j++) c[j] = this.children[j];
+      for (; j < i; j++) c[j] = null;
+      this.children[i] = c;
+    }
+    this.children[i] = n;
+  }
+
+  jjtGetChild(i) {
+    return this.children[i];
+  }
+
+  jjtGetNumChildren() {
+    return (this.children == null) ? 0 : this.children.length;
+  }
+
+  jjtSetValue(this.value) { this.value = this.value; }
+  jjtGetValue() { return this.value; }
+
+#if TRACK_TOKENS
+  jjtGetFirstToken() { return this.firstToken; }
+  jjtSetFirstToken(token) { this.firstToken = token; }
+  jjtGetLastToken() { return this.lastToken; }
+  jjtSetLastToken(token) { this.lastToken = token; }
+
+#fi
+#if VISITOR
+  /** Accept the visitor. **/
+  ${VISITOR_RETURN_TYPE} jjtAccept(visitor, data) {
+    return visitor.Visit(this, data);
+  }
+
+  /** Accept the visitor. **/
+  childrenAccept(visitor, data) {
+    if (this.children != null) {
+      for (i = 0; i < this.children.length; ++i) {
+        this.children[i].jjtAccept(visitor, data);
+      }
+    }
+    return data;
+  }
+
+#fi
+
+  ToString(prefix) { return prefix + toString(); }
+
+  /* Override this method if you want to customize how the node dumps
+     out its this.children. */
+
+  dump(prefix) {
+    System.Console.Out.WriteLine(ToString(prefix));
+    if (this.children != null) {
+      for (i = 0; i < this.children.length; ++i) {
+        SimpleNode n = (SimpleNode)this.children[i];
+        if (n != null) {
+          n.dump(prefix + " ");
+        }
+      }
+    }
+  }
+
+  getId() {
+    return this.id;
+  }
+}

@@ -1,0 +1,38 @@
+options {
+	DEBUG_PARSER=true;
+	DEBUG_TOKEN_MANAGER=false;
+  OUTPUT_LANGUAGE = "c++";
+}
+PARSER_BEGIN(SpecialToken)
+PARSER_END(SpecialToken)
+
+TOKEN_MGR_DECLS :
+{
+  int linesCommentCount = 0;
+}
+
+SKIP 						: { " " | "\t" | "\n" | "\r" }
+
+SKIP 						: {  "/*" { linesCommentCount = 1 ; } : LinesComment } 
+<LinesComment>  SKIP 		: {  "/*" { linesCommentCount += 1 ; } }
+<LinesComment>  SKIP 		: {  "*/" { linesCommentCount -= 1; SwitchTo( linesCommentCount==0 ? DEFAULT : LinesComment ) ; } } 
+<LinesComment>  SKIP 		: { <~[]> }     
+ 
+TOKEN							:
+{
+  <#NA							: ~["-","\r","\n"] >
+| <#EOL							: ("\n" | "\r" | "\r\n") >
+}
+SPECIAL_TOKEN                   : { "--" : LineComment }
+<LineComment> SPECIAL_TOKEN     : { <(<NA> | "-" <NA> )* (<EOL> | "-" <EOL> | "-" "-")?> : DEFAULT }
+
+TOKEN :
+{
+  < Id: ["a"-"z","A"-"Z"] ( ["a"-"z","A"-"Z","0"-"9"] )* > 
+}
+
+void Input() :
+{}
+{
+  ( <Id> )+ <EOF>
+}

@@ -1,0 +1,74 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.javacc.codegen.cpp</groupId>
+		<artifactId>bugs</artifactId>
+		<version>8.0.0-SNAPSHOT</version>
+	</parent>
+	<groupId>org.javacc.codegen.cpp.bugs</groupId>
+	<artifactId>bug002</artifactId>
+	<packaging>nar</packaging>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>com.github.maven-nar</groupId>
+				<artifactId>nar-maven-plugin</artifactId>
+				<extensions>true</extensions>
+				<configuration>
+					<libraries>
+						<library>
+							<type>executable</type>
+							<run>true</run>
+							<args>
+								<arg>${project.basedir}/test/bug.in</arg>
+								<arg>${project.basedir}/test/bug.out</arg>
+								<arg>${project.basedir}/test/bug.err</arg>
+							</args>
+						</library>
+					</libraries>
+					<cpp>
+						<debug>false</debug>
+						<defines>
+							<define>JJ8</define>
+						</defines>
+						<includePaths>
+							<includePath>
+								<path>${project.basedir}/src/main/cpp</path>
+							</includePath>
+							<includePath>
+								<path>${project.basedir}/target/generated-sources/cpp</path>
+							</includePath>
+						</includePaths>
+					</cpp>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>compare-out</id>
+						<phase>test</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<target unless="maven.test.skip">
+								<available file="${project.basedir}/test/bug.out" property="isActualAvailable" />
+								<fail unless="isActualAvailable" message="${project.basedir}/test/bug.out does not exist!" />
+								<available file="${project.basedir}/test/bug.ref" property="isExpectedAvailable" />
+								<fail unless="isExpectedAvailable" message="${project.basedir}/test/bug.ref does not exist!" />
+								<condition property="files.match">
+									<filesmatch file1="${project.basedir}/test/bug.out" file2="${project.basedir}/test/bug.ref" />
+								</condition>
+								<fail unless="files.match" message="${project.basedir}/test/bug.out does not match ${project.basedir}/test/bug.ref!" />
+							</target>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+		</plugins>
+	</build>
+</project>

@@ -1,0 +1,94 @@
+options {
+SANITY_CHECK=false;
+DEBUG_PARSER=true;
+DEBUG_TOKEN_MANAGER=false;
+DEBUG_LOOKAHEAD=true;
+STATIC=false;
+//NO_DFA=false;
+}
+PARSER_BEGIN(Bug)
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.PrintStream;
+
+public class Bug {
+
+  public static void main(String args[]) throws FileNotFoundException {
+    InputStream input = System.in;
+    PrintStream output = System.out;
+    PrintStream error = System.err;
+    InputStream prevInput = null;
+    PrintStream prevOutput = null;
+    PrintStream prevError = null;
+    if (args.length == 3) {
+    	prevInput = input;   	input = new FileInputStream(args[0]);
+    	prevOutput = output;   	output = new PrintStream(args[1]);
+    	prevError = error;   	error  = new PrintStream(args[2]);
+       	System.setIn(input);
+       	System.setOut(output);
+       	System.setErr(error);
+    }
+    try {
+	    Bug parser = new Bug(System.in);
+    	parser.EnumerationItem();
+    } catch (Exception e) {
+      	error.println(e.getMessage());
+    } finally {
+        if (prevInput != null)  System.setIn(prevInput);
+        if (prevOutput != null) System.setOut(prevOutput);
+        if (prevError != null)  System.setErr(prevError);
+    }
+  }
+
+}
+PARSER_END(Bug)
+
+SKIP 						: { " " | "\t" | "\n" | "\r"  | "\f" }
+
+TOKEN:
+{
+ <LBRACKET:"[">
+|<RBRACKET:"]">
+|<LBRACE:"{">
+|<RBRACE:"}">
+|<LPAREN:"(">
+|<RPAREN:")">
+}
+
+
+TOKEN:
+{
+ <#UPPER:["A"-"Z"]>
+|<#LOWER:["a"-"z"]>
+|<#DIGIT:["0"-"9"]>
+|<NUMBER:("0"|["1"-"9"](<DIGIT>)*)>
+|<#LOWERCASEFIRST:<LOWER>("-"(<LOWER>|<UPPER>|<DIGIT>)|(<LOWER>|<UPPER>|<DIGIT>))*>
+|<#UPPERCASEFIRST:<UPPER>("-"(<LOWER>|<UPPER>|<DIGIT>)|(<LOWER>|<UPPER>|<DIGIT>))*>
+}
+
+TOKEN:{
+ <IDENTIFIANT		: <LOWERCASEFIRST>>
+|<VALUEREFERENCE	: <LOWERCASEFIRST>>
+}
+
+
+void EnumerationItem()  	: {  } 
+{ 
+	<LBRACE>
+	( LOOKAHEAD(2)
+      NamedNumber()
+	| identifier()
+	)
+	<RBRACE>
+}
+void NamedNumber() : 
+{ }
+{
+    ( identifier() | valuereference() )
+    <LPAREN> <NUMBER> <RPAREN>
+	
+}
+void identifier() 						: {} { <IDENTIFIANT>}
+void valuereference() 					: {} { <VALUEREFERENCE> }
+

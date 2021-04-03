@@ -1,0 +1,32 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.javacc.codegen.csharp.examples</groupId>
+		<artifactId>jjtree</artifactId>
+		<version>8.0.0-SNAPSHOT</version>
+	</parent>
+	<groupId>org.javacc.codegen.csharp.examples.jjtree</groupId>
+	<artifactId>eg3</artifactId>
+	<name>JavaCC examples C#  JJTreeExamples EG3</name>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.javacc.plugin</groupId>
+				<artifactId>javacc-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>jjt8jjt</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>jjtree-javacc</goal>
+						</goals>
+						<configuration>
+							<nodeDirectory>${project.basedir}/src/main/csharp</nodeDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>

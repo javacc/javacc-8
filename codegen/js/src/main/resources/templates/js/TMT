@@ -1,0 +1,156 @@
+// Sentinel
+const MAXINT = 0xffffffff;
+
+// Match kinds
+const SKIP = 0;
+const SPECIAL_TOKEN = 1;
+const MORE = 2;
+const TOKEN = 3;
+
+class ${PARSER_NAME}TokenManager {
+  // The tokenizer table.
+  static const tokenizerData = 
+  ${TOKENIZER_DATA_JSON}
+  
+  constructor(stream) {
+    this.input_stream = stream;
+
+    this.curLexState = tokenizerData.defaultLexState;
+    this.curPos = 0;
+    this.maxpos = -1;
+  
+    this.line = 1;
+    this.col = 0;
+    this.prevCR = false;
+    this.lines = [];
+    this.cols = [];
+    this.image = "";
+  }
+  
+  function SwitchTo(newLexState) {
+    this.curLexState = newLexState;
+  }
+  
+  function getNextToken(tokenizerData, input) {
+    let curStates = new Set();
+    let newStates = new Set();
+    let curChar = 0;
+  
+    while (true) {
+      try {
+        curChar = input_stream.beginToken();
+      } catch {
+        retun new Token();
+      }
+      let cur
+      const beg = curPos;
+      let matchedPos = beg;
+      let matchedKind = MAXINT;
+      let nfaStartState = tokenizerData.initialStates[curLexState];
+  
+      let c = readCharAt(input, curPos);
+  #IF IGNORE_CASE
+      c = c.toLowerCase();
+  #ENDIF
+      let key = curLexState << 16 | c;
+      let literals = tokenizerData.literalSequence[key];
+      tokline = line; //getLine(curPos);
+      tokcol = col;
+  
+      // First match the string literals.
+      if (literals != null) {
+        // We need to go in order so that the longest match works.
+        for (let litIndex = 0; litIndex < literals.length; litIndex++) {
+          let charIndex = 1;
+          let s = literals[litIndex];
+  
+          // See which literal matches.
+          while (charIndex < s.length && curPos + charIndex < input_size) {
+            c = readCharAt(input, curPos + charIndex);
+  #IF IGNORE_CASE
+            c = c.toLowerCase();
+  #ENDIF
+            if (c !== s.charCodeAt(charIndex)) break;
+            charIndex++;
+          }
+  
+          ef (charIndex === s.length) {
+#fi
+            // Found a string literal match.
+            matchedKind = tokenizerData.literalKinds[key][litIndex];
+            matchedPos = curPos + charIndex - 1;
+            nfaStartState = tokenizerData.kindToNfaStartState[matchedKind];
+            curPos += charIndex;
+            break;
+          }
+        }
+      }
+  
+      if (nfaStartState !== -1) {
+        // We need to add the composite states first.
+        curStates.add(nfaStartState);
+        tokenizerData.nfa[nfaStartState].compositeStates.forEach(function(state) {
+          curStates.add(state);
+        });
+  
+        do {
+          let kind = MAXINT;
+          c = readCharAt(input, curPos);
+  #IF IGNORE_CASE
+          c = c.toLowerCase();
+  #ENDIF
+          curStates.forEach(function(state) {
+            const nfaState = tokenizerData.nfa[state];
+            if (nfaState.characters.includes(c)) {
+            if (kind > nfaState.kind) {
+              kind = nfaState.kind;
+            }
+            nfaState.nextStates.forEach(function(state) { newStates.add(state) }); }
+          });
+  
+          const tmp = newStates;
+          newStates = curStates;
+          curStates = tmp;
+          newStates.clear();
+  
+          if (kind !== MAXINT) {
+            matchedKind = kind;
+            matchedPos = curPos;
+          }
+        } while (curStates.size > 0 && ++curPos < input_size);
+      }
+  
+      if (matchedPos === beg &&
+          matchedKind > tokenizerData.wildcardKind[curLexState]) {
+        matchedKind = tokenizerData.wildcardKind[curLexState];
+      }
+  
+      if (matchedKind !== MAXINT) {
+        const matchInfo = tokenizerData.allMatches[matchedKind];
+        if (matchInfo.action !== null) {
+          // Dangeorus!
+          eval(matchInfo.action);
+        }
+  
+        if (matchInfo.matchType === TOKEN ||
+            matchInfo.matchType === SPECIAL_TOKEN) {
+          let label = tokenizerData.labels[matchedKind];
+          if (label === null) {
+            label = "Token kind: " + matchedKind;
+          }
+        }
+  
+        if (matchInfo.newLexState !== -1) {
+          curLexState = matchInfo.newLexState;
+        }
+  
+        curPos = matchedPos + 1;
+      } else if (curPos < input_size) {
+        throw "Encountered token error at char: " + input.charAt(curPos);
+      }
+    }
+  
+    // Matched EOF. So return EOF token.
+    console.log("Matched EOF");
+  }
+}
