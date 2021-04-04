@@ -3,10 +3,10 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>org.javacc.codegen.it</groupId>
+		<groupId>org.javacc.codegen.cpp</groupId>
 		<version>8.0.0-SNAPSHOT</version>
-		<artifactId>cpp</artifactId>
-		<relativePath>../../it/cpp</relativePath>
+		<artifactId>it</artifactId>
+		<relativePath>../it/</relativePath>
 	</parent>
 
 	<name>JavaCC C++ examples</name>

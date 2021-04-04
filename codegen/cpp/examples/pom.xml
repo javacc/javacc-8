@@ -3,10 +3,10 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>org.javacc.codegen.it</groupId>
-		<artifactId>cpp</artifactId>
+		<groupId>org.javacc.codegen.cpp</groupId>
 		<version>8.0.0-SNAPSHOT</version>
-		<relativePath>../../it/cpp</relativePath>
+		<relativePath>../it/</relativePath>
+		<artifactId>it</artifactId>
 	</parent>
 
 	<name>JavaCC C++ examples</name>
@@ -20,6 +20,8 @@
 		<module>JJTreeExamples</module>
 		<module>MailProcessing</module>
 		<module>UserTokenManager</module>
+<!-- 
 		<module>SpecialToken</module>
-	</modules>
+ -->
+ 	</modules>
 </project>

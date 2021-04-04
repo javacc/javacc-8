@@ -20,15 +20,15 @@
 		<javacc.java>8.0.0-SNAPSHOT</javacc.java>
 		<javacc.cpp>8.0.0-SNAPSHOT</javacc.cpp>
 		<javacc.csharp>8.0.0-SNAPSHOT</javacc.csharp>
- 	</properties>
+	</properties>
 
 	<dependencyManagement>
 		<dependencies>
-		<dependency>
-			<groupId>org.javacc</groupId>
-			<artifactId>core</artifactId>
-			<version>${javacc.core}</version>
-		</dependency>
+			<dependency>
+				<groupId>org.javacc</groupId>
+				<artifactId>core</artifactId>
+				<version>${javacc.core}</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 	<dependencies>

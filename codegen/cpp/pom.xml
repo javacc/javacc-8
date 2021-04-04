@@ -2,21 +2,46 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
+<!-- 
 	<parent>
 		<groupId>org.javacc</groupId>
 		<artifactId>codegen</artifactId>
 		<version>8.0.0-SNAPSHOT</version>
 	</parent>
-
+ -->
 	<groupId>org.javacc.codegen</groupId>
 	<artifactId>cpp</artifactId>
 	<version>8.0.0-SNAPSHOT</version>
 
 	<name>JavaCC default C++ code generator</name>
 	<description>JavaCC default C++ code generator</description>
+	
+	<scm>
+		<connection>scm:git:https://git@github.com:javacc/javacc-8-cpp.git</connection>
+		<developerConnection>scm:git:ssh://git@github.com:javacc/javacc-8-cpp.git</developerConnection>
+		<url>scm:git:ssh://git@github.com:javacc/javacc-8-cpp.git</url>
+		<tag>HEAD</tag>
+	</scm>
 	<properties>
 		<root>${basedir}/../..</root>
+	    <maven.compiler.source>1.8</maven.compiler.source>
+	    <maven.compiler.target>1.8</maven.compiler.target>
 	</properties>
+	<dependencyManagement>
+		<dependencies>
+		<dependency>
+			<groupId>org.javacc</groupId>
+			<artifactId>core</artifactId>
+			<version>8.0.0-SNAPSHOT</version>
+		</dependency>
+		</dependencies>
+	</dependencyManagement>
+	<dependencies>
+		<dependency>
+			<groupId>org.javacc</groupId>
+			<artifactId>core</artifactId>
+		</dependency>
+	</dependencies>
 	<profiles>
 		<profile>
 			<id>run-its</id>
