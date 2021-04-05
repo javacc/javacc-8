@@ -6,15 +6,21 @@
 	<parent>
 		<groupId>org</groupId>
 		<artifactId>javacc</artifactId>
-		<version>8.0.0-SNAPSHOT</version>
+		<version>8.0.0</version>
 	</parent>
-
 	<groupId>org.javacc</groupId>
 	<artifactId>core</artifactId>
 	<packaging>jar</packaging>
+	<version>8.0.0-SNAPSHOT</version>
 
-	<name>JavaCC core</name>
-	
+	<name>JavaCC 8 Core</name>
+
+	<scm>
+		<url>https://github.com/javacc/javacc-8-core</url>
+		<connection>scm:git:https://github.com/javacc/javacc-8-core.git</connection>
+		<developerConnection>scm:git:ssh://git@github.com/javacc/javacc-8-core.git</developerConnection>
+		<tag>HEAD</tag>
+	</scm>
 	<properties>
 		<root>${basedir}/..</root>
 	</properties>
@@ -41,23 +47,12 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.8.0</version>
 				<configuration>
 					<excludes>
 						<exclude>**/*Test.java</exclude>
 					</excludes>
 				</configuration>
 			</plugin>
-
-
-			<!-- Uncomment to include grammar sources in jar -->
-			<!--resources> <resource> <directory>src</directory> <includes> <include>**/*.jj</include> 
-				<include>**/*.jjt</include> </includes> </resource> </resources -->
-
-			<!-- NOTE sourceDirectory paths currently configured for Windows due to 
-				http://jira.codehaus.org/browse/MJAVACC-29 -->
-			<!-- 
-			 -->
 			<plugin>
 				<groupId>org.javacc.plugin</groupId>
 				<artifactId>javacc-maven-plugin</artifactId>
@@ -105,6 +100,5 @@
 			</plugin>
 		</plugins>
 	</build>
-
 </project>
 
