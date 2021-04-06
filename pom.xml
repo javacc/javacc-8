@@ -177,7 +177,7 @@
 
 	<properties>
 		<doclint>none</doclint>
-
+		<project.build.sourceEncoding>ISO-8859-15</project.build.sourceEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 
@@ -190,6 +190,7 @@
 		<keystore.store.password>javacc</keystore.store.password>
 		<keystore.key.password>javacc</keystore.key.password>
 		<root>${basedir}</root>
+		<tsaUrl>https://freetsa.org/tsr</tsaUrl>
 	</properties>
 
 	<dependencyManagement>
@@ -220,6 +221,11 @@
 			<plugins>
 				<plugin>
 					<artifactId>maven-pmd-plugin</artifactId>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-source-plugin</artifactId>
+					<version>2.2.1</version>
 				</plugin>
 				<plugin>
 					<artifactId>maven-javadoc-plugin</artifactId>
@@ -283,9 +289,19 @@
 					<artifactId>nexus-staging-maven-plugin</artifactId>
 					<version>1.6.8</version>
 				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-gpg-plugin</artifactId>
+					<version>1.6</version>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.8.1</version>
+			</plugin>
 			<plugin>
 				<groupId>com.github.maven-nar</groupId>
 				<artifactId>nar-maven-plugin</artifactId>
@@ -311,6 +327,33 @@
 				</configuration>
 			</plugin>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar-no-fork</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+						<configuration>
+							<doclint>none</doclint>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
 				<artifactId>maven-jarsigner-plugin</artifactId>
 				<executions>
 					<execution>
@@ -321,15 +364,31 @@
 					</execution>
 				</executions>
 				<configuration>
-					<keystore>${keystore.path}</keystore>
+					<keystore>keystore</keystore>
 					<storetype>${keystore.type}</storetype>
 					<alias>${keystore.alias}</alias>
 					<storepass>${keystore.store.password}</storepass>
 					<keypass>${keystore.key.password}</keypass>
 					<verbose>true</verbose>
 					<removeExistingSignatures>true</removeExistingSignatures>
-					<keystore>${root}/keystore</keystore>
+					<tsa>${tsaUrl}</tsa>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-gpg-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>sign-artifacts</id>
+						<phase>deploy</phase>
+						<goals>
+							<goal>sign</goal>
+						</goals>
+						<configuration>
+							<interactive>false</interactive>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.sonatype.plugins</groupId>
@@ -339,6 +398,16 @@
 					<serverId>ossrh</serverId>
 					<nexusUrl>https://oss.sonatype.org/</nexusUrl>
 					<autoReleaseAfterClose>true</autoReleaseAfterClose>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+				<configuration>
+					<autoVersionSubmodules>true</autoVersionSubmodules>
+					<useReleaseProfile>false</useReleaseProfile>
+					<releaseProfiles>release</releaseProfiles>
+					<goals>deploy</goals>
 				</configuration>
 			</plugin>
 		</plugins>
