@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>org</groupId>
@@ -160,6 +161,119 @@
 		</license>
 	</licenses>
 
+	<profiles>
+		<profile>
+			<id>release</id>
+			<build>
+				<pluginManagement>
+					<plugins>
+						<plugin>
+							<groupId>org.apache.maven.plugins</groupId>
+							<artifactId>maven-source-plugin</artifactId>
+							<version>2.2.1</version>
+						</plugin>
+						<plugin>
+							<artifactId>maven-javadoc-plugin</artifactId>
+							<version>3.1.1</version>
+						</plugin>
+						<plugin>
+							<groupId>org.apache.maven.plugins</groupId>
+							<artifactId>maven-jarsigner-plugin</artifactId>
+							<version>3.0.0</version>
+						</plugin>
+						<plugin>
+							<groupId>org.sonatype.plugins</groupId>
+							<artifactId>nexus-staging-maven-plugin</artifactId>
+							<version>1.6.8</version>
+						</plugin>
+						<plugin>
+							<groupId>org.apache.maven.plugins</groupId>
+							<artifactId>maven-gpg-plugin</artifactId>
+							<version>1.6</version>
+						</plugin>
+					</plugins>
+				</pluginManagement>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-source-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>attach-sources</id>
+								<phase>deploy</phase>
+								<goals>
+									<goal>jar-no-fork</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-javadoc-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>attach-javadocs</id>
+								<phase>deploy</phase>
+								<goals>
+									<goal>jar</goal>
+								</goals>
+								<configuration>
+									<doclint>none</doclint>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<artifactId>maven-jarsigner-plugin</artifactId>
+						<executions>
+							<execution>
+								<phase>deploy</phase>
+								<goals>
+									<goal>sign</goal>
+								</goals>
+							</execution>
+						</executions>
+						<configuration>
+							<keystore>keystore</keystore>
+							<storetype>${keystore.type}</storetype>
+							<alias>${keystore.alias}</alias>
+							<storepass>${keystore.store.password}</storepass>
+							<keypass>${keystore.key.password}</keypass>
+							<verbose>true</verbose>
+							<removeExistingSignatures>true</removeExistingSignatures>
+							<tsa>${tsaUrl}</tsa>
+						</configuration>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-gpg-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>sign-artifacts</id>
+								<phase>deploy</phase>
+								<goals>
+									<goal>sign</goal>
+								</goals>
+								<configuration>
+									<interactive>false</interactive>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.sonatype.plugins</groupId>
+						<artifactId>nexus-staging-maven-plugin</artifactId>
+						<extensions>true</extensions>
+						<configuration>
+							<serverId>ossrh</serverId>
+							<nexusUrl>https://oss.sonatype.org/</nexusUrl>
+							<autoReleaseAfterClose>true</autoReleaseAfterClose>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 	<pluginRepositories>
 		<pluginRepository>
 			<id>ossrh</id>
@@ -220,15 +334,7 @@
 			<plugins>
 				<plugin>
 					<artifactId>maven-pmd-plugin</artifactId>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-source-plugin</artifactId>
-					<version>2.2.1</version>
-				</plugin>
-				<plugin>
-					<artifactId>maven-javadoc-plugin</artifactId>
-					<version>3.1.1</version>
+					<version>3.12.0</version>
 				</plugin>
 				<plugin>
 					<artifactId>maven-surefire-report-plugin</artifactId>
@@ -280,18 +386,8 @@
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-jarsigner-plugin</artifactId>
-					<version>3.0.0</version>
-				</plugin>
-				<plugin>
-					<groupId>org.sonatype.plugins</groupId>
-					<artifactId>nexus-staging-maven-plugin</artifactId>
-					<version>1.6.8</version>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-gpg-plugin</artifactId>
-					<version>1.6</version>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>3.8.1</version>
 				</plugin>
 			</plugins>
 		</pluginManagement>
@@ -299,7 +395,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.8.1</version>
 			</plugin>
 			<plugin>
 				<groupId>com.github.maven-nar</groupId>
@@ -327,86 +422,10 @@
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-source-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>attach-sources</id>
-						<phase>deploy</phase>
-						<goals>
-							<goal>jar-no-fork</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>attach-javadocs</id>
-						<phase>deploy</phase>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-						<configuration>
-							<doclint>none</doclint>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<artifactId>maven-jarsigner-plugin</artifactId>
-				<executions>
-					<execution>
-						<phase>deploy</phase>
-						<goals>
-							<goal>sign</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<keystore>keystore</keystore>
-					<storetype>${keystore.type}</storetype>
-					<alias>${keystore.alias}</alias>
-					<storepass>${keystore.store.password}</storepass>
-					<keypass>${keystore.key.password}</keypass>
-					<verbose>true</verbose>
-					<removeExistingSignatures>true</removeExistingSignatures>
-					<tsa>${tsaUrl}</tsa>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-gpg-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>sign-artifacts</id>
-						<phase>deploy</phase>
-						<goals>
-							<goal>sign</goal>
-						</goals>
-						<configuration>
-							<interactive>false</interactive>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.sonatype.plugins</groupId>
-				<artifactId>nexus-staging-maven-plugin</artifactId>
-				<extensions>true</extensions>
-				<configuration>
-					<serverId>ossrh</serverId>
-					<nexusUrl>https://oss.sonatype.org/</nexusUrl>
-					<autoReleaseAfterClose>true</autoReleaseAfterClose>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-release-plugin</artifactId>
 				<configuration>
 					<autoVersionSubmodules>true</autoVersionSubmodules>
-					<useReleaseProfile>false</useReleaseProfile>
+					<useReleaseProfile>true</useReleaseProfile>
 					<releaseProfiles>release</releaseProfiles>
 					<goals>deploy</goals>
 				</configuration>
@@ -428,7 +447,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-pmd-plugin</artifactId>
-				<version>3.12.0</version>
 				<configuration>
 					<rulesets>
 						<ruleset>/rulesets/java/maven-pmd-plugin-default.xml</ruleset>
