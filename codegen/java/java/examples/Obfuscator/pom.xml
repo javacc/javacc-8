@@ -1,0 +1,102 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.javacc.generator.java</groupId>
+    <artifactId>examples</artifactId>
+    <version>8.0.0-SNAPSHOT</version>
+  </parent>
+  <groupId>org.javacc.generator.java.examples</groupId>
+  <artifactId>obfuscator</artifactId>
+  <name>JavaCC examples Java Obfuscator</name>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>test</phase>
+						<goals>
+							<goal>java</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<mainClass>Main</mainClass>
+					<arguments>
+						<argument>${project.basedir}/in</argument>
+						<argument>${project.basedir}/out</argument>
+						<argument>${project.basedir}/obf/maps</argument>
+						<argument>${project.basedir}/obf/nochangeids</argument>
+						<argument>${project.basedir}/obf/useids</argument>
+					</arguments>
+				</configuration>
+			</plugin>
+<!-- FIXME Does not work on Linux
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>compare-randomNumber</id>
+						<phase>test</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<target unless="maven.test.skip">
+								<available file="${project.basedir}/out/html/randomNumber.java" property="isActualAvailable" />
+								<fail unless="isActualAvailable" message="${project.basedir}/out/html/randomNumber.java does not exist!" />
+								<available file="${project.basedir}/ref/html/randomNumber.java" property="isExpectedAvailable" />
+								<fail unless="isExpectedAvailable" message="${project.basedir}/ref/html/randomNumber.java does not exist!" />
+								<condition property="files.match">
+									<filesmatch file1="${project.basedir}/out/html/randomNumber.java" file2="${project.basedir}/ref/html/randomNumber.java" />
+								</condition>
+								<fail unless="files.match" message="${project.basedir}/out/html/randomNumber.java does not match ${project.basedir}/ref/html/randomNumber.java!" />
+							</target>
+						</configuration>
+					</execution>
+					<execution>
+						<id>compare-MyMath</id>
+						<phase>test</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<target unless="maven.test.skip">
+								<available file="${project.basedir}/out/O01/MyMath.java" property="isActualAvailable" />
+								<fail unless="isActualAvailable" message="${project.basedir}/out/O01/MyMath.java does not exist!" />
+								<available file="${project.basedir}/ref/O01/MyMath.java" property="isExpectedAvailable" />
+								<fail unless="isExpectedAvailable" message="${project.basedir}/ref/O01/MyMath.java does not exist!" />
+								<condition property="files.match">
+									<filesmatch file1="${project.basedir}/out/O01/MyMath.java" file2="${project.basedir}/ref/O01/MyMath.java" />
+								</condition>
+								<fail unless="files.match" message="${project.basedir}/out/O01/MyMath.java does not match ${project.basedir}/ref/O01/MyMath.java!" />
+							</target>
+						</configuration>
+					</execution>
+					<execution>
+						<id>compare-Main</id>
+						<phase>test</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<target unless="maven.test.skip">
+								<available file="${project.basedir}/out/package1/Main.java" property="isActualAvailable" />
+								<fail unless="isActualAvailable" message="${project.basedir}/out/package1/Main.java does not exist!" />
+								<available file="${project.basedir}/ref/package1/Main.java" property="isExpectedAvailable" />
+								<fail unless="isExpectedAvailable" message="${project.basedir}/ref/package1/Main.java does not exist!" />
+								<condition property="files.match">
+									<filesmatch file1="${project.basedir}/out/package1/Main.java" file2="${project.basedir}/ref/package1/Main.java" />
+								</condition>
+								<fail unless="files.match" message="${project.basedir}/out/package1/Main.java does not match ${project.basedir}/ref/package1/Main.java!" />
+							</target>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+ -->
+   		</plugins>
+	</build>
+</project>

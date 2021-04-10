@@ -9,7 +9,7 @@
 	</parent>
 
 	<groupId>org.javacc</groupId>
-	<artifactId>codegen</artifactId>
+	<artifactId>generator</artifactId>
 	<packaging>pom</packaging>
 
 	<name>JavaCC code generator</name>

@@ -1,4 +1,4 @@
-local-repo/
+**/vs2017/
 classes/
 target/
 # Eclipse file
@@ -6,6 +6,8 @@ target/
 .project
 .settings/
 bin/
+
+local-repo/
 
 # Compiled class file
 *.class
@@ -30,3 +32,12 @@ bin/
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+
+*.suo
+*.exe
+*.ilk
+*.ipch
+*.pdb
+.vs/
+Debug/
+Release/

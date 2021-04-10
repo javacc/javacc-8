@@ -1,0 +1,200 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.javacc.generator.java</groupId>
+		<artifactId>examples</artifactId>
+		<version>8.0.0-SNAPSHOT</version>
+	</parent>
+	<groupId>org.javacc.generator.java.examples</groupId>
+	<artifactId>simple</artifactId>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>simple1</id>
+						<phase>test</phase>
+						<goals>
+							<goal>java</goal>
+						</goals>
+						<configuration>
+							<mainClass>simple1.Simple1</mainClass>
+							<arguments>
+								<argument>${project.basedir}/simple1/in</argument>
+								<argument>${project.basedir}/simple1/out</argument>
+								<argument>${project.basedir}/simple1/err</argument>
+							</arguments>
+						</configuration>
+					</execution>
+					<execution>
+						<id>simple2</id>
+						<phase>test</phase>
+						<goals>
+							<goal>java</goal>
+						</goals>
+						<configuration>
+							<mainClass>simple2.Simple2</mainClass>
+							<arguments>
+								<argument>${project.basedir}/simple2/in</argument>
+								<argument>${project.basedir}/simple2/out</argument>
+								<argument>${project.basedir}/simple2/err</argument>
+							</arguments>
+						</configuration>
+					</execution>
+					<execution>
+						<id>simple3</id>
+						<phase>test</phase>
+						<goals>
+							<goal>java</goal>
+						</goals>
+						<configuration>
+							<mainClass>simple3.Simple3</mainClass>
+							<arguments>
+								<argument>${project.basedir}/simple3/in</argument>
+								<argument>${project.basedir}/simple3/out</argument>
+								<argument>${project.basedir}/simple3/err</argument>
+							</arguments>
+						</configuration>
+					</execution>
+					<execution>
+						<id>xlator</id>
+						<phase>test</phase>
+						<goals>
+							<goal>java</goal>
+						</goals>
+						<configuration>
+							<mainClass>xlator.NL_Xlator</mainClass>
+							<arguments>
+								<argument>${project.basedir}/xlator/in</argument>
+								<argument>${project.basedir}/xlator/out</argument>
+								<argument>${project.basedir}/xlator/err</argument>
+							</arguments>
+						</configuration>
+					</execution>
+					<execution>
+						<id>idlist</id>
+						<phase>test</phase>
+						<goals>
+							<goal>java</goal>
+						</goals>
+						<configuration>
+							<mainClass>idlist.IdList</mainClass>
+							<arguments>
+								<argument>${project.basedir}/idlist/in</argument>
+								<argument>${project.basedir}/idlist/out</argument>
+								<argument>${project.basedir}/idlist/err</argument>
+							</arguments>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>compare-simple1</id>
+						<phase>test</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<target>
+								<available file="${project.basedir}/simple1/out" property="isActualAvailable" />
+								<fail unless="isActualAvailable" message="${project.basedir}/simple1/out does not exist!" />
+								<available file="${project.basedir}/simple1/ref" property="isExpectedAvailable" />
+								<fail unless="isExpectedAvailable" message="${project.basedir}/simple1/ref does not exist!" />
+								<condition property="files.match">
+									<filesmatch file1="${project.basedir}/simple1/out" file2="${project.basedir}/simple1/ref" />
+								</condition>
+								<fail unless="files.match" message="${project.basedir}/simple1/out does not match ${project.basedir}/simple1/ref!" />
+							</target>
+						</configuration>
+					</execution>
+<!-- FIXME Does not work on Linux
+					<execution>
+						<id>compare-simple2</id>
+						<phase>test</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<target>
+								<available file="${project.basedir}/simple2/out" property="isActualAvailable" />
+								<fail unless="isActualAvailable" message="${project.basedir}/simple2/out does not exist!" />
+								<available file="${project.basedir}/simple2/ref" property="isExpectedAvailable" />
+								<fail unless="isExpectedAvailable" message="${project.basedir}/simple2/ref does not exist!" />
+								<condition property="files.match">
+									<filesmatch file1="${project.basedir}/simple2/out" file2="${project.basedir}/simple2/ref" />
+								</condition>
+								<fail unless="files.match" message="${project.basedir}/simple2/out does not match ${project.basedir}/simple2/ref!" />
+							</target>
+						</configuration>
+					</execution>
+-->
+					<execution>
+						<id>compare-simple3</id>
+						<phase>test</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<target>
+								<available file="${project.basedir}/simple3/out" property="isActualAvailable" />
+								<fail unless="isActualAvailable" message="${project.basedir}/simple3/out does not exist!" />
+								<available file="${project.basedir}/simple3/ref" property="isExpectedAvailable" />
+								<fail unless="isExpectedAvailable" message="${project.basedir}/simple3/ref does not exist!" />
+								<condition property="files.match">
+									<filesmatch file1="${project.basedir}/simple3/out" file2="${project.basedir}/simple3/ref" />
+								</condition>
+								<fail unless="files.match" message="${project.basedir}/simple3/out does not match ${project.basedir}/simple3/ref!" />
+							</target>
+						</configuration>
+					</execution>
+					<execution>
+						<id>compare-xlator</id>
+						<phase>test</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<target>
+								<available file="${project.basedir}/xlator/out" property="isActualAvailable" />
+								<fail unless="isActualAvailable" message="${project.basedir}/xlator/out does not exist!" />
+								<available file="${project.basedir}/xlator/ref" property="isExpectedAvailable" />
+								<fail unless="isExpectedAvailable" message="${project.basedir}/xlator/ref does not exist!" />
+								<condition property="files.match">
+									<filesmatch file1="${project.basedir}/xlator/out" file2="${project.basedir}/xlator/ref" />
+								</condition>
+								<fail unless="files.match" message="${project.basedir}/xlator/out does not match ${project.basedir}/xlator/ref!" />
+							</target>
+						</configuration>
+					</execution>
+					<execution>
+						<id>compare-idlist</id>
+						<phase>test</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<target>
+								<available file="${project.basedir}/idlist/out" property="isActualAvailable" />
+								<fail unless="isActualAvailable" message="${project.basedir}/idlist/out does not exist!" />
+								<available file="${project.basedir}/idlist/ref" property="isExpectedAvailable" />
+								<fail unless="isExpectedAvailable" message="${project.basedir}/idlist/ref does not exist!" />
+								<condition property="files.match">
+									<filesmatch file1="${project.basedir}/idlist/out" file2="${project.basedir}/idlist/ref" />
+								</condition>
+								<fail unless="files.match" message="${project.basedir}/idlist/out does not match ${project.basedir}/idlist/ref!" />
+							</target>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+	<name>JavaCC examples Java Simple</name>
+</project>

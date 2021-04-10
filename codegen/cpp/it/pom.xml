@@ -1,28 +1,13 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-<!-- 
 	<parent>
-		<groupId>org.javacc</groupId>
-		<artifactId>codegen</artifactId>
-		<version>8.0.0-SNAPSHOT</version>
-	</parent>
-	<parent>
-		<groupId>org.javacc.codegen</groupId>
+		<groupId>org.javacc.generator</groupId>
 		<artifactId>cpp</artifactId>
-		<version>8.0.0-SNAPSHOT</version>
+		<version>8.0.1-SNAPSHOT</version>
 	</parent>
- -->
-	<groupId>org.javacc.codegen.cpp</groupId>
+	<groupId>org.javacc.generator.cpp</groupId>
 	<artifactId>it</artifactId>
-	<version>8.0.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
-	<properties>
-		<javacc.core>8.0.0-SNAPSHOT</javacc.core>
-		<javacc.cpp>${project.version}</javacc.cpp>
-	    <maven.compiler.source>1.8</maven.compiler.source>
-	    <maven.compiler.target>1.8</maven.compiler.target>
-	</properties>
 	<profiles>
 		<profile>
 			<id>Windows</id>
@@ -34,7 +19,7 @@
 			<properties>
 				<suffix>exe</suffix>
 				<bigobj>/bigobj</bigobj>
-				<std></std>
+				<std />
 				<cliargs>/FS</cliargs>
 			</properties>
 		</profile>
@@ -47,9 +32,9 @@
 			</activation>
 			<properties>
 				<suffix>sh</suffix>
-				<bigobj></bigobj>
+				<bigobj />
 				<std>-std=c++11</std>
-				<cliargs></cliargs>
+				<cliargs />
 			</properties>
 		</profile>
 		<profile>
@@ -61,9 +46,9 @@
 			</activation>
 			<properties>
 				<suffix>sh</suffix>
-				<bigobj></bigobj>
+				<bigobj />
 				<std>-std=c++11</std>
-				<cliargs></cliargs>
+				<cliargs />
 			</properties>
 		</profile>
 
@@ -88,8 +73,8 @@
 									<scope>runtime</scope>
 								</dependency>
 								<dependency>
-									<groupId>org.javacc.codegen</groupId>
-									<artifactId>cpp</artifactId>
+									<groupId>org.javacc.generator.cpp</groupId>
+									<artifactId>javacc-cpp</artifactId>
 									<version>${project.version}</version>
 									<scope>runtime</scope>
 								</dependency>
@@ -172,8 +157,8 @@
 									<scope>runtime</scope>
 								</dependency>
 								<dependency>
-									<groupId>org.javacc.codegen</groupId>
-									<artifactId>cpp</artifactId>
+									<groupId>org.javacc.generator.cpp</groupId>
+									<artifactId>javacc-cpp</artifactId>
 									<version>${javacc.cpp}</version>
 									<scope>runtime</scope>
 								</dependency>
@@ -255,8 +240,8 @@
 									<scope>runtime</scope>
 								</dependency>
 								<dependency>
-									<groupId>org.javacc.codegen</groupId>
-									<artifactId>cpp</artifactId>
+									<groupId>org.javacc.generator.cpp</groupId>
+									<artifactId>javacc-cpp</artifactId>
 									<version>${javacc.cpp}</version>
 									<scope>runtime</scope>
 								</dependency>

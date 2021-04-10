@@ -1,0 +1,50 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.javacc.generator.java</groupId>
+		<artifactId>examples</artifactId>
+		<version>8.0.0-SNAPSHOT</version>
+	</parent>
+	<name>JavaCC examples Java MailProcessing</name>
+	<groupId>org.javacc.generator.java.examples</groupId>
+	<artifactId>mailprocessing</artifactId>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>Digest</id>
+						<phase>test</phase>
+						<goals>
+							<goal>java</goal>
+						</goals>
+						<configuration>
+							<mainClass>Digest</mainClass>
+							<arguments>
+								<argument>${project.basedir}/sampleMailFile</argument>
+								<argument>${project.basedir}/digestFile</argument>
+							</arguments>
+						</configuration>
+					</execution>
+					<execution>
+						<id>Faq</id>
+						<phase>test</phase>
+						<goals>
+							<goal>java</goal>
+						</goals>
+						<configuration>
+							<mainClass>Faq</mainClass>
+							<arguments>
+								<argument>1</argument>
+								<argument>${project.basedir}/sampleMailFile</argument>
+							</arguments>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>

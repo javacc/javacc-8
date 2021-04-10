@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.javacc.generator.java</groupId>
+		<version>8.0.0-SNAPSHOT</version>
+		<relativePath>../../it</relativePath>
+		<artifactId>it</artifactId>
+	</parent>
+	<name>JavaCC examples Java</name>
+	<groupId>org.javacc.generator.java</groupId>
+	<artifactId>examples</artifactId>
+	<packaging>pom</packaging>
+	<modules>
+		<module>CORBA-IDL</module>
+<!-- 
+		<module>GUIParsing</module> Use an applet
+-->
+		<module>Interpreter</module>
+		<module>JavaCC</module>
+ 		<module>JJTree</module>
+		<module>MailProcessing</module>
+		<module>Lookahead</module>
+		<module>Transformer</module>
+		<module>VTransformer</module>
+		<module>Obfuscator</module>
+		<module>Simple</module>
+	</modules>
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+				<groupId>org.javacc.plugin</groupId>
+					<artifactId>javacc-maven-plugin</artifactId>
+					<dependencies>
+						<dependency>
+							<groupId>org.javacc</groupId>
+							<artifactId>core</artifactId>
+							<version>${javacc.core}</version>
+							<scope>runtime</scope>
+						</dependency>
+						<dependency>
+							<groupId>org.javacc.generator.java</groupId>
+							<artifactId>java</artifactId>
+							<version>${project.version}</version>
+							<scope>runtime</scope>
+						</dependency>
+					</dependencies>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+		<plugins>
+			<plugin>
+				<groupId>org.javacc.plugin</groupId>
+				<artifactId>javacc-maven-plugin</artifactId>
+				<configuration>
+					<codeGenerator>Java</codeGenerator>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>

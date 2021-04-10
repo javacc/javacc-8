@@ -1,0 +1,133 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.javacc.generator.java</groupId>
+		<artifactId>examples</artifactId>
+		<version>8.0.0-SNAPSHOT</version>
+	</parent>
+	<name>JavaCC examples Java Interpreter</name>
+	<groupId>org.javacc.generator.java.examples</groupId>
+	<artifactId>Interpreter</artifactId>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>ast.fact</id>
+						<phase>test</phase>
+						<goals>
+							<goal>java</goal>
+						</goals>
+						<configuration>
+							<mainClass>ast.SPL</mainClass>
+							<arguments>
+								<argument>${project.basedir}/spl/fact/fact.spl</argument>
+								<argument>${project.basedir}/spl/fact/fact.in</argument>
+								<argument>${project.basedir}/spl/fact/fact.out</argument>
+								<argument>${project.basedir}/spl/fact/fact.err</argument>
+							</arguments>
+						</configuration>
+					</execution>
+					<execution>
+						<id>ast.odd</id>
+						<phase>test</phase>
+						<goals>
+							<goal>java</goal>
+						</goals>
+						<configuration>
+							<mainClass>ast.SPL</mainClass>
+							<arguments>
+								<argument>${project.basedir}/spl/odd/odd.spl</argument>
+								<argument>${project.basedir}/spl/odd/odd.in</argument>
+								<argument>${project.basedir}/spl/odd/odd.out</argument>
+								<argument>${project.basedir}/spl/odd/odd.err</argument>
+							</arguments>
+						</configuration>
+					</execution>
+					<execution>
+						<id>ast.sqrt</id>
+						<phase>test</phase>
+						<goals>
+							<goal>java</goal>
+						</goals>
+						<configuration>
+							<mainClass>ast.SPL</mainClass>
+							<arguments>
+								<argument>${project.basedir}/spl/sqrt/sqrt.spl</argument>
+								<argument>${project.basedir}/spl/sqrt/sqrt.in</argument>
+								<argument>${project.basedir}/spl/sqrt/sqrt.out</argument>
+								<argument>${project.basedir}/spl/sqrt/sqrt.err</argument>
+							</arguments>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>compare-ast.fact</id>
+						<phase>test</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<target>
+								<available file="${project.basedir}/spl/fact/fact.out" property="isActualAvailable" />
+								<fail unless="isActualAvailable" message="${project.basedir}/spl/fact/fact.out does not exist!" />
+								<available file="${project.basedir}/spl/fact/fact.ref" property="isExpectedAvailable" />
+								<fail unless="isExpectedAvailable" message="${project.basedir}/spl/fact/fact.ref does not exist!" />
+								<condition property="files.match">
+									<filesmatch file1="${project.basedir}/spl/fact/fact.out" file2="${project.basedir}/spl/fact/fact.ref" />
+								</condition>
+								<fail unless="files.match" message="${project.basedir}/spl/fact/fact.out does not match ${project.basedir}/spl/fact/fact.ref!" />
+							</target>
+						</configuration>
+					</execution>
+					<execution>
+						<id>compare-ast.odd</id>
+						<phase>test</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<target>
+								<available file="${project.basedir}/spl/odd/odd.out" property="isActualAvailable" />
+								<fail unless="isActualAvailable" message="${project.basedir}/spl/odd/odd.out does not exist!" />
+								<available file="${project.basedir}/spl/odd/odd.ref" property="isExpectedAvailable" />
+								<fail unless="isExpectedAvailable" message="${project.basedir}/spl/odd/odd.ref does not exist!" />
+								<condition property="files.match">
+									<filesmatch file1="${project.basedir}/spl/odd/odd.out" file2="${project.basedir}/spl/odd/odd.ref" />
+								</condition>
+								<fail unless="files.match" message="${project.basedir}/spl/odd/odd.out does not match ${project.basedir}/spl/odd/odd.ref!" />
+							</target>
+						</configuration>
+					</execution>
+					<execution>
+						<id>compare-ast.sqrt</id>
+						<phase>test</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<target>
+								<available file="${project.basedir}/spl/sqrt/sqrt.out" property="isActualAvailable" />
+								<fail unless="isActualAvailable" message="${project.basedir}/spl/sqrt/sqrt.out does not exist!" />
+								<available file="${project.basedir}/spl/sqrt/sqrt.ref" property="isExpectedAvailable" />
+								<fail unless="isExpectedAvailable" message="${project.basedir}/spl/sqrt/sqrt.ref does not exist!" />
+								<condition property="files.match">
+									<filesmatch file1="${project.basedir}/spl/sqrt/sqrt.out" file2="${project.basedir}/spl/sqrt/sqrt.ref" />
+								</condition>
+								<fail unless="files.match" message="${project.basedir}/spl/sqrt/sqrt.out does not match ${project.basedir}/spl/sqrt/sqrt.ref!" />
+							</target>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+ 		</plugins>
+	</build>
+</project>

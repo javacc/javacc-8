@@ -1,0 +1,119 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.javacc.generator.java</groupId>
+		<artifactId>grammars</artifactId>
+		<version>8.0.0-SNAPSHOT</version>
+	</parent>
+	<groupId>org.javacc.generator.java.grammars</groupId>
+	<artifactId>ecma</artifactId>
+	<name>JavaCC grammars java ecma</name>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>run-ecma</id>
+						<phase>test</phase>
+						<goals>
+							<goal>java</goal>
+						</goals>
+						<configuration>
+							<mainClass>EcmaScript</mainClass>
+							<arguments>
+								<argument>${project.basedir}/ecma/main.ecma</argument>
+							</arguments>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+<!-- 
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>compare-eg1</id>
+						<phase>test</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<target unless="maven.test.skip">
+								<available file="${project.basedir}/eg1/eg1.out" property="isActualAvailable" />
+								<fail unless="isActualAvailable" message="${project.basedir}/eg1/eg1.out does not exist!" />
+								<available file="${project.basedir}/eg1/eg1.ref" property="isExpectedAvailable" />
+								<fail unless="isExpectedAvailable" message="${project.basedir}/eg1/eg1.ref does not exist!" />
+								<condition property="files.match">
+									<filesmatch file1="${project.basedir}/eg1/eg1.out" file2="${project.basedir}/eg1/eg1.ref" />
+								</condition>
+								<fail unless="files.match" message="${project.basedir}/eg1/eg1.out does not match ${project.basedir}/eg1/eg1.ref!" />
+							</target>
+						</configuration>
+					</execution>
+					<execution>
+						<id>compare-eg2</id>
+						<phase>test</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<target unless="maven.test.skip">
+								<available file="${project.basedir}/eg2/eg2.out" property="isActualAvailable" />
+								<fail unless="isActualAvailable" message="${project.basedir}/eg2/eg2.out does not exist!" />
+								<available file="${project.basedir}/eg2/eg2.ref" property="isExpectedAvailable" />
+								<fail unless="isExpectedAvailable" message="${project.basedir}/eg2/eg2.ref does not exist!" />
+								<condition property="files.match">
+									<filesmatch file1="${project.basedir}/eg2/eg2.out" file2="${project.basedir}/eg2/eg2.ref" />
+								</condition>
+								<fail unless="files.match" message="${project.basedir}/eg2/eg2.out does not match ${project.basedir}/eg2/eg2.ref!" />
+							</target>
+						</configuration>
+					</execution>
+					<execution>
+						<id>compare-eg3</id>
+						<phase>test</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<target unless="maven.test.skip">
+								<available file="${project.basedir}/eg3/eg3.out" property="isActualAvailable" />
+								<fail unless="isActualAvailable" message="${project.basedir}/eg3/eg3.out does not exist!" />
+								<available file="${project.basedir}/eg3/eg3.ref" property="isExpectedAvailable" />
+								<fail unless="isExpectedAvailable" message="${project.basedir}/eg3/eg3.ref does not exist!" />
+								<condition property="files.match">
+									<filesmatch file1="${project.basedir}/eg3/eg3.out" file2="${project.basedir}/eg3/eg3.ref" />
+								</condition>
+								<fail unless="files.match" message="${project.basedir}/eg3/eg3.out does not match ${project.basedir}/eg3/eg3.ref!" />
+							</target>
+						</configuration>
+					</execution>
+					<execution>
+						<id>compare-eg4</id>
+						<phase>test</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<target unless="maven.test.skip">
+								<available file="${project.basedir}/eg4/eg4.out" property="isActualAvailable" />
+								<fail unless="isActualAvailable" message="${project.basedir}/eg4/eg4.out does not exist!" />
+								<available file="${project.basedir}/eg4/eg4.ref" property="isExpectedAvailable" />
+								<fail unless="isExpectedAvailable" message="${project.basedir}/eg4/eg4.ref does not exist!" />
+								<condition property="files.match">
+									<filesmatch file1="${project.basedir}/eg4/eg4.out" file2="${project.basedir}/eg4/eg4.ref" />
+								</condition>
+								<fail unless="files.match" message="${project.basedir}/eg4/eg4.out does not match ${project.basedir}/eg4/eg4.ref!" />
+							</target>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+-->
+		</plugins>
+	</build>
+</project>

@@ -1,12 +1,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>org.javacc</groupId>
-    <artifactId>codegen</artifactId>
-    <version>8.0.0-SNAPSHOT</version>
+    <groupId>org.javacc.generator</groupId>
+    <version>8.0.1-SNAPSHOT</version>
+    <artifactId>java</artifactId>
   </parent>
-  <groupId>org.javacc.codegen.it</groupId>
-  <artifactId>java</artifactId>
+  <groupId>org.javacc.generator.java</groupId>
+  <artifactId>it</artifactId>
   <packaging>pom</packaging>
   <profiles>
     <profile>
@@ -26,11 +26,11 @@
                 <dependency>
                   <groupId>org.javacc</groupId>
                   <artifactId>core</artifactId>
-                  <version>${project.version}</version>
+                  <version>${javacc.core}</version>
                   <scope>runtime</scope>
                 </dependency>
                 <dependency>
-                  <groupId>org.javacc.codegen</groupId>
+                  <groupId>org.javacc.generator.java</groupId>
                   <artifactId>java</artifactId>
                   <version>${project.version}</version>
                   <scope>runtime</scope>
@@ -82,9 +82,9 @@
                   <scope>runtime</scope>
                 </dependency>
                 <dependency>
-                  <groupId>org.javacc.codegen</groupId>
+                  <groupId>org.javacc.generator.java</groupId>
                   <artifactId>java</artifactId>
-                  <version>${javacc.java}</version>
+                  <version>${project.version}</version>
                   <scope>runtime</scope>
                 </dependency>
               </dependencies>
@@ -130,9 +130,9 @@
                   <scope>runtime</scope>
                 </dependency>
                 <dependency>
-                  <groupId>org.javacc.codegen</groupId>
+                  <groupId>org.javacc.generator.java</groupId>
                   <artifactId>java</artifactId>
-                  <version>${javacc.java}</version>
+                  <version>${project.version}</version>
                   <scope>runtime</scope>
                 </dependency>
               </dependencies>
@@ -482,4 +482,6 @@
       </build>
     </profile>
   </profiles>
+  <name>JavaCC default Java code generator: it</name>
+  <description>JavaCC default Java code generator: it</description>
 </project>
