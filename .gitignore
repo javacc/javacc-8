@@ -1,3 +1,5 @@
+codegen/
+
 **/local-repo/
 **/*.err
 **/*.out
