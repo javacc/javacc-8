@@ -40,9 +40,13 @@
 		</snapshotRepository>
 		<site>
 			<id>github</id>
-			<url>scm:git:ssh://git@github.com/javacc/javacc-maven-plugin.git</url>
+			<url>scm:git:ssh://git@github.com/javacc/javacc-8.git</url>
 		</site>
 	</distributionManagement>
+
+	<ciManagement>
+		<url>https://travis-ci.org/maven-nar/nar-maven-plugin</url>
+	</ciManagement>
 
 	<mailingLists>
 		<mailingList>
@@ -454,7 +458,7 @@
 					<maxmemory>256m</maxmemory>
 					<format>xml</format>
 					<linkXref>true</linkXref>
-					<sourceEncoding>utf-8</sourceEncoding>
+					<sourceEncoding>iso-8859-15</sourceEncoding>
 					<minimumTokens>100</minimumTokens>
 				</configuration>
 			</plugin>
