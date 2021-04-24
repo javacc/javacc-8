@@ -302,8 +302,10 @@
 		<keystore.password>javacc</keystore.password>
 		<keystore.store.password>javacc</keystore.store.password>
 		<keystore.key.password>javacc</keystore.key.password>
-		<root>${basedir}</root>
 		<tsaUrl>https://freetsa.org/tsr</tsaUrl>
+
+		<root>${basedir}</root>
+		<javacc.core>8.0.1</javacc.core>
 	</properties>
 
 	<dependencyManagement>
@@ -401,6 +403,7 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
 				<configuration>
+<!-- 
 					<archive>
 						<index>true</index>
 						<manifest>
@@ -409,12 +412,15 @@
 							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
 							<addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
 							<classpathLayoutType>repository</classpathLayoutType>
+							<classpathPrefix>repository</classpathPrefix>
+							<mainClass>javacc</mainClass>
 						</manifest>
 						<manifestEntries>
 							<url>${project.url}</url>
 						</manifestEntries>
 					</archive>
-				</configuration>
+ -->
+ 				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
