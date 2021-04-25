@@ -5,7 +5,7 @@
 	<groupId>org</groupId>
 	<artifactId>javacc</artifactId>
 	<packaging>pom</packaging>
-	<version>8.0.6</version>
+	<version>8.0.7-SNAPSHOT</version>
 
 	<name>JavaCC</name>
 	<description>JavaCC is a core/scanner generator for java.</description>
@@ -20,7 +20,7 @@
 		<url>https://github.com/javacc/javacc-8</url>
 		<connection>scm:git:https://github.com/javacc/javacc-8.git</connection>
 		<developerConnection>scm:git:ssh://git@github.com/javacc/javacc-8.git</developerConnection>
-		<tag>javacc-8.0.6</tag>
+		<tag>HEAD</tag>
 	</scm>
 
 	<issueManagement>
