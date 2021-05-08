@@ -1,0 +1,2 @@
+[submodule "core"]
+	url = https://github.com/javacc/javacc-8-core.git
