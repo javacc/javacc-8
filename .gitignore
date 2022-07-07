@@ -1,5 +1,5 @@
-codegen/
-core/
+#codegen/
+#core/
 
 **/local-repo/
 **/*.err
