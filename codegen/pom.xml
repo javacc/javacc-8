@@ -40,8 +40,13 @@
 	</dependencies>
 	<modules>
 		<module>cpp</module>
-		<module>csharp</module>
 		<module>java</module>
+<!--						generated code does not compile
+		<module>js</module>
+-->
+<!--						generated code does not compile
+		<module>csharp</module>
+-->
 	</modules>
 
 </project>
