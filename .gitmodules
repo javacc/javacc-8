@@ -1,0 +1,4 @@
+[submodule "core"]
+	path = core
+	url = https://github.com/javacc/javacc-8-core.git
+	branch = release
