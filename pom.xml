@@ -310,7 +310,7 @@
 		<tsaUrl>https://freetsa.org/tsr</tsaUrl>
 
 		<root>${basedir}</root>
-		<javacc.core>8.0.1</javacc.core>
+		<javacc.core>8.0.2</javacc.core>
 	</properties>
 
 	<dependencyManagement>
