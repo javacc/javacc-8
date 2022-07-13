@@ -68,5 +68,8 @@ jobs:
 
     - name: Setup MSVC
       uses: ilammy/msvc-dev-cmd@v1
-    - name: Build
+    - name: Build org:javacc
+      run: mvn -B -e clean install -N --file javacc-8/pom.xml
+    - name: Build 
       run: mvn -B -e clean verify --file javacc-8/pom.xml
+      
