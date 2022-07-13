@@ -17,7 +17,6 @@
 
 	<properties>
 		<root>${basedir}/..</root>
-		<javacc.core>8.0.2-SNAPSHOT</javacc.core>
 		<javacc.java>8.0.2-SNAPSHOT</javacc.java>
 		<javacc.cpp>8.0.2-SNAPSHOT</javacc.cpp>
 		<javacc.csharp>8.0.2-SNAPSHOT</javacc.csharp>
