@@ -20,7 +20,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
       with:
-         repository: https://github.com/javacc/javacc-8.git
+         repository: {javacc}/{https://github.com/javacc/javacc-8.git}
          path: javacc-8
          ref: release
     - uses: actions/checkout@v3
