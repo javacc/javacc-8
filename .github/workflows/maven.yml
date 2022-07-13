@@ -22,22 +22,27 @@ jobs:
       with:
          repository: git@github.com:javacc/javacc-8.git
          path: javacc-8
+         ref: release
     - uses: actions/checkout@v3
       with:
          repository: git@github.com:javacc/javacc-8-core.git
          path: javacc-8/core
+         ref: release
     - uses: actions/checkout@v3
       with:
          repository: git@github.com:javacc/javacc-8-java.git
          path: codegen/java
+         ref: release
     - uses: actions/checkout@v3
       with:
          repository: git@github.com:javacc/javacc-8-csharp.git
          path: codegen/csharp
+         ref: release
     - uses: actions/checkout@v3
       with:
          repository: git@github.com:javacc/javacc-8-js.git
          path: codegen/js
+         ref: release
     - name: Set up JDK 1.8
       uses: actions/setup-java@v1
       with:
