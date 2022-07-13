@@ -38,8 +38,8 @@
 		</dependency>
 	</dependencies>
 	<modules>
-		<module>cpp</module>
 		<module>java</module>
+		<module>cpp</module>
 <!--						generated code does not compile
 		<module>js</module>
 -->
