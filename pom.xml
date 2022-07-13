@@ -5,7 +5,7 @@
 	<groupId>org</groupId>
 	<artifactId>javacc</artifactId>
 	<packaging>pom</packaging>
-	<version>8.0.7-SNAPSHOT</version>
+	<version>8.0.7</version>
 
 	<name>JavaCC</name>
 	<description>JavaCC is a core/scanner generator for java.</description>
@@ -393,7 +393,7 @@
 				<plugin>
 					<groupId>com.github.maven-nar</groupId>
 					<artifactId>nar-maven-plugin</artifactId>
-					<version>3.10.1</version>
+					<version>3.10.2-SNAPSHOT</version>
 				</plugin>
 				<plugin>
 					<groupId>org.javacc.plugin</groupId>
