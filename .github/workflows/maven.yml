@@ -45,7 +45,7 @@ jobs:
          ref: release
     - uses: actions/checkout@v3
       with:
-         repository: javacc/javacc-8-js .git
+         repository: javacc/javacc-8-js.git
          path: javacc-8/codegen/js
          ref: release
     - name: Set up JDK 1.8
