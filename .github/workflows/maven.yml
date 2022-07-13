@@ -60,9 +60,6 @@ jobs:
          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
          restore-keys: ${{ runner.os }}-m2
 
-    - name: Setup MSVC
+    - name: Build
       uses: ilammy/msvc-dev-cmd@v1
-      with:
-          os:  windows-latest  
-    - name: Build something requiring CL.EXE
       run: mvn -B clean verify --file javacc-8/pom.xml
