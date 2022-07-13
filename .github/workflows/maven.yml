@@ -48,7 +48,7 @@ jobs:
          repository: javacc/javacc-8-csharp.git
          path: javacc-8/codegen/csharp
          ref: release-js
-    - name: clone javacc-8
+    - name: clone javacc-8-js
       uses: actions/checkout@v3
       with:
          repository: javacc/javacc-8-js.git
