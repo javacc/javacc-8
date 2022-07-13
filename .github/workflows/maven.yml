@@ -18,27 +18,27 @@ jobs:
         os: [ubuntu-latest, windows-latest, macos-latest]
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
          repository: git@github.com:javacc/javacc-8.git
          path: javacc-8
          branch: release
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
          repository: git@github.com:javacc/javacc-8-core.git
          path: javacc-8/core
          branch: release
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
          repository: git@github.com:javacc/javacc-8-java.git
          path: codegen/java
          branch: release
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
          repository: git@github.com:javacc/javacc-8-csharp.git
          path: codegen/csharp
          branch: release
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
          repository: git@github.com:javacc/javacc-8-js.git
          path: codegen/js
