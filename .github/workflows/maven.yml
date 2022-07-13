@@ -61,7 +61,7 @@ jobs:
          restore-keys: ${{ runner.os }}-m2
 
     - name: Setup MSVC
-    - uses: ilammy/msvc-dev-cmd@v1
+      uses: ilammy/msvc-dev-cmd@v1
       with:
           os:  windows-latest  
     - name: Build something requiring CL.EXE
