@@ -15,7 +15,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        os: [ubuntu-latest, windows-2019, macos-latest]
 
     steps:
     - name: clone javacc-8
@@ -58,18 +58,16 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 1.8
-
-    - name: Cache Maven packages
-      uses: actions/cache@v2
-      with:
-         path: ~/.m2
-         key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-         restore-keys: ${{ runner.os }}-m2
+        cache: 'maven'
 
     - name: Setup MSVC
       uses: ilammy/msvc-dev-cmd@v1
+
     - name: Build org:javacc
       run: mvn -B -e clean install -N --file javacc-8/pom.xml
+      uses: actions/checkout@v3
+
     - name: Build JavaCC core & generators
+      uses: actions/checkout@v3
       run: mvn -B -e clean verify --file javacc-8/pom.xml
       
