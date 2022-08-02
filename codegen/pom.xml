@@ -19,7 +19,7 @@
 		<root>${basedir}/..</root>
 		<javacc.java>8.0.2-SNAPSHOT</javacc.java>
 		<javacc.cpp>8.0.2-SNAPSHOT</javacc.cpp>
-		<javacc.csharp>8.0.2-SNAPSHOT</javacc.csharp>
+		<javacc.csharp>8.0.1-SNAPSHOT</javacc.csharp>
 	</properties>
 
 	<dependencyManagement>
@@ -43,9 +43,7 @@
 <!--						generated code does not compile
 		<module>js</module>
 -->
-<!--						generated code does not compile
 		<module>csharp</module>
--->
 	</modules>
 
 </project>
