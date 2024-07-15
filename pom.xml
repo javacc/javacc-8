@@ -368,11 +368,11 @@ THE POSSIBILITY OF SUCH DAMAGE.
 
   <!-- ModMMa 2024/7/15  -->
   <modules>
-    <module>core</module>
-    <module>java</module>
-    <module>cpp</module>
-    <module>csharp</module>
-    <module>js</module>
+    <module>../javacc-8-core</module>
+    <module>../javacc-8-java</module>
+    <module>../javacc-8-cpp</module>
+    <module>../javacc-8-csharp</module>
+    <module>../javacc-8-js</module>
     <!--
     <module>core</module>
     <module>codegen</module>
