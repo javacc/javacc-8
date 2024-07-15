@@ -366,10 +366,12 @@ THE POSSIBILITY OF SUCH DAMAGE.
     </dependency>
   </dependencies>
 
-  <modules>
+  <!-- ModMMa 9-jul-2024 for mvn install to pass, otherwise child modules not found -->
+  <!--  <modules>
     <module>core</module>
     <module>codegen</module>
   </modules>
+-->
 
   <build>
     <pluginManagement>
@@ -425,6 +427,7 @@ THE POSSIBILITY OF SUCH DAMAGE.
           <groupId>com.github.maven-nar</groupId>
           <artifactId>nar-maven-plugin</artifactId>
           <version>3.10.1</version>
+<!--          <version>3.10.2-SNAPSHOT</version>-->
         </plugin>
         <plugin>
           <groupId>org.javacc.plugin</groupId>
