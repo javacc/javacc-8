@@ -100,9 +100,10 @@ jobs:
       uses: ilammy/msvc-dev-cmd@v1
 
     # -B: batch mode; -e: produce execution error messages; -N: non-recursive (don't build submodules)
+    # project checked-out in javacc-8, hence the need to specify the pom.xml location
     - name: Build clean install on javacc-8 only
-      run: mvn -B -e -N clean install
+      run: mvn -B -e -N clean install --file javacc-8/pom.xml
 
     - name: Build clean verify on all (included submodules) of javacc-8
-      run: mvn -B -e clean verify
+      run: mvn -B -e clean verify --file javacc-8/pom.xml
       
