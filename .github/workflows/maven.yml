@@ -58,35 +58,35 @@ jobs:
       uses: actions/checkout@v3
       with:
         repository: javacc/javacc-8-core.git
-        path: javacc-8/core
+        path: javacc-8-core
         ref: release
 
     - name: clone javacc-8-cpp
       uses: actions/checkout@v3
       with:
         repository: javacc/javacc-8-cpp.git
-        path: javacc-8/codegen/cpp
+        path: javacc-8-cpp
         ref: release
 
     - name: clone javacc-8-java
       uses: actions/checkout@v3
       with:
         repository: javacc/javacc-8-java.git
-        path: javacc-8/codegen/java
+        path: javacc-8-java
         ref: release
 
     - name: clone javacc-8-csharp
       uses: actions/checkout@v3
       with:
         repository: javacc/javacc-8-csharp.git
-        path: javacc-8/codegen/csharp
+        path: javacc-8-csharp
         ref: release
 
     - name: clone javacc-8-js
       uses: actions/checkout@v3
       with:
         repository: javacc/javacc-8-js.git
-        path: javacc-8/codegen/js
+        path: javacc-8-js
         ref: release
 
     - name: Set up JDK 11 # ModMMa 2024/07/15: JDK 8 not found on macos
