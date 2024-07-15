@@ -1,7 +1,35 @@
 # This workflow will build a Java project with Maven
 # For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
-
-name: Java CI with Maven
+#
+# Copyright (c) 2020-2024, Sreeni Viswanadha <sreeni@viswanadha.net>.
+# Copyright (c) 2024, Marc Mazas <mazas.marc@gmail.com>.
+# All rights reserved.
+# 
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are met:
+# 
+#     * Redistributions of source code must retain the above copyright notice,
+#       this list of conditions and the following disclaimer.
+#     * Redistributions in binary form must reproduce the above copyright
+#       notice, this list of conditions and the following disclaimer in the
+#       documentation and/or other materials provided with the distribution.
+#     * Neither the names of of the copyright holders nor the names of its
+#       contributors may be used to endorse or promote products derived from
+#       this software without specific prior written permission.
+# 
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+# AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+# ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+# LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+# CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+# SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+# INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+# CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+# ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
+# THE POSSIBILITY OF SUCH DAMAGE.
+# 
+name: Java CI with Maven on javacc-8
 
 on:
   push:
@@ -18,55 +46,63 @@ jobs:
         os: [ubuntu-latest, windows-latest, macos-latest]
 
     steps:
+
     - name: clone javacc-8
       uses: actions/checkout@v3
       with:
-         repository: javacc/javacc-8.git
-         path: javacc-8
-         ref: release
+        repository: javacc/javacc-8.git
+        path: javacc-8
+        ref: release
+
     - name: clone javacc-8-core
       uses: actions/checkout@v3
       with:
-         repository: javacc/javacc-8-core.git
-         path: javacc-8/core
-         ref: release
+        repository: javacc/javacc-8-core.git
+        path: javacc-8/core
+        ref: release
+
     - name: clone javacc-8-cpp
       uses: actions/checkout@v3
       with:
-         repository: javacc/javacc-8-cpp.git
-         path: javacc-8/codegen/cpp
-         ref: release
+        repository: javacc/javacc-8-cpp.git
+        path: javacc-8/codegen/cpp
+        ref: release
+
     - name: clone javacc-8-java
       uses: actions/checkout@v3
       with:
-         repository: javacc/javacc-8-java.git
-         path: javacc-8/codegen/java
-         ref: release
+        repository: javacc/javacc-8-java.git
+        path: javacc-8/codegen/java
+        ref: release
+
     - name: clone javacc-8-csharp
       uses: actions/checkout@v3
       with:
-         repository: javacc/javacc-8-csharp.git
-         path: javacc-8/codegen/csharp
-         ref: release
+        repository: javacc/javacc-8-csharp.git
+        path: javacc-8/codegen/csharp
+        ref: release
+
     - name: clone javacc-8-js
       uses: actions/checkout@v3
       with:
-         repository: javacc/javacc-8-js.git
-         path: javacc-8/codegen/js
-         ref: release
-    - name: Set up JDK 1.8
+        repository: javacc/javacc-8-js.git
+        path: javacc-8/codegen/js
+        ref: release
+
+    - name: Set up JDK 11 # ModMMa 2024/07/15: JDK 8 not found on macos
       uses: actions/setup-java@v3
       with:
-         distribution: 'temurin' # See 'Supported distributions' for available options
-         java-version: '11'
-         cache: 'maven'
+        distribution: 'temurin'
+        java-version: '11'
+        cache: 'maven'
 
     - name: Setup MSVC
       uses: ilammy/msvc-dev-cmd@v1
 
-    - name: Build org:javacc
-      run: mvn -B -e clean install -N --file javacc-8/pom.xml
+    # -B: batch mode; -e: produce execution error messages; -N: non-recursive (don't build submodules)
+    - name: Build clean install on javacc-8 only
+      run: mvn -B -e -N clean install
 
-    - name: Build JavaCC core & generators cpp, java
-      run: mvn -B -e clean verify --file javacc-8/pom.xml
+    - name: Build clean verify on all (included submodules) of javacc-8
+      run: mvn -B -e clean verify
       
