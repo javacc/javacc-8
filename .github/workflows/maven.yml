@@ -111,6 +111,6 @@ jobs:
     - name: Build clean install on javacc-8 only
       run: mvn -B -e -N clean install --file javacc-8/pom.xml
 
-#    - name: Build clean verify on all (included submodules) of javacc-8
-#      run: mvn -B -e clean verify --file javacc-8/pom.xml
+    - name: Build clean install on all (included submodules) of javacc-8
+      run: mvn -B -e clean install --file javacc-8/pom.xml
       
