@@ -61,6 +61,7 @@ THE POSSIBILITY OF SUCH DAMAGE.
     <maven-compiler-plugin.version>3.13.0</maven-compiler-plugin.version>
     <plexus-compiler-csharp.version>2.15.0</plexus-compiler-csharp.version>
     <maven-invoker-plugin.version>3.7.0</maven-invoker-plugin.version>
+    <maven-toolchains-plugin.version>3.2.0</maven-toolchains-plugin.version>
 
     <!--    <root>${basedir}</root>-->
 
@@ -421,7 +422,7 @@ THE POSSIBILITY OF SUCH DAMAGE.
                reads <userhome>/.m2/toolchains.xml -->
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-toolchains-plugin</artifactId>
-          <version>3.2.0</version>
+          <version>${maven-toolchains-plugin.version}</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
