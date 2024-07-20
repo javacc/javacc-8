@@ -68,18 +68,18 @@ jobs:
         path: javacc-8-cpp
         ref: release
 
-    - name: clone javacc-8-java
-      uses: actions/checkout@v4
-      with:
-        repository: javacc/javacc-8-java.git
-        path: javacc-8-java
-        ref: release
-
     - name: clone javacc-8-csharp
       uses: actions/checkout@v4
       with:
         repository: javacc/javacc-8-csharp.git
         path: javacc-8-csharp
+        ref: release
+
+    - name: clone javacc-8-java
+      uses: actions/checkout@v4
+      with:
+        repository: javacc/javacc-8-java.git
+        path: javacc-8-java
         ref: release
 
     - name: clone javacc-8-js
@@ -106,11 +106,12 @@ jobs:
          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
          restore-keys: ${{ runner.os }}-m2
 
-    # -B: batch mode; -e: produce execution error messages; -N: non-recursive (don't build submodules)
-    # project checked-out in javacc-8, hence the need to specify the pom.xml location
-    - name: Build clean install on javacc-8 only
-      run: mvn -B -e -N clean install --file javacc-8/pom.xml
+    # -B: batch mode; -e: produce execution error messages;
+    # -X: debug mode; -N: non-recursive (don't build submodules)
 
-    - name: Build clean install on all (included submodules) of javacc-8
-      run: mvn -B -e clean install --file javacc-8/pom.xml
+    - name: Build install on javacc-8 only
+      run: mvn install -B -N --show-version --file javacc-8/pom.xml
+
+    - name: Build install on all (included submodules) of javacc-8
+      run: mvn install -B --show-version --file javacc-8/pom.xml
       
