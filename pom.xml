@@ -51,17 +51,18 @@ THE POSSIBILITY OF SUCH DAMAGE.
   <properties>
 
     <javacc.core.version>8.1.0-SNAPSHOT</javacc.core.version>
-    <javacc.java.version>8.1.0-SNAPSHOT</javacc.java.version>
     <javacc.cpp.version>8.1.0-SNAPSHOT</javacc.cpp.version>
     <javacc.csharp.version>8.1.0-SNAPSHOT</javacc.csharp.version>
+    <javacc.java.version>8.1.0-SNAPSHOT</javacc.java.version>
     <javacc.js.version>8.1.0-SNAPSHOT</javacc.js.version>
 
     <javacc-maven-plugin.version>3.0.3</javacc-maven-plugin.version>
     <exec-maven-plugin.version>3.3.0</exec-maven-plugin.version>
+    <maven-clean-plugin.version>3.4.0</maven-clean-plugin.version>
     <maven-compiler-plugin.version>3.13.0</maven-compiler-plugin.version>
-    <plexus-compiler-csharp.version>2.15.0</plexus-compiler-csharp.version>
     <maven-invoker-plugin.version>3.7.0</maven-invoker-plugin.version>
     <maven-toolchains-plugin.version>3.2.0</maven-toolchains-plugin.version>
+    <plexus-compiler-csharp.version>2.15.0</plexus-compiler-csharp.version>
 
     <!--    <root>${basedir}</root>-->
 
@@ -70,7 +71,7 @@ THE POSSIBILITY OF SUCH DAMAGE.
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
     <toolchain.jdk.version>[11,)</toolchain.jdk.version>
-    <maven.compiler.release>11</maven.compiler.release>
+    <maven.compiler.release>8</maven.compiler.release>
     <!--    <toolchain.jdk.version>8</toolchain.jdk.version>-->
     <!--    <maven.compiler.source>1.8</maven.compiler.source>-->
     <!--    <maven.compiler.target>1.8</maven.compiler.target>-->
@@ -122,7 +123,6 @@ THE POSSIBILITY OF SUCH DAMAGE.
       <url>scm:git:ssh://git@github.com/javacc/javacc-8.git</url>
     </site>
   </distributionManagement>
-
 
   <mailingLists>
     <mailingList>
@@ -404,6 +404,7 @@ THE POSSIBILITY OF SUCH DAMAGE.
   <build>
     <pluginManagement>
       <plugins>
+      <!-- TODO reorder & comment -->
         <plugin>
           <!-- copies the project artifacts to the user's local repository; usually implicit -->
           <groupId>org.apache.maven.plugins</groupId>
@@ -426,13 +427,18 @@ THE POSSIBILITY OF SUCH DAMAGE.
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-clean-plugin</artifactId>
+          <version>${maven-clean-plugin.version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-invoker-plugin</artifactId>
           <version>${maven-invoker-plugin.version}</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-pmd-plugin</artifactId>
-          <version>3.12.0</version>
+          <version>3.24.0</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -501,6 +507,16 @@ THE POSSIBILITY OF SUCH DAMAGE.
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-jar-plugin</artifactId>
           <version>3.4.2</version>
+        </plugin>
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>taglist-maven-plugin</artifactId>
+          <version>3.1.0</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-javadoc-plugin</artifactId>
+          <version>3.8.0</version>
         </plugin>
       </plugins>
     </pluginManagement>
@@ -630,12 +646,11 @@ THE POSSIBILITY OF SUCH DAMAGE.
           <rulesets>
             <ruleset>/rulesets/java/maven-pmd-plugin-default.xml</ruleset>
           </rulesets>
-          <minmemory>128m</minmemory>
-          <maxmemory>256m</maxmemory>
-          <format>xml</format>
-          <linkXref>true</linkXref>
-          <sourceEncoding>iso-8859-15</sourceEncoding>
+          <!--          <format>xml</format>-->
+          <linkXRef>true</linkXRef>
+          <!--          <inputEncoding>utf-8</inputEncoding>-->
           <minimumTokens>100</minimumTokens>
+          <!--          <targetJdk>8</targetJdk>-->
         </configuration>
       </plugin>
 
@@ -648,13 +663,29 @@ THE POSSIBILITY OF SUCH DAMAGE.
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>taglist-maven-plugin</artifactId>
         <configuration>
-          <tags>
-            <tag>@todo</tag>
-            <tag>FIXME</tag>
-            <tag>@deprecated</tag>
-            <tag>HACK</tag>
-            <tag>NOTE</tag>
-          </tags>
+          <tagListOptions>
+            <tagClasses>
+              <tagClass>
+                <tags>
+                  <tag>
+                    <matchString>@todo</matchString>
+                  </tag>
+                  <tag>
+                    <matchString>@deprecated</matchString>
+                  </tag>
+                  <tag>
+                    <matchString>FIXME</matchString>
+                  </tag>
+                  <tag>
+                    <matchString>HACK</matchString>
+                  </tag>
+                  <tag>
+                    <matchString>NOTE</matchString>
+                  </tag>
+                </tags>
+              </tagClass>
+            </tagClasses>
+          </tagListOptions>
         </configuration>
       </plugin>
 
