@@ -203,7 +203,7 @@ THE POSSIBILITY OF SUCH DAMAGE.
       <timezone>0</timezone>
     </developer>
   </developers>
-  
+
   <contributors>
     <contributor>
       <name>Markus Brigl</name>
@@ -392,13 +392,7 @@ THE POSSIBILITY OF SUCH DAMAGE.
       <dependency>
         <groupId>junit</groupId>
         <artifactId>junit</artifactId>
-        <version>4.12</version>
-      </dependency>
-
-      <dependency>
-        <groupId>org.apache.ant</groupId>
-        <artifactId>ant</artifactId>
-        <version>1.9.5</version>
+        <version>[4.13.1,)</version>
       </dependency>
 
     </dependencies>
