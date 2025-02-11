@@ -193,7 +193,17 @@ THE POSSIBILITY OF SUCH DAMAGE.
       <timezone>0</timezone>
       <organization>Kampbell</organization>
     </developer>
+
+    <developer>
+      <name>Marc Mazas</name>
+      <email>marc.mazas AT gmail.com</email>
+      <roles>
+        <role>Developer</role>
+      </roles>
+      <timezone>0</timezone>
+    </developer>
   </developers>
+  
   <contributors>
     <contributor>
       <name>Markus Brigl</name>
@@ -226,7 +236,7 @@ THE POSSIBILITY OF SUCH DAMAGE.
       <name>Eitan Adler</name>
     </contributor>
     <contributor>
-      <name>Anton Rybochkin</name>
+      <name>Vladimir Sitnikov</name>
     </contributor>
     <contributor>
       <name>Marc Mazas</name>
