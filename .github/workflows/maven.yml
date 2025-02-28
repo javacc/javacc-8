@@ -90,7 +90,7 @@ jobs:
         ref: release
 
     - name: Set up JDK 11 # JDK 8 not found on macos
-      if: matrix.os == macos-latest
+      if: matrix.os == 'macos-latest''
       uses: actions/setup-java@v4
       with:
         distribution: 'temurin'
@@ -98,7 +98,7 @@ jobs:
         cache: 'maven'
 
     - name: Set up JDK 8 for windows & ubuntu
-      if: matrix.os != macos-latest
+      if: matrix.os != 'macos-latest''
       uses: actions/setup-java@v4
       with:
         distribution: 'temurin'
