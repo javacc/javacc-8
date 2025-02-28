@@ -82,12 +82,13 @@ jobs:
         path: javacc-8-java
         ref: release
 
-    - name: clone javacc-8-js
-      uses: actions/checkout@v4
-      with:
-        repository: javacc/javacc-8-js.git
-        path: javacc-8-js
-        ref: release
+#    Not yet functional
+#    - name: clone javacc-8-js
+#      uses: actions/checkout@v4
+#      with:
+#        repository: javacc/javacc-8-js.git
+#        path: javacc-8-js
+#        ref: release
 
     - name: Set up JDK 11 # JDK 8 not found on macos
       if: matrix.os == 'macos-latest'
@@ -118,7 +119,8 @@ jobs:
     # -B: batch mode; -e: produce execution error messages;
     # -X: debug mode; -N: non-recursive (don't build submodules)
 
-    - name: Displays the toolchains configured JDKs
+    - name: Displays the toolchains configured JDKs, on macos only
+      if: matrix.os == 'macos-latest'
       run: mvn toolchains:display-discovered-jdk-toolchains --show-version --file javacc-8/pom.xml
 
     - name: Build install on javacc-8 only
