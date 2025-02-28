@@ -91,7 +91,7 @@ jobs:
 #        ref: release
 
     # JDK 8 not found on macos
-    - name: Set up JDK 11 for macos onl
+    - name: Set up JDK 11 for macos only
       if: matrix.os == 'macos-latest'
       uses: actions/setup-java@v4
       with:
@@ -128,6 +128,7 @@ jobs:
     - name: Build install on javacc-8 only
       run: mvn install -B -N --show-version --file javacc-8/pom.xml
 
+#    No real need to trigger building modules from here; let them do it themselves
 #    - name: Build install on all (included submodules) of javacc-8
 #      run: mvn install -B --show-version --file javacc-8/pom.xml
       
