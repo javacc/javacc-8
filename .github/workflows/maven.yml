@@ -90,7 +90,8 @@ jobs:
 #        path: javacc-8-js
 #        ref: release
 
-    - name: Set up JDK 11 # JDK 8 not found on macos
+    # JDK 8 not found on macos
+    - name: Set up JDK 11 for macos onl
       if: matrix.os == 'macos-latest'
       uses: actions/setup-java@v4
       with:
@@ -106,7 +107,8 @@ jobs:
         java-version: '8'
         cache: 'maven'
 
-    - name: Setup MSVC
+    - name: Setup MSVC for windows only
+      if: matrix.os != 'windows-latest'
       uses: ilammy/msvc-dev-cmd@v1
 
     - name: Cache Maven packages
