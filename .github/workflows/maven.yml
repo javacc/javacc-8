@@ -13,7 +13,7 @@
 #     * Redistributions in binary form must reproduce the above copyright
 #       notice, this list of conditions and the following disclaimer in the
 #       documentation and/or other materials provided with the distribution.
-#     * Neither the names of of the copyright holders nor the names of its
+#     * Neither the names of the copyright holders nor the names of its
 #       contributors may be used to endorse or promote products derived from
 #       this software without specific prior written permission.
 # 
@@ -89,11 +89,20 @@ jobs:
         path: javacc-8-js
         ref: release
 
-    - name: Set up JDK 11 # ModMMa 2024/07/15: JDK 8 not found on macos
+    - name: Set up JDK 11 # JDK 8 not found on macos
+      if: matrix.os == macos-latest
       uses: actions/setup-java@v4
       with:
         distribution: 'temurin'
         java-version: '11'
+        cache: 'maven'
+
+    - name: Set up JDK 8 for windows & ubuntu
+      if: matrix.os != macos-latest
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: '8'
         cache: 'maven'
 
     - name: Setup MSVC
@@ -109,9 +118,12 @@ jobs:
     # -B: batch mode; -e: produce execution error messages;
     # -X: debug mode; -N: non-recursive (don't build submodules)
 
+    - name: Displays the toolchains configured JDKs
+      run: mvn toolchains:display-discovered-jdk-toolchains --show-version --file javacc-8/pom.xml
+
     - name: Build install on javacc-8 only
       run: mvn install -B -N --show-version --file javacc-8/pom.xml
 
-    - name: Build install on all (included submodules) of javacc-8
-      run: mvn install -B --show-version --file javacc-8/pom.xml
+#    - name: Build install on all (included submodules) of javacc-8
+#      run: mvn install -B --show-version --file javacc-8/pom.xml
       
