@@ -1,22 +1,54 @@
+<!--
+Copyright (c) 2020-2025, Sreeni Viswanadha <sreeni@viswanadha.net>.
+Copyright (c) 2024-2025, Marc Mazas <mazas.marc@gmail.com>.
+All rights reserved.
+&para;
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+&para;
+      * Redistributions of source code must retain the above copyright notice,
+      this list of conditions and the following disclaimer.
+      * Redistributions in binary form must reproduce the above copyright
+      notice, this list of conditions and the following disclaimer in the
+      documentation and/or other materials provided with the distribution.
+      * Neither the names of the copyright holders nor the names of its
+      contributors may be used to endorse or promote products derived from
+      this software without specific prior written permission.
+&para;
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
+THE POSSIBILITY OF SUCH DAMAGE.
+-->
+
 [Home](../index.md) > [Documentation](index.md) > JavaCC BNF
 
 ---
 
 This page contains the complete syntax of the JavaCC grammar files with detailed explanations of each construct.
 
-### <a name="toc"></a>Contents
+### Contents
 
-- [**Tokens**](#tokens)
-  * [Reserved words](#reserved-words)
-  * [Whitespace](#whitespace)
-  * [Comments](#comments)
-  * [Reserved words and literals](#reserved-and-literals)
-  * [Separators](#separators)
-  * [Operators](#operators)
-  * [Identifiers](#identifiers)
-- [**Non-Terminals**](#non-terminals)
-  * [JavaCC grammar](#javacc-grammar)
-  * [Java grammar](#java-grammar)
+- [Tokens](#tokens)
+    * [Reserved words](#reserved-words)
+    * [Whitespace](#whitespace)
+    * [Comments](#comments)
+    * [Reserved words and literals](#reserved-words-and-literals)
+    * [Separators](#separators)
+    * [Operators](#operators)
+    * [Identifiers](#identifiers)
+    
+- [Non-Terminals](#non-terminals)
+    * [JavaCC grammar](#javacc-grammar)
+
+- [Java grammar](#java-grammar)
     * [Java identifiers](#java-identifiers)
     * [Program structure](#program-structure)
     * [Modifiers](#modifiers)
@@ -27,11 +59,11 @@ This page contains the complete syntax of the JavaCC grammar files with detailed
     * [Annotations](#annotations)
     * [Annotation types](#annotation-types)
 
-## <a name="tokens"></a>Tokens
+## Tokens
 
 The following is the JavaCC token specification.
 
-### <a name="reserved-words"></a>Reserved words
+### Reserved words
 
 ---
 
@@ -51,18 +83,12 @@ The following is the JavaCC token specification.
                   | <_SKIP: "SKIP">
                   | <_TOKEN_MGR_DECLS: "TOKEN_MGR_DECLS">
                   | <_EOF: "EOF">
-                  | <_DCL_PARSER_BEGIN: "DCL_PARSER_BEGIN">
-                  | <_DCL_PARSER_END: "DCL_PARSER_END">
-                  | <_INC_PARSER_BEGIN: "INC_PARSER_BEGIN">
-                  | <_INC_PARSER_END: "INC_PARSER_END">
-                  | <_DEF_PARSER_BEGIN: "DEF_PARSER_BEGIN">
-                  | <_DEF_PARSER_END: "DEF_PARSER_END">
 }
 ```
 
 <br>
 
-### <a name="whitespace"></a>Whitespace
+### Whitespace
 
 ---
 
@@ -85,7 +111,7 @@ The following is the JavaCC token specification.
 
 <br>
 
-### <a name="comments"></a>Comments
+### Comments
 
 ---
 
@@ -118,7 +144,7 @@ The following is the JavaCC token specification.
 
 <br>
 
-### <a name="reserved-and-literals"></a>Reserved words and literals
+### Reserved words and literals
 
 ---
 
@@ -233,7 +259,7 @@ The following is the JavaCC token specification.
 
 <br>
 
-### <a name="separators"></a>Separators
+### Separators
 
 ---
 
@@ -255,7 +281,7 @@ The following is the JavaCC token specification.
 
 <br>
 
-### <a name="operators"></a>Operators
+### Operators
 
 ---
 
@@ -306,7 +332,7 @@ The following is the JavaCC token specification.
 }
 ```
 
-### <a name="identifiers"></a>Identifiers
+### Identifiers
 
 ---
 
@@ -444,9 +470,9 @@ The following is the JavaCC token specification.
 
 <br>
 
-## <a name="non-terminals"></a>Non-Terminals
+## Non-Terminals
 
-### <a name="javacc-grammar"></a>JavaCC grammar
+### JavaCC grammar
 
 ---
 
@@ -617,11 +643,11 @@ identifier ::= <IDENTIFIER>
 
 <br>
 
-## <a name="java-grammar"></a>Java Grammar
+## Java Grammar
 
 The Java grammar is modified to use sequences of tokens for the missing tokens - those that include "<<" and ">>".
 
-### <a name="java-identifiers"></a>Java identifiers
+### Java identifiers
 
 ---
 
@@ -642,18 +668,12 @@ JavaIdentifier ::= ( <IDENTIFIER>
                    | "TOKEN_MGR_DECLS"
                    | "EOF"
                    | "template"
-                   | "DCL_PARSER_BEGIN"
-                   | "DCL_PARSER_END"
-                   | "INC_PARSER_BEGIN"
-                   | "INC_PARSER_END"
-                   | "DEF_PARSER_BEGIN"
-                   | "DEF_PARSER_END"
 )
 ```
 
 <br>
 
-### <a name="program-structure"></a>Program structure
+### Program structure
 
 ---
 
@@ -677,7 +697,7 @@ ImportDeclaration ::= "import"
 
 <br>
 
-### <a name="modifiers"></a>Modifiers
+### Modifiers
 
 ---
 
@@ -707,7 +727,7 @@ Modifiers ::= (
 
 <br>
 
-### <a name="declarations"></a>Declarations
+### Declarations
 
 ---
 
@@ -857,7 +877,7 @@ ExplicitConstructorInvocation ::= "this" Arguments ";"
 Initializer ::= ( "static" )? Block
 ```
 
-### <a name="types"></a>Types
+### Types
 
 ```java
 Type ::= ReferenceType | PrimitiveType
@@ -941,7 +961,7 @@ NameList ::= Name ( "," Name )*
 
 ---
 
-### <a name="expressions"></a>Expressions
+### Expressions
 
 ```java
 Expression ::= ConditionalExpression ( AssignmentOperator Expression )?
@@ -1138,7 +1158,7 @@ ArrayDimsAndInits ::= ( "[" Expression "]" )+ ( "[" "]" )*
 
 <br>
 
-### <a name="statements"></a>Statements
+### Statements
 
 ---
 
@@ -1288,7 +1308,7 @@ RSIGNEDSHIFT ::= ( ">" ">" )
 
 <br>
 
-### <a name="annotations"></a>Annotations
+### Annotations
 
 ---
 
@@ -1326,7 +1346,7 @@ MemberValueArrayInitializer ::= "{" MemberValue ( "," MemberValue )* ( "," )? "}
 
 <br>
 
-### <a name="annotation-types"></a>Annotation types
+### Annotation types
 
 ---
 
@@ -1357,6 +1377,8 @@ DefaultValue ::= "default" MemberValue
 
 ---
 
-[NEXT >>](api.md)
+[TOP](#contents)
+
+[JavaCC Command Line](cli.md) &hellip; [JavaCC Grammar](grammar.md) &hellip; [JavaCC BNF](bnf.md) &hellip; [JavaCC API](api.md) &hellip; [JJTree](jjtree.md) &hellip; [JJDoc](jjdoc.md)
 
 <br>

@@ -1,19 +1,51 @@
+<!--
+Copyright (c) 2020-2025, Sreeni Viswanadha <sreeni@viswanadha.net>.
+Copyright (c) 2024-2025, Marc Mazas <mazas.marc@gmail.com>.
+All rights reserved.
+&para;
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+&para;
+    * Redistributions of source code must retain the above copyright notice,
+      this list of conditions and the following disclaimer.
+    * Redistributions in binary form must reproduce the above copyright
+      notice, this list of conditions and the following disclaimer in the
+      documentation and/or other materials provided with the distribution.
+    * Neither the names of the copyright holders nor the names of its
+      contributors may be used to endorse or promote products derived from
+      this software without specific prior written permission.
+&para;
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
+THE POSSIBILITY OF SUCH DAMAGE.
+-->
+
 [Home](../index.md) > [Tutorials](index.md) > Token Manager
 
 ---
 
 This tutorial describes the JavaCC token manager. It covers lexical states, lexical actions, and the use of `SPECIAL_TOKEN`s.
 
-### <a name="toc"></a>Contents
+### Contents
 
-- [**Lexical States**](#lexical-states)
-  * [Token matching](#token-matching)
-- [**Lexical Actions**](#lexical-actions)
-  * [Variables within lexical actions](#variables)
-  * [Access to class level declarations within lexical actions](#class-declarations)
-- [**Special Tokens**](#special-tokens)
+- [Lexical States](#lexical-states)
+    * [Token matching](#token-matching)
 
-## <a name="lexical-states"></a>Lexical States
+- [Lexical Actions](#lexical-actions)
+    * [Variables within lexical actions](#variables-within-lexical-actions)
+    * [Access to class level declarations within lexical actions](#access-to-class-level-declarations-within-lexical-actions)
+  
+- [Special Tokens](#special-tokens)
+
+## Lexical States
 
 The JavaCC lexical specification is organized into a set of *lexical states*, each of which is named with a unique identifier. There is a standard lexical state called `DEFAULT`. The generated token manager is at any moment in one of these lexical states. When the token manager is initialized, it starts off in the `DEFAULT` state, by default. The starting lexical state can also be specified as a parameter while constructing a token manager object.
 
@@ -21,13 +53,13 @@ Each lexical state contains an ordered list of regular expressions - the order i
 
 All regular expressions that occur as expansion units in the grammar are considered to be in the `DEFAULT` lexical state and their order of occurrence is determined by their position in the grammar file.
 
-### <a name="token-matching"></a>Token matching
+### Token matching
 
 All regular expressions in the current lexical state are considered as potential match candidates. The token manager consumes the maximum number of characters from the input stream possible that match one of these regular expressions. That is, the token manager prefers the longest possible match. If there are multiple longest matches of the same length, the regular expression that is matched is the one with the earliest order of occurrence in the grammar file.
 
 As mentioned above, the token manager is in exactly one state at any moment. At this moment, the token manager only considers the regular expressions defined in this state for matching purposes. After a match, one can specify an action to be executed as well as a new lexical state to move to. If a new lexical state is not specified, the token manager remains in the current state.
 
-## <a name="lexical-actions"></a>Lexical Actions
+## Lexical Actions
 
 The regular expression type specifies what action to take when a regular expression has been successfully matched:
 
@@ -46,7 +78,7 @@ Immediately after this, the token manager changes state to that specified (if an
 
 After that the action specified by the type of the regular expression is taken (`SKIP`, `MORE`, etc). If the type is `TOKEN`, the matched token is returned. If the type is `SPECIAL_TOKEN`, the matched token is saved to be returned along with the next `TOKEN` that is matched.
 
-### <a name="variables"></a>Variables within lexical actions
+### Variables within lexical actions
 
 The following variables are available for use within lexical actions:
 
@@ -132,7 +164,7 @@ Calling this method switches you to the specified lexical state. This method may
 
 If there is a state change specified using the `: state` syntax it overrides all `switchTo` calls, hence there is no point having a `switchTo` call when there is an explicit state change specified. In general, calling this method should be resorted to only when you cannot do it any other way. Using this method of switching states also causes you to lose some of the semantic checking that JavaCC does when you use the standard syntax.
 
-### <a name="class-declarations"></a>Access to class level declarations within lexical actions
+### Access to class level declarations within lexical actions
 
 Lexical actions have access to a set of class level declarations. These declarations are introduced within the JavaCC file using the following syntax:
 
@@ -187,7 +219,7 @@ MORE :
 }
 ```
 
-## <a name="special-tokens"></a>Special Tokens
+## Special Tokens
 
 Special tokens are like tokens, except that they are permitted to appear anywhere in the input file (between any two tokens). Special tokens can be specified in the grammar input file using the reserved word `SPECIAL_TOKEN` instead of `TOKEN`, for example:
 
@@ -236,6 +268,8 @@ while (tmp_t != null) {
 
 ---
 
-[NEXT >>](lookahead.md)
+[Top](#contents)
+
+[Token Manager](token-manager.md) &hellip; [Lookahead](lookahead.md) &hellip; [CharStream](charstream.md) &hellip; [Error Handling](error-handling.md) &hellip; [Lexer Tips](lexer-tips.md) &hellip; [Examples](examples.md)
 
 <br>

@@ -1,30 +1,61 @@
+<!--
+Copyright (c) 2020-2025, Sreeni Viswanadha <sreeni@viswanadha.net>.
+Copyright (c) 2024-2025, Marc Mazas <mazas.marc@gmail.com>.
+All rights reserved.
+&para;
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+&para;
+    * Redistributions of source code must retain the above copyright notice,
+      this list of conditions and the following disclaimer.
+    * Redistributions in binary form must reproduce the above copyright
+      notice, this list of conditions and the following disclaimer in the
+      documentation and/or other materials provided with the distribution.
+    * Neither the names of the copyright holders nor the names of its
+      contributors may be used to endorse or promote products derived from
+      this software without specific prior written permission.
+&para;
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
+THE POSSIBILITY OF SUCH DAMAGE.
+-->
+
 [Home](../index.md) > [Tutorials](index.md) > Lookahead
 
 ---
 
 This tutorial refers to examples that are available in the source code on [GitHub](https://github.com/javacc/javacc/tree/master/examples/Lookahead).
 
-### <a name="toc"></a>Contents
+### Contents
 
-- [**What is a LOOKAHEAD?**](#what-is)
-  * [Avoiding backtracking](#backtracking)
-  * [Choice points in JavaCC grammars](#choice-points)
-  * [Default choice determination algorithm](#default-choice)
-- [**LOOKAHEAD Specification**](#specification)
-  * [Multi-token LOOKAHEAD](#multi-token)
-  * [Setting a global LOOKAHEAD](#global)
-  * [Setting a local LOOKAHEAD](#local)
-  * [Syntactic LOOKAHEAD](#syntactic)
-  * [Semantic LOOKAHEAD](#semantic)
-  * [General structure of LOOKAHEAD](#general)
+- [What is a LOOKAHEAD?](#what-is-a-lookahead)
+    * [Avoiding backtracking](#avoiding-backtracking)
+    * [Choice points in JavaCC grammars](#choice-points-in-javacc-grammars)
+    * [Default choice determination algorithm](#default-choice-determination-algorithm)
 
-## <a name="what-is"></a>What is a LOOKAHEAD?
+- [LOOKAHEAD Specification](#lookahead-specification)
+    * [Multi-token LOOKAHEAD Specifications](#multi-token-lookahead-specifications)
+    * [Setting a global LOOKAHEAD Specification](#setting-a-global-lookahead-specification)
+    * [Setting a local LOOKAHEAD Specification](#setting-a-local-lookahead-specification)
+    * [Syntactic LOOKAHEAD](#syntactic-lookahead)
+    * [Semantic LOOKAHEAD](#semantic-lookahead)
+    * [General structure of LOOKAHEAD](#general-structure-of-lookahead)
+
+## What is a LOOKAHEAD?
 
 The job of a parser is to read an input stream and determine whether or not the input stream conforms to the grammar.
 
 This determination in its most general form can be quite time consuming.
 
-#### <a name="example1"></a>Example 1
+#### Example 1
 
 ```java
 void Input() :
@@ -107,7 +138,7 @@ void BC2() :
 
 This grammar can match `abcc` in two ways, and is therefore considered *ambiguous*.
 
-### <a name="backtracking"></a>Avoiding backtracking
+### Avoiding backtracking
 
 The performance hit from such backtracking is unacceptable for most systems that include a parser. Hence most parsers do not backtrack in this general manner - or do not backtrack at all. Rather, they make decisions at choice points based on limited information and then commit to it.
 
@@ -123,7 +154,7 @@ The two ways in which you make the choice decisions work properly are:
 2. Insert hints at the more complicated choice points to help the parser make the right choices.
 
 
-### <a name="choice-points"></a>Choice points in JavaCC grammars
+### Choice points in JavaCC grammars
 
 There are 4 types of choice points in JavaCC:
 
@@ -136,11 +167,11 @@ There are 4 types of choice points in JavaCC:
 
 Remember that token specifications that occur within angular brackets `<...>` also have choice points. But these choices are made in different ways and are the subject of a different tutorial.
 
-### <a name="default-choice"></a>Default choice determination algorithm
+### Default choice determination algorithm
 
 The default choice determination algorithm looks ahead 1 token in the input stream and uses this to help make its choice at choice points. The following examples will describe the default algorithm fully.
 
-#### <a name="example2"></a>Example 2
+#### Example 2
 
 Consider the following grammar:
 
@@ -148,11 +179,11 @@ Consider the following grammar:
 void basic_expr() :
 {}
 {
-  <ID> "(" expr() ")"	// Choice 1
+  <ID> "(" expr() ")" // Choice 1
 |
-  "(" expr() ")"	// Choice 2
+  "(" expr() ")"  // Choice 2
 |
-  "new" <ID>		// Choice 3
+  "new" <ID>    // Choice 3
 }
 ```
 
@@ -172,7 +203,7 @@ if (next token is <ID>) {
 
 In the above example, the grammar has been written such that the default choice determination algorithm does the right thing. Another thing to note is that the choice determination algorithm works in a top to bottom order - if `Choice 1` was selected, the other choices are not even considered. While this is not an issue in this example (except for performance) it will become important when local ambiguities require the insertion of `LOOKAHEAD` hints.
 
-#### <a name="example3"></a>Example 3
+#### Example 3
 
 Consider the modified grammar:
 
@@ -180,19 +211,19 @@ Consider the modified grammar:
 void basic_expr() :
 {}
 {
-  <ID> "(" expr() ")"	// Choice 1
+  <ID> "(" expr() ")" // Choice 1
 |
-  "(" expr() ")"	// Choice 2
+  "(" expr() ")"  // Choice 2
 |
-  "new" <ID>		// Choice 3
+  "new" <ID>    // Choice 3
 |
-  <ID> "." <ID>		// Choice 4
+  <ID> "." <ID>   // Choice 4
 }
 ```
 
 Then the default algorithm will always choose `Choice 1` when the next input token is `<ID>` and never choose `Choice 4` even if the token following `<ID>` is a `.`.
 
-You can try running the parser generated from [Example 3](#example3) on the input `id1.id2`. It will complain that it encountered a `.` when it was expecting a `(`.
+You can try running the parser generated from [Example 3](#example-3) on the input `id1.id2`. It will complain that it encountered a `.` when it was expecting a `(`.
 
 *N.B. When you built the parser, it would have given you the following warning message:*
 
@@ -205,7 +236,7 @@ Warning: Choice conflict involving two expansions at
 
 JavaCC detected a situation in the grammar which may cause the default lookahead algorithm to do strange things. The generated parser will still work using the default lookahead algorithm, but it may not do what you expect of it.
 
-#### <a name="example4"></a>Example 4
+#### Example 4
 
 Now consider the following grammar:
 
@@ -222,8 +253,8 @@ Suppose the first `<ID>` has already been matched and that the parser has reache
 ```java
 while (next token is ",") {
   choose the nested expansion (i.e. go into the (...)* construct)
-	consume the "," token
-	if (next token is <ID>) {
+  consume the "," token
+  if (next token is <ID>) {
     consume it, otherwise report error
   }
 }
@@ -231,7 +262,7 @@ while (next token is ",") {
 
 In the above example, note that the choice determination algorithm does not look beyond the `(...)*` construct to make its decision.
 
-#### <a name="example5"></a>Example 5
+#### Example 5
 
 Suppose there was another production in that same grammar as follows:
 
@@ -260,9 +291,9 @@ JavaCC detected a situation in the grammar which may cause the default lookahead
 
 We have shown examples of two kinds of choice points in the examples above - `exp1 | exp2 | ...`, and `(exp)*`. The other two types of choice points `(exp)+` and `(exp)?` behave similarly to `(exp)*` so it is not necessary to provide further examples of their use.
 
-## <a name="specification"></a>LOOKAHEAD Specification
+## LOOKAHEAD Specification
 
-### <a name="multi-token"></a>Multi-token LOOKAHEAD specifications
+### Multi-token LOOKAHEAD specifications
 
 So far, we have described the default lookahead algorithm of the generated parsers. In the majority of situations, the default algorithm works just fine. In situations where it does not work well, JavaCC provides you with warning messages like the ones shown above. If you have a grammar that goes through JavaCC without producing any warnings, then the grammar is a `LL(1)` grammar. Essentially, `LL(1)` grammars are those that can be handled by top-down parsers (such as those generated by JavaCC) using at most one token of `LOOKAHEAD`.
 
@@ -272,9 +303,9 @@ When you get these warning messages, you can do one of two things.
 
 You can modify your grammar so that the warning messages go away. That is, you can attempt to make your grammar `LL(1)` by making some changes to it.
 
-#### <a name="example6"></a>Example 6
+#### Example 6
 
-The following grammar shows how you how to change [Example 3](#example3) to make it `LL(1)`:
+The following grammar shows how you how to change [Example 3](#example-3) to make it `LL(1)`:
 
 ```java
 void basic_expr() :
@@ -290,9 +321,9 @@ void basic_expr() :
 
 What we have done here is to refactor the fourth choice into the first choice. Note how we have placed their common first token `<ID>` outside the parentheses, and then within the parentheses we have yet another choice which can now be performed by looking at only one token in the input stream and comparing it with `(` and `.`. This process of modifying grammars to make them `LL(1)` is called *left factoring*.
 
-#### <a name="example7"></a>Example 7
+#### Example 7
 
-The following grammar shows how [Example 5](#example5) may be changed to make it `LL(1)`:
+The following grammar shows how [Example 5](#example-5) may be changed to make it `LL(1)`:
 
 ```java
 void funny_list() :
@@ -314,7 +345,7 @@ A design decision must be made to determine if `Option 1` or `Option 2` is the r
 
 Sometimes `Option 2` is the only choice - especially in the presence of user actions.
 
-Suppose [Example 3](#example3) contained actions as shown below:
+Suppose [Example 3](#example-3) contained actions as shown below:
 
 ```java
 void basic_expr() :
@@ -333,34 +364,34 @@ void basic_expr() :
 Since the actions are different, left-factoring cannot be performed.
 
 
-### <a name="global"></a>Setting a global LOOKAHEAD specification
+### Setting a global LOOKAHEAD specification
 
 You can set a global `LOOKAHEAD` specification by using the option `LOOKAHEAD` either from the command line, or at the beginning of the grammar file in the options section. The value of this option is an integer which is the number of tokens to look ahead when making choice decisions. As you may have guessed, the default value of this option is `1` - which derives the default `LOOKAHEAD` algorithm described above.
 
-Suppose you set the value of this option to `2`. Then the `LOOKAHEAD` algorithm derived from this looks at two tokens (instead of just one token) before making a choice decision. Hence, in [Example 3](#example3), `Choice 1` will be taken only if the next two tokens are `<ID>` and `(`, while `Choice 4` will be taken only if the next two tokens are `<ID>` and `.`. Hence, the parser will now work properly for [Example 3](#example3). Similarly, the problem with [Example 5](#example5) also goes away since the parser goes into the `(...)*` construct only when the next two tokens are `,` and `<ID>`.
+Suppose you set the value of this option to `2`. Then the `LOOKAHEAD` algorithm derived from this looks at two tokens (instead of just one token) before making a choice decision. Hence, in [Example 3](#example-3), `Choice 1` will be taken only if the next two tokens are `<ID>` and `(`, while `Choice 4` will be taken only if the next two tokens are `<ID>` and `.`. Hence, the parser will now work properly for [Example 3](#example-3). Similarly, the problem with [Example 5](#example-5) also goes away since the parser goes into the `(...)*` construct only when the next two tokens are `,` and `<ID>`.
 
 By setting the global `LOOKAHEAD` to `2` the parsing algorithm essentially becomes `LL(2)`. Since you can set the global `LOOKAHEAD` to any value, parsers generated by JavaCC are called `LL(k)` parsers.
 
-## <a name="local"></a>Setting a local LOOKAHEAD specification
+## Setting a local LOOKAHEAD specification
 
 You can also set a local `LOOKAHEAD` specification that affects only a specific choice point. This way, the majority of the grammar can remain `LL(1)` and hence perform better, while at the same time one gets the flexibility of `LL(k)` grammars.
 
-#### <a name="example8"></a>Example 8
+#### Example 8
 
-Here's how [Example 3](#example3) is modified with local `LOOKAHEAD` to fix the choice ambiguity problem:
+Here's how [Example 3](#example-3) is modified with local `LOOKAHEAD` to fix the choice ambiguity problem:
 
 ```java
 void basic_expr() :
 {}
 {
   LOOKAHEAD(2)
-  <ID> "(" expr() ")"	// Choice 1
+  <ID> "(" expr() ")" // Choice 1
 |
-  "(" expr() ")"	// Choice 2
+  "(" expr() ")"  // Choice 2
 |
-  "new" <ID>		// Choice 3
+  "new" <ID>    // Choice 3
 |
-  <ID> "." <ID>		// Choice 4
+  <ID> "." <ID>   // Choice 4
 }
 ```
 
@@ -380,9 +411,9 @@ if (next 2 tokens are <ID> and "(" ) {
 }
 ```
 
-#### <a name="example9"></a>Example 9
+#### Example 9
 
-Similarly, [Example 5](#example5) can be modified as shown below:
+Similarly, [Example 5](#example-5) can be modified as shown below:
 
 ```java
 void identifier_list() :
@@ -409,7 +440,7 @@ Most grammars are predominantly `LL(1)`, hence you will be unnecessarily degradi
 You should also keep in mind that the warning messages JavaCC prints when it detects ambiguities at choice points (such as the two messages shown earlier) simply tells you that the specified choice points are not `LL(1)`. JavaCC does not verify the correctness of your local `LOOKAHEAD` specification - it assumes you know what you are doing.
 
 
-#### <a name="example10"></a>Example 10
+#### Example 10
 
 JavaCC cannot verify the correctness of local `LOOKAHEAD`'s as the following example of `if` statements illustrates:
 
@@ -456,7 +487,7 @@ void IfStm() :
 
 To force `LOOKAHEAD` ambiguity checking in such instances, set the option `FORCE_LA_CHECK` to `true`.
 
-### <a name="syntactic"></a>Syntactic LOOKAHEAD
+### Syntactic LOOKAHEAD
 
 Consider the following production taken from the Java grammar:
 
@@ -560,9 +591,9 @@ In this case, the `LOOKAHEAD` determination is not permitted to go beyond `10` t
 
 When such a limit is not specified, it defaults to the largest integer value (`2147483647`).
 
-### <a name="semantic"></a>Semantic LOOKAHEAD
+### Semantic LOOKAHEAD
 
-Let us go back to [Example 1](#example1):
+Let us go back to [Example 1](#example-1):
 
 ```java
 void Input() :
@@ -622,7 +653,7 @@ void BC() :
 
 Recognize the first `c` using syntactic `LOOKAHEAD` and the absence of the second using semantic `LOOKAHEAD`.
 
-### <a name="general"></a>General structure of LOOKAHEAD
+### General structure of LOOKAHEAD
 
 We've pretty much covered the various aspects of `LOOKAHEAD` in the previous sections. We shall now present a formal language reference for `LOOKAHEAD` in JavaCC.
 
@@ -668,6 +699,8 @@ To be done.
 
 ---
 
-[NEXT >>](charstream.md)
+[Top](#contents)
+
+[Token Manager](token-manager.md) &hellip; [Lookahead](lookahead.md) &hellip; [CharStream](charstream.md) &hellip; [Error Handling](error-handling.md) &hellip; [Lexer Tips](lexer-tips.md) &hellip; [Examples](examples.md)
 
 <br>

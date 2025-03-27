@@ -1,25 +1,59 @@
+<!--
+Copyright (c) 2020-2025, Sreeni Viswanadha <sreeni@viswanadha.net>.
+Copyright (c) 2024-2025, Marc Mazas <mazas.marc@gmail.com>.
+All rights reserved.
+&para;
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+&para;
+    * Redistributions of source code must retain the above copyright notice,
+      this list of conditions and the following disclaimer.
+    * Redistributions in binary form must reproduce the above copyright
+      notice, this list of conditions and the following disclaimer in the
+      documentation and/or other materials provided with the distribution.
+    * Neither the names of the copyright holders nor the names of its
+      contributors may be used to endorse or promote products derived from
+      this software without specific prior written permission.
+&para;
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
+THE POSSIBILITY OF SUCH DAMAGE.
+-->
+
 [Home](../index.md) > [Documentation](index.md) > JJTree
 
 ---
 
 This page is the reference documentation for JJTree.
 
-### <a name="toc"></a>Contents
+### Contents
 
-- [**Introduction**](#introduction)
-  * [Node scopes and user actions](#scopes)
-  * [Exception handling](#exceptions)
-  * [Node scope hooks](#hooks)
-  * [Tracking tokens](#tracking)
-  * [Lifecycle of a node](#lifecycle)
-  * [Visitor support](#visitor)
-  * [Options](#options)
-- [**JJTree API**](#jjtree-api)
-  * [JJTree state](#state)
-  * [Node objects](#node)
-- [**Examples**](#examples)
+- [Introduction](#introduction)
+    * [Definite Node](#definite-node)
+    * [Conditional Node](#conditional-node)
+    * [Node scopes and user actions](#node-scopes-and-user-actions)
+    * [Exception handling](#exception-handling)
+    * [Node scope hooks](#node-scope-hooks)
+    * [Tracking tokens](#tracking-tokens)
+    * [Lifecycle of a node](#lifecycle-of-a-node)
+    * [Visitor support](#visitor-support)
+    * [Options](#options)
+  
+- [JJTree API](#jjtree-api)
+    * [JJTree state](#jjtree-state)
+    * [Node objects](#node-objects)
+    
+- [Examples](#examples)
 
-## <a name="introduction"></a>Introduction
+## Introduction
 
 JJTree is a preprocessor for JavaCC that inserts parse tree building actions at various places in the JavaCC source. The output of JJTree is run through JavaCC to create the parser. This document describes how to use JJTree, and how you can interface your parser to it.
 
@@ -29,7 +63,7 @@ JJTree defines a Java interface `Node` that all parse tree nodes must implement.
 
 JJTree operates in one of two modes, simple and multi (for want of better terms). In simple mode each parse tree node is of concrete type `SimpleNode`, in multi mode the type of the parse tree node is derived from the name of the node. If you don't provide implementations for the node classes JJTree will generate sample implementations based on `SimpleNode` for you. You can then modify the implementations to suit.
 
-Although JavaCC is a top-down parser, JJTree constructs the parse tree from the bottom up. To do this it uses a stack where it pushes nodes after they have been created. When it finds a parent for them, it pops the children from the stack and adds them to the parent, and finally pushes the new parent node itself. The stack is open, which means that you have access to it from within grammar actions: you can push, pop and otherwise manipulate its contents however you feel appropriate (see [Node Scopes and User Actions](#scopes) for more information).
+Although JavaCC is a top-down parser, JJTree constructs the parse tree from the bottom up. To do this it uses a stack where it pushes nodes after they have been created. When it finds a parent for them, it pops the children from the stack and adds them to the parent, and finally pushes the new parent node itself. The stack is open, which means that you have access to it from within grammar actions: you can push, pop and otherwise manipulate its contents however you feel appropriate (see [Node Scopes and User Actions](#node-scopes-and-user-actions) for more information).
 
 JJTree provides decorations for two basic varieties of nodes, and some syntactic shorthand to make their use convenient.
 
@@ -123,7 +157,7 @@ Now the `P3` node will have a `P4` node, a `ListOfP5s` node and a `P6` node as c
 
 <br>
 
-### <a name="scopes"></a>Node scopes and user actions
+### Node scopes and user actions
 
 ---
 
@@ -149,7 +183,7 @@ A conditional node that has a node descriptor expression that evaluates to false
 
 <br>
 
-### <a name="exceptions"></a>Exception handling
+### Exception handling
 
 ---
 
@@ -161,7 +195,7 @@ The intention is to make it possible for parsers to implement error recovery and
 
 <br>
 
-### <a name="hooks"></a>Node scope hooks
+### Node scope hooks
 
 ---
 
@@ -189,7 +223,7 @@ Where `getSymbolTable()` is a user-defined method to return a symbol table struc
 
 <br>
 
-### <a name="tracking"></a>Tracking tokens
+### Tracking tokens
 
 ---
 
@@ -206,7 +240,7 @@ The first and last token for each node will be set up automatically when the par
 
 <br>
 
-### <a name="lifecycle"></a>Lifecycle of a node
+### Lifecycle of a node
 
 ---
 
@@ -234,7 +268,7 @@ A node goes through a well determined sequence of steps as it is built. This is 
 
 <br>
 
-### <a name="visitor"></a>Visitor support
+### Visitor support
 
 ---
 
@@ -244,7 +278,7 @@ The name of the visitor interface is constructed by appending `Visitor` to the n
 
 <br>
 
-### <a name="options"></a>Options
+### Options
 
 ---
 
@@ -270,8 +304,8 @@ The name of the visitor interface is constructed by appending `Visitor` to the n
 
 <br>
 
-## <a name="jjtree-api"></a>JJTree API
-### <a name="state"></a>JJTree state
+## JJTree API
+### JJTree state
 
 ---
 
@@ -305,7 +339,7 @@ final class JJTreeState {
 
 <br>
 
-### <a name="node"></a>Node objects
+### Node objects
 
 ---
 
@@ -363,7 +397,7 @@ This walks over the node's children in turn, asking them to accept the visitor. 
 
 <br>
 
-## <a name="examples"></a>Examples
+## Examples
 
 There are some examples in the JJTree [tutorial](../tutorials/examples.md#jjtree).
 
@@ -378,6 +412,8 @@ Information about an example using the visitor support is in `examples/VTransfor
 
 ---
 
-[NEXT >>](jjdoc.md)
+[TOP](#contents)
+
+[JavaCC Command Line](cli.md) &hellip; [JavaCC Grammar](grammar.md) &hellip; [JavaCC BNF](bnf.md) &hellip; [JavaCC API](api.md) &hellip; [JJTree](jjtree.md) &hellip; [JJDoc](jjdoc.md)
 
 <br>

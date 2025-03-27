@@ -1,3 +1,33 @@
+<!--
+Copyright (c) 2020-2025, Sreeni Viswanadha <sreeni@viswanadha.net>.
+Copyright (c) 2024-2025, Marc Mazas <mazas.marc@gmail.com>.
+All rights reserved.
+&para;
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+&para;
+    * Redistributions of source code must retain the above copyright notice,
+      this list of conditions and the following disclaimer.
+    * Redistributions in binary form must reproduce the above copyright
+      notice, this list of conditions and the following disclaimer in the
+      documentation and/or other materials provided with the distribution.
+    * Neither the names of the copyright holders nor the names of its
+      contributors may be used to endorse or promote products derived from
+      this software without specific prior written permission.
+&para;
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
+THE POSSIBILITY OF SUCH DAMAGE.
+-->
+
 [Home](../index.md) > [Tutorials](index.md) > Examples
 
 ---
@@ -8,27 +38,29 @@ Once you have tried out and understood each of these examples, you should take a
 
 But even with just these examples, you should be able to get started on reasonably complex grammars.
 
-### <a name="toc"></a>Contents
+### Contents
 
-- [**JavaCC Examples**](#javacc)
-  * [Instructions](#javacc-instructions)
-  * [Example1.jj](#javacc-example-1)
-  * [Example2.jj](#javacc-example-2)
-  * [Example3.jj](#javacc-example-3)
-  * [NL_Xlator.jj](#javacc-nl-xlator)
-  * [IdList.jj](#javacc-id-list)
-- [**JJTree Examples**](#jjtree)
-  * [Instructions](#jjtree-instructions)
-  * [Example1.jjt](#jjtree-example-1)
-  * [Example2.jjt](#jjtree-example-2)
-  * [Example3.jjt](#jjtree-example-3)
-  * [Example4.jjt](#jjtree-example-4)
-- [**Example Grammars**](#examples)
+- [JavaCC Examples](#javacc-examples)
+    * [JavaCC Instructions](#javacc-instructions)
+    * [Example1.jj](#example1-jj)
+    * [Example2.jj](#example2-jj)
+    * [Example3.jj](#example3-jj)
+    * [NL_Xlator.jj]({#nl-xlator-jj)
+    * [IdList.jj](#idlist-jj)
+  
+- [JJTree Examples](#jjtree-examples)
+    * [JJTree Instructions](#jjtree-instructions)
+    * [Example1.jjt](#example1-jjt)
+    * [Example2.jjt](#example2-jjt)
+    * [Example3.jjt](#example3-jjt)
+    * [Example4.jjt](#example4-jjt)
+    
+- [Example Grammars](#example-grammars)
 
 
-## <a name="javacc"></a>JavaCC Examples
+## JavaCC Examples
 
-### <a name="javacc-instructions"></a>Instructions
+### JavaCC instructions
 
 ---
 
@@ -56,7 +88,7 @@ The `Example1` parser and others in this directory are designed to take input fr
 
 Examples of legal strings in this grammar are:
 
-`{}`, `{{{{{}}}}}` // ... etc
+`{}`, `{% raw %}{{{{{}}}}}{% endraw %}` // ... etc
 
 Examples of illegal strings are:
 
@@ -68,18 +100,18 @@ Try typing various different inputs to `Example1`. Remember `<control-d>` may be
 
 Here are some sample runs:
 
-1. The parser processes the string `{{}}` successfully.
+1. The parser processes the string `{% raw %}{{}}{% endraw %}` successfully.
 
 ```java
-$ java Example1
-{{}}<return>
+$ Java Example1
+{% raw %}{{}}{% endraw %}<return>
 <control-d>
 ```
 
 2. The parser tries to process the string `{x` but throws a `TokenMgrError`.
 
 ```
-$ java Example1
+$ Java Example1
 {x<return>
 Lexical error at line 1, column 2.  Encountered: "x"
 TokenMgrError: Lexical error at line 1, column 2.  Encountered: "x" (120), after : ""
@@ -93,7 +125,7 @@ TokenMgrError: Lexical error at line 1, column 2.  Encountered: "x" (120), after
 3. The parser tries to process the string `{}}` but throws a `ParseException`.
 
 ```
-$ java Example1
+$ Java Example1
 {}}<return>
 ParseException: Encountered "}" at line 1, column 3.
 Was expecting one of:
@@ -108,7 +140,7 @@ Was expecting one of:
 
 <br>
 
-### <a name="javacc-example-1"></a>Example1.jj
+### Example1.jj
 
 ---
 
@@ -222,7 +254,7 @@ Also try entering illegal sequences such as mismatched braces, spaces, and carri
 
 <br>
 
-### <a name="javacc-example-2"></a>Example2.jj
+### Example2.jj
 
 ---
 
@@ -313,7 +345,7 @@ Note that token manager debugging produces a lot of diagnostic information and i
 
 <br>
 
-### <a name="javacc-example-3"></a>Example3.jj
+### Example3.jj
 
 ---
 
@@ -374,7 +406,7 @@ This example also illustrates the use of actions in the grammar productions. The
 
 <br>
 
-### <a name="javacc-nl-xlator"></a>NL_Xlator.jj
+### NL_Xlator.jj
 
 ---
 
@@ -553,7 +585,7 @@ When a regular expression is used in an expansion, it takes a value of type `Tok
 
 <br>
 
-### <a name="javacc-id-list"></a>IdList.jj
+### IdList.jj
 
 ---
 This example illustrates an important attribute of the `SKIP` specification.
@@ -636,9 +668,9 @@ Note that in the above definition of non-terminal `Id`, it is made up of a seque
 
 <br>
 
-## <a name="jjtree"></a>JJTree Examples
+## JJTree Examples
 
-### <a name="jjtree-instructions"></a>Instructions
+### JJTree instructions
 
 ---
 
@@ -646,7 +678,7 @@ This section gives instructions on how to run the JJTree examples and the output
 
 <br>
 
-### <a name="jjtree-example-1"></a>Example1.jjt
+### Example1.jjt
 
 ---
 
@@ -783,7 +815,7 @@ Compile and run the Java program as usual. The expression is read from the stand
 
 ```java
 $ javac Example1.java
-$ java Example1
+$ Java Example1
 > Reading from standard input...
 (a + b) * (c + 1);
 Start
@@ -811,7 +843,7 @@ Start
 ```
 <br>
 
-### <a name="jjtree-example-2"></a>Example2.jjt
+### Example2.jjt
 
 ---
 
@@ -962,7 +994,7 @@ $ javacc Example2.jj
 
 ```java
 $ javac Example2.java
-$ java Example2
+$ Java Example2
 > Reading from standard input...
 (a + b) * (c + 1);
 Start
@@ -979,7 +1011,7 @@ Look at `Example.jjt` to see how node annotations can be used to restructure the
 
 <br>
 
-### <a name="jjtree-example-3"></a>Example3.jjt
+### Example3.jjt
 
 ---
 
@@ -1108,7 +1140,7 @@ This example can be run in the same manner as you ran `Example2.jjt`.
 
 <br>
 
-### <a name="jjtree-example-4"></a>Example4.jjt
+### Example4.jjt
 
 ---
 
@@ -1243,7 +1275,7 @@ For example, the file `SimpleNode.java` is different when the option `VISITOR` i
 
 <br>
 
-### <a name="examples"></a>Example Grammars
+### Example Grammars
 
 ---
 
@@ -1272,8 +1304,8 @@ The following list of grammars was created by the JavaCC community.
 
 ---
 
-You're done with the JavaCC tutorials!
+[Top](#contents)
 
-[Home](../index.md)
+[Token Manager](token-manager.md) &hellip; [Lookahead](lookahead.md) &hellip; [CharStream](charstream.md) &hellip; [Error Handling](error-handling.md) &hellip; [Lexer Tips](lexer-tips.md) &hellip; [Examples](examples.md)
 
 <br>

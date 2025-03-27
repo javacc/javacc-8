@@ -1,30 +1,61 @@
+<!--
+Copyright (c) 2020-2025, Sreeni Viswanadha <sreeni@viswanadha.net>.
+Copyright (c) 2024-2025, Marc Mazas <mazas.marc@gmail.com>.
+All rights reserved.
+&para;
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+&para;
+    * Redistributions of source code must retain the above copyright notice,
+      this list of conditions and the following disclaimer.
+    * Redistributions in binary form must reproduce the above copyright
+      notice, this list of conditions and the following disclaimer in the
+      documentation and/or other materials provided with the distribution.
+    * Neither the names of the copyright holders nor the names of its
+      contributors may be used to endorse or promote products derived from
+      this software without specific prior written permission.
+&para;
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
+THE POSSIBILITY OF SUCH DAMAGE.
+-->
+
 [Home](../index.md) > [Documentation](index.md) > JavaCC API
 
 ---
 
 This page is a comprehensive list of all classes, methods, and variables available for use.
 
-### <a name="toc"></a>Contents
+### Contents
 
-- [**JavaCC API**](#javacc-api)
-  * [Non-terminals in the input grammar](#non-terminals)
-  * [API for parser actions](#parser-actions)
-  * [TokenManager interface](#token-manager)
-  * [Constructors and other initialization routines](#constructors)
-  * [Token class](#token-class)
-  * [Reading tokens from the input stream](#returning-tokens)
-  * [Working with debugger tracing](#debugger-tracing)
-  * [Customizing error messages](#error-messages)
-  * [ErrorHandler interface (C++ only)](#errorhandler)
-- [**JJTree API**](#jjtree-api)
-  * [Parser methods](#parser-methods)
-  * [Node interface](#node)
+- [JavaCC API](#javacc-api)
+    * [Non-terminals in the input grammar](#non-terminals-in-the-input-grammar)
+    * [Parser actions](#parser-actions)
+    * [Token Manager interface](#token-manager-interface)
+    * [Constructors and other initialization routines](#constructors-and-other-initialization-routines)
+    * [Token class](#token-class)
+    * [Reading tokens from the input stream](#reading-tokens-from-the-input-stream)
+    * [Working with debugger tracing](#working-with-debugger-tracing)
+    * [Customizing error messages](#customizing-error-messages)
+    * [ErrorHandler interface (C++ only)](#errorhandler-interface-c-only)
 
-## <a name="javacc-api"></a>JavaCC API
+- [JJTree API](#jjtree-api)
+    * [Parser methods](#parser-methods)
+    * [Node interface](#node-interface)
+
+## JavaCC API
 
 These classes, methods, and variables are typically used from the actions that are embedded in a JavaCC grammar. In the sample code used below, it is assumed that the name of the generated parser is `TheParser`.
 
-### <a name="non-terminals"></a>Non-terminals in the input grammar
+### Non-terminals in the input grammar
 
 ---
 
@@ -46,7 +77,7 @@ Here, *returntype* and *parameters* are what were specified in the JavaCC input 
 
 <br>
 
-### <a name="parser-actions"></a>API for parser actions
+### Parser actions
 
 ---
 
@@ -62,7 +93,7 @@ In addition, the two methods - `getToken(int i)` and `getNextToken()` can also b
 
 <br>
 
-### <a name="token-manager"></a>TokenManager interface
+### Token Manager interface
 
 ---
 
@@ -82,7 +113,7 @@ Token getNextToken() throws ParseError;
 
 <br>
 
-### <a name="constructors"></a>Constructors and other initialization routines
+### Constructors and other initialization routines
 
 ---
 
@@ -220,7 +251,7 @@ void TheParserTokenManager.ReInit(CharStream stream)
 
 <br>
 
-### <a name="token-class"></a>Token class
+### Token class
 
 ---
 
@@ -330,7 +361,7 @@ static final Token newToken(int ofKind, String image);
 
 <br>
 
-### <a name="returning-tokens"></a>Reading tokens from the input stream
+### Reading tokens from the input stream
 
 ---
 
@@ -375,7 +406,7 @@ Token TheParser.getToken(int index) throws ParseError
 
 <br>
 
-### <a name="debugger-tracing"></a>Working with debugger tracing
+### Working with debugger tracing
 
 ---
 
@@ -390,7 +421,7 @@ For convenience, these methods are available even when you build parsers without
 
 <br>
 
-### <a name="error-messages"></a>Customizing error messages
+### Customizing error messages
 
 ---
 
@@ -467,7 +498,7 @@ protected char curChar;
 
 <br>
 
-### <a name="errorhandler"></a>ErrorHandler interface (C++ only)
+### ErrorHandler interface (C++ only)
 
 ---
 
@@ -515,11 +546,11 @@ int getErrorCount()
 
 <br>
 
-## <a name="jjtree-api"></a>JJTree API
+## JJTree API
 
 JJTree has two APIs - it adds some parser methods, and it requires all node objects to implement the `Node` interface.
 
-### <a name="parser-methods"></a>Parser methods
+### Parser methods
 
 JJTree maintains some state in the parser object itself. It encapsulates all this state with an object that can be referred to via the `jjtree` field.
 
@@ -585,7 +616,7 @@ Node peekNode();
 
 <br>
 
-### <a name="node"></a>Node interface
+### Node interface
 
 All AST nodes must implement this interface. It provides basic machinery for constructing the parent and child relationships between nodes.
 
@@ -644,6 +675,8 @@ int jjtGetNumChildren();
 
 ---
 
-[NEXT >>](jjtree.md)
+[Top](#contents)
+
+[JavaCC Command Line](cli.md) &hellip; [JavaCC Grammar](grammar.md) &hellip; [JavaCC BNF](bnf.md) &hellip; [JavaCC API](api.md) &hellip; [JJTree](jjtree.md) &hellip; [JJDoc](jjdoc.md)
 
 <br>
