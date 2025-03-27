@@ -53,15 +53,22 @@ To know
         - ou créer une variable d'environnement CsharpDir vers le répertoire du compilateur csc.exe et faire un profile avec dans la configuration de maven-compiler-plugin la ligne <executable>${env.CSHARPDIR}\csc.exe</executable>
     
 - profiles: (https://maven.apache.org/guides/introduction/introduction-to-profiles.html)
+    - affichables avec le goal help:active-profiles
     - run-its dans it/pom.xml, activé si la propriété maven.test.skip n'est pas à true, pour invoker les exécutions des tests sur bugs/examples/grammars
     - windows/linux/macos, pour cpp/csharp/js?, suivant l'os, pour fixer les paramètres à nar-maven-plugin
-    - jcc/jjt / 8/7/6 / w, activés pour 8 si existent répertoires /src/main/javacc et/ou /src/main/jjtree, non activés pour les autres - w semble être la copie de jjc -, pour fixer la version du plugin javacc (org... pour 8 et net... pour 7/6) et la configuration des plugins javacc- et nar-
+    - jcc/jjt + 8/7/6 : activés pour 8 si existent répertoires /src/main/javacc et/ou /src/main/jjtree, non activés pour les autres (6 a été supprimé) ; w pour wide_char
+    - wide_char : dans les pom.xml des projets concernés
 
 - nar plugin:
-    - message "OUTPUT>cl : Command line warning D9024 : unrecognized source file type '', object file assumed" quand l'extension du fichier n'est pas .c ou .cpp (ici .cc)
-    - pour supprimer le message le plugin devrait passer l'option /Tp filename ou l'option globale /TP
-    - message "OUTPUT>cl : Command line warning D9027 : source file '' ignored" quand ??? il faudrait logger la ligne de commande de compilation
+    - message `OUTPUT>cl : Command line warning D9024 : unrecognized source file type '', object file assumed` quand l'extension du fichier n'est pas .c ou .cpp (ici .cc)
+    - pour supprimer le message le plugin devrait passer l'option `/Tp filename` ou l'option globale `/TP`
+    - message `OUTPUT>cl : Command line warning D9027 : source file '' ignored` quand ??? il faudrait logger la ligne de commande de compilation
 
+- m2e: in pom.xml some plugins (in build/plugins/plugin) show a warning:  
+    - `Plugin could not be resolved. Ensure the plugin's groupId, artifactId and version are present.`
+    `Additional information: Failed to parse plugin descriptor for org.apache.maven.plugins:... (C:\Devs\GitRepo\javacc-8-java\it\local-repo\org\apache\maven\plugins\....pom): zip END header not found`  
+    - It looks like m2e is confused by the projects hierarchy and tries to read under `it/local.repo` of another project
+    
 To do
 -----
 
@@ -101,8 +108,6 @@ To do
 
 - voir à enlever les <postBuildHookScript>verify.bsh</postBuildHookScript>
 
-- voir où déclarer <artifactId>exec-maven-plugin</artifactId>
-
 - voir à cloner javacc-8 dans les sous-projets dans les maven.yml pour permettre aux actions des sous-projets de trouver le pom parent
 
 - remove under javacc-8: codegen, rulesets, src, target, tests, *.bat, check keystore, update /javacc-8/pom.xml, update docs & .md, see for security.md
@@ -122,6 +127,21 @@ To do
 - .xml: passer les licences en fin de fichier avec ligne entête
 
 - faire une nouvelle version du javacc-maven-plugin en nettoyant, en particulier les dépendances (cobertura...)
+
+- full error reporting pour C++
+
+- release notes
+
+- keystore où ?
+
+- GUIParsing / TokenManagerVersion ne marche pas
+
+- traces: char 'c' (i) ; token (k) <l> "s" ; lexical state i <l> ; line col Ln:Cm ?
+
+- JaCoCo
+
+- vérifier version et lignes checksum ; voir à avoir la version core + generator
+
 
 Escapes
 -------
