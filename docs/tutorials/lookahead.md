@@ -40,7 +40,7 @@ This tutorial refers to examples that are available in the source code on [GitHu
 ### Contents
 
 - [What is "looking ahead", why, how?](#what-is-looking-ahead-why-how)
-    * [A tour through example 1](#a-tour-through-example-1)
+    * [A tour through Example 1](#a-tour-through-example-1)
     * [Avoiding backtracking](#avoiding-backtracking)
     * [Choice points in JavaCC grammars](#choice-points-in-javacc-grammars)
     * [Default choice determination algorithm](#default-choice-determination-algorithm)
@@ -53,9 +53,9 @@ This tutorial refers to examples that are available in the source code on [GitHu
           - [Example 6](#example-6)
           - [Example 7](#example-7)
       + [Option 2 - Adding parser hints](#option-2-adding-parser-hints)
-  
+<br><br>
 - [Setting a global LOOKAHEAD](#setting-a-global-lookahead)
-  
+<br><br>
 - [Setting a local LOOKAHEAD](#setting-a-local-lookahead)
     * [Setting a "multi-token" LOOKAHEAD](#setting-a-multi-token-lookahead)
       + [Example 8](#example-8)
@@ -64,9 +64,9 @@ This tutorial refers to examples that are available in the source code on [GitHu
     * [Setting a "syntactic" LOOKAHEAD](#setting-a-syntactic-lookahead)
     * [Setting a "semantic" LOOKAHEAD](#setting-a-semantic-lookahead)
     * [General syntax of a local LOOKAHEAD](#general-syntax-of-a-local-lookahead)
-  
+<br><br>
 - ["Nested evaluation" of local LOOKAHEADs](#nested-evaluation-of-local-lookaheads)
-  
+<br><br>
 - [Local LOOKAHEADs at non choice points](#local-lookaheads-at-non-choice-points)
     * [Not inside an optional construct](#not-inside-an-optional-construct)
     * [Inside the optional construct construct zero-or-more ()*](#inside-the-optional-construct-zero-or-more)
@@ -74,9 +74,9 @@ This tutorial refers to examples that are available in the source code on [GitHu
     * [Inside the optional construct construct zero-or-one ()? / []](#inside-the-optional-construct-zero-or-one)
     * [An example of a grammar managing its versions through lookaheads at non choice points](#an-example-of-a-grammar-managing-its-versions-through-lookaheads-at-non-choice-points)
     * [An example of rewriting a grammar with semantic lookaheads at non choice points](#an-example-of-rewriting-a-grammar-with-semantic-lookaheads-at-non-choice-points)
-  
+<br><br>
 - [Keeping the warnings displayed](#keeping-the-warnings-displayed)
-  
+<br><br>
 - [Reading the parser and lookahead debug traces](#reading-the-parser-and-lookahead-debug-traces)
   
 ## What is "looking ahead", why, how?
@@ -85,7 +85,7 @@ The job of a parser is to read an input stream and determine whether or not the 
 
 This determination in its most general form can be quite time consuming.
 
-### A tour through example 1
+### A tour through Example 1
 
 ```java
 void Input() :
