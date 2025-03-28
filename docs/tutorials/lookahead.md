@@ -449,7 +449,7 @@ if (next 2 tokens are <ID> and "(" ) {
 
 #### Example 9
 
-Similarly, [Example 5](#example-5) can be modified as shown below:
+Similarly, [Example 4](#example-4) can be modified as shown below:
 
 ```java
 void identifier_list() :
