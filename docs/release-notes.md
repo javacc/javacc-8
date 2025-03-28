@@ -9,6 +9,7 @@ Instructions to update documentation for a new release:
 [Home](index.md) > Release Notes
 
 ---
+** TODO: TO BE UPDATED **
 
 This page is a complete log of changes that have taken place since the release of JavaCC v0.5 in October 1996.
 

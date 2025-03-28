@@ -44,10 +44,10 @@ This page contains the complete syntax of the JavaCC grammar files with detailed
     * [Separators](#separators)
     * [Operators](#operators)
     * [Identifiers](#identifiers)
-    
+  
 - [Non-Terminals](#non-terminals)
     * [JavaCC grammar](#javacc-grammar)
-
+  
 - [Java grammar](#java-grammar)
     * [Java identifiers](#java-identifiers)
     * [Program structure](#program-structure)
@@ -58,7 +58,7 @@ This page contains the complete syntax of the JavaCC grammar files with detailed
     * [Statements](#statements)
     * [Annotations](#annotations)
     * [Annotation types](#annotation-types)
-
+  
 ## Tokens
 
 The following is the JavaCC token specification.

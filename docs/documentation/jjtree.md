@@ -50,9 +50,9 @@ This page is the reference documentation for JJTree.
 - [JJTree API](#jjtree-api)
     * [JJTree state](#jjtree-state)
     * [Node objects](#node-objects)
-    
+  
 - [Examples](#examples)
-
+  
 ## Introduction
 
 JJTree is a preprocessor for JavaCC that inserts parse tree building actions at various places in the JavaCC source. The output of JJTree is run through JavaCC to create the parser. This document describes how to use JJTree, and how you can interface your parser to it.

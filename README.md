@@ -50,17 +50,20 @@ This README is meant as a brief overview of the core features and how to set thi
     * [An example](#an-example)
     * [Tutorials](docs/tutorials/index.md)
     * [FAQ](docs/faq.md)
+  
 - [Getting Started](#getting-started)
     * [From the command line](#use-javacc-from-the-command-line)
     * [Within an IDE](#use-javacc-within-an-ide)
     * [Rebuilding JavaCC](#rebuilding-javacc)
+  
 - [Community](#community)
     * [Support](#support)
     * [Documentation](#documentation)
     * [Resources](#resources)
     * [Powered by JavaCC](#powered-by-javacc)
+  
 - [License](#license)
-
+  
 ## Introduction
 
 ### Features
@@ -186,9 +189,9 @@ This version lies on different Git repositories / Java & Maven projects / jars:
 - the parent [javacc-8](https://github.com/javacc/javacc-8)
 - the [core](https://github.com/javacc/javacc-8-core)
 - the generators:
-    - [Java](https://github.com/javacc/javacc-8-java)
-    - [C++](https://github.com/javacc/javacc-8-cpp)
-    - [C#](https://github.com/javacc/javacc-8-csharp)
+    * [Java](https://github.com/javacc/javacc-8-java)
+    * [C++](https://github.com/javacc/javacc-8-cpp)
+    * [C#](https://github.com/javacc/javacc-8-csharp)
 
 The previous versions (4, 5, 6, 7) are widely spread; effort to migrate to version 8 should be minimum.  
 Their last version lies on a single Git repository / Java & Maven project / jar:

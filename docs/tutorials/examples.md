@@ -54,10 +54,9 @@ But even with just these examples, you should be able to get started on reasonab
     * [Example2.jjt](#example2-jjt)
     * [Example3.jjt](#example3-jjt)
     * [Example4.jjt](#example4-jjt)
-    
+  
 - [Example Grammars](#example-grammars)
-
-
+  
 ## JavaCC Examples
 
 ### JavaCC instructions
@@ -312,14 +311,11 @@ Hence whenever any of these 4 characters are encountered, they are just thrown a
 In addition to `SKIP`, JavaCC has three other lexical specification regions. These are:
 
 
-`. TOKEN:`         This is used to specify lexical tokens (see next example)
-`. SPECIAL_TOKEN:` This is used to specify lexical tokens that are to be
-                   ignored during parsing.  In this sense, `SPECIAL_TOKEN` is
-                   the same as `SKIP`.  However, these tokens can be recovered
-                   within parser actions to be handled appropriately.
-`. MORE:`          This specifies a partial token.  A complete token is
-                   made up of a sequence of MORE's followed by a `TOKEN`
-                   or `SPECIAL_TOKEN`.
+. `TOKEN:` this is used to specify lexical tokens (see next example).
+
+. `SPECIAL_TOKEN:` this is used to specify lexical tokens that are to be ignored during parsing. In this sense, `SPECIAL_TOKEN` is the same as `SKIP`.  However, these tokens can be recovered within parser actions to be handled appropriately.
+
+. `MORE:` this specifies a partial token. A complete token is  made up of a sequence of MORE's followed by a `TOKEN` or `SPECIAL_TOKEN`.
 
 Please take a look at some of the more complex grammars such as the Java grammars for examples of usage of these lexical specification regions.
 

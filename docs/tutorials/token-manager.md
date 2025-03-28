@@ -38,13 +38,13 @@ This tutorial describes the JavaCC token manager. It covers lexical states, lexi
 
 - [Lexical States](#lexical-states)
     * [Token matching](#token-matching)
-
+  
 - [Lexical Actions](#lexical-actions)
     * [Variables within lexical actions](#variables-within-lexical-actions)
     * [Access to class level declarations within lexical actions](#access-to-class-level-declarations-within-lexical-actions)
   
 - [Special Tokens](#special-tokens)
-
+  
 ## Lexical States
 
 The JavaCC lexical specification is organized into a set of *lexical states*, each of which is named with a unique identifier. There is a standard lexical state called `DEFAULT`. The generated token manager is at any moment in one of these lexical states. When the token manager is initialized, it starts off in the `DEFAULT` state, by default. The starting lexical state can also be specified as a parameter while constructing a token manager object.

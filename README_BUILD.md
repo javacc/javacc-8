@@ -48,18 +48,22 @@ The current owner of JavaCC and the current maintainers want <ins>the user base 
     * [Parent javacc/javacc-8](#parent-javacc-javacc-8)
     * [Core javacc/javacc-8-core](#core-javacc-javacc-8-core)
     * [Generators javacc/javacc-8-java, javacc/javacc-8-cpp, javacc/javacc-8-csharp](#generators-javacc-javacc-8-java-javacc-javacc-8-cpp-javacc-javacc-8-csharp)
+  
 - [JavaCC Maven plugins](#javacc-maven-plugins)
     * [MojoHaus javacc-maven-plugin](#mojohaus-javacc-maven-plugin)
     * [JavaCC javacc-maven-plugin](#javacc-javacc-maven-plugin)
+  
 - [Local build process](#local-build-process)
     * [Build](#build)
     * [Artifacts versions](#artifacts-versions)
+  
 - [Projects at GitHub](#projects-at-github)
     * [Branches](#branches)
     * [Making commits and PRs](#making-commits-and-prs)
     * [Actions](#actions)
+  
 - [Sonatype release process](#sonatype-release-process)
-
+  
 ## Projects layout
 
 The choice has been made in the past to split the (v7) single Git repo / Java & Maven project into different new Git repositories / Java & Maven projects; we live with this.

@@ -46,14 +46,13 @@ This section presents a few tips for writing good lexical specifications.
 - [Lexical States](#lexical-states)
     * [Minimize use of lexical states](#minimize-use-of-lexical-states)
     * [Use SKIP as much as possible](#use-skip-as-much-as-possible)
-    * [Avoid using SKIP with lexical actions and state changes](#avoid-using-skip-with-lexical-actions-and-state-changes)
+    * [Avoid using SKIP within lexical actions and state changes](#avoid-using-skip-within-lexical-actions-and-state-changes)
     * [Avoid using MORE if possible](#avoid-using-more-if-possible)
   
 - [Other](#other)
     * [Use ~[] by itself](#use-by-itself)
     * [Avoid using IGNORE_CASE selectively](#avoid-using-ignore_case-selectively)
-
-
+  
 ## String Literals
 
 ### Use string literals as much as possible
@@ -128,15 +127,15 @@ Try to `SKIP` as much possible if you don't care about certain patterns.
 
 Here, you have to be a bit careful about `EOF`. Seeing an `EOF` after `SKIP` is fine whereas, seeing an `EOF` after a `MORE` is a lexical error.
 
-### Avoid using SKIP with lexical actions and state changes
+### Avoid using SKIP within lexical actions and state changes
 
-Try to avoid lexical actions and lexical state changes with `SKIP` specifications, especially for single character `SKIP`'s like ` `, `\t`, `\n` etc).
+Try to avoid lexical actions and lexical state changes within `SKIP` specifications, especially for single character `SKIP`'s like ` `, `\t`, `\n` etc).
 
 For such cases, a simple loop is generated to eat up the `SKIP`'ed single characters. So, if there is a lexical action or state change associated with this, it is not possible to it this way.
 
 ### Avoid using MORE if possible
 
-Try to avoid specifying lexical actions with `MORE` specifications.
+Try to avoid specifying lexical actions within `MORE` specifications.
 
 Generally every `MORE` should end up in a `TOKEN` (or `SPECIAL_TOKEN`) finally so you can do the action there at the `TOKEN` level, if it is possible.
 

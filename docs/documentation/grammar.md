@@ -37,7 +37,7 @@ This page contains the complete syntax of the JavaCC grammar files with detailed
 ### Contents
 
 - [Conventions](#conventions)
-
+  
 - [File structure](#file-structure)
   
 - [Options](#options)
@@ -63,7 +63,7 @@ This page contains the complete syntax of the JavaCC grammar files with detailed
     * [complex_regular_expression_unit](#complex_regular_expression_unit)
     * [character_list](#character_list)
     * [character_descriptor](#character_descriptor)
-
+  
 ## Conventions
 
 1. Tokens in the grammar files follow the same conventions as for the Java programming language. Hence identifiers, strings, characters, etc. used in the grammars are the same as Java identifiers, Java strings, Java characters, etc.

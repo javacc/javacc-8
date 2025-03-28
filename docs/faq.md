@@ -44,7 +44,7 @@ THE POSSIBILITY OF SUCH DAMAGE.
     * [Is there a user group or mailing list?](#is-there-a-user-group-or-mailing-list)
     * [Should I send my questions to the user group?](#should-i-send-my-questions-to-the-user-group)
     * [Who wrote JavaCC and who maintains it?](#who-wrote-javacc-and-who-maintains-it)
-<p>
+  
 - [Common Issues](#common-issues)
     * [What files does JavaCC generate?](#what-files-does-javacc-generate)
     * [Can I modify the generated files?](#can-i-modify-the-generated-files)
@@ -52,7 +52,7 @@ THE POSSIBILITY OF SUCH DAMAGE.
     * [How do I put the generated classes in a package?](#how-do-i-put-the-generated-classes-in-a-package)
     * [How do I use JavaCC with Ant?](#how-do-i-use-javacc-with-ant)
     * [Can I use JavaCC with my IDE?](#can-i-use-javacc-with-my-ide)
-<p>
+  
 - [The Token Manager](#the-token-manager)
     * [What is a token manager?](#what-is-a-token-manager)
     * [Can I read from a String instead of a file?](#can-i-read-from-a-string-instead-of-a-file)
@@ -75,53 +75,54 @@ THE POSSIBILITY OF SUCH DAMAGE.
     * [How do I throw a ParseException instead of a TokenMgrError?](#how-do-i-throw-a-parseexception-instead-of-a-tokenmgrerror)
     * [Why are line and column numbers not recorded?](#why-are-line-and-column-numbers-not-recorded)
     * [Can I process Unicode?](#can-i-process-unicode)
-<p>
+  
 - [The Parser and Lookahead](#the-parser-and-lookahead)
     * [Where should I draw the line between lexical analysis and parsing?](#where-should-i-draw-the-line-between-lexical-analysis-and-parsing)
     * [What is recursive descent parsing?](#what-is-recursive-descent-parsing)
-    * [What is left-recursion and why can't I use it?](#what-is-left-recursion-and-why-can-t-i-use-it)
+    * [What is left-recursion and why cannot I use it?](#what-is-left-recursion-and-why-cannot-i-use-it)
     * [How do I match an empty sequence of tokens?](#how-do-i-match-an-empty-sequence-of-tokens)
     * [What is "lookahead"?](#what-is-lookahead)
     * [I get a message saying "Warning: Choice Conflict ... " what should I do?](#i-get-a-message-saying-warning-choice-conflict-what-should-i-do)
     * [I added a LOOKAHEAD specification and the warning went away, does that mean I fixed the problem?](#i-added-a-lookahead-specification-and-the-warning-went-away-does-that-mean-i-fixed-the-problem)
     * [Are nested syntactic lookahead specifications evaluated during syntactic lookahead?](#are-nested-syntactic-lookahead-specifications-evaluated-during-syntactic-lookahead)
-    * [Are parameters passed during syntactic lookahead?](#are-parameters-passed-during-syntactic-lookahead)
-    * [Are semantic actions executed during syntactic lookahead?](#are-semantic-actions-executed-during-syntactic-lookahead)
-    * [Is semantic lookahead evaluated during syntactic lookahead?](#is-semantic-lookahead-evaluated-during-syntactic-lookahead)
-    * [Can local variables (including parameters) be used in semantic lookahead?](#can-local-variables-including-parameters-be-used-in-semantic-lookahead)
-    * [How does JavaCC differ from standard LL(1) parsing?](#how-does-javacc-differ-from-standard-ll-1-parsing)
+    * [Are parameters passed to syntactic lookaheads?](#are-parameters-passed-to-syntactic-lookaheads)
+    * [Are parser actions executed during syntactic lookahead?](#are-parser-actions-executed-during-syntactic-lookahead)
+    * [Are nested semantic lookahead specifications evaluated during syntactic lookahead?](#are-nested-semantic-lookahead-specifications-evaluated-during-syntactic-lookahead)
+    * [Are nested lookahead specifications evaluated during semantic lookahead?](#are-nested-lookahead-specifications-evaluated-during-semantic-lookahead)
+    * [Can parameters and local variables be used in semantic lookahead?](#can-parameters-and-local-variables-be-used-in-semantic-lookahead)
+    * [How does JavaCC differ from standard LL(1) parsers?](#how-does-javacc-differ-from-standard-ll-1-parsers)
     * [How do I communicate from the parser to the token manager?](#how-do-i-communicate-from-the-parser-to-the-token-manager)
     * [How do I communicate from the token manager to the parser?](#how-do-i-communicate-from-the-parser-to-the-token-manager)
+  
+- [Miscellaneous](#miscellaneous)
     * [What does it mean to put a regular expression within a BNF production?](#what-does-it-mean-to-put-a-regular-expression-within-a-bnf-production)
     * [When should regular expressions be put directly into a BNF production?](#when-should-regular-expressions-be-put-directly-into-a-bnf-production)
     * [How do I parse a sequence without allowing duplications?](#how-do-i-parse-a-sequence-without-allowing-duplications)
-    * [How do I deal with keywords that aren't reserved?](#how-do-i-deal-with-keywords-that-aren-t-reserved)
-    * [There's an error in the input, so why doesn't my parser throw a ParseException?](#there-s-an-error-in-the-input-so-why-doesn-t-my-parser-throw-a-parseexception)
-<p>
-- [Semantic Actions](#semantic-actions)
-    * [I've written a parser, why doesn't it do anything?](#i-ve-written-a-parser-why-doesn-t-it-do-anything)
+    * [How do I deal with keywords that are not reserved?](#how-do-i-deal-with-keywords-that-are-not-reserved)
+    * [There is an error in the input, so why does not my parser throw a ParseException?](#there-is-an-error-in-the-input-so-why-does-not-my-parser-throw-a-parseexception)
+    * [I have written a parser, why does not it do anything?](#i-have-written-a-parser-why-does-not-it-do-anything)
     * [How do I capture and traverse a sequence of tokens?](#how-do-i-capture-and-traverse-a-sequence-of-tokens)
     * [Why does my parser use so much space?](#why-does-my-parser-use-so-much-space)
-<p>
+  
 - [JJTree and JTB](#jjtree-and-jtb)
     * [What are JJTree and JTB?](#what-are-jjtree-and-jtb)
     * [Where can I get JJTree?](#where-can-i-get-jjtree)
     * [Where can I get JTB?](#where-can-i-get-jtb)
-<p>
-- [Applications of JavaCC](#applications-of-javacc)
+  
+- [Uses of JavaCC](#uses-of-javacc)
     * [Where can I find a parser for X?](#where-can-i-find-a-parser-for-x)
     * [How do I parse arithmetic expressions?](#how-do-i-parse-arithmetic-expressions)
-    * [I'm writing a programming language interpreter, how do I deal with loops?](#i-m-writing-a-programming-language-interpreter-how-do-i-deal-with-loops)
-<p>
+    * [I am writing a programming language interpreter, how do I deal with loops?](#i-am-writing-a-programming-language-interpreter-how-do-i-deal-with-loops)
+  
 - [Comparing JavaCC](#comparing-javacc-with-other-tools)
     * [Since LL(1) ⊂ LALR(1), wouldn't a tool based on LALR parsing be better?](#since-ll-1-lalr-1-wouldn-t-a-tool-based-on-lalr-parsing-be-better)
     * [How does JavaCC compare with Lex and Flex?](#how-does-javacc-compare-with-lex-and-flex)
     * [How does JavaCC compare with other Yacc and Bison?](#how-does-javacc-compare-with-other-yacc-and-bison)
-<p>
-- [Footnotes](#footnotes)
-<p>
+  
 - [Acknowledgments](#acknowledgments)
-
+  
+- [Footnotes](#footnotes)
+  
 <br>
 
 ## General Information
@@ -195,7 +196,8 @@ JavaCC is available from [https://javacc.github.io/javacc/](https://javacc.githu
 
 Yes. The source code and documentation is available on [GitHub](https://github.com/javacc).
 
-As of June 2003, JavaCC is an open source project released under the BSD License 2.0.
+Starting from 2024, JavaCC is an open source project released under the BSD License 3.0.  
+Before, starting from June 2003, JavaCC was an open source project released under the BSD License 2.0.
 
 JavaCC is redistributable and there are essentially no restrictions on the use of JavaCC. You may use the Java files that JavaCC produces in any way, including incorporating them into a commercial product.
 
@@ -297,7 +299,7 @@ JavaCC is a program generator. It reads a `.jj` file and, if that `.jj` file is 
 | XXXTokenManager.java | The token manager class. |
 | XXXConstants.java | An interface associating token classes with symbolic names. |
 
-*N.B. XXX is whatever name you choose.*
+*N.B. XXX is whatever name you choose for your parser name in the `BEGIN_PARSER(XXX)` specification. It can be different from the name of your `.jj` file.*
 
 #### Options
 
@@ -557,7 +559,7 @@ Suppose the remaining input steams starts with:
 "integer i; ..."
 ```
 
-Production 1 would be preferred by the maximal munch rule (Rule 2).
+Production 2 would be preferred by the maximal munch rule (Rule 2).
 
 But, if the remaining input stream starts with:
 
@@ -698,7 +700,7 @@ This idea can be generalized to any number of overlapping sets.
 
 There are two other approaches that might also be tried - one involves lexical states and the other involves semantic actions.
 
-All three approaches are discussed in [How do I deal with keywords that aren't reserved?](#how-do-i-deal-with-keywords-that-aren-t-reserved) which considers a special case of the problem discussed here.
+All three approaches are discussed in [How do I deal with keywords that are not reserved?](#how-do-i-deal-with-keywords-that-are-not-reserved) which considers a special case of the problem discussed here.
 
 <br>
 
@@ -859,7 +861,7 @@ SKIP : {
 }
 ```
 
-The previous example also illustrates a subtle behavioural difference between using lexical states and performing the same task with a single, apparently equivalent, regular expression.
+The previous example also illustrates a subtle behavioral difference between using lexical states and performing the same task with a single, apparently equivalent, regular expression.
 
 Consider tokenizing the C statement:
 
@@ -867,9 +869,11 @@ Consider tokenizing the C statement:
 i = j //* p;
 ```
 
-Assuming that there are no occurrences of `*/` later in the file, this is an error (since a comment starts, but doesn't end) and should be diagnosed. If we use a single, complex regular expression to find comments, then the lexical error will be missed and, in this example at least, a syntactically correct sequence of seven tokens will be found.
+Assuming that there are no occurrences of `*/` later in the file, this is an error (since a comment starts, but doesn't end) and should be diagnosed.
 
-If we use the lexical states approach then the behaviour is different (although again incorrect) as the comment will be skipped - an `EOF` token will be produced after the token for `j` and no error will be reported by the token manager<sup>[5](#footnote-5)</sup>.
+If we use a single, complex regular expression to find comments, then the lexical error will be missed and, in this example at least, a syntactically correct sequence of seven tokens will be found.
+
+If we use the lexical states approach then the behavior is different (although again incorrect) as the comment will be skipped - an `EOF` token will be produced after the token for `j` and no error will be reported by the token manager<sup>[5](#footnote-5)</sup>.
 
 We can correct the lexical states approach with the use of `MORE` (see [What is MORE?](#what-is-more)).
 
@@ -1359,7 +1363,7 @@ SPECIAL_TOKEN : {
 
 ---
 
-Sometimes you want some piece of Java code to be executed immediately after a token is matched. Lexical actions are placed immediately after the regular expression in a regular expression production.
+Sometimes you want some piece of Java code to be executed immediately after a token is matched. Lexical actions are actions that are placed immediately after the regular expression in a regular expression production.
 
 #### Example
 
@@ -1560,7 +1564,7 @@ The actual prefix matched is not arbitrary but is determined by the rules of Jav
 
 <br>
 
-### What is left-recursion and why can't I use it?
+### What is left-recursion and why cannot I use it?
 
 ---
 
@@ -1815,7 +1819,11 @@ If you get a warning, first try rewriting the grammar so that a lookahead of `1`
 
 ---
 
-No. JavaCC will not report choice conflict warnings if you use a `LOOKAHEAD` specification. The absence of a warning doesn't mean that you've solved the problem correctly, it just means that you added a `LOOKAHEAD` specification.
+No! Not automatically! May be you fixed it, may be not!
+
+JavaCC will not report choice conflict warnings if you use a `LOOKAHEAD` specification (unless you use the `FORCE_LA_CHECK = true;` option).
+
+The absence of a warning doesn't mean that you've solved the problem correctly, it just means that you added a `LOOKAHEAD` specification.
 
 Consider the following example:
 
@@ -1828,7 +1836,9 @@ void eg() : {} {
 }
 ```
 
-Clearly the lookahead is insufficient (`LOOKAHEAD (3)` would do the trick), but JavaCC produces no warning. When you add a `LOOKAHEAD` specification, JavaCC assumes you know what you are doing and suppresses any warnings.
+Clearly the lookahead is insufficient (`LOOKAHEAD (3)` would do the job), but JavaCC produces no warning.
+
+In other words, when you add a `LOOKAHEAD` specification, JavaCC assumes you know what you are doing and suppresses any warnings.
 
 <br>
 
@@ -1838,7 +1848,9 @@ Clearly the lookahead is insufficient (`LOOKAHEAD (3)` would do the trick), but 
 
 No.
 
-Consider the following grammar:
+This is a feature of JavaCC (whether it is a "design" feature or a "weak implementation" feature is out of the scope of this FAQ).
+
+For understanding its consequences, consider the following grammar:
 
 ```java
 void start( ) : { } {
@@ -1885,7 +1897,7 @@ void a() : { } {
 }
 ```
 
-Another solution is to distribute so that the earlier choice is longer. In the above example, we can write:
+Another solution is to distribute part or all of the productions after the `expansion_choices` so that the earlier choice is longer and so the `LOOKAHEAD` specification does not look past the end of the choice it applies to. In the above example, we can write:
 
 ```java
 void a() : { } {
@@ -1925,45 +1937,81 @@ In some cases to accomplish this you can put the *longer* choice first (that is,
 
 <br>
 
-### Are parameters passed during syntactic lookahead?
+### Are parameters passed to syntactic lookaheads?
 
 ---
 
 No.
 
+This question probably derives from the case of a syntactic lookahead before a production with parameters, like : `A(par)`: people may ask if they need to write `LOOKAHEAD(A(par)) A(par)` or `LOOKAHEAD(A()) A(par)`.
+
+The generated code for the syntactic lookaheads is different from the one generated for the productions and does not call this later (neither it calls parser actions); it just scans tokens (in the same way or not) (through generated methods named `jj_2_nnn()`, `jj_3_nnn()`, `jj_3R_xxx_line_col_nnn()`).
+
+This question may come from a strong misunderstanding that a syntactic lookahead like `LOOKAHEAD(A())` means *call A() and if OK take this choice but if KO consider next choice*; it just means *scans the next tokens and as soon as they do not match A() return KO, otherwise return OK*.
+
+So in fact this question has no real meaning, but JavaCC accepts the 2 forms which produce the same generated code.
+
 <br>
 
-### Are semantic actions executed during syntactic lookahead?
+### Are parser actions executed during syntactic lookahead?
 
 ---
 
 No.
 
+Same as explained in the previous question.
+
 <br>
 
-### Is semantic lookahead evaluated during syntactic lookahead?
+### My nested lookahead seems to scan not enough tokens?
 
 ---
 
-Yes. It is also evaluated during evaluation of `LOOKAHEAD( n )` for `n > 1`.
+If you have a top level production with a `LOOKAHEAD( n1 )` specification before a nested production with a `LOOKAHEAD( n2 )` specification, when performing the top level lookahead the nested lookahead will start with a limit not of `n2` but of `n1 - s` where `s` is the number of already scanned tokens.
 
 <br>
 
-### Can local variables (including parameters) be used in semantic lookahead?
+### Are nested semantic lookahead specifications evaluated during syntactic lookahead?
+
+---
+
+Yes. They are also evaluated during evaluation of simple lookaheads with non default limit (`LOOKAHEAD( n )` for `n > 1`).
+
+At the lookahead insertion point, the generated code is:
+- similar for syntactic and semantic lookaheads for the if condition: for the first ones it calls the generated methods, for the second ones it calls the expression - and when both are present it calls the logical-and of the generated methods and the expression,
+- different for syntactic and semantic lookaheads: for the first ones it scans the tokens (in the generated `jj_` methods, for the second ones it calls directly the next production.
+
+But in the case of a nested semantic lookahead specification under syntactic lookahead or a simple limit lookahead, there are extra generated `jj_3R_xxx_line_col_nnn()` methods, that call the expression `expr`.
+
+Note that it is a right understanding that a semantic lookahead like `LOOKAHEAD({expr}) A()` means *evaluate expr and if true call A() and if false consider next choice*.
+
+<br>
+
+### Are nested lookahead specifications evaluated during semantic lookahead?
+
+No if the (implicit or explicit) amount is 0 (`LOOKAHEAD({expr})`, `LOOKAHEAD(0, {expr})` and `LOOKAHEAD(0, expan, {expr})` ), yes otherwise.
+
+JavaCC assumes that the developer wants to control all the local lookahead algorithm when he uses a semantic lookahead with a `0` amount.
+
+<br>
+
+### Can parameters and local variables be used in semantic lookahead?
 
 ---
 
 Yes, to a point.
 
-The problem is that semantic lookahead specifications are evaluated during syntactic lookahead (and during lookahead of more than one token). But the subroutine generated to do the syntactic lookahead for a non-terminal will not declare the parameters or the other local variables of the non-terminal. This means that the code to do the semantic lookahead will fail to compile (in this subroutine) if it mentions parameters or other local variables.
+The problem is that semantic lookahead specifications are evaluated during syntactic lookahead (and during lookahead of more than one token). But the subroutine generated to do the syntactic lookahead for a non-terminal will not declare the parameters nor the other local variables of the non-terminal. This means that the code to do the semantic lookahead will fail to compile (in this subroutine) if it mentions parameters or other local variables.
 
-So if you use local variables in a semantic lookahead specification within the BNF production for a non-terminal `n`, make sure that `n` is not used in syntactic lookahead, or in a lookahead of more than one token.
+So if you use parameters or local variables in a semantic lookahead specification within the BNF production for a non-terminal `NT()`, make sure that `NT()` is not used in syntactic lookahead, or in a lookahead of more than one token (so no such above subroutine is generated).
 
 This is a case of three rights not making a right! It is right that semantic lookahead is evaluated during syntactic lookahead, it is right (or at least useful) that local variables can be mentioned in semantic lookahead, and it is right that local variables do not exist during syntactic lookahead. Yet putting these three features together tricks JavaCC into producing uncompilable code. Perhaps a future version of JavaCC will put these interacting features on a firmer footing.
 
+You can use class members (fields, methods), static or not.
+
 <br>
 
-### How does JavaCC differ from standard LL(1) parsing?
+### How does JavaCC differ from standard LL(1) parsers?
 
 ---
 
@@ -1977,9 +2025,9 @@ First of all, JavaCC is more flexible. It lets you use multi-token lookahead, sy
 
 It is usually a bad idea to try to have the parser try to influence the way the token manager does its job. The reason is that the token manager may produce tokens long before the parser consumes them. This is a result of lookahead.
 
-Often the workaround is to use lexical states to have the token manager change its behaviour on its own.
+Often the workaround is to use lexical states to have the token manager change its behavior on its own.
 
-In other cases, the workaround is to have the token manager not change its behaviour and have the parser compensate. For example, when parsing C you need to know if an identifier is a type or not. If you were using Lex and Yacc, you would probably write your parser in terms of token types `ID` and `TYPEDEF_NAME`.
+In other cases, the workaround is to have the token manager not change its behavior and have the parser compensate. For example, when parsing C you need to know if an identifier is a type or not. If you were using Lex and Yacc, you would probably write your parser in terms of token types `ID` and `TYPEDEF_NAME`.
 
 The parser will add `typedef` names to the symbol table after parsing each `typedef` definition. The lexical analyzer will look up identifiers in the symbol table to decide which token type to use. This works because with Lex and Yacc the lexical analyzer is always one token ahead of the parser. In JavaCC, it is better to just use one token type, `ID`, and use a non-terminal in place of `TYPEDEF_NAME`:
 
@@ -2019,6 +2067,8 @@ For example, if you calculate the value associated with a particular token type 
 Another solution is to use a table. For example, in dealing with `#line` directives in C or C++, you can have the token manager fill a table indicating on which physical lines the `#line` directives occur and what the value given by the `#line` is. Then the parser can use this table to calculate the *source line number* from the physical line numbers stored in the `Tokens`.
 
 <br>
+
+## Miscellaneous
 
 ### What does it mean to put a regular expression within a BNF production?
 
@@ -2075,7 +2125,7 @@ void nonterm() : {} {
 }
 ```
 
-In general terms, when a regular expression is a Java string and identical to a regular expression occurring in a regular expression production<sup>[7](#footnote-7)</sup>, then the Java string is interchangeable with the token type from the regular expression production.
+In general terms, when a regular expression is a Java string and identical to a regular expression occurring in a regular expression production[^7], then the Java string is interchangeable with the token type from the regular expression production.
 
 When a regular expression is a Java string but there is no corresponding regular expression production, then JavaCC essentially makes up a corresponding regular expression production. This is shown by the `def` which becomes an anonymous regular expression production. Note that all occurrences of the same string end up represented by a single regular expression production.
 
@@ -2089,7 +2139,7 @@ Finally, consider the two occurrences of the complex regular expression `< (["0"
 
 If you haven't already, it is worth reading [What does it mean to put a regular expression within a BNF production?](#what-does-it-mean-to-put-a-regular-expression-within-a-bnf-production).
 
-For regular expressions that are simply strings, you might as well put them directly into the BNF productions, and not bother with defining them in a regular expression production<sup>[8](#footnote-8)</sup>.
+For regular expressions that are simply strings, you might as well put them directly into the BNF productions, and not bother with defining them in a regular expression production[^8].
 
 For more complex regular expressions, it is best to give them a name using a regular expression production. There are two reasons for this:
 
@@ -2210,7 +2260,7 @@ If you use the second version of `abc` then the first choice is taken, since syn
 
 <br>
 
-### How do I deal with keywords that aren't reserved?
+### How do I deal with keywords that are not reserved?
 
 ---
 
@@ -2228,7 +2278,7 @@ This is a special case of a more general problem discussed in [How do I make a c
 
 For a more modern example - parsing URLs - we might want to treat the word `http` as a keyword, but we don't want to prevent it being used as a host name or a path segment.
 
-Suppose we write the following productions<sup>[9](#footnote-9)</sup>:
+Suppose we write the following productions[^9]:
 
 ```java
 TOKEN : {
@@ -2250,7 +2300,7 @@ Both the regular expressions labelled `HTTP` and `LABEL`, match the string `http
 
 So what can you do? There are basically three strategies:
 
-1. Put choices in the grammar.
+1- Put choices in the grammar.
 
 Going back to the original grammar, we can see that the problem is that where we say we expect a `LABEL` we actually intended to expect either a `LABEL` or a `HTTP`.
 
@@ -2266,7 +2316,7 @@ void label() : {} {
 }
 ```
 
-2. Replace keywords with semantic lookahead.
+2- Replace keywords with semantic lookahead.
 
 Here we eliminate the offending keyword production. In the example we would eliminate the regular expression production labelled `HTTP`. Then we have to refactor `httpURL` as follows:
 
@@ -2283,11 +2333,11 @@ void httpURL() : {} {
 
 The added semantic lookahead ensures that the URL really begins with a `LABEL` which is actually the keyword `http`.
 
-3. Use lexical states.
+3- Use lexical states.
 
 The idea here is to use a different lexical state when the word is reserved and when it isn't (see [What are lexical states?](#what-are-lexical-states)).
 
-We can make `http` reserved in the default lexical state, but not reserved when a label is expected. In the example this is easy because it is clear when a label is expected - after a `//` and after a `.`<sup>[10](#footnote-10)</sup>. Therefore we can refactor the regular expression productions as:
+We can make `http` reserved in the default lexical state, but not reserved when a label is expected. In the example this is easy because it is clear when a label is expected - after a `//` and after a `.`[^10]. Therefore we can refactor the regular expression productions as:
 
 ```java
 TOKEN : {  
@@ -2317,7 +2367,7 @@ void host() : {} {
 
 <br>
 
-### There's an error in the input, so why doesn't my parser throw a ParseException?
+### There is an error in the input, so why does not my parser throw a ParseException?
 
 ---
 
@@ -2325,13 +2375,13 @@ You may have omitted the `< EOF >` in the production for your start non-terminal
 
 <br>
 
-## Semantic Actions
+           
 
-### I've written a parser, why doesn't it do anything?
+### I have written a parser, why does not it do anything?
 
 ---
 
-You need to add semantic actions. Semantic actions are bits of Java code that get executed as the parser is parsing.
+You need to add actions. Actions are blocks of Java code between terminals and non terminals that get executed as the parser is parsing. They may be called parser actions, user actions, lexical actions, semantic actions... depending of their purpose and location. JavaCC is quite agnostic about their purpose.
 
 <br>
 
@@ -2482,7 +2532,7 @@ Please see the [Java Tree Builder](https://github.com/jtb-javacc/JTB) website.
 
 <br>
 
-## Applications of JavaCC
+## Uses of JavaCC
 
 ### Where can I find a parser for X?
 
@@ -2503,7 +2553,7 @@ See Parsing Expressions by Recursive Descent and a tutorial by Theodore Norvell.
 
 <br>
 
-### I'm writing a programming language interpreter, how do I deal with loops?
+### I am writing a programming language interpreter, how do I deal with loops?
 
 ---
 
@@ -2610,6 +2660,14 @@ As the example above shows, Yacc has no problems with left-recursive productions
 If your language is totally unsuitable for top-down parsing, you'll be happier with a bottom-up parser like Yacc or Bison. However, if your language can be parsed top-down without too many appeals to lookahead, then JavaCC's combination of EBNF and parameters can make life much more enjoyable.
 
 <br>
+
+## Acknowledgments
+
+This FAQ is copyright (c) [Theodore S. Norvell](mailto:theo@mun.ca).  Thanks to Ken Beesley, Leonardo Bueno, Paul Cager, Tom Copeland, Tom Davies, Brian Goetz, Roedy Green, John Kristian, Tony LaPaso, Eric Nickell, Andreas Papasalouros, Phil Robare, Alan Rooks, David Rosenstrauch, Sriram Sankar, Sreeni Viswanadha, Michael Welle, Marc Mazas for suggestions and clarifications.
+                                                                                                                                   
+
+<br>
+                                                                                              
 
 ## Footnotes
 

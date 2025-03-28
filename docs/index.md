@@ -42,24 +42,27 @@ In addition to the parser generator itself, JavaCC provides other standard capab
 
 All you need to run a JavaCC parser, once generated, is a Java Runtime Environment (JRE).
 
-## Contents
+### Contents
 
 - [Introduction](#introduction)
     * [Features](#features)
     * [An example](#an-example)
     * [Tutorials](tutorials/index.md)
     * [FAQ](faq.md)
+  
 - [Getting Started](#getting-started)
     * [From the command line](#use-javacc-from-the-command-line)
     * [Within an IDE](#use-javacc-within-an-ide)
     * [Rebuilding JavaCC](#rebuilding-javacc)
+  
 - [Community](#community)
     * [Support](#support)
     * [Documentation](#documentation)
     * [Resources](#resources)
     * [Powered by JavaCC](#powered-by-javacc)
+  
 - [License](#license)
-
+  
 ## Introduction
 
 ### Features
@@ -390,7 +393,8 @@ https://blog.scottlowe.org/2015/01/27/using-fork-branch-git-workflow/
 
 ## License
 
-JavaCC is an open source project released under the [BSD License 2.0](LICENSE). The JavaCC project was originally developed at Sun Microsystems Inc. by [Sreeni Viswanadha](https://github.com/kaikalur) and [Sriram Sankar](https://twitter.com/sankarsearch).
+JavaCC is an open source project released under the [BSD License 3.0](LICENSE).  
+The JavaCC project was originally developed at Sun Microsystems Inc. by [Sreeni Viswanadha](https://github.com/kaikalur) and [Sriram Sankar](https://twitter.com/sankarsearch).
 
 <br>
 
