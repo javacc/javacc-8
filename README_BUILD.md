@@ -236,12 +236,12 @@ Note that the 3 jobs (one for each platform) are spawned in parallel, and as soo
 
 ## Contributing
 
-*To be written*  
+*TODO to be written*  
 Code formatting. Licenses.  
 
 ## Sonatype release process
 
-*To be written*  
+*TODO to be written*  
 
 JDK 8 / 11... ?
 Modules JDK 9+ ?

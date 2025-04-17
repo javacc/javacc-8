@@ -53,9 +53,9 @@ This tutorial refers to examples that are available in the source code on [GitHu
           - [Example 6](#example-6)
           - [Example 7](#example-7)
       + [Option 2 - Adding parser hints](#option-2-adding-parser-hints)
-<br><br>
+      
 - [Setting a global LOOKAHEAD](#setting-a-global-lookahead)
-<br><br>
+  
 - [Setting a local LOOKAHEAD](#setting-a-local-lookahead)
     * [Setting a "multi-token" LOOKAHEAD](#setting-a-multi-token-lookahead)
       + [Example 8](#example-8)
@@ -64,9 +64,9 @@ This tutorial refers to examples that are available in the source code on [GitHu
     * [Setting a "syntactic" LOOKAHEAD](#setting-a-syntactic-lookahead)
     * [Setting a "semantic" LOOKAHEAD](#setting-a-semantic-lookahead)
     * [General syntax of a local LOOKAHEAD](#general-syntax-of-a-local-lookahead)
-<br><br>
+    
 - ["Nested evaluation" of local LOOKAHEADs](#nested-evaluation-of-local-lookaheads)
-<br><br>
+  
 - [Local LOOKAHEADs at non choice points](#local-lookaheads-at-non-choice-points)
     * [Not inside an optional construct](#not-inside-an-optional-construct)
     * [Inside the optional construct construct zero-or-more ()*](#inside-the-optional-construct-zero-or-more)
@@ -74,9 +74,9 @@ This tutorial refers to examples that are available in the source code on [GitHu
     * [Inside the optional construct construct zero-or-one ()? / []](#inside-the-optional-construct-zero-or-one)
     * [An example of a grammar managing its versions through lookaheads at non choice points](#an-example-of-a-grammar-managing-its-versions-through-lookaheads-at-non-choice-points)
     * [An example of rewriting a grammar with semantic lookaheads at non choice points](#an-example-of-rewriting-a-grammar-with-semantic-lookaheads-at-non-choice-points)
-<br><br>
+    
 - [Keeping the warnings displayed](#keeping-the-warnings-displayed)
-<br><br>
+  
 - [Reading the parser and lookahead debug traces](#reading-the-parser-and-lookahead-debug-traces)
   
 ## What is "looking ahead", why, how?
@@ -449,7 +449,7 @@ if (next 2 tokens are <ID> and "(" ) {
 
 #### Example 9
 
-Similarly, [Example 4](#example-4) can be modified as shown below:
+Similarly, [Example 5](#example-5) can be modified as shown below:
 
 ```java
 void identifier_list() :
@@ -1332,7 +1332,9 @@ By the way, it can be a good habit to add comments to your lookahead specificati
 
 ## Reading the parser and lookahead debug traces
 
-In this section we'll describe the parser and lookahead debug trace you can obtain by turning on the options  `DEBUG_PARSER = true;` and `DEBUG_LOOKAHEAD = true;`. Note that last one implicitly turns on the first one.
+In this section we'll describe the parser and lookahead debug trace you can obtain by turning on the options  `DEBUG_PARSER = true;` and `DEBUG_LOOKAHEAD = true;`.  
+Note that last one does not implicitly turns on the first one.  
+Both print by default to **stderr**. `DEBUG_TOKEN_MANAGER = true;` prints by default to **stdout**, so if one wants all traces in the same stream he has to redirect one onto the other.  
 
 We'll take a slightly modified version of example 8 grammar, whose full code can be found in [ReadingLookaheadDebugTrace_Example8.jj](https://github.com/javacc/javacc-8-java/blob/release/examples/Lookahead/src/main/javacc/ReadingLookaheadDebugTrace_Example8.jj).
 
@@ -1342,8 +1344,9 @@ The interesting parts are:
 options
 {
   ...
-//  DEBUG_PARSER = true; // (JavaCC - default false)
+  DEBUG_PARSER = true; // (JavaCC - default false)
   DEBUG_LOOKAHEAD = true; // (JavaCC - default false)
+  ...
 }
 
 PARSER_BEGIN(ReadingLookaheadDebugTrace_Example8)
@@ -1406,173 +1409,180 @@ In this grammar with have:
 * a top level `LOOKAHEAD` in production `basic_expr()`, for the choice conflict between choices 1 and 4
 * a nested `LOOKAHEAD` (the one in production `args()`, called in production `basic_expr()` )
  
-On the first input (`new cd`, which matches choice 3, we get the following trace:
+On the first input (`new cd`), which matches choice 3, we get the following trace:
 
 ```
 input 0 : new cd
-Call: 0: basic_expr-53-1 on next token <"new" at line 1 column 1>
-  Call: 2: Entering LOOKAHEAD(2) (at line 55 column 3 in basic_expr-53-1) on next token <"new" at line 1 column 1>
-    Visited token (la=1): <"new" at line 1 column 1>; Expected token: <<ID>>
-  Return: 2: Exiting FAILED LOOKAHEAD(2/1) (at line 55 column 3 in basic_expr-53-1) on consumed token <"null" at line 0 column 0>
-  Consumed token: <"new" at line 1 column 1>
-  Consumed token: <<ID>: "cd" at line 1 column 5>
-Return: 0: basic_expr-53-1 on consumed token <"cd" at line 1 column 5>
+Call:   0: basic_expr-83 (pa)
+  Call:   2: Entering LOOKAHEAD (2) (at 85:3 in basic_expr-83) (la)
+    Visited token (la=1): <5 / <NEW> / "new">, @ 1:1; Expected token: <7 / <ID>> (la)
+  Return: 2: Exiting FAILED LOOKAHEAD (2/1) (at 85:3 in basic_expr-83) (la)
+  Consumed token: <5 / <NEW> / "new">, @ 1:1 (in jj_consume_token()) (pa)
+  Consumed token: <7 / <ID> / "cd">, @ 1:5 (in jj_consume_token()) (pa)
+Return: 0: basic_expr-83 (pa)
+input 0 : new cd
 ```
 
-Pairs of `Call: n: prod-line-col on next token <...>` / `Return: n: prod-line-col on consumed token <...>` lines and `Consumed token <...>` lines are parser traces on productions calls, where:
+Pairs of `Call:   n: prod-line (pa)` / `Return: n: prod-line (pa)` lines and `Consumed token <...>, at L:C (in jj_consume_token()) (pa)` lines are parser traces on productions calls, where:
 
-* `n` is (twice) the indentation level (0, 2x1, 2x2...), for easier matching of the lines pairs
-* `prod` is the name of the production, `line` and `col` are the begining line and column numbers of the production in the grammar file
-* the token information in `<...>` includes its image and its position in the input stream
+* `n` is the indentation level (which will be twice it: 2x0, 2x1, 2x2...), for easier matching of the lines pairs
+* `prod` is the name of the production, `line` is the begining line number of the production in the grammar file
+* the token information in `<...>` includes its kind, its label (if it has one) and its image (if different than the label), and its (`line:column`) position in the input stream after the `@` (if the option `KEEP_LINE_COLUMN` has not been set to `false`
 
-Pairs of `Call: n: Entering LOOKAHEAD(la) (at ... in ...) on next token <...>` / `Return: n: Exiting FAILED/SUCCESSFUL LOOKAHEAD(la/laix) (at ... in ...) on consumed token <...>` lines and `Visited token <...>` lines are traces on lookahead calls, quite similar with the previous ones, with in addition:
+Pairs of `Call:   n: Entering LOOKAHEAD (la) (at L:C in prod-line) (la)` / `Return: n: Exiting FAILED/SUCCESSFUL LOOKAHEAD (la/laix) (at L:C in prod-line)` lines and `Visited token (la=i): <...>, at L:C; Expected token: <...> (la)` lines are traces on lookahead calls, quite similar with the previous ones, with in addition:
 
 * the information on a failure or a success of the `LOOKAHEAD`
-* the information on the 1-based (as in the grammar) amount limit in `la` and the 0-based current index of the to be scanned token in `laix` or in `(la=n)`
-* the line and column of the location in the grammar file of the `LOOKAHEAD` statement, after the `at`
+* the information on the 1-based (as in the grammar) amount limit in `la` and the 0-based current index of the to be scanned token in `laix` or in `(la=i)`
+* the (`line:column`) location in the grammar file of the `LOOKAHEAD` statement, after the `at`
+* the production name and its line in which the LOOKAHEAD is
 
-A token marked `visited` is a token scanned by the lookahead algorithm (including the default non explicit algorithm) - and may be put back in the input stream -, a token marked `consumed` is a token really consumed in the input stream.
+A token marked `visited` is a token scanned by the lookahead algorithm (including the default non explicit algorithm); and it may be put back in the input stream.  
+A token marked `consumed` is a token really consumed in the input stream.
 
 So in this first input case:
 
-* entering the top level production, the choice 1 & 4 lookahead (expecting `<ID> "("`) is performed: it fails on the first token (found `"new"`)
-* then javacc knows it can be only `"("` (choice 2) or `"new"` (choice 3), and proceeds on consuming `"new"`, then `<ID>`.
+* entering the top level production, the choice 1 or 4 lookahead (expecting `<ID> "("`) is performed: it fails on the first token (found `"new"`)
+* then JavaCC knows it can be only `"("` (choice 2) or `"new"` (choice 3), and proceeds on consuming `"new"`, then `<ID>`.
  
-Now on the second input (`( EXPR )`, which matches choice 2, we get the following trace:
+Now on the second input (`( EXPR )`), which matches choice 2, we get the following trace:
 
 ```
 input 1 : ( EXPR )
-Call: 0: basic_expr-53-1 on next token <"(" at line 1 column 1>
-  Call: 2: Entering LOOKAHEAD(2) (at line 55 column 3 in basic_expr-53-1) on next token <"(" at line 1 column 1>
-    Visited token (la=1): <"(" at line 1 column 1>; Expected token: <<ID>>
-  Return: 2: Exiting FAILED LOOKAHEAD(2/1) (at line 55 column 3 in basic_expr-53-1) on consumed token <"null" at line 0 column 0>
-  Consumed token: <"(" at line 1 column 1>
-  Call: 2: expr-65-1 on next token <"EXPR" at line 1 column 3>
-    Consumed token: <"EXPR" at line 1 column 3>
-  Return: 2: expr-65-1 on consumed token <"EXPR" at line 1 column 3>
-  Consumed token: <")" at line 1 column 8>
-Return: 0: basic_expr-53-1 on consumed token <")" at line 1 column 8>
+Call:   0: basic_expr-83 (pa)
+  Call:   2: Entering LOOKAHEAD (2) (at 85:3 in basic_expr-83) (la)
+    Visited token (la=1): <2 / <LP> / "(">, @ 1:1; Expected token: <7 / <ID>> (la)
+  Return: 2: Exiting FAILED LOOKAHEAD (2/1) (at 85:3 in basic_expr-83) (la)
+  Consumed token: <2 / <LP> / "(">, @ 1:1 (in jj_consume_token()) (pa)
+  Call:   2: expr-95 (pa)
+    Consumed token: <6 / <EXPR> / "EXPR">, @ 1:3 (in jj_consume_token()) (pa)
+  Return: 2: expr-95 (pa)
+  Consumed token: <3 / <RP> / ")">, @ 1:8 (in jj_consume_token()) (pa)
+Return: 0: basic_expr-83 (pa)
 ```
 
 In this second input case, we have something quite similar with the previous one, with the following difference: the second expansion_unit being a production `expr()`instead of a token `"new"`, there is a production call/return trace instead of a consumed token trace.
  
-Now on the third input (`( e.f )`, which matches choice 4, we get the following trace:
+Now on the third input (`e.f`), which matches choice 4, we get the following trace:
 
 ```
 input 2 : e.f
-Call: 0: basic_expr-53-1 on next token <"e" at line 1 column 1>
-  Call: 2: Entering LOOKAHEAD(2) (at line 55 column 3 in basic_expr-53-1) on next token <"e" at line 1 column 1>
-    Visited token (la=1): <<ID>: "e" at line 1 column 1>; Expected token: <<ID>>
-    Call: 4: LookAhead(1) STARTED (at line 69 column 3 in args-67-1) on next token <"e" at line 1 column 1>
-      Visited token (la=0): <"." at line 1 column 2>; Expected token: <"(">
-      Visited token (la=0): <"." at line 1 column 2>; Expected token: <"(">
-    Return: 4: LookAhead(0) FAILED (at line 69 column 3 in args-67-1) on consumed token <"null" at line 0 column 0>
-  Return: 2: Exiting FAILED LOOKAHEAD(2/0) (at line 55 column 3 in basic_expr-53-1) on consumed token <"null" at line 0 column 0>
-  Consumed token: <<ID>: "e" at line 1 column 1>
-  Consumed token: <"." at line 1 column 2>
-  Consumed token: <<ID>: "f" at line 1 column 3>
-Return: 0: basic_expr-53-1 on consumed token <"f" at line 1 column 3>
+Call:   0: basic_expr-83 (pa)
+  Call:   2: Entering LOOKAHEAD (2) (at 85:3 in basic_expr-83) (la)
+    Visited token (la=1): <7 / <ID> / "e">, @ 1:1; Expected token: <7 / <ID>> (la)
+    Call:   4: args-97: looking ahead (1)... (la)
+      Visited token (la=0): <4 / <DOT> / ".">, @ 1:2; Expected token: <2 / <LP>> (la)
+      Visited token (la=0): <4 / <DOT> / ".">, @ 1:2; Expected token: <2 / <LP>> (la)
+    Return: 4: args-97: look ahead (0) FAILED) (la)
+  Return: 2: Exiting FAILED LOOKAHEAD (2/0) (at 85:3 in basic_expr-83) (la)
+  Consumed token: <7 / <ID> / "e">, @ 1:1 (in jj_consume_token()) (pa)
+  Consumed token: <4 / <DOT> / ".">, @ 1:2 (in jj_consume_token()) (pa)
+  Consumed token: <7 / <ID> / "f">, @ 1:3 (in jj_consume_token()) (pa)
+Return: 0: basic_expr-83 (pa)
 ```
 
 So in this third input case:
 
-* entering the top level production, the choice 1 & 4 lookahead (expecting `<ID> "("`) is performed: it succeeds on the first token (trace `Visited token (la=1): <<ID>: "e" at line 1 column 1>; Expected token: <<ID>>`)
-* then javacc starts looking ahead for the first choice (choice 1) to resolve the choice conflict; this choice continues with an expansion_unit which is the production `args()` (found in line 66 column 1 in the grammar file), which itself starts with the (nested) lookahead found in line 68 column 3 in the grammar file (`LOOKAHEAD(2)`)
-* but at this point there is only 1 to be scanned token left (as shown in `Call: 4: LookAhead(1) STARTED ...`, where the parameter is a 1-based amount)
-* the nested lookahead has 2 choices with the same prefix `"(")`, both fail (the 2 trace lines `Visited token (la=0): <"." at line 1 column 2>; Expected token: <"(">`), so it does not consume any token (therefore the "null" token in the next trace line)
+* entering the top level production, the choice 1 or 4 lookahead (expecting `<ID> "("`) is performed: it succeeds on the first token (trace `Visited token (la=1): <7 / <ID> / "e">, at 1:1; Expected token: <7 / <ID>> (la)`)
+* then JavaCC starts looking ahead for the first choice (choice 1) to resolve the choice conflict; this choice continues with an expansion_unit which is the production `args()` (found in line 97 column 1 in the grammar file), which itself starts with the (nested) lookahead (`LOOKAHEAD(2)` found in line 99 column 3 in the grammar file)
+* but at this point there is only 1 token remaining to be scanned (as shown in `Call:   4: args-97: looking ahead (1)... (la)`, where the number is a 1-based amount)
+* the nested lookahead has 2 choices with the same prefix `"(")`, both fail (the 2 traces `Visited token (la=0): <4 / <DOT> / ".">, at 1:2; Expected token: <2 / <LP>> (la)`), so it does not consume any token
 * the top level lookahead can now only look for the remaining choice (choice 4), therefore it consumes the 3 tokens, which luckily match
  
-Now on the fourth input (`ab ( EXPR )`, which matches top level choice 1 / nested choice 1, we get the following trace:
+Now on the fourth input (`ab ( EXPR )`), which matches top level choice 1 / nested choice 1, we get the following trace:
 
 ```
 input 3 : ab ( EXPR )
-Call: 0: basic_expr-53-1 on next token <"ab" at line 1 column 1>
-  Call: 2: Entering LOOKAHEAD(2) (at line 55 column 3 in basic_expr-53-1) on next token <"ab" at line 1 column 1>
-    Visited token (la=1): <<ID>: "ab" at line 1 column 1>; Expected token: <<ID>>
-    Call: 4: LookAhead(1) STARTED (at line 69 column 3 in args-67-1) on next token <"ab" at line 1 column 1>
-      Visited token (la=0): <"(" at line 1 column 4>; Expected token: <"(">
-    Return: 4: LOOKAHEAD SUCCESS (0) (at line 69 column 3 in args-67-1) on consumed token <"null" at line 0 column 0>
-  Return: 2: Caught SUCCESSFUL LOOKAHEAD(2/0) (at line 55 column 3 in basic_expr-53-1) on consumed token <"null" at line 0 column 0>
-  Consumed token: <<ID>: "ab" at line 1 column 1>
-  Call: 2: args-67-1 on next token <"(" at line 1 column 4>
-    Call: 4: Entering LOOKAHEAD(2) (at line 69 column 3 in args-67-1) on next token <"(" at line 1 column 4>
-      Visited token (la=1): <"(" at line 1 column 4>; Expected token: <"(">
-      Visited token (la=0): <"EXPR" at line 1 column 6>; Expected token: <"EXPR">
-    Return: 4: Caught SUCCESSFUL LOOKAHEAD(2/0) (at line 69 column 3 in args-67-1) on consumed token <"ab" at line 1 column 1>
-    Consumed token: <"(" at line 1 column 4>
-    Call: 4: expr-65-1 on next token <"EXPR" at line 1 column 6>
-      Consumed token: <"EXPR" at line 1 column 6>
-    Return: 4: expr-65-1 on consumed token <"EXPR" at line 1 column 6>
-    Consumed token: <")" at line 1 column 11>
-  Return: 2: args-67-1 on consumed token <")" at line 1 column 11>
-Return: 0: basic_expr-53-1 on consumed token <")" at line 1 column 11>
+Call:   0: basic_expr-83 (pa)
+  Call:   2: Entering LOOKAHEAD (2) (at 85:3 in basic_expr-83) (la)
+    Visited token (la=1): <7 / <ID> / "ab">, @ 1:1; Expected token: <7 / <ID>> (la)
+    Call:   4: args-97: looking ahead (1)... (la)
+      Visited token (la=0): <2 / <LP> / "(">, @ 1:4; Expected token: <2 / <LP>> (la)
+    Return: 4: args-97: look ahead SUCCESSFUL (la)
+  Return: 2: Caught SUCCESSFUL LOOKAHEAD (2/0) (at 85:3 in basic_expr-83) (la)
+  Consumed token: <7 / <ID> / "ab">, @ 1:1 (in jj_consume_token()) (pa)
+  Call:   2: args-97 (pa)
+    Call:   4: Entering LOOKAHEAD (2) (at 99:3 in args-97) (la)
+      Visited token (la=1): <2 / <LP> / "(">, @ 1:4; Expected token: <2 / <LP>> (la)
+      Visited token (la=0): <6 / <EXPR> / "EXPR">, @ 1:6; Expected token: <6 / <EXPR>> (la)
+    Return: 4: Caught SUCCESSFUL LOOKAHEAD (2/0) (at 99:3 in args-97) (la)
+    Consumed token: <2 / <LP> / "(">, @ 1:4 (in jj_consume_token()) (pa)
+    Call:   4: expr-95 (pa)
+      Consumed token: <6 / <EXPR> / "EXPR">, @ 1:6 (in jj_consume_token()) (pa)
+    Return: 4: expr-95 (pa)
+    Consumed token: <3 / <RP> / ")">, @ 1:11 (in jj_consume_token()) (pa)
+  Return: 2: args-97 (pa)
+Return: 0: basic_expr-83 (pa)
 ```
 
 So in this fourth input case:
 
-* entering the top level production, the choice 1 & 4 lookahead (expecting `<ID> "("`) is performed: it succeeds on the first token (trace `Visited token (la=1): <<ID>: "e" at line 1 column 1>; Expected token: <<ID>>`)
-* then javacc starts looking ahead for the first choice (choice 1) to resolve the choice conflict; this choice continues with an expansion_unit which is the production `args()` (found in line 66 column 1 in the grammar file), which itself starts with the (nested) lookahead found in line 68 column 3 in the grammar file (`LOOKAHEAD(2)`)
-* but at this point there is only 1 token left (therefore the `LookAhead(1)`)
-* up to that point the behavior is the same as in the previous input case
-* the nested lookahead has 2 choices with the same prefix `"(")`, and the first matches  (line `Visited token (la=0): <"(" at line 1 column 4>; Expected token: <"(">`), so the level 4 and 2 calls return with success, and choice 1 is selected, token `"ab"` is consumed as an `<ID>`
-* then javacc tries to match the production `args()`, and its `LOOKAHEAD(2)` is performed (call 4 / return 4) on its first choice `"(" expr() ")"` (which javacc had transformed in `"(" "EXPR" ")"`) and the 2 scanned tokens match the expected ones
+* entering the top level production, the choice 1 or 4 lookahead (expecting `<ID> "("`) is performed: it succeeds on the first token (trace `Visited token (la=1): <7 / <ID> / "ab">, at 1:1; Expected token: <7 / <ID>> (la)`)
+* then JavaCC starts looking ahead for the first choice (choice 1) to resolve the choice conflict; this choice continues with an expansion_unit which is the production `args()` (found in line 97 column 1 in the grammar file), which itself starts with the (nested) lookahead (`LOOKAHEAD(2)` found in line 99 column 3 in the grammar file)
+* but at this point there is only 1 token left (therefore the `looking ahead (1)`)
+* up to that point the behavior is the same as in the previous input case; now
+* the nested lookahead has 2 choices with the same prefix `"(")`, and the first matches  (line `Visited token (la=0): <2 / <LP> / "(">, at 1:4; Expected token: <2 / <LP>> (la)`), so the level 4 and 2 calls return with success, and choice 1 is selected, token `"ab"` is consumed as an `<ID>`
+* then JavaCC tries to match the production `args()`, and its `LOOKAHEAD(2)` is performed (call 4 / return 4) on its first choice `"(" expr() ")"` (which JavaCC had transformed in `"(" "EXPR" ")"`) and the 2 scanned tokens match the expected ones
 * so they are consumed, and the last token luckily matches and is consumed
 
-Now on the fifth input (`ba ( )`, which matches top level choice 1 / nested choice 2, we get the following trace:
+Now on the fifth input (`ba ( )`), which matches top level choice 1 / nested choice 2, we get the following trace:
 
 ```
 input 4 : ba ( )
-Call: 0: basic_expr-53-1 on next token <"ba" at line 1 column 1>
-  Call: 2: Entering LOOKAHEAD(2) (at line 55 column 3 in basic_expr-53-1) on next token <"ba" at line 1 column 1>
-    Visited token (la=1): <<ID>: "ba" at line 1 column 1>; Expected token: <<ID>>
-    Call: 4: LookAhead(1) STARTED (at line 69 column 3 in args-67-1) on next token <"ba" at line 1 column 1>
-      Visited token (la=0): <"(" at line 1 column 4>; Expected token: <"(">
-    Return: 4: LOOKAHEAD SUCCESS (0) (at line 69 column 3 in args-67-1) on consumed token <"null" at line 0 column 0>
-  Return: 2: Caught SUCCESSFUL LOOKAHEAD(2/0) (at line 55 column 3 in basic_expr-53-1) on consumed token <"null" at line 0 column 0>
-  Consumed token: <<ID>: "ba" at line 1 column 1>
-  Call: 2: args-67-1 on next token <"(" at line 1 column 4>
-    Call: 4: Entering LOOKAHEAD(2) (at line 69 column 3 in args-67-1) on next token <"(" at line 1 column 4>
-      Visited token (la=1): <"(" at line 1 column 4>; Expected token: <"(">
-      Visited token (la=0): <")" at line 1 column 6>; Expected token: <"EXPR">
-    Return: 4: Exiting FAILED LOOKAHEAD(2/0) (at line 69 column 3 in args-67-1) on consumed token <"ba" at line 1 column 1>
-    Consumed token: <"(" at line 1 column 4>
-    Consumed token: <")" at line 1 column 6>
-  Return: 2: args-67-1 on consumed token <")" at line 1 column 6>
-Return: 0: basic_expr-53-1 on consumed token <")" at line 1 column 6>
+Call:   0: basic_expr-83 (pa)
+  Call:   2: Entering LOOKAHEAD (2) (at 85:3 in basic_expr-83) (la)
+    Visited token (la=1): <7 / <ID> / "ba">, @ 1:1; Expected token: <7 / <ID>> (la)
+    Call:   4: args-97: looking ahead (1)... (la)
+      Visited token (la=0): <2 / <LP> / "(">, @ 1:4; Expected token: <2 / <LP>> (la)
+    Return: 4: args-97: look ahead SUCCESSFUL (la)
+  Return: 2: Caught SUCCESSFUL LOOKAHEAD (2/0) (at 85:3 in basic_expr-83) (la)
+  Consumed token: <7 / <ID> / "ba">, @ 1:1 (in jj_consume_token()) (pa)
+  Call:   2: args-97 (pa)
+    Call:   4: Entering LOOKAHEAD (2) (at 99:3 in args-97) (la)
+      Visited token (la=1): <2 / <LP> / "(">, @ 1:4; Expected token: <2 / <LP>> (la)
+      Visited token (la=0): <3 / <RP> / ")">, @ 1:6; Expected token: <6 / <EXPR>> (la)
+    Return: 4: Exiting FAILED LOOKAHEAD (2/0) (at 99:3 in args-97) (la)
+    Consumed token: <2 / <LP> / "(">, @ 1:4 (in jj_consume_token()) (pa)
+    Consumed token: <3 / <RP> / ")">, @ 1:6 (in jj_consume_token()) (pa)
+  Return: 2: args-97 (pa)
+Return: 0: basic_expr-83 (pa)
 ```
 
 So in this fifth input case:
 
 * we have at the beginning the same behavior as in the previous case
-* in the nested lookahead, choice 1 fails, so choice 2 is the single remaining possibility, so javacc consumes the 2 last tokens, which luckily match
+* in the nested lookahead, choice 1 fails, so choice 2 is the single remaining possibility, so JavaCC consumes the 2 last tokens, which luckily match
 
 
 Now on the sixth input (`new .cd`), which does not match any choice, we get the following trace:
 
 ```
 input 5 : new .cd
-Call: 0: basic_expr-54-1 on next token <"new" at line 1 column 1>
-  Call: 2: Entering LOOKAHEAD(2) (at line 56 column 3 in basic_expr-54-1) on next token <"new" at line 1 column 1>
-    Visited token (la=1): <"new" at line 1 column 1>; Expected token: <<ID>>
-  Return: 2: Exiting FAILED LOOKAHEAD(2/1) (at line 56 column 3 in basic_expr-54-1) on consumed token <"null" at line 0 column 0>
-  Consumed token: <"new" at line 1 column 1>
-  UNEXPECTED consumed token: Expected token: <<ID>>); Consumed token: <"." at line 1 column 5> in basic_expr-54-1
-Return: 0: basic_expr-54-1 on consumed token <"new" at line 1 column 1>
-swallowed ParseException: Encountered " "." ". "" at line 1, column 5.
-Was expecting:
-    <ID> (in basic_expr-54-1) ...
+Call:   0: basic_expr-83 (pa)
+  Call:   2: Entering LOOKAHEAD (2) (at 85:3 in basic_expr-83) (la)
+    Visited token (la=1): <5 / <NEW> / "new">, @ 1:1; Expected token: <7 / <ID>> (la)
+  Return: 2: Exiting FAILED LOOKAHEAD (2/1) (at 85:3 in basic_expr-83) (la)
+  Consumed token: <5 / <NEW> / "new">, @ 1:1 (in jj_consume_token()) (pa)
+  Expected token: <7 / <ID>>, @ 90:9, not matched by consumed token: <4 / <DOT> / "."> (pa)
+Return: 0: basic_expr-83 (pa)
+Main swallowing a ParseException: Encountered: <DOT> / ".", at line 1, column 5.
+Was expecting this terminal within expansion starting at 90:9:
+    <ID> (inside 90:9) ...
  ```
 
-So in this sixth input case we have other lines:
+So in this sixth input case we have other lines (the first one as a parser debug trace and the second one as a user report error line reporting a generated ParseException):
 
-* one with information on the expected consumed token and the really not-matching consumed token `UNEXPECTED consumed token ...`
-* the ParseException message, with all the expected tokens (with the productions where they were expected), and the error tokens (*to be clarified*) (marked with `(in ?) ...`
+* an information on the expected token and the not-matching consumed token `Expected token: <7 / <ID>>, at 90:9, not matched by consumed token: <4 / <DOT> / "."> (pa)`
+* the ParseException message, with:  
+    - the (unexpected) encountered token and its position in the input stream
+    - the list (up to 100) of the expected terminals (tokens), with the location of the expansion where the error arose:
+        + each indented line shows an expected terminal, with the location (marked with `(inside L:C)`) of the top expansion where it is the first terminal
+        + if the line is terminated by `...`, it means that more terminals are expected in sequence after this one
 
 
 <!---
 ## `JAVACODE` Productions
 
-*To be done.*
+*TODO to be described*
 -->
 <br>
 

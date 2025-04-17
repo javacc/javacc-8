@@ -268,6 +268,11 @@ while (tmp_t != null) {
 
 ---
 
+## Reading the token manager debug traces
+
+*TODO to be described*
+
+---
 [Top](#contents)
 
 [Token Manager](token-manager.md) &hellip; [Lookahead](lookahead.md) &hellip; [CharStream](charstream.md) &hellip; [Error Handling](error-handling.md) &hellip; [Lexer Tips](lexer-tips.md) &hellip; [Examples](examples.md)

@@ -242,7 +242,7 @@ For all previous releases, please see [stable releases](docs/downloads.md).
 
 ##### Version 8
 
-*To be written*. Help welcomed!
+*TODO to be written*. Help welcomed!
 
 ##### Version 7
 
@@ -346,7 +346,7 @@ Same as above, with a single different dependency, and without the `codeGenerato
 
 ##### Version 8
 
-*To be tested / written*. Help welcomed!
+*TODO to be tested / written*. Help welcomed!
 
 ##### Version 7
 
