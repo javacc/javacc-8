@@ -61,6 +61,7 @@ THE POSSIBILITY OF SUCH DAMAGE.
     <javacc.csharp.version>8.1.0-SNAPSHOT</javacc.csharp.version>
     <javacc.java.version>8.1.0-SNAPSHOT</javacc.java.version>
     <!--    <previous-javacc.java.version>8.1.0</previous-javacc.java.version>-->
+    <bootstrap-javacc.java.version>8.0.1</bootstrap-javacc.java.version>
     <javacc.js.version>8.1.0-SNAPSHOT</javacc.js.version>
     <javacc.v7.version>7.0.13</javacc.v7.version>
 
@@ -702,6 +703,19 @@ THE POSSIBILITY OF SUCH DAMAGE.
           </plugin>
         </plugins>
       </build>
+    </profile>
+
+    <profile>
+      <!-- will change the java generator version: activated if jar has not yet be installed -->
+      <id>no_local_java_generator_version</id>
+      <activation>
+        <file>
+          <missing>${env.USERPROFILE}/.m2/repository/org/javacc/generator/java/${javacc.java.version}/java-${javacc.java.version}.jar</missing>
+        </file>
+      </activation>
+      <properties>
+        <javacc.java.version>${bootstrap-javacc.java.version}</javacc.java.version>
+      </properties>
     </profile>
 
   </profiles>
