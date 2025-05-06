@@ -184,14 +184,21 @@ Was expecting one of:
 
 ## Versions
 
-The RECOMMENDED version is version **8**: it separates the parser (the core) from the generators (for the different languages); development and maintenance effort will be mainly on this version.  
-This version lies on different Git repositories / Java & Maven projects / jars:
-- the parent [javacc-8](https://github.com/javacc/javacc-8)
+The RECOMMENDED versions are **8.0.1** or **8.1-Snapshot** (both experimental yet).
+It separates the parser (the core) from the generators (for the different languages); development and maintenance effort will be mainly on this version.  
+This version lies on different Git repositories, which are expected to be cloned into the same folder:
+- the base [javacc-8](https://github.com/javacc/javacc-8)
 - the [core](https://github.com/javacc/javacc-8-core)
 - the generators:
     * [Java](https://github.com/javacc/javacc-8-java)
     * [C++](https://github.com/javacc/javacc-8-cpp)
     * [C#](https://github.com/javacc/javacc-8-csharp)
+
+After cloning, the expected folder structure would looke like:
+```bash
+ls -d *
+javacc-8/  javacc-8-core/  javacc-8-java/ javacc-8-cpp/ javacc-8-csharp/
+```
 
 The previous versions (4, 5, 6, 7) are widely spread; effort to migrate to version 8 should be minimum.  
 Their last version lies on a single Git repository / Java & Maven project / jar:
@@ -346,7 +353,28 @@ Same as above, with a single different dependency, and without the `codeGenerato
 
 ##### Version 8
 
-*TODO to be tested / written*. Help welcomed!
+The following entries will provide you with the tasks `javacc:compileJavacc`, `javacc:compileJjtree` and `javacc:jjdoc` which will be executed automatically before `compileJava`:
+
+```gradle
+plugins {
+   id "org.javacc.javacc" version "latest.release"
+}
+repositories {
+    gradlePluginPortal()
+    mavenLocal()
+    mavenCentral()
+
+    // Sonatype OSSRH Snapshots
+    maven {
+        url = uri('https://s01.oss.sonatype.org/content/repositories/snapshots/')
+    }
+}
+dependencies {
+    javacc 'org.javacc:core:8.0.1'
+    javacc 'org.javacc.generator:java:8.0.1'
+}
+```
+
 
 ##### Version 7
 
@@ -367,7 +395,34 @@ dependencies {
 
 ### Rebuilding JavaCC 
 
-See [README_BUILD.md](README_BUILD.md)
+Build `JavaCC-8` Snapshots from the latest GitHub sources with the following steps:
+
+```bash
+mkdir javacc-8
+cd javacc-8
+
+git clone git@github.com:javacc/javacc-8.git
+cd javacc-8
+# temporary workaround for bootstrapping, depending on pre-installed JavaCC 8.0.1 binaries
+sed -i 's|<javacc.java.version>[^<]*</javacc.java.version>|<javacc.java.version>8.0.1</javacc.java.version>|' pom.xml
+mvn clean install
+cd ..
+
+
+git clone git@github.com:javacc/javacc-8-core.git
+cd javacc-8-core
+# disable integration tests via `-P!run-its`
+mvn clean install -P!run-its
+cd ..
+
+git clone git@github.com:javacc/javacc-8-java.git
+cd javacc-8-java
+# disable integration tests via `-P!run-its`
+mvn clean install -P!run-its
+cd ..
+```
+
+For more details and information, see [README_BUILD.md](README_BUILD.md)
 
 ## Community
 
