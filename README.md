@@ -54,6 +54,8 @@ This README is meant as a brief overview of the core features and how to set thi
 - [Getting Started](#getting-started)
     * [From the command line](#use-javacc-from-the-command-line)
     * [Within an IDE](#use-javacc-within-an-ide)
+    * [Quick migration guide from v7 to v8](#quick-migration-guide-from-v7-to-v8)
+    * [Customizing your generated code](#customizing-your-generated-code)
     * [Rebuilding JavaCC](#rebuilding-javacc)
   
 - [Community](#community)
@@ -346,7 +348,32 @@ Same as above, with a single different dependency, and without the `codeGenerato
 
 ##### Version 8
 
-*TODO to be tested / written*. Help welcomed!
+*Courtesy of [JSqlParser](https://github.com/JSQLParser)*  
+
+Add the following to your `build.gradle` file.
+
+```
+plugins {
+    id "org.javacc.javacc" version "latest.release"
+}
+repositories {
+    mavenLocal()
+}
+dependencies {
+    testImplementation('org.javacc:core:8.1.0-SNAPSHOT') { changing = true }
+    testImplementation('org.javacc.generator:java:8.1.0-SNAPSHOT') { changing = true }
+    javacc('org.javacc:core:8.1.0-SNAPSHOT') { changing = true }
+    javacc('org.javacc.generator:java:8.1.0-SNAPSHOT') { changing = true }
+}
+configurations.configureEach {
+    resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+        if (details.requested.group in ['org.javacc:core', 'org.javacc.generator']) {
+            // Check for updates every build
+            resolutionStrategy.cacheChangingModulesFor 30, 'seconds'
+        }
+    }
+}
+```
 
 ##### Version 7
 
@@ -359,11 +386,34 @@ repositories {
         url = 'https://mvnrepository.com/artifact/net.java.dev.javacc/javacc'
     }
 }
-
 dependencies {
     compile group: 'net.java.dev.javacc', name: 'javacc', version: '7.0.13'
 }
 ```
+
+### Quick migration guide from v7 to v8
+
+- If you used JJTree, you have to replace all occurrences of the v7 class `SimpleNode` with the v8 class `Node` (and if you used the v7 interface `Node` you have to replace it with the v8 interface `Tree`).  
+
+- If you customized a generated class, it should be wise (or even necessary) that you rebuild the standard generated class and re-customize it, as the full compatibility is not guaranteed: an example with `SimpleCharStream`:  
+
+    * build your grammar with option `USER_CHAR_STREAM = false`;, it will generate a fresh `SimpleCharStream.java` in the generated sources
+    * move this generated `SimpleCharStream.java` into your sources, delete the one in the generated sources folder and activate or delete the `USER_CHAR_STREAM` option in your grammar
+    * port the customizations to the `SimpleCharStream.java` of your sources
+
+- You may also get some javac compiler errors in the generated parser coming from your user actions (e.g. duplicated variables in switch statements as the generated code has less blocks, uninitialized variables...), but these should be easily fixed.  
+
+### Customizing your generated code
+
+You can customize the generated code in some areas, those that are driven by template files: in the generators there are `src/main/resources/templates` folders that contain different `.template` files (you can get them by downloading them from the GitHub repository).  
+
+Of course you need to understand what you should not alter (signatures of methods called by other generated methods...) and what you can change (output messages...) in the template files.  
+
+Then in order to use your modified template file, you have to integrate it in the classpath in the step(s) you use for generating the parser:  
+- on the **command line**, you just prepend the file to the classpath (`java -cp <path-to-custom-template>;... ...`)
+- under **ant**, you just prepend the file to the classpath (`<java classpath="<path-to-custom-template>;..." ...>`)
+- under **Maven**, as the JavaCC Maven plugins do not (yet) manage a specific property to add a file/directory to the classpath entries, you have to package your custom template in a jar, install it (in the local repository), and add this artifact in the dependency list of the plugin (*to be tested*
+- under **Gradle**: *to be completed*
 
 ### Rebuilding JavaCC 
 

@@ -55,6 +55,7 @@ The current owner of JavaCC and the current maintainers want <ins>the user base 
   
 - [Local build process](#local-build-process)
     * [Build](#build)
+    * [Quick examples](#quick-examples)
     * [Artifacts versions](#artifacts-versions)
   
 - [Projects at GitHub](#projects-at-github)
@@ -68,7 +69,7 @@ The current owner of JavaCC and the current maintainers want <ins>the user base 
 
 The choice has been made in the past to split the (v7) single Git repo / Java & Maven project into different new Git repositories / Java & Maven projects; we live with this.
 
-The layout is based on a classical Maven layout with a parent project and modules; each project / module is in its own Git repo under the GitHub **javacc** organization.
+The layout is based on a classical Maven layout with a parent project and modules; each project / module is in its own Git repo under the GitHub **javacc** organization. However these projects must be all at the same directory level (the modules are not nested inside the parent).
 
 ### Parent javacc/javacc-8
 
@@ -163,7 +164,7 @@ It is published in the old MVM Repository ([here](https://mvnrepository.com/arti
 
 ### Build
 
-Clone the Git repository(ies) you need. Note that normally you should not need to hack the parent and the core projects, only the generators projects.  
+Clone the Git repository(ies) you need (all at the same directory level). Note that normally you should not need to hack the parent and the core projects, only the generators projects.  
 
 *For the patient user (the one who is not in a hurry and likes to check step by step that things go well):*
 
@@ -193,10 +194,94 @@ Then you can build a jar (without installing it and without integration tests):
 Then you can install the project/module (under your local Maven repository and with performing the integration tests):  
 `mvn clean install`  
 
-You can also just install the project/module without performing the integration tests:  
+If some integration test fail, the module will not be installed; but you can just install the project/module without performing the integration tests by deactivating the specific profile:  
 `mvn clean install -P!run-its`  
 
+Note that running the well known `mvn clean install -DskipTests` will skip the JUnit tests (handled by the maven-surefire-plugin), not the integration tests (handled by the maven-invoker-plugin).  
+
 *Modules in javacc-8/pom.xml*
+
+### Quick examples
+
+#### Just the java module
+
+```
+cd <somedir>
+git clone git@github.com:javacc/javacc-8-java.git
+cd javacc-8-java
+```
+
+Note that at this point the **pom.xml** should reference a parent SNAPSHOT version that is not installed in the local repository not published on a Sonatype repository, so you have to manually explicitly set the java generator version and change the parent version to the latest published RELEASE version:  
+
+```
+  <parent>
+    <groupId>org</groupId>
+    <artifactId>javacc</artifactId>
+    <version>8.1.1-SNAPSHOT</version>
+  </parent>
+
+  <groupId>org.javacc.generator</groupId>
+  <artifactId>java</artifactId>
+  <!--  <version>8.1.1-SNAPSHOT</version>-->
+  <packaging>jar</packaging>
+```
+should be changed to:  
+
+```
+  <parent>
+    <groupId>org</groupId>
+    <artifactId>javacc</artifactId>
+    <!--  <version>8.1.1-SNAPSHOT</version>-->
+    <version>8.1.0</version>
+  </parent>
+
+  <groupId>org.javacc.generator</groupId>
+  <artifactId>java</artifactId>
+  <version>8.1.1-SNAPSHOT</version>
+  <packaging>jar</packaging>
+```
+
+Then:  
+
+```
+mvn clean install -P!run-its
+```
+
+#### Parent + core + java modules
+
+```
+cd <somedir>
+git clone git@github.com:javacc/javacc-8.git
+cd javacc-8
+mvn clean install -P!run-its
+```
+
+Note that at this point the **pom.xml** should have detected that the latest java generator version jar (normally a SNAPSHOT) is not installed yet in the local repository and will use a previous version published on Sonatype. If this does not work well, you have to make a temporary modification of the **javacc.java.version** property at the beginning of the pom.  
+
+```
+    <javacc.java.version>8.1.1-SNAPSHOT</javacc.java.version>
+```
+
+should be changed to:  
+
+```
+    <javacc.java.version>8.1.0</javacc.java.version>
+```
+
+Then:  
+
+```
+cd ..
+git clone git@github.com:javacc/javacc-8-core.git
+cd javacc-8-core
+mvn clean install -P!run-its
+cd ..
+
+git clone git@github.com:javacc/javacc-8-java.git
+cd javacc-8-java
+mvn clean install -P!run-its
+cd ..
+```
 
 ### Artifacts versions
 
