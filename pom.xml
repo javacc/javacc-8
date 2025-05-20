@@ -56,6 +56,7 @@ THE POSSIBILITY OF SUCH DAMAGE.
 
   <properties>
 
+    <!-- run mvn versions:display-property-updates to display available updates -->
     <javacc.core.version>8.1.0-SNAPSHOT</javacc.core.version>
     <javacc.cpp.version>8.1.0-SNAPSHOT</javacc.cpp.version>
     <javacc.csharp.version>8.1.0-SNAPSHOT</javacc.csharp.version>
@@ -65,23 +66,24 @@ THE POSSIBILITY OF SUCH DAMAGE.
     <javacc.js.version>8.1.0-SNAPSHOT</javacc.js.version>
     <javacc.v7.version>7.0.13</javacc.v7.version>
 
-    <javacc-maven-plugin.version>3.0.3</javacc-maven-plugin.version>
-    <junit.version>[4.13.1,)</junit.version>
+    <!--    <javacc-maven-plugin.version>3.0.3</javacc-maven-plugin.version>-->
+    <javacc-maven-plugin.version>3.8.0-SNAPSHOT</javacc-maven-plugin.version>
+    <junit.version>4.13.2</junit.version>
 
     <maven-antrun-plugin.version>3.1.0</maven-antrun-plugin.version>
-    <maven-clean-plugin.version>3.4.0</maven-clean-plugin.version>
-    <maven-compiler-plugin.version>3.13.0</maven-compiler-plugin.version>
+    <maven-clean-plugin.version>3.4.1</maven-clean-plugin.version>
+    <maven-compiler-plugin.version>3.14.0</maven-compiler-plugin.version>
     <!--    <maven-gpg-plugin.version>3.1.0</maven-gpg-plugin.version>-->
     <maven-gpg-plugin.version>3.2.7</maven-gpg-plugin.version>
     <maven-help-plugin.version>3.5.1</maven-help-plugin.version>
-    <maven-install-plugin.version>3.1.3</maven-install-plugin.version>
+    <maven-install-plugin.version>3.1.4</maven-install-plugin.version>
     <maven-invoker-plugin.version>3.9.0</maven-invoker-plugin.version>
     <maven-javadoc-plugin.version>3.11.2</maven-javadoc-plugin.version>
     <maven-jar-plugin.version>3.4.2</maven-jar-plugin.version>
     <maven-jarsigner-plugin.version>3.1.0</maven-jarsigner-plugin.version>
     <maven-resources-plugin.version>3.3.1</maven-resources-plugin.version>
     <maven-source-plugin.version>3.3.1</maven-source-plugin.version>
-    <maven-surefire-plugin.version>3.5.2</maven-surefire-plugin.version>
+    <maven-surefire-plugin.version>3.5.3</maven-surefire-plugin.version>
     <maven-toolchains-plugin.version>3.2.0</maven-toolchains-plugin.version>
 
     <mojohaus.exec-maven-plugin.version>3.5.0</mojohaus.exec-maven-plugin.version>
@@ -178,7 +180,7 @@ THE POSSIBILITY OF SUCH DAMAGE.
     <developer>
       <name>Sreenivasa Viswanadha</name>
       <id>sreeni</id>
-      <email>support@javacc.org</email>
+      <email>support AT javacc.org</email>
       <roles>
         <role>Owner</role>
       </roles>
@@ -214,7 +216,7 @@ THE POSSIBILITY OF SUCH DAMAGE.
     </developer>
 
     <developer>
-      <name>Francis ANDRE</name>
+      <name>Francis André</name>
       <id>zosrothko</id>
       <email>zosrothko AT orange.fr</email>
       <roles>
@@ -226,7 +228,7 @@ THE POSSIBILITY OF SUCH DAMAGE.
 
     <developer>
       <name>Marc Mazas</name>
-      <email>marc.mazas AT gmail.com</email>
+      <email>mazas.marc AT gmail.com</email>
       <roles>
         <role>Developer</role>
       </roles>
@@ -710,7 +712,8 @@ THE POSSIBILITY OF SUCH DAMAGE.
       <id>no_local_java_generator_version</id>
       <activation>
         <file>
-          <missing>${env.USERPROFILE}/.m2/repository/org/javacc/generator/java/${javacc.java.version}/java-${javacc.java.version}.jar</missing>
+          <missing>
+            ${env.USERPROFILE}/.m2/repository/org/javacc/generator/java/${javacc.java.version}/java-${javacc.java.version}.jar</missing>
         </file>
       </activation>
       <properties>
