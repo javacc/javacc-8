@@ -412,7 +412,7 @@ Of course you need to understand what you should not alter (signatures of method
 Then in order to use your modified template file, you have to integrate it in the classpath in the step(s) you use for generating the parser:  
 - on the **command line**, you just prepend the file to the classpath (`java -cp <path-to-custom-template>;... ...`)
 - under **ant**, you just prepend the file to the classpath (`<java classpath="<path-to-custom-template>;..." ...>`)
-- under **Maven**, as the JavaCC Maven plugins do not (yet) manage a specific property to add a file/directory to the classpath entries, you have to package your custom template in a jar, install it (in the local repository), and add this artifact in the dependency list of the plugin (*to be tested*
+- under **Maven**, you have to package your custom template in a jar, install it (in the local repository), and add this artifact in the dependency list of the plugin: see example [CustomTemplate](https://github.com/javacc/javacc-8-java/examples/CustomTemplate)
 - under **Gradle**: *to be completed*
 
 ### Rebuilding JavaCC 
