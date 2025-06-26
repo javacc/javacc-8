@@ -55,8 +55,8 @@ THE POSSIBILITY OF SUCH DAMAGE.
   </organization>
 
   <properties>
-
     <!-- run mvn versions:display-property-updates to display available updates -->
+
     <javacc.core.version>8.1.0-SNAPSHOT</javacc.core.version>
     <javacc.cpp.version>8.1.0-SNAPSHOT</javacc.cpp.version>
     <javacc.csharp.version>8.1.0-SNAPSHOT</javacc.csharp.version>
@@ -66,8 +66,10 @@ THE POSSIBILITY OF SUCH DAMAGE.
     <javacc.js.version>8.1.0-SNAPSHOT</javacc.js.version>
     <javacc.v7.version>7.0.13</javacc.v7.version>
 
-    <!--    <javacc-maven-plugin.version>3.0.3</javacc-maven-plugin.version>-->
-    <javacc-maven-plugin.version>3.8.0-SNAPSHOT</javacc-maven-plugin.version>
+    <central.publishing.maven.plugin.version>0.7.0</central.publishing.maven.plugin.version>
+
+        <javacc-maven-plugin.version>3.0.3</javacc-maven-plugin.version>
+<!--    <javacc-maven-plugin.version>3.8.0-SNAPSHOT</javacc-maven-plugin.version>-->
     <junit.version>4.13.2</junit.version>
 
     <maven-antrun-plugin.version>3.1.0</maven-antrun-plugin.version>
@@ -80,7 +82,7 @@ THE POSSIBILITY OF SUCH DAMAGE.
     <maven-invoker-plugin.version>3.9.0</maven-invoker-plugin.version>
     <maven-javadoc-plugin.version>3.11.2</maven-javadoc-plugin.version>
     <maven-jar-plugin.version>3.4.2</maven-jar-plugin.version>
-    <maven-jarsigner-plugin.version>3.1.0</maven-jarsigner-plugin.version>
+    <!--    <maven-jarsigner-plugin.version>3.1.0</maven-jarsigner-plugin.version>-->
     <maven-resources-plugin.version>3.3.1</maven-resources-plugin.version>
     <maven-source-plugin.version>3.3.1</maven-source-plugin.version>
     <maven-surefire-plugin.version>3.5.3</maven-surefire-plugin.version>
@@ -103,8 +105,6 @@ THE POSSIBILITY OF SUCH DAMAGE.
     <!--    <toolchain.jdk.version>8</toolchain.jdk.version>-->
     <!--    <maven.compiler.source>1.8</maven.compiler.source>-->
     <!--    <maven.compiler.target>1.8</maven.compiler.target>-->
-
-    <javadoc.doclint>none</javadoc.doclint>
 
     <skipTests>false</skipTests>
 
@@ -141,21 +141,25 @@ THE POSSIBILITY OF SUCH DAMAGE.
     <url>https://github.com/javacc/javacc-8/issues</url>
   </issueManagement>
 
-  <distributionManagement>
-    <repository>
-      <id>ossrh</id>
-      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-    </repository>
-    <snapshotRepository>
-      <id>ossrh</id>
-      <name>Sonatype snapshot repository</name>
-      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-    </snapshotRepository>
-    <site>
-      <id>github</id>
-      <url>scm:git:ssh://git@github.com/javacc/javacc-8.git</url>
-    </site>
-  </distributionManagement>
+  <!-- No <distributionManagement> needed for Sonatype Central Portal, configuration directly in
+        central.publishing.maven.plugin; authorization stuff (username/password) in settings.xml -->
+
+  <!-- Sonatype Central Portal keeps snapshots during 90 days; current available snapshots browsable
+        at https://central.sonatype.com/service/rest/repository/browse/maven-snapshots/ -->
+
+  <!-- For projects wanting to configure JavaCC as a dependency -->
+  <!--  <repositories>-->
+  <!--    <repository>-->
+  <!--      <id>centralportal</id>-->
+  <!--      <name>Central Portal (releases)</name>-->
+  <!--      <url>https://central.sonatype.com/</url>-->
+  <!--    </repository>-->
+  <!--    <repository>-->
+  <!--      <id>centralportalsnapshots</id>-->
+  <!--      <name>Central Portal Snapshots</name>-->
+  <!--      <url>https://central.sonatype.com/repository/maven-snapshots/</url>-->
+  <!--    </repository>-->
+  <!--  </repositories>-->
 
   <mailingLists>
     <mailingList>
@@ -283,20 +287,6 @@ THE POSSIBILITY OF SUCH DAMAGE.
     </license>
   </licenses>
 
-  <pluginRepositories>
-    <pluginRepository>
-      <id>ossrh</id>
-      <name>Sonatype snapshot repository</name>
-      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-    </pluginRepository>
-  </pluginRepositories>
-
   <dependencyManagement>
     <dependencies>
       <dependency>
@@ -314,6 +304,9 @@ THE POSSIBILITY OF SUCH DAMAGE.
       <scope>test</scope>
     </dependency>
   </dependencies>
+
+  <!-- run 'mvn -Psnapshot,release -DshowAllPhases=true buildplan:list buildplan:list-phases'
+             to list the project/module build plan -->
 
   <build>
     <pluginManagement>
@@ -438,14 +431,14 @@ THE POSSIBILITY OF SUCH DAMAGE.
         </plugin>
 
         <!-- phase: deploy -->
-        <plugin>
-          <!-- provides support to access staging functionality in a remote Nexus Professional
+        <!--        <plugin>-->
+        <!-- provides support to access staging functionality in a remote Nexus Professional
                server; replaces maven-deploy-plugin; goals: see
                https://github.com/sonatype/nexus-maven-plugins/blob/main/staging/maven-plugin/README.md -->
-          <groupId>org.sonatype.plugins</groupId>
-          <artifactId>nexus-staging-maven-plugin</artifactId>
-          <version>${nexus-staging-maven-plugin.version}</version>
-        </plugin>
+        <!--          <groupId>org.sonatype.plugins</groupId>-->
+        <!--          <artifactId>nexus-staging-maven-plugin</artifactId>-->
+        <!--          <version>${nexus-staging-maven-plugin.version}</version>-->
+        <!--        </plugin>-->
         <plugin>
           <!-- creates a jar archive of the source files;
                goals: aggregate, jar, test-jar, jar-no-fork, test-jar-no-fork -->
@@ -470,9 +463,16 @@ THE POSSIBILITY OF SUCH DAMAGE.
         <plugin>
           <!-- signs all of the project's attached artifacts with GnuPG;
                goals: sign, verify -->
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-jarsigner-plugin</artifactId>
-          <version>${maven-jarsigner-plugin.version}</version>
+          <!--          <groupId>org.apache.maven.plugins</groupId>-->
+          <!--          <artifactId>maven-jarsigner-plugin</artifactId>-->
+          <!--          <version>${maven-jarsigner-plugin.version}</version>-->
+          <!--        </plugin>-->
+          <!-- Maven plugin that supports publishing to Central Publisher Portal;
+               goals: help, publish; see
+          https://central.sonatype.org/publish/publish-portal-maven/#ignorepublishedcomponents -->
+          <groupId>org.sonatype.central</groupId>
+          <artifactId>central-publishing-maven-plugin</artifactId>
+          <version>${central.publishing.maven.plugin.version}</version>
         </plugin>
 
         <!-- lifecycle: site -->
@@ -486,13 +486,13 @@ THE POSSIBILITY OF SUCH DAMAGE.
     <plugins>
 
       <plugin>
+        <!-- displays a list of the profiles which are currently active for this build -->
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-help-plugin</artifactId>
         <executions>
           <execution>
             <id>display-active-profiles</id>
             <phase>validate</phase>
-            <!-- displays a list of the profiles which are currently active for this build -->
             <goals>
               <goal>active-profiles</goal>
             </goals>
@@ -623,7 +623,26 @@ THE POSSIBILITY OF SUCH DAMAGE.
     </profile>
 
     <profile>
-      <!-- to be used when performing a release on Sonatype: needs explicit activation -->
+      <!-- to be used when publishing a snapshot on Sonatype Central Portal;
+           needs explicit activation -->
+      <id>snapshot</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.sonatype.central</groupId>
+            <artifactId>central-publishing-maven-plugin</artifactId>
+            <extensions>true</extensions>
+            <configuration>
+              <publishingServerId>centralportalsnapshots</publishingServerId>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <!-- to be used when publishing a release on Sonatype Central Portal;
+           needs explicit activation -->
       <id>release</id>
       <build>
         <plugins>
@@ -651,32 +670,32 @@ THE POSSIBILITY OF SUCH DAMAGE.
                   <goal>jar</goal>
                 </goals>
                 <configuration>
-                  <doclint>${javadoc.doclint}</doclint>
+                  <doclint>none</doclint>
                 </configuration>
               </execution>
             </executions>
           </plugin>
-          <plugin>
-            <artifactId>maven-jarsigner-plugin</artifactId>
-            <executions>
-              <execution>
-                <phase>deploy</phase>
-                <goals>
-                  <goal>sign</goal>
-                </goals>
-              </execution>
-            </executions>
-            <configuration>
-              <keystore>keystore</keystore>
-              <storetype>${keystore.type}</storetype>
-              <alias>${keystore.alias}</alias>
-              <storepass>${keystore.store.password}</storepass>
-              <keypass>${keystore.key.password}</keypass>
-              <verbose>true</verbose>
-              <removeExistingSignatures>true</removeExistingSignatures>
-              <tsa>${tsaUrl}</tsa>
-            </configuration>
-          </plugin>
+          <!--          <plugin>-->
+          <!--            <artifactId>maven-jarsigner-plugin</artifactId>-->
+          <!--            <executions>-->
+          <!--              <execution>-->
+          <!--                <phase>deploy</phase>-->
+          <!--                <goals>-->
+          <!--                  <goal>sign</goal>-->
+          <!--                </goals>-->
+          <!--              </execution>-->
+          <!--            </executions>-->
+          <!--            <configuration>-->
+          <!--              <keystore>keystore</keystore>-->
+          <!--              <storetype>${keystore.type}</storetype>-->
+          <!--              <alias>${keystore.alias}</alias>-->
+          <!--              <storepass>${keystore.store.password}</storepass>-->
+          <!--              <keypass>${keystore.key.password}</keypass>-->
+          <!--              <verbose>true</verbose>-->
+          <!--              <removeExistingSignatures>true</removeExistingSignatures>-->
+          <!--              <tsa>${tsaUrl}</tsa>-->
+          <!--            </configuration>-->
+          <!--          </plugin>-->
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-gpg-plugin</artifactId>
@@ -688,19 +707,32 @@ THE POSSIBILITY OF SUCH DAMAGE.
                   <goal>sign</goal>
                 </goals>
                 <configuration>
-                  <interactive>false</interactive>
+                  <keyname>${gpg.keyname}</keyname>
+                  <!-- with Ggp4win 4.2.0 had to copy
+                       C:\Program Files (x86)\GnuPG\bin\pinentry-basic.exe to
+                       C:\Program Files (x86)\GnuPG\bin\pinentry.exe
+                       in order to get rid of error 'no pinentry' -->
+                  <gpgArguments>
+                    <arg>--pinentry-mode</arg>
+                    <arg>loopback</arg>
+                  </gpgArguments>
                 </configuration>
               </execution>
             </executions>
           </plugin>
           <plugin>
-            <groupId>org.sonatype.plugins</groupId>
-            <artifactId>nexus-staging-maven-plugin</artifactId>
+            <groupId>org.sonatype.central</groupId>
+            <artifactId>central-publishing-maven-plugin</artifactId>
             <extensions>true</extensions>
             <configuration>
-              <serverId>ossrh</serverId>
-              <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-              <autoReleaseAfterClose>true</autoReleaseAfterClose>
+              <!-- centralBaseUrl is the default https://central.sonatype.com -->
+              <!-- deploymentName is the default Deployment -->
+              <!-- outputDirectory is the default central-publishing -->
+              <!-- outputFilename is the default central-bundle.zip -->
+              <!-- outputDirectory is the default central-publishing -->
+              <!-- publishingServerId points to a server of that name in settings.xml -->
+              <publishingServerId>centralportalXXX</publishingServerId>
+              <!-- stagingDirectory is the default central-staging -->
             </configuration>
           </plugin>
         </plugins>
@@ -708,7 +740,7 @@ THE POSSIBILITY OF SUCH DAMAGE.
     </profile>
 
     <profile>
-      <!-- will change the java generator version: activated if jar has not yet be installed -->
+      <!-- will change the java generator version; activated if jar has not yet be installed -->
       <id>no_local_java_generator_version</id>
       <activation>
         <file>
