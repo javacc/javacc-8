@@ -395,6 +395,8 @@ dependencies {
 
 - If you used JJTree, you have to replace all occurrences of the v7 class `SimpleNode` with the v8 class `Node` (and if you used the v7 interface `Node` you have to replace it with the v8 interface `Tree`).  
 
+- If you used JJTree and Java and you need to generate *public* nodes, you have to use the new JJTree option `SINGLE_TREE_FILE` set to `false` (this will make JJTree generate nodes classes in their own java source files; the default value is `true` which makes JJTree generate node files in a single `<parser>Tree.java` source file, in which classes cannot be public).  
+
 - If you customized a generated class, it should be wise (or even necessary) that you rebuild the standard generated class and re-customize it, as the full compatibility is not guaranteed: an example with `SimpleCharStream`:  
 
     * build your grammar with option `USER_CHAR_STREAM = false`;, it will generate a fresh `SimpleCharStream.java` in the generated sources
@@ -505,7 +507,7 @@ https://blog.scottlowe.org/2015/01/27/using-fork-branch-git-workflow/
 
 ## License
 
-JavaCC is an open source project released under the [BSD License 3.0](LICENSE). The JavaCC project was originally developed at Sun Microsystems Inc. by [Sreeni Viswanadha](https://github.com/kaikalur) and [Sriram Sankar](https://twitter.com/sankarsearch).
+JavaCC is an open source project released under the [BSD-3-Clause](LICENSE). The JavaCC project was originally developed at Sun Microsystems Inc. by [Sreeni Viswanadha](https://github.com/kaikalur) and [Sriram Sankar](https://twitter.com/sankarsearch).
 
 <br>
 

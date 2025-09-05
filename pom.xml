@@ -68,8 +68,8 @@ THE POSSIBILITY OF SUCH DAMAGE.
 
     <central.publishing.maven.plugin.version>0.7.0</central.publishing.maven.plugin.version>
 
-        <javacc-maven-plugin.version>3.0.3</javacc-maven-plugin.version>
-<!--    <javacc-maven-plugin.version>3.8.0-SNAPSHOT</javacc-maven-plugin.version>-->
+    <javacc-maven-plugin.version>3.0.3</javacc-maven-plugin.version>
+    <!--    <javacc-maven-plugin.version>3.8.0-SNAPSHOT</javacc-maven-plugin.version>-->
     <junit.version>4.13.2</junit.version>
 
     <maven-antrun-plugin.version>3.1.0</maven-antrun-plugin.version>
@@ -391,6 +391,8 @@ THE POSSIBILITY OF SUCH DAMAGE.
           <artifactId>maven-surefire-plugin</artifactId>
           <version>${maven-surefire-plugin.version}</version>
         </plugin>
+
+        <!-- phase: integration-test -->
         <plugin>
           <!-- runs a set of Maven projects;
                goals: install, integration-test, verify, run -->

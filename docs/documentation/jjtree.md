@@ -61,7 +61,7 @@ By default JJTree generates code to construct parse tree nodes for each non-term
 
 JJTree defines a Java interface `Node` that all parse tree nodes must implement. The interface provides methods for operations such as setting the parent of the node, and for adding children and retrieving them.
 
-JJTree operates in one of two modes, simple and multi (for want of better terms). In simple mode each parse tree node is of concrete type `SimpleNode`, in multi mode the type of the parse tree node is derived from the name of the node. If you don't provide implementations for the node classes JJTree will generate sample implementations based on `SimpleNode` for you. You can then modify the implementations to suit.
+JJTree operates in one of two modes, simple and multi (for want of better terms). In simple mode each parse tree node is of *concrete* type `Node` (this has changed since v8 from previous `SimpleNode`), in multi mode the type of the parse tree node is derived from the name of the node. If you don't provide implementations for the node classes JJTree will generate sample implementations based on the generated `Node` *interface* for you. You can then modify the implementations to suit.
 
 Although JavaCC is a top-down parser, JJTree constructs the parse tree from the bottom up. To do this it uses a stack where it pushes nodes after they have been created. When it finds a parent for them, it pops the children from the stack and adds them to the parent, and finally pushes the new parent node itself. The stack is open, which means that you have access to it from within grammar actions: you can push, pop and otherwise manipulate its contents however you feel appropriate (see [Node Scopes and User Actions](#node-scopes-and-user-actions) for more information).
 
@@ -284,18 +284,19 @@ The name of the visitor interface is constructed by appending `Visitor` to the n
 
 | Option | Default | Description |
 | :--- | :--- | :--- |
-| `BUILD_NODE_FILES` | `true` | Generate sample implementations for `SimpleNode` and any other nodes used in the grammar.|
-| `MULTI` | `false` | Generate a multi mode parse tree. The default for this is false, generating a simple mode parse tree.|
-| `NODE_DEFAULT_VOID` | `false` | Instead of making each non-decorated production an indefinite node, make it void instead.|
-| `NODE_CLASS` | `""` | If set defines the name of a user-supplied class that will extend `SimpleNode`. Any tree nodes created will then be subclasses of `NODE_CLASS`.|
-| `NODE_FACTORY` | `""` | Specify a class containing a factory method with following signature to construct nodes:<br>`public static Node jjtCreate(int id)`<br>For backwards compatibility, the value false may also be specified, meaning that `SimpleNode` will be used as the factory class.|
-| `NODE_PACKAGE` | `""` | The package to generate the node classes into. The default for this is the parser package.|
-| `NODE_EXTENDS` | `""` | Deprecated. The superclass for the `SimpleNode` class. By providing a custom superclass you may be able to avoid the need to edit the generated `SimpleNode.java`.
+| `BUILD_NODE_FILES` | `true` | If true, generate sample implementations for `Node` and any other nodes used in the grammar.|
+| `MULTI` | `false` | If true, generate a multi mode parse tree. The default for this is false, generating a simple mode parse tree.|
+| `NODE_DEFAULT_VOID` | `false` | If true, instead of making each non-decorated production an indefinite node, make it void instead.|
+| `NODE_CLASS` | `""` | If set, define the name of a user-supplied class that will extend `Node`. Any tree node created will then be subclasses of `NODE_CLASS`.|
+| `NODE_FACTORY` | `""` | If set, define a class containing a factory method with following signature to construct nodes:<br>`public static Node jjtCreate(int id)`<br>For backwards compatibility, the value false may also be specified, meaning that `Node` will be used as the factory class.|
+| `NODE_PACKAGE` | `""` | If set, define the package to generate the node classes into. The default for this is the parser package.|
+| `NODE_EXTENDS` | `""` | Deprecated. The superclass for the `Node` class. By providing a custom superclass you may be able to avoid the need to edit the generated `Node.java`.
 | `NODE_PREFIX` | `"AST"` | The prefix used to construct node class names from node identifiers in multi mode. The default for this is AST.|
 | `NODE_SCOPE_HOOK` | `false` | Insert calls to user-defined parser methods on entry and exit of every node scope. |
 | `NODE_USES_PARSER` | `false` | JJTree will use an alternate form of the node construction routines where it passes the parser object in. For example:<br>`public static Node MyNode.jjtCreate(MyParser p, int id);<br>  MyNode(MyParser p, int id);`<br> |
 | `TRACK_TOKENS` | `false` | Insert `jjtGetFirstToken()`, `jjtSetFirstToken()`, `getLastToken()`, and `jjtSetLastToken()` methods in `SimpleNode`. The `FirstToken` is automatically set up on entry to a node scope; the `LastToken` is automatically set up on exit from a node scope.
-| `STATIC` | `true` | Generate code for a static parser. This must be used consistently with the equivalent JavaCC options. The value of this option is emitted in the JavaCC source.|
+| `SINGLE_FILE_NODE` | `true` | If true, all node classes are generated in a single source file `<parser>Tree.<ext)`. If false, all node classes are generated in their proper `<node>.<ext>` files.|
+| `STATIC` | `true` | If true, generate code for a static parser. This must be used consistently with the equivalent JavaCC options. The value of this option is emitted in the JavaCC source.|
 | `VISITOR` | `false` | Insert a `jjtAccept()` method in the node classes, and generate a visitor implementation with an entry for every node type used in the grammar.|
 | `VISITOR_DATA_TYPE` | `"Object"` | If this option is set, it is used in the signature of the generated `jjtAccept()` methods and the `visit()` methods as the type of the data argument.|
 | `VISITOR_RETURN_TYPE` | `"Object"` | If this option is set, it is used in the signature of the generated jjtAccept() methods and the `visit()` methods as the return type of the method.|
