@@ -281,9 +281,9 @@ production ::= javacode_production
 ```
 
 There are four kinds of productions in JavaCC.
-* [javacode_production](#javacode_production) and [bnf_production](#bnf_production) are used to define the grammar from which the parser is generated.
-* [regular_expr_production](#regular_expr_production) is used to define the grammar tokens - the token manager is generated from this information (as well as from inline token specifications in the parser grammar).
-* [token_manager_decls](#token_manager_decls) is used to introduce declarations that get inserted into the generated token manager.
+* [javacode productions](#javacode_production) and [bnf productions](#bnf_production) are used to define the grammar from which the parser is generated.
+* [regular expression productions](#regular_expr_production) are used to define the grammar tokens - the token manager is generated from this information (as well as from inline token specifications in the parser grammar).
+* [token_manager declaration](#token_manager_decls) is used to introduce declarations (fields and methods) that get inserted into the generated token manager.
 
 <br>
 
@@ -318,7 +318,7 @@ void skip_to_matching_brace() {
 }
 ```
 
-Care must be taken when using `JAVACODE` productions. While you can say pretty much what you want with these productions, JavaCC simply considers it a black box (that somehow performs its parsing task). This becomes a problem when `JAVACODE` productions appear at [choice points](../tutorials/lookahead.md). For example, if the above `JAVACODE` production was referred to from the following production:
+Care must be taken when using `JAVACODE` productions. While you can say pretty much what you want with these productions, JavaCC simply considers it a black box (that somehow performs its parsing task). This becomes a problem when `JAVACODE` productions appear at [choice points](../tutorials/lookahead.md). For example, if the above `JAVACODE` production was referred to from the following production...:
 
 ```java
 void NT() : {
@@ -330,7 +330,7 @@ void NT() : {
 }
 ```
 
-Then JavaCC would not know how to choose between the two choices. On the other hand, if the `JAVACODE` production is used at a non-choice point as in the following example, there is no problem:
+...then JavaCC would not know how to choose between the two choices. On the other hand, if the `JAVACODE` production is used at a non-choice point as in the following example, there is no problem:
 
 ```java
 void NT() : {
@@ -368,10 +368,14 @@ bnf_production ::= java_access_modifier java_return_type java_identifier "(" jav
                    "{" expansion_choices "}"
 ```
 
-The `BNF` production is the standard production used in specifying JavaCC grammars. Each `BNF` production has a left hand side which is a non-terminal specification. The `BNF` production then defines this non-terminal in terms of `BNF` expansions on the right hand side. The non-terminal is written exactly like a declared Java method. Since each non-terminal is translated into a method in the generated parser, this style of writing the non-terminal makes this association obvious. The name of the non-terminal is the name of the method, and the parameters and return value declared are the means to pass values up and down the parse tree. As will be seen later, non-terminals on the right hand sides of productions are written as method calls, so the passing of values up and down the tree are done using exactly the same paradigm as method call and return. The default access modifier for `BNF` productions is `public`.
+The `BNF` production is the standard production used in specifying JavaCC grammars.  
+Each `BNF` production has a left hand side (left to the `":"`) which is a non-terminal specification.  
+The `BNF` production then defines this non-terminal in terms of `BNF` expansions on the right hand side.  
 
-There are two parts on the right hand side of an `BNF` production. The first part is a set of arbitrary Java declarations and code (the Java block). This code is generated at the beginning of the method generated for the Java non-terminal. Hence, every time this non-terminal is used in the parsing process, these declarations and code are executed. The declarations in this part are visible to all Java code in actions in the `BNF` expansions. JavaCC does not do any processing of these declarations and code, except to skip to the matching ending brace, collecting all text encountered on the way. Hence, a Java compiler can detect errors in this code that has been processed by JavaCC.
+The non-terminal is written exactly like a declared Java method. Since each non-terminal is translated into a method in the generated parser, this style of writing the non-terminal makes this association obvious. The name of the non-terminal is the name of the method, and the parameters and return value declared are the means to pass values up and down the parse tree. As will be seen later, non-terminals on the right hand sides of productions are written as method calls, so the passing of values up and down the tree are done using exactly the same paradigm as method call and return. The default access modifier for `BNF` productions is `public`.
 
+There are two parts on the right hand side of an `BNF` production.  
+The first part is a set of arbitrary Java declarations and code (the Java block). This code is generated at the beginning of the method generated for the Java non-terminal. Hence, every time this non-terminal is used in the parsing process, these declarations and code are executed. The declarations in this part are visible to all Java code in actions in the `BNF` expansions. JavaCC does not do any processing of these declarations and code, except to skip to the matching ending brace, collecting all text encountered on the way. Hence, a Java compiler can detect errors in this code that has been processed by JavaCC.
 The second part of the right hand side are the `BNF` expansions. This is described in [expansion_choices](#expansion_choices).
 
 <br>
@@ -390,11 +394,13 @@ A regular expression production is used to define lexical entities that get proc
 
 A regular expression production starts with a specification of the lexical states for which it applies (the [lexical state list](#lexical_state_list)). There is a standard lexical state called `DEFAULT`. If the lexical state list is omitted, the regular expression production applies to the lexical state `DEFAULT`.
 
-Following this is a description of what kind of regular expression production this is (see [regexpr_kind](#regexpr_kind)).
+Following this is the kind of regular expression production this is (see [regexpr_kind](#regexpr_kind)).
 
 After this is an optional `[IGNORE_CASE]`. If this is present, the regular expression production is case insensitive - it has the same effect as the `IGNORE_CASE` option, except that in this case it applies locally to this regular expression production.
 
-This is then followed by a list of regular expression specifications that describe in more detail the lexical entities of this regular expression production.
+This is then followed by a list of [regular expression specifications](#regexpr_spec) that describes in more detail the lexical entities of this regular expression production.
+
+There can be zero, one or more than one regular expression production for the same kind, and the same for any combination of lexical states. However users are encouraged to cleanly group regular expression specifications by kinds and lexical state lists to ease the grammar readability and understanding.
 
 <br>
 
@@ -406,7 +412,7 @@ This is then followed by a list of regular expression specifications that descri
 token_manager_decls ::= "TOKEN_MGR_DECLS" ":" java_block
 ```
 
-The token manager declarations starts with the reserved word `TOKEN_MGR_DECLS` followed by a `:` and then a set of Java declarations and statements (the Java block). These declarations and statements are written into the generated token manager and are accessible from within [lexical actions](#regexpr_spec).
+The token manager declarations starts with the reserved word `TOKEN_MGR_DECLS` followed by a `:` and then a set of Java declarations and statements (the Java block). These declarations and statements are written into the generated token manager (at the top level of the class) and are accessible from within lexical actions of [regular expression specification](#regexpr_spec).
 
 There can only be one token manager declaration in a JavaCC grammar file.
 
@@ -457,7 +463,7 @@ regexpr_spec ::= regular_expression [ java_block ] [ ":" java_identifier ]
 
 The regular expression specification begins the actual description of the lexical entities that are part of this [regular expression production](#regular_expr_production). Each regular expression production may contain any number of regular expression specifications.
 
-Each regular expression specification contains a regular expression followed by a Java block (the lexical action) which is optional. This is then followed by an identifier of a lexical state (which is also optional). Whenever this regular expression is matched, the lexical action (if any) gets executed, followed by any common token actions. Then the action depending on the [regular expression production kind](#regexpr_kind) is taken. Finally, if a lexical state is specified, the token manager moves to that lexical state for further processing (the token manager starts initially in the state `DEFAULT`).
+Each regular expression specification contains a [regular expression](#regular_expression) followed by a Java block (the lexical action) which is optional. This is then followed by an identifier of a lexical state (which is also optional). Whenever this regular expression is matched, the lexical action (if any) gets executed, followed by any common token actions. Then the action depending on the [regular expression production kind](#regexpr_kind) is taken. Finally, if a lexical state is specified, the token manager moves to that lexical state for further processing (the token manager starts initially in the state `DEFAULT`).
 
 <br>
 
@@ -515,6 +521,9 @@ An expansion unit can be a parenthesized set of one or more [expansion choices](
 An expansion unit can be a [regular expression](#regular_expression). Then a legal parse of the expansion unit is any token that matches this regular expression. When a regular expression is matched, it creates an object of type `Token`. This object can be accessed by assigning it to a variable by prefixing the regular expression with `variable =`. In general, you may have any valid Java assignment left-hand side to the left of the `=`. *This assignment is not performed during lookahead evaluation*.
 
 An expansion unit can be a non-terminal (the last choice in the syntax above). In which case, it takes the form of a method call with the non-terminal name used as the name of the method. A successful parse of the non-terminal causes the parameters placed in the method call to be operated on and a value returned (in case the non-terminal was not declared to be of type `void`). The return value can be assigned (optionally) to a variable by prefixing the regular expression with `variable =`. In general, you may have any valid Java assignment left-hand side to the left of the `=`. *This assignment is not performed during lookahead evaluation*. Non-terminals may not be used in an expansion in a manner that introduces left-recursion. JavaCC checks this for you.
+
+*N.B. There can be therefore cycles:*  
+`expansion_choices` -> `expansion` -> `expansion_unit` -> `expansion_choices`.
 
 <br>
 
@@ -576,7 +585,7 @@ There are two places in a grammar files where regular expressions may be written
 
 That is, this usage of regular expression can be rewritten using the other kind of usage. The complete details of regular expression matching by the token manager is available in the token manager [tutorial](../tutorials/token-manager.md). The description of the syntactic constructs follows.
 
-1. The first kind of regular expression is a string literal. The input being parsed matches this regular expression if the token manager is in a [lexical state](#regular_expr_production) for which this regular expression applies and the next set of characters in the input stream is the same (possibly with case ignored) as this string literal.
+1. The first kind of regular expression is a string literal. The input being parsed matches this regular expression if the token manager is in a lexical state for which this regular expression applies and the next set of characters in the input stream is the same (possibly with case ignored) as this string literal.
 
 2. A regular expression may also be a more [complex regular expression](#complex_regular_expression) using which more involved regular expression (than string literals can be defined). Such a regular expression is placed within angular brackets `<...>`, and may be labeled optionally with an identifier. This label may be used to refer to this regular expression from [expansion units](#expansion_unit) or from within other regular expressions. If the label is preceded by a `#`, then this regular expression may not be referred to from expansion units, but only from within other regular expressions. When the `#` is present, the regular expression is referred to as a *private regular expression*.
 
@@ -613,7 +622,7 @@ In this example, the token `FLOATING_POINT_LITERAL` is defined using the definit
 complex_regular_expression_choices ::= complex_regular_expression ( "|" complex_regular_expression )*
 ```
 
-Complex regular expression choices is made up of a list of one or more [complex regular expressions](#complex_regular_expression) separated by `|`s. A match for a complex regular expression choice is a match of any of its constituent complex regular expressions.
+A complex regular expression choices is made up of a list of one or more [complex regular expressions](#complex_regular_expression) separated by `|`s. A match for a complex regular expression choice is a match of any of its constituent complex regular expressions.
 
 <br>
 
@@ -622,10 +631,10 @@ Complex regular expression choices is made up of a list of one or more [complex 
 ---
 
 ```java
-complex_regular_expression ::= ( complex_regular_expression_unit )*
+complex_regular_expression ::= ( complex_regular_expression_unit )+
 ```
 
-A complex regular expression is a sequence of complex regular expression units. A match for a complex regular expression is a concatenation of matches to the complex regular expression units.
+A complex regular expression is a sequence of one or more [complex regular expression units](#complex_regular_expression_unit). A match for a complex regular expression is a concatenation of matches to the complex regular expression units.
 
 <br>
 
@@ -642,7 +651,7 @@ complex_regular_expression_unit ::= java_string_literal
 
 A complex regular expression unit can be a string literal, in which case there is exactly one match for this unit, namely, the string literal itself.
 
-A complex regular expression unit can be a reference to another regular expression. The other regular expression has to be labeled so that it can be referenced. The matches of this unit are all the matches of this other regular expression. Such references in regular expressions cannot introduce loops in the dependency between tokens.
+A complex regular expression unit can be a reference to another regular expression. The other regular expression has to be labeled so that it can be referenced. The matches of this unit are all the matches of this other regular expression. Such references in regular expressions must not introduce loops in the dependency between tokens.
 
 A complex regular expression unit can be a [character list](#character_list). A character list is a way of defining a set of characters. A match for this kind of complex regular expression unit is any character that is allowed by the character list.
 
@@ -654,7 +663,10 @@ A complex regular expression unit can be a parenthesized set of complex regular 
 | `*` | Then any legal match of the unit is zero or more repetitions of a legal match of the parenthesized set of choices.|
 | `?` | Then a legal match of the unit is either the empty string or any legal match of the nested choices.|
 
-*N.B. Unlike the `BNF` expansions, the regular expression `[...]` is not equivalent to the regular expression `(...)?`. This is because the `[...]` construct is used to describe character lists in regular expressions*.
+*N.B. Unlike the `BNF` expansions, the regular expression `[...]` is not equivalent to the regular expression `(...)?`. This is because the `[...]` construct is used to describe character lists in regular expressions*.  
+
+*N.B. There can be therefore cycles:*  
+`complex_regular_expression_choices` -> `complex_regular_expression` -> `complex_regular_expression_unit` -> `complex_regular_expression_choices`.
 
 <br>
 
@@ -678,7 +690,8 @@ A character list describes a set of characters. A legal match for a character li
 character_descriptor ::= java_string_literal [ "-" java_string_literal ]
 ```
 
-A character descriptor can be a single character string literal, in which case it describes a singleton set containing that character - or it is two single character string literals separated by a `-`, in which case, it describes the set of all characters in the range between and including these two characters.
+A character descriptor can be a single character string literal, in which case it describes a singleton set containing that character, or two single character string literals separated by a `-`, in which case it describes the set of all characters in the range between and including these two characters.  
+Note that the (single) character is enclosed between double quotes (as a java string literal) and not between singles quotes (as a java character literal), and that it may be written with its Unicode escape notation.
 
 <br>
 
