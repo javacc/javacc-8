@@ -478,9 +478,9 @@ It includes [detailed documentation](docs/documentation/index.md) for JavaCC, JJ
 
 ### Powered by JavaCC
 
-JavaCC is used in many commercial applications and open source projects.
+JavaCC is used in many commercial applications and open source projects.  
 
-The following list highlights a few notable JavaCC projects that run interesting use cases in production, with links to the relevant grammar specifications.
+The following list highlights a few notable JavaCC projects that run interesting use cases in production, with links to the relevant grammar specifications.  
 
 User                                                 | Use Case                                                       | Grammar File(s)
 :--------------------------------------------------- |:-------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------:
@@ -494,20 +494,15 @@ User                                                 | Use Case                 
 [Apache Zookeeper](https://zookeeper.apache.org/)    | Optimising serialisation/deserialisation of Hadoop I/O records | [rcc.jj](https://github.com/apache/zookeeper/blob/master/zookeeper-jute/src/main/java/org/apache/jute/compiler/generated/rcc.jj)
 [Java Parser](https://javaparser.org/)               | Parsing Java language files                                    | [java.jj](https://github.com/javaparser/javaparser/blob/master/javaparser-core/src/main/javacc/java.jj)
 
-<!---
 ## Contributing
 
-This is an active open-source project. We are always open to people who want to use the system or contribute to it.
+This is an active open-source project. We are always open to people who want to use the system or contribute to it.  
 Contact us if you are looking for implementation tasks that fit your skills.
-This article describes [how to contribute to Apache Flink](https://flink.apache.org/contributing/how-to-contribute.html).
-
-https://blog.scottlowe.org/2015/01/27/using-fork-branch-git-workflow/
-
--->
 
 ## License
 
-JavaCC is an open source project released under the [BSD-3-Clause](LICENSE). The JavaCC project was originally developed at Sun Microsystems Inc. by [Sreeni Viswanadha](https://github.com/kaikalur) and [Sriram Sankar](https://twitter.com/sankarsearch).
+JavaCC is an open source project released under the [BSD-3-Clause](LICENSE).  
+The JavaCC project was originally developed at Sun Microsystems Inc. by [Sreeni Viswanadha](https://github.com/kaikalur) and [Sriram Sankar](https://twitter.com/sankarsearch).  
 
 <br>
 
