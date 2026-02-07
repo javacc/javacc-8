@@ -215,7 +215,7 @@ It is maintained by the [developer community](https://github.com/javacc/javacc/g
 ### Contributing
 
 This is an active open-source project. We are always open to people who want to use the system or contribute to it.  
-Contact us if you are looking for implementation tasks that fit your skills.
+Contact us through the [repository discussions](https://github.com/javacc/javacc-8/discussions) area if you are looking for implementation tasks that fit your skills.
 
 ### Resources
 

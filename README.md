@@ -33,32 +33,20 @@ THE POSSIBILITY OF SUCH DAMAGE.
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org/javacc/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org/javacc)
 [![Javadocs](https://www.javadoc.io/badge/org/javacc.svg)](https://www.javadoc.io/doc/org/javacc)
 
-Java Compiler Compiler (JavaCC) is the most popular parser generator for use with Java applications.
+Java Compiler Compiler (JavaCC) is the most popular parser generator for use with Java applications,  and it allows generating C+= and C# parsers since version 8..
 
-A parser generator is a tool that reads a grammar specification and converts it to a Java program that can recognize matches to the grammar.
+A parser generator is a tool that reads a grammar specification (in plain text) and converts it to a program (of some programming language) that can recognize matches to the grammar.
 
 In addition to the parser generator itself, JavaCC provides other standard capabilities related to parser generation such as tree building (via a tool called JJTree included with JavaCC), actions and debugging.
 
-All you need to run a JavaCC parser, once generated, is a Java Runtime Environment (JRE).
+All you need:
+- to create a JavaCC grammar specification: a text editor at minimum, or a modern IDE,
+- to generate the JavaCC parser: JavaCC itself and a Java Runtime Environment (JRE),
+- to compile the generated parser: a compiler for the target programming language (currently Java, C++, C#),
+- to run the compiled generated parser: the standard environment for running a such compiled programe (a JRE for Java...)
 
-This README is meant as a brief overview of the core features and how to set things up to get yourself started with JavaCC. For a fully detailed documentation, please see [https://javacc.org/](https://javacc.org/).
+This README is just an index to the different documented sections, which are also presented in the companion [JavaCC 8 web site](https://javacc.github.io/javacc-8/).
 
-## Contents
-
-- [What is JavaCC](#what-is-javacc)
-  
-- [Starting using JavaCC](#starting-using-javacc)
-
-- [Versions](#versions)
-  
-- [Release notes](#release-notes)
-
-- [Community](#community)
-    * [Support](#support)
-    * [Contributing](#contributing)
-  
-- [License](#license)
-  
 ## What is JavaCC
 
 See [What is JavaCC](docs/what-is-javacc.md).  
@@ -81,16 +69,14 @@ See [Release notes](docs/release-notes.md).
 
 See [Building JavaCC](docs/README_BUILD.md) if you want to hack or contribute to JavaCC.  
 
-## Community
-
-### Support
+## Support
 
 See [Support](docs/support.md).  
 
-### Contributing
+## Contributing
 
 This is an active open-source project. We are always open to people who want to use the system or contribute to it.  
-Contact us if you are looking for implementation tasks that fit your skills.
+Contact us through the [repository discussions](https://github.com/javacc/javacc-8/discussions) area if you are looking for implementation tasks that fit your skills.
 
 ## License
 
