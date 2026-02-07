@@ -1,4 +1,4 @@
-<!--
+{% comment %}<!--
 Copyright (c) 2020-2025, Sreeni Viswanadha <sreeni@viswanadha.net>.
 Copyright (c) 2024-2025, Marc Mazas <mazas.marc@gmail.com>.
 All rights reserved.
@@ -27,27 +27,22 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
 THE POSSIBILITY OF SUCH DAMAGE.
 -->
+<!--
+## Support
+-->{% endcomment %}
 
-[Home](../index.md) > [Documentation](index.md) > Index
+Open an issue if you think you found a bug in JavaCC.
 
----
+If you use version **8** and generate for **Java**, and you do not know to which part it is related (the parent or the core or the generator), open it [here](https://github.com/javacc/javacc-8-java/issues) in the generator;  
+same for **C++**: [here](https://github.com/javacc/javacc-8-cpp/issues);  
+same for **C#**: [here](https://github.com/javacc/javacc-8-csharp/issues).  
+If you are sure of the project it is related to, open it in the issues section of the project.
 
-<br>
+If you use version **7**, open it [here](https://github.com/javacc/javacc/issues).  
 
-1. [JavaCC Command Line](cli.md)
+Create a new discussion (in the Discussions tab) if you have some general question - do not create an issue for a question.  
+But don’t hesitate to ask!
 
-2. [JavaCC Grammar](grammar.md)
+Contact the developers and community on the [Google user group](https://groups.google.com/forum/#!forum/javacc-users) or email us at [JavaCC Support](mailto:support@javacc.org) if you need any help.
 
-3. [JavaCC BNF](bnf.md)
-
-4. [JavaCC API](javacc-api.md)
-
-5. [JJTree](jjtree.md)
-
-6. [JJDoc](jjdoc.md)
-
-<br>
-
----
-
-<br>
+For questions relating to development please join our [Slack channel](https://javacc.slack.com/).

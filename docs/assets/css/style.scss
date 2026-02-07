@@ -2,3 +2,31 @@
 ---
 
 @import "{{ site.theme }}";
+
+/* full css is for ex under javacc/javacc/docs/_site/assets/css/style.css
+   or inspect, modify, test, then copy rule and paste it above */
+
+   .page-header {
+  color: #fff;
+  text-align: center;
+  background-color: #cd1414;
+  background-image: linear-gradient(180deg, #cd1414, #a37010);
+}
+
+.page-header {
+  padding: 2rem 2rem;
+}
+
+.main-content {
+  max-width: 64rem;
+  padding: 2rem 2rem;
+  margin: 0 auto;
+  font-size: 1.1rem;
+}
+
+.main-content h1, .main-content h2, .main-content h3, .main-content h4, .main-content h5, .main-content h6 {
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  font-weight: normal;
+  color: #cd1414;
+}

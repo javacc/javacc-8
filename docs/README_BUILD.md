@@ -143,7 +143,7 @@ Its Maven reference is:
 ```
 This plugin is able to use a v7 release of JavaCC.
 
-It is published in the old MVM Repository ([here](https://mvnrepository.com/artifact/org.codehaus.mojo/javacc-maven-plugin)) and in the Sonatype Maven Central Repository ([here](https://central.sonatype.com/artifact/org.codehaus.mojo/javacc-maven-plugin)).
+It is published in the old MVN Repository ([here](https://mvnrepository.com/artifact/org.codehaus.mojo/javacc-maven-plugin)) and in the Sonatype Maven Central Repository ([here](https://central.sonatype.com/artifact/org.codehaus.mojo/javacc-maven-plugin)).
 
 ### javacc/javacc-maven-plugin
 
@@ -158,15 +158,44 @@ Note that the **artifactId** part is the same, the **groupId** is the one differ
 
 This plugin is able to use a v7 or v8 release of JavaCC.
 
-It is published in the old MVM Repository ([here](https://mvnrepository.com/artifact/org.javacc.plugin/javacc-maven-plugin)) and in the Sonatype Maven Central Repository ([here](https://central.sonatype.com/artifact/org.javacc.plugin/javacc-maven-plugin)).
+It is published in the old MVN Repository ([here](https://mvnrepository.com/artifact/org.javacc.plugin/javacc-maven-plugin)) and in the Sonatype Maven Central Repository ([here](https://central.sonatype.com/artifact/org.javacc.plugin/javacc-maven-plugin)).
 
 ## Local build process
 
 ### Build
 
-Clone the Git repository(ies) you need (all at the same directory level). Note that normally you should not need to hack the parent and the core projects, only the generators projects.  
+*For the impatient user (the one who thinks every thing should work immediately):*
+
+Clone the Git repository(ies) you need (all at the same directory level). Note that normally you should not need to hack the parent and the core projects, only the generators projects. Then run maven clean install.  
+
+```bash
+mkdir javacc-8
+cd javacc-8
+
+git clone git@github.com:javacc/javacc-8.git
+cd javacc-8
+# temporary workaround for bootstrapping, depending on pre-installed JavaCC 8.1.0 binaries
+sed -i 's|<javacc.java.version>[^<]*</javacc.java.version>|<javacc.java.version>8.1.0</javacc.java.version>|' pom.xml
+mvn clean install
+cd ..
+
+
+git clone git@github.com:javacc/javacc-8-core.git
+cd javacc-8-core
+# disable integration tests via `-P!run-its`
+mvn clean install -P!run-its
+cd ..
+
+git clone git@github.com:javacc/javacc-8-java.git
+cd javacc-8-java
+# disable integration tests via `-P!run-its`
+mvn clean install -P!run-its
+cd ..
+```
 
 *For the patient user (the one who is not in a hurry and likes to check step by step that things go well):*
+
+Clone the Git repository(ies) you need as above.  
 
 Check that your JAVA_HOME, MAVEN_HOME and M2_HOME are compatible with your IDE settings (JavaCC requires a 1.8+ javac but some IDEs installations require a 11+ or 17+ JDK).  
 You may want to configure a [toolchains](https://maven.apache.org/plugins/maven-toolchains-plugin/index.html) (and in that case the `with-toolchains` profile will be implicitly activated).  

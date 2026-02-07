@@ -1,4 +1,4 @@
-<!--
+{% comment %}<!--
 Copyright (c) 2020-2025, Sreeni Viswanadha <sreeni@viswanadha.net>.
 Copyright (c) 2024-2025, Marc Mazas <mazas.marc@gmail.com>.
 All rights reserved.
@@ -26,7 +26,7 @@ INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
 CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
 THE POSSIBILITY OF SUCH DAMAGE.
--->
+-->{% endcomment %}
 
 [Home](index.md) > FAQ
 

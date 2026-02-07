@@ -48,8 +48,6 @@ This page is a comprehensive list of all classes, methods, and variables availab
     * [ErrorHandler interface (C++ only)](#errorhandler-interface-c-only)
 
 - [JJTree API](#jjtree-api)
-    * [Parser methods](#parser-methods)
-    * [Node interface](#node-interface)
 
 ## JavaCC API
 
@@ -548,128 +546,7 @@ int getErrorCount()
 
 ## JJTree API
 
-JJTree has two APIs - it adds some parser methods, and it requires all node objects to implement the `Node` interface.
-
-### Parser methods
-
-JJTree maintains some state in the parser object itself. It encapsulates all this state with an object that can be referred to via the `jjtree` field.
-
-The parser state implements an open stack where nodes are held until they can be added to their parent node. The `jjtree` state object provides methods for you to manipulate the contents of the stack in your actions if the basic JJTree mechanisms are not sufficient.
-
-```java
-/*
- * Call this to reinitialize the node stack.
- *
- * All nodes currently on the stack are thrown away. Don't call this from within
- * a node scope, or terrible things will surely happen.
- */
-void reset()
-```
-
-```java
-/*
- * Returns the root node of the AST.
- *
- * Since JJTree operates bottom-up, the root node is only defined after
- * the parse has finished.
- */
-Node rootNode();
-```
-
-```java
-/*
- * Determines whether the current node was actually closed and pushed.
- *
- * Call this in the final action within a conditional node scope.
- */
-boolean nodeCreated();
-```
-
-```java
-/*
- * Returns the number of nodes currently pushed on the
- * node stack in the current node scope.
- */
-int arity();
-```
-
-```java
-/*
- * Pushes a node on to the stack.
- */
-void pushNode(Node n);
-```
-
-```java
-/*
- * Returns the node on the top of the stack, and removes it from the stack.
- */
-Node popNode();
-```
-
-```java
-/*
- * Returns the node currently on the top of the stack.
- */
-Node peekNode();
-```
-
-<br>
-
-### Node interface
-
-All AST nodes must implement this interface. It provides basic machinery for constructing the parent and child relationships between nodes.
-
-```java
-/*
- * This method is called after the node has been made the current node.
- * It indicates that child nodes can now be added to it.
- */
-public void jjtOpen();
-```
-
-```java
-/*
- * This method is called after all the child nodes have been added.
- */
-public void jjtClose();
-```
-
-```java
-/*
-* Used to inform the node of its parent.
- */
-public void jjtSetParent(Node n);
-```
-
-```java
-/*
- * Used to inform the node of its parent.
- */
-public Node jjtGetParent();
-```
-
-```java
-/*
- * This method tells the node to add its argument to the node's list of children.
- */
-public void jjtAddChild(Node n, int i);
-```
-
-```java
-/*
- * This method returns a child node. The children are numbered from zero, left to right.
-
- */
-public Node jjtGetChild(int i);
-```
-
-```java
-/*
- * Return the number of children the node has.
- */
-int jjtGetNumChildren();
-```
+See in [JJTree API](jjtree.md#jjtree-api).
 
 <br>
 

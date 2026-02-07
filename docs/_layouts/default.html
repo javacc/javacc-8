@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <!--
-Copyright (c) 2006, Sun Microsystems, Inc.
+Copyright (c) 2020-2025, Sreeni Viswanadha <sreeni@viswanadha.net>.
+Copyright (c) 2024-2025, Marc Mazas <mazas.marc@gmail.com>.
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -11,7 +12,7 @@ modification, are permitted provided that the following conditions are met:
     * Redistributions in binary form must reproduce the above copyright
       notice, this list of conditions and the following disclaimer in the
       documentation and/or other materials provided with the distribution.
-    * Neither the name of the Sun Microsystems, Inc. nor the names of its
+    * Neither the names of the copyright holders nor the names of its
       contributors may be used to endorse or promote products derived from
       this software without specific prior written permission.
 
@@ -29,7 +30,6 @@ THE POSSIBILITY OF SUCH DAMAGE.
 -->
 <html lang="{{ site.lang | default: "en-US" }}">
   <head>
-
     {% if site.google_analytics %}
       <script async src="https://www.googletagmanager.com/gtag/js?id={{ site.google_analytics }}"></script>
       <script>
@@ -40,25 +40,26 @@ THE POSSIBILITY OF SUCH DAMAGE.
       </script>
     {% endif %}
     <meta charset="UTF-8">
-
-{% seo %}
+    {% seo %}
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#157878">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="stylesheet" href="{{ '/assets/css/style.css?v=' | append: site.github.build_revision | relative_url }}">
   </head>
+
   <body>
     <!--a id="skip-to-content" href="#content">Skip to the content.</a-->
 
     <header class="page-header" role="banner">
-      <h1 class="project-name">{{ page.title | default: site.title | default: site.github.repository_name }}</h1>
+      <h1 class="project-name">{{ page.title | default: site.title | default: site.github.repository_name }} {{ site.version }}</h1>
       <h2 class="project-tagline">{{ page.description | default: site.description | default: site.github.project_tagline }}</h2>
       {% if site.github.is_project_page %}
         <a href="{{ site.github.repository_url }}" class="btn">View on GitHub</a>
+        {% if site.show_latest_release %}<p class="btn">Latest release: {{ site.release }}</p>{% endif %}
       {% endif %}
       {% if site.show_downloads %}
-        <a href="{{ site.github.zip_url }}" class="btn">Download {{ site.version }}.zip</a>
-        <a href="{{ site.github.tar_url }}" class="btn">Download {{ site.version }}.tar.gz</a>
+        <a href="{{ site.github.zip_url }}" class="btn">Download {{ site.release }}.zip</a>
+        <a href="{{ site.github.tar_url }}" class="btn">Download {{ site.release }}.tar.gz</a>
       {% endif %}
     </header>
 

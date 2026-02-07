@@ -1,4 +1,4 @@
-<!--
+{% comment %}<!--
 Copyright (c) 2020-2025, Sreeni Viswanadha <sreeni@viswanadha.net>.
 Copyright (c) 2024-2025, Marc Mazas <mazas.marc@gmail.com>.
 All rights reserved.
@@ -26,44 +26,51 @@ INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
 CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
 THE POSSIBILITY OF SUCH DAMAGE.
--->
-<!---
-Created from:
-* the original README file at https://github.com/javacc/javacc
-* the documentation https://github.com/javacc/javacc/www
-* an example README.md file from https://github.com/apache/flink modified
--->
+-->{% endcomment %}
 
-Java Compiler Compiler (JavaCC) is the most popular parser generator for use with Java applications.
+Java Compiler Compiler (JavaCC) is the most popular parser generator for use with Java applications,  and it allows generating C+= and C# parsers since version 8..
 
-A parser generator is a tool that reads a grammar specification and converts it to a Java program that can recognize matches to the grammar.
+A parser generator is a tool that reads a grammar specification (in plain text) and converts it to a program (of some programming language) that can recognize matches to the grammar.
 
 In addition to the parser generator itself, JavaCC provides other standard capabilities related to parser generation such as tree building (via a tool called JJTree included with JavaCC), actions and debugging.
 
-All you need to run a JavaCC parser, once generated, is a Java Runtime Environment (JRE).
+All you need:
+- to create a JavaCC grammar specification: a text editor at minimum, or a modern IDE,
+- to generate the JavaCC parser: JavaCC itself and a Java Runtime Environment (JRE),
+- to compile the generated parser: a compiler for the target programming language (currently Java, C++, C#),
+- to run the compiled generated parser: the standard environment for running a such compiled programe (a JRE for Java...)
 
 ### Contents
 
-- [Introduction](#introduction)
+- [What is JavaCC](#what-is-javacc)
     * [Features](#features)
     * [An example](#an-example)
-    * [Tutorials](tutorials/index.md)
-    * [FAQ](faq.md)
-  
-- [Getting Started](#getting-started)
-    * [From the command line](#use-javacc-from-the-command-line)
-    * [Within an IDE](#use-javacc-within-an-ide)
-    * [Rebuilding JavaCC](#rebuilding-javacc)
-  
+- [Starting using JavaCC](#starting-using-javacc)
+- [Versions](#versions)
+- [Release notes](#release-notes)
+- [Documentation](documentation/index.md)
+    * [JavaCC Command Line](documentation/cli.md)
+    * [[JavaCC Grammar](documentation/grammar.md)
+    * [[JavaCC BNF](documentation/bnf.md)
+    * [[JavaCC API](documentation/javacc-api.md)
+    * [[JJTree](documentation/jjtree.md)
+    * [[JJDoc](documentation/jjdoc.md)
+- [Tutorials](tutorials/index.md)
+    * [Token Manager](tutorials/token-manager.md)
+    * [Lookahead](tutorials/lookahead.md)
+    * [CharStream](tutorials/charstream.md)
+    * [Error Handling](tutorials/error-handling.md)
+    * [Lexer Tips](tutorials/lexer-tips.md)
+    * [Examples](tutorials/examples.md)
+- [FAQ](faq.md)
 - [Community](#community)
     * [Support](#support)
-    * [Documentation](#documentation)
+    * [Contributing](#contributing)
     * [Resources](#resources)
     * [Powered by JavaCC](#powered-by-javacc)
-  
 - [License](#license)
   
-## Introduction
+## What is JavaCC
 
 ### Features
 
@@ -182,160 +189,32 @@ Was expecting one of:
         at Example.main(Example.java:6)
 ```
 
-## Getting Started
+## Starting using JavaCC
 
-You can use JavaCC either from the command line or through an IDE.
+{% include_relative starting-using-javacc.md %}
 
-### Use JavaCC from the command line
+## Versions
 
-#### Download
+{% include_relative versions.md %}
 
-Download the latest stable release (at least the source and the binaries) in a so called download directory:
+## Release notes
 
-* JavaCC 7.0.14 - ([Source (zip)](https://github.com/javacc/javacc/archive/javacc-7.0.14.zip), [Source (tar.gz)](https://github.com/javacc/javacc/archive/javacc-7.0.14.tar.gz), [Binaries](https://repo1.maven.org/maven2/net/java/dev/javacc/javacc/7.0.14/javacc-7.0.14.jar), [Javadocs](https://repo1.maven.org/maven2/net/java/dev/javacc/javacc/7.0.14/javacc-7.0.14-javadoc.jar), [Release Notes](release-notes.md#javacc-7.0.14))
-
-All JavaCC releases are available via [GitHub](https://github.com/javacc/javacc/releases) and [Maven](https://mvnrepository.com/artifact/net.java.dev.javacc/javacc) including checksums and cryptographic signatures.
-
-For all previous releases, please see [stable releases](downloads.md).
-
-#### Install
-
-Once you have downloaded the files, navigate to the download directory and unzip the source file, this creating a so called JavaCC installation directory:
-```
-$ unzip javacc-7.0.14.zip
-or
-$ tar xvf javacc-7.0.14.tar.gz
-```
-
-Then move the binary file `javacc-7.0.14.jar` under the download directory in a new `target/` directory under the installation directory, and rename it to `javacc.jar`.
-
-Then add the `scripts/` directory in the JavaCC installation directory to your `PATH`. The JavaCC, JJTree, and JJDoc invocation scripts/executables reside in this directory.
-
-On UNIX based systems, the scripts may not be executable immediately. This can be solved by using the command from the `javacc-7.0.14/` directory:
-```
-chmod +x scripts/javacc
-```
-
-#### Write your grammar and generate your parser
-
-You can then create and edit a grammar file with your favorite text editor.
-
-Then use the appropriate script for generating your parser from your grammar.
-
-### Use JavaCC within an IDE
-
-Minimal requirements for an IDE are:
-* Support for Java
-* Support for Maven with Java
-
-#### IntelliJ IDEA
-
-The IntelliJ IDE supports Maven out of the box and offers a plugin for JavaCC development.
-
-* IntelliJ download: [https://www.jetbrains.com/idea/](https://www.jetbrains.com/idea/)
-* IntelliJ JavaCC Plugin: [https://plugins.jetbrains.com/plugin/11431-javacc/](https://plugins.jetbrains.com/plugin/11431-javacc/)
-
-<!---
-Check out our [Setting up IntelliJ](https://ci.apache.org/projects/flink/flink-docs-master/flinkDev/ide_setup.html#intellij-idea) guide for details.
--->
-
-#### Eclipse IDE
-
-* Eclipse download: [https://www.eclipse.org/ide/](https://www.eclipse.org/ide/)
-* Eclipse JavaCC Plugin: [https://marketplace.eclipse.org/content/javacc-eclipse-plug](https://marketplace.eclipse.org/content/javacc-eclipse-plug)
-
-#### Maven
-
-Add the following dependency to your `pom.xml` file.
-
-```
-<dependency>
-    <groupId>net.java.dev.javacc</groupId>
-    <artifactId>javacc</artifactId>
-    <version>7.0.14</version>
-</dependency>
-```
-
-#### Gradle
-
-Add the following to your `build.gradle` file.
-
-```
-repositories {
-    mavenLocal()
-    maven {
-        url = 'https://mvnrepository.com/artifact/net.java.dev.javacc/javacc'
-    }
-}
-
-dependencies {
-    compile group: 'net.java.dev.javacc', name: 'javacc', version: '7.0.14'
-}
-```
-
-### Rebuilding JavaCC 
-
-#### From the source installation directory
-
-The source installation directory contains the JavaCC, JJTree and JJDoc sources, launcher scripts, example grammars and documentation, and also a bootstrap version of JavaCC needed to build JavaCC.
-
-Prerequisites for building JavaCC with this method:
-
-* Ant (we require version 1.5.3 or above - you can get ant from [http://ant.apache.org](http://ant.apache.org))
-* Maven
-* Java 8 (Java 9 and 10 are not yet supported)
-
-Use the ant build script:
-
-```
-$ cd javacc
-$ ant
-```
-
-This will build the `javacc.jar` file in the `target/` directory
-
-#### After cloning the JavaCC GitHub repository
-
-This is the preferred method for contributing to JavaCC.
-
-Prerequisites for building JavaCC with this method:
-
-* Git
-* Ant (we require version 1.5.3 or above - you can get ant from [http://ant.apache.org](http://ant.apache.org))
-* Maven
-* Java 8 (Java 9 and 10 are not yet supported)
-
-Just clone the repository and then use the ant build script:
-
-```
-$ git clone https://github.com/javacc/javacc.git
-$ cd javacc
-$ ant
-```
-
-This will build the `javacc.jar` file in the `target/` directory
+{% include_relative release-notes.md %}
 
 ## Community
 
 JavaCC is by far the most popular parser generator used with Java applications with an estimated user base of over 1,000 users and more than 100,000 downloads to date.
 
-It is maintained by the [developer community](https://github.com/javacc/javacc/graphs/contributors) which includes the original authors and [Chris Ainsley](https://github.com/ainslec), [Tim Pizney](https://github.com/timp) and [Francis Andre](https://github.com/zosrothko).
+It is maintained by the [developer community](https://github.com/javacc/javacc/graphs/contributors) which includes the original authors and [Chris Ainsley](https://github.com/ainslec), [Tim Pizney](https://github.com/timp), [Francis Andre](https://github.com/zosrothko) and [Marc Mazas](https://github.com/MarcMazas).
 
 ### Support
 
-Don’t hesitate to ask!
+{% include_relative support.md %}
 
-Contact the developers and community on the [Google user group](https://groups.google.com/forum/#!forum/javacc-users) or email us at [JavaCC Support](mailto:support@javacc.org) if you need any help.
+### Contributing
 
-[Open an issue](https://github.com/javacc/javacc/issues) if you found a bug in JavaCC.
-
-For questions relating to development please join our [Slack channel](https://javacc.slack.com/).
-
-### Documentation
-
-The documentation of JavaCC is located on the website [https://javacc.github.io/javacc/](https://javacc.github.io/javacc/) and in the `docs/documentation` directory of the source code on [GitHub](https://github.com/javacc/javacc).
-
-It includes [detailed documentation](documentation/index.md) for JavaCC, JJTree, and JJDoc.
+This is an active open-source project. We are always open to people who want to use the system or contribute to it.  
+Contact us if you are looking for implementation tasks that fit your skills.
 
 ### Resources
 
@@ -379,17 +258,6 @@ User                                                 | Use Case                 
 [Apache Tomcat](https://tomcat.apache.org/)          | Parsing Expression Language (EL) and JSON                      | [ELParser.jjt](https://github.com/apache/tomcat/blob/master/java/org/apache/el/parser/ELParser.jjt), [JSONParser.jj](https://github.com/apache/tomcat/blob/master/java/org/apache/tomcat/util/json/JSONParser.jj)
 [Apache Zookeeper](https://zookeeper.apache.org/)    | Optimising serialisation/deserialisation of Hadoop I/O records | [rcc.jj](https://github.com/apache/zookeeper/blob/master/zookeeper-jute/src/main/java/org/apache/jute/compiler/generated/rcc.jj)
 [Java Parser](https://javaparser.org/)               | Parsing Java language files                                    | [java.jj](https://github.com/javaparser/javaparser/blob/master/javaparser-core/src/main/javacc/java.jj)
-
-<!---
-## Contributing
-
-This is an active open-source project. We are always open to people who want to use the system or contribute to it.
-Contact us if you are looking for implementation tasks that fit your skills.
-This article describes [how to contribute to Apache Flink](https://flink.apache.org/contributing/how-to-contribute.html).
-
-https://blog.scottlowe.org/2015/01/27/using-fork-branch-git-workflow/
-
--->
 
 ## License
 
