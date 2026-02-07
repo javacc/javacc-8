@@ -51,6 +51,8 @@ This README is meant as a brief overview of the core features and how to set thi
 
 - [Versions](#versions)
   
+- [Release notes](#release-notes)
+
 - [Community](#community)
     * [Support](#support)
     * [Contributing](#contributing)
@@ -67,9 +69,17 @@ See [Starting using JavaCC](docs/starting-using-javacc.md).
 
 ## Versions
 
-If you read this README.md, you should be under the **v8** code.
+If you read this README.md, you should be under the **v8** repository.
 
-See [What is JavaCC](docs/versions.md).  
+See [Versions](docs/versions.md) for an explanation of differences between v8 and v7.  
+
+## Release notes
+
+See [Release notes](docs/release-notes.md).  
+
+## Building JavaCC
+
+See [Building JavaCC](docs/README_BUILD.md) if you want to hack or contribute to JavaCC.  
 
 ## Community
 

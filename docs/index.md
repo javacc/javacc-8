@@ -47,7 +47,8 @@ All you need:
     * [An example](#an-example)
 - [Starting using JavaCC](#starting-using-javacc)
 - [Versions](#versions)
-- [Release notes](#release-notes)
+- [Building JavaCC](#building-javacc)
+- [Release notes](release-notes.md)
 - [Documentation](documentation/index.md)
     * [JavaCC Command Line](documentation/cli.md)
     * [[JavaCC Grammar](documentation/grammar.md)
@@ -197,9 +198,9 @@ Was expecting one of:
 
 {% include_relative versions.md %}
 
-## Release notes
+## Building JavaCC
 
-{% include_relative release-notes.md %}
+See [Building JavaCC](README_BUILD.html) if you want to hack or contribute to JavaCC.  
 
 ## Community
 

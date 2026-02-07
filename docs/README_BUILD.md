@@ -28,7 +28,7 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
 THE POSSIBILITY OF SUCH DAMAGE.
 -->
 
-# JavaCC v8
+# Building JavaCC v8
 
 JavaCC's version 8 is targeted at:
 - providing a better separation between the parsing part and the code generation part
