@@ -4,9 +4,6 @@ See LICENSE.
 
 # JavaCC
 
-[![Maven Central](https://maven-badges.sml.io/maven-central/org/javacc/badge.svg)](https://central.sonatype.com/artifact/org/javacc)
-[![Javadocs](https://www.javadoc.io/badge/org/javacc.svg)](https://www.javadoc.io/doc/org/javacc)
-
 Java Compiler Compiler (JavaCC) is the most popular parser generator for use with Java applications,  and it allows generating C+= and C# parsers since version 8.
 
 A parser generator is a tool that reads a grammar specification (in plain text) and converts it to a program (of some programming language) that can recognize matches to the grammar.
@@ -21,13 +18,31 @@ All you need:
 
 This README is just an index to the different documented sections, which are also presented in the companion [JavaCC 8 web site](https://javacc.github.io/javacc-8/).
 
+## Publishing status
+
+#### Version 8
+
+Currently published release:  
+
+![Maven Central Version](https://img.shields.io/maven-central/v/org/javacc?label=Maven%20v8) ![GitHub Release](https://img.shields.io/github/v/release/javacc/javacc-8?label=GitHub%20v8)  
+
+Next release to publish: 8.1.0 (Feb 2026) (Maven, GitHub)  
+
+Currently published snapshot: 8.1.0-SNAPSHOT (Maven)
+
+#### Version 7
+
+Currently published release:  
+
+![Maven Central Version](https://img.shields.io/maven-central/v/net.java.dev.javacc/javacc?label=Maven%20v7) ![GitHub Release](https://img.shields.io/github/v/release/javacc/javacc?label=GitHub%20v7)  
+
 ## What is JavaCC
 
 See [What is JavaCC](docs/what-is-javacc.md).  
 
 ## Starting using JavaCC
 
-See [Starting using JavaCC](docs/starting-using-javacc.md).  
+Beginners can look at [Starting using JavaCC](docs/starting-using-javacc.md).  
 
 ## Versions
 
@@ -45,7 +60,7 @@ See [Building JavaCC](docs/README_BUILD.md) if you want to hack or contribute to
 
 ## Support
 
-See [Support](docs/support.md).  
+See [Support](docs/support.md) before submitting an issue.  
 
 ## Contributing
 

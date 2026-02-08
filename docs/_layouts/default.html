@@ -54,8 +54,12 @@ THE POSSIBILITY OF SUCH DAMAGE.
       <h1 class="project-name">{{ page.title | default: site.title | default: site.github.repository_name }} {{ site.version }}</h1>
       <h2 class="project-tagline">{{ page.description | default: site.description | default: site.github.project_tagline }}</h2>
       {% if site.github.is_project_page %}
-        <a href="{{ site.github.repository_url }}" class="btn">View on GitHub</a>
-        {% if site.show_latest_release %}<p class="btn">Latest release: {{ site.release }}</p>{% endif %}
+        {% if site.show_latest_release %}
+          <p>
+            <img class="badge" alt="Maven Central Version" src="https://img.shields.io/maven-central/v/org/javacc?labelColor=1065a3&color=ab3d12&logoSize=auto&label=Maven">
+            <img class="badge" alt="GitHub Release" src="https://img.shields.io/github/v/release/javacc/javacc-8?labelColor=726868&color=ab3d12&logoSize=auto&label=GitHub">
+          </p>
+        {% endif %}
       {% endif %}
       {% if site.show_downloads %}
         <a href="{{ site.github.zip_url }}" class="btn">Download {{ site.release }}.zip</a>
