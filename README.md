@@ -22,13 +22,28 @@ This README is just an index to the different documented sections, which are als
 
 #### Version 8
 
-Currently published release:  
+Currently published releases:  
 
-![Maven Central Version](https://img.shields.io/maven-central/v/org/javacc?label=Maven%20v8) ![GitHub Release](https://img.shields.io/github/v/release/javacc/javacc-8?label=GitHub%20v8)  
+- ![Maven Central Version](https://img.shields.io/maven-central/v/org.javacc.generator/java?label=Java generator)
+- ![Maven Central Version](https://img.shields.io/maven-central/v/org.javacc.generator/cpp?label=C%2B%2B generator)
+- ![Maven Central Version](https://img.shields.io/maven-central/v/org.javacc.generator/csharp?label=C%23 generator)
+- ![Maven Central Version](https://img.shields.io/maven-central/v/org.javacc/core?label=Core)
+- ![Maven Central Version](https://img.shields.io/maven-central/v/org/javacc?label=parent)
+- ![GitHub Release](https://img.shields.io/github/v/release/javacc/javacc-8?label=GitHub%20v8)  
 
 Next release to publish: 8.1.0 (Feb 2026) (Maven, GitHub)  
 
-Currently published snapshot: 8.1.0-SNAPSHOT (Maven)
+Currently published snapshots:  
+
+- ![Maven Central Version](https://img.shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Fcentral.sonatype.com%2Frepository%2Fmaven-snapshots%2Forg%2Fjavacc%2Fgenerator%2Fjava%2Fmaven-metadata.xml&label=Java)
+
+- ![Maven Central Version](https://img.shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Fcentral.sonatype.com%2Frepository%2Fmaven-snapshots%2Forg%2Fjavacc%2Fgenerator%2Fcpp%2Fmaven-metadata.xml&label=C%2B%2B&strategy=latestProperty)
+
+- ![Maven Central Version](https://img.shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Fcentral.sonatype.com%2Frepository%2Fmaven-snapshots%2Forg%2Fjavacc%2Fgenerator%2Fcsharp%2Fmaven-metadata.xml&label=C%23&strategy=latestProperty)
+
+- ![Maven Central Version](https://img.shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Fcentral.sonatype.com%2Frepository%2Fmaven-snapshots%2Forg%2Fjavacc%2Fcore%2Fmaven-metadata.xml&label=Core)
+
+- ![Maven Central Version](https://img.shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Fcentral.sonatype.com%2Frepository%2Fmaven-snapshots%2Forg%2Fjavacc%2Fmaven-metadata.xml&label=parent)
 
 #### Version 7
 
