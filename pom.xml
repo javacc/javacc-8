@@ -33,13 +33,13 @@ THE POSSIBILITY OF SUCH DAMAGE.
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>org</groupId>
-  <artifactId>javacc</artifactId>
-  <version>8.1.0-SNAPSHOT</version>
+  <groupId>org.javacc</groupId>
+  <artifactId>base</artifactId>
+  <version>8.1.0</version>
   <packaging>pom</packaging>
 
-  <name>JavaCC</name>
-  <description>Parent module of JavaCC, parser generator for different languages</description>
+  <name>JavaCC Base</name>
+  <description>Base (parent) module of JavaCC, a parser generator for different languages</description>
   <url>https://github.com/javacc/javacc-8</url>
   <inceptionYear>1996</inceptionYear>
 
@@ -51,28 +51,28 @@ THE POSSIBILITY OF SUCH DAMAGE.
 
   <organization>
     <name>javacc.org</name>
-    <url>https://javacc.github.io/javacc/</url>
+    <url>https://github.com/javacc/</url>
   </organization>
 
   <properties>
     <!-- run mvn versions:display-property-updates to display available updates -->
 
-    <javacc.core.version>8.1.0-SNAPSHOT</javacc.core.version>
-    <javacc.cpp.version>8.1.0-SNAPSHOT</javacc.cpp.version>
-    <javacc.csharp.version>8.1.0-SNAPSHOT</javacc.csharp.version>
-    <javacc.java.version>8.1.0-SNAPSHOT</javacc.java.version>
+    <javacc.core.version>8.1.0</javacc.core.version>
+    <javacc.cpp.version>8.1.0</javacc.cpp.version>
+    <javacc.csharp.version>8.1.0</javacc.csharp.version>
+    <javacc.java.version>8.1.0</javacc.java.version>
     <!--    <previous-javacc.java.version>8.1.0</previous-javacc.java.version>-->
     <bootstrap-javacc.java.version>8.0.1</bootstrap-javacc.java.version>
-    <javacc.js.version>8.1.0-SNAPSHOT</javacc.js.version>
+    <javacc.js.version>8.1.0</javacc.js.version>
     <javacc.v7.version>7.0.13</javacc.v7.version>
 
     <central.publishing.maven.plugin.version>0.7.0</central.publishing.maven.plugin.version>
 
-    <!--    <javacc-maven-plugin.version>3.0.3</javacc-maven-plugin.version>-->
-    <javacc-maven-plugin.version>3.8.0-SNAPSHOT</javacc-maven-plugin.version>
+    <javacc-maven-plugin.version>3.0.3</javacc-maven-plugin.version>
+    <!--    <javacc-maven-plugin.version>3.8.0</javacc-maven-plugin.version>-->
     <junit.version>4.13.2</junit.version>
 
-    <maven-antrun-plugin.version>3.1.0</maven-antrun-plugin.version>
+    <maven-antrun-plugin.version>3.2.0</maven-antrun-plugin.version>
     <maven-clean-plugin.version>3.4.1</maven-clean-plugin.version>
     <maven-compiler-plugin.version>3.14.0</maven-compiler-plugin.version>
     <!--    <maven-gpg-plugin.version>3.1.0</maven-gpg-plugin.version>-->
@@ -733,7 +733,7 @@ THE POSSIBILITY OF SUCH DAMAGE.
               <!-- outputFilename is the default central-bundle.zip -->
               <!-- outputDirectory is the default central-publishing -->
               <!-- publishingServerId points to a server of that name in settings.xml -->
-              <publishingServerId>centralportalXXX</publishingServerId>
+              <publishingServerId>centralportal</publishingServerId>
               <!-- stagingDirectory is the default central-staging -->
             </configuration>
           </plugin>

@@ -6,7 +6,7 @@ See LICENSE.
 
 Open an issue if you think you found a bug in JavaCC.
 
-If you use version **8** and generate for **Java**, and you do not know to which part it is related (the parent or the core or the generator), open it [here](https://github.com/javacc/javacc-8-java/issues) in the generator;  
+If you use version **8** and generate for **Java**, and you do not know to which part it is related (the base or the core or the generator), open it [here](https://github.com/javacc/javacc-8-java/issues) in the generator;  
 same for **C++**: [here](https://github.com/javacc/javacc-8-cpp/issues);  
 same for **C#**: [here](https://github.com/javacc/javacc-8-csharp/issues).  
 If you are sure of the project it is related to, open it in the issues section of the project.

@@ -19,7 +19,7 @@ The current owner of JavaCC and the current maintainers want <ins>the user base 
 ## Contents
 
 - [Projects layout](#projects-layout)
-    * [Parent javacc/javacc-8](#parent-javacc-javacc-8)
+    * [Base javacc/javacc-8](#base-javacc-javacc-8)
     * [Core javacc/javacc-8-core](#core-javacc-javacc-8-core)
     * [Generators javacc/javacc-8-java, javacc/javacc-8-cpp, javacc/javacc-8-csharp](#generators-javacc-javacc-8-java-javacc-javacc-8-cpp-javacc-javacc-8-csharp)
   
@@ -45,9 +45,9 @@ The choice has been made in the past to split the (v7) single Git repo / Java & 
 
 The layout is based on a classical Maven layout with a parent project and modules; each project / module is in its own Git repo under the GitHub **javacc** organization. However these projects must be all at the same directory level (the modules are not nested inside the parent).
 
-### Parent javacc/javacc-8
+### Base javacc/javacc-8
 
-This is the parent project; Maven only project (no code to build / test).  
+This is the *parent* project; Maven only project (no code to build / test).  
 Holds global documentation (in `/docs`: javacc documentation, tutorials, faq, release-notes) and readmes (end user and technical user).
 
 Its `/pom.xml` defines:
@@ -84,7 +84,7 @@ For the side grammars / integration tests, these modules have:
 - an `/grammars` folder, which holds folders for the shared grammars, which also serve as integration tests
 
 The `/it/pom.xml` define:
-- the parent project (of all integration tests), which is the global parent project (`javacc/java-8`), not the containing generator project (as one would usually imagine)
+- the parent project (of all integration tests), which is the global base project (`javacc/java-8`), not the containing generator project (as one would usually imagine)
 - the specific configuration for the **JavaCC Maven plugin** to read the grammars
 - the specific profiles for JavaCC or JJTree generation (`jjt8`, `jjc8`...)
 - the definitions and configurations of the specific plugins for compiling the C++ code (**com.github.maven-nar.nar-maven-plugin**)
@@ -140,7 +140,7 @@ It is published in the old MVN Repository ([here](https://mvnrepository.com/arti
 
 *For the impatient user (the one who thinks every thing should work immediately):*
 
-Clone the Git repository(ies) you need (all at the same directory level). Note that normally you should not need to hack the parent and the core projects, only the generators projects. Then run maven clean install.  
+Clone the Git repository(ies) you need (all at the same directory level). Note that normally you should not need to hack the base and the core projects, only the generators projects. Then run maven clean install.  
 
 ```bash
 mkdir javacc-8
@@ -291,8 +291,8 @@ cd ..
 #### Projects artifacts versions
 
 The owner and the maintainers will be in charge of setting the projects artifacts versions; in general:  
-- a change in a generator project will change its version and the version of the parent but not the version of the core
-- a change in the core and the parent projects will change all projects versions
+- a change in a generator project will change its version and the version of the base but not the version of the core
+- a change in the core and the base projects will change all projects versions
 
 Locally, a user is free to manage / change the projects versions; but if he wants to submit a PR related to the source code, he must keep the ones of the current HEADs at GitHub; if he needs to change the build configuration he may be lead to change the project version.  
 
