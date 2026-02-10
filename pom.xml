@@ -33,7 +33,7 @@ THE POSSIBILITY OF SUCH DAMAGE.
 
   <groupId>org.javacc</groupId>
   <artifactId>base</artifactId>
-  <version>8.1.1-SNAPSHOT</version>
+  <version>8.1.0</version>
   <packaging>pom</packaging>
 
   <name>JavaCC Base</name>
