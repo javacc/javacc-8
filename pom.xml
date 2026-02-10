@@ -28,14 +28,12 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
 THE POSSIBILITY OF SUCH DAMAGE.
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.javacc</groupId>
   <artifactId>base</artifactId>
-  <version>8.1.0-SNAPSHOT</version>
+  <version>8.1.0</version>
   <packaging>pom</packaging>
 
   <name>JavaCC Base</name>
@@ -133,7 +131,7 @@ THE POSSIBILITY OF SUCH DAMAGE.
     <url>https://github.com/javacc/javacc-8</url>
     <connection>scm:git:https://github.com/javacc/javacc-8.git</connection>
     <developerConnection>scm:git:ssh://git@github.com/javacc/javacc-8.git</developerConnection>
-    <tag>HEAD</tag>
+    <tag>base-8.1.0</tag>
   </scm>
 
   <issueManagement>
@@ -510,7 +508,7 @@ THE POSSIBILITY OF SUCH DAMAGE.
           <includes>
             <include>**/*Test.java</include>
           </includes>
-          <excludes></excludes>
+          <excludes />
           <!-- don't remember when and why this was needed -->
           <!--          <argLine>- -illegal-access=permit</argLine>-->
         </configuration>
