@@ -125,14 +125,6 @@ jobs:
       if: matrix.os == 'macos-latest'
       run: mvn toolchains:display-discovered-jdk-toolchains --show-version --file javacc-8/pom.xml
 
-    - name: Set a Maven option for not displaying "Download..." messages (ubuntu, macos)
-      if: matrix.os != 'windows-latest'
-      run: export MAVEN_OPTS=-Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
- 
-    - name: Set a Maven option for not displaying "Download..." messages (windows)
-      if: matrix.os == 'windows-latest'
-      run: set MAVEN_OPTS=-Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
- 
     - name: Run install on javacc-8
-      run: mvn install -B --show-version --file javacc-8/pom.xml
+      run: mvn install -B --show-version --file javacc-8/pom.xml -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
       
