@@ -24,14 +24,14 @@ This README is just an index to the different documented sections, which are als
 
 Currently published releases:  
 
-- ![Maven Central Version](https://img.shields.io/maven-central/v/org.javacc.generator/java?label=Java generator)
-- ![Maven Central Version](https://img.shields.io/maven-central/v/org.javacc.generator/cpp?label=C%2B%2B generator)
-- ![Maven Central Version](https://img.shields.io/maven-central/v/org.javacc.generator/csharp?label=C%23 generator)
+- ![Maven Central Version](https://img.shields.io/maven-central/v/org.javacc.generator/java?label=Java%20generator)
+- ![Maven Central Version](https://img.shields.io/maven-central/v/org.javacc.generator/cpp?label=C%2B%2B%20generator)
+- ![Maven Central Version](https://img.shields.io/maven-central/v/org.javacc.generator/csharp?label=C%23%20generator)
 - ![Maven Central Version](https://img.shields.io/maven-central/v/org.javacc/core?label=Core)
-- ![Maven Central Version](https://img.shields.io/maven-central/v/org/javacc/base?label=base)
+- ![Maven Central Version](https://img.shields.io/maven-central/v/org.javacc/base?label=Base)
 - ![GitHub Release](https://img.shields.io/github/v/release/javacc/javacc-8?label=GitHub%20v8)  
 
-Next release to publish: 8.1.0 (Feb 2026) (Maven, GitHub)  
+Next releases to publish: 8.1.0 (Feb 2026) (Maven, GitHub) (C++, C#)  
 
 Currently published snapshots:  
 

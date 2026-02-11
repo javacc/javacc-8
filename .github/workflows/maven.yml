@@ -123,8 +123,8 @@ jobs:
 
     - name: Displays the toolchains configured JDKs, on macos only
       if: matrix.os == 'macos-latest'
-      run: mvn toolchains:display-discovered-jdk-toolchains --show-version --file javacc-8/pom.xml
+      run: mvn --file javacc-8/pom.xml --show-version toolchains:display-discovered-jdk-toolchains
 
     - name: Run install on javacc-8
-      run: mvn install -B --show-version --file javacc-8/pom.xml -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
+      run: mvn --file javacc-8/pom.xml -B --show-version install
       
