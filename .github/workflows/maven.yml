@@ -131,7 +131,7 @@ jobs:
  
     - name: Set a Maven option for not displaying "Download..." messages (windows)
       if: matrix.os == 'windows-latest'
-      run: export MAVEN_OPTIONS="%MAVEN_OPTIONS% -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn"
+      run: set MAVEN_OPTIONS="%MAVEN_OPTIONS% -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn"
  
     - name: Run install on javacc-8
       run: mvn install -B --show-version --file javacc-8/pom.xml
