@@ -125,10 +125,14 @@ jobs:
       if: matrix.os == 'macos-latest'
       run: mvn toolchains:display-discovered-jdk-toolchains --show-version --file javacc-8/pom.xml
 
-    - name: Build install on javacc-8 only
-      run: mvn install -B -N --show-version --file javacc-8/pom.xml
-
-#    No real need to trigger building modules from here; let them do it themselves
-#    - name: Build install on all (included submodules) of javacc-8
-#      run: mvn install -B --show-version --file javacc-8/pom.xml
+    - name: Set a Maven option for not displaying "Download..." messages (ubuntu, macos)
+      if: matrix.os != 'windows-latest'
+      run: export MAVEN_OPTIONS=$MAVEN_OTIONS -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
+ 
+    - name: Set a Maven option for not displaying "Download..." messages (windows)
+      if: matrix.os == 'windows-latest'
+      run: export MAVEN_OPTIONS=%MAVEN_OTION% -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
+ 
+    - name: Run install on javacc-8
+      run: mvn install -B --show-version --file javacc-8/pom.xml
       
