@@ -163,8 +163,8 @@ repositories {
     }
 }
 dependencies {
-    javacc 'org.javacc:core:8.0.1'
-    javacc 'org.javacc.generator:java:8.0.1'
+    javacc 'org.javacc:core:8.1.0'
+    javacc 'org.javacc.generator:java:8.1.0'
 }
 ```
 
@@ -194,13 +194,13 @@ Download the latest stable release (at least the binaries and the sources) in a 
 
 Download the core and the generator(s) you are going to use:
 
-* JavaCC Core 8.0.1 - [Binaries](https://repo1.maven.org/maven2/org/javacc/core/8.0.1/core-8.0.1.jar), [Source (zip)](https://github.com/javacc/javacc-8-core/archive/core-8.0.1.zip), [Source (tar.gz)](https://github.com/javacc/javacc-8-core/archive/core-8.0.1.tar.gz), [Javadocs](https://repo1.maven.org/maven2/org/javacc/core/8.0.1/core-8.0.1-javadoc.jar)
+* JavaCC Core 8.1.0 - [Binaries](https://repo1.maven.org/maven2/org/javacc/core/8.1.0/core-8.1.0.jar), [Source (zip)](https://github.com/javacc/javacc-8-core/archive/core-8.1.0.zip), [Source (tar.gz)](https://github.com/javacc/javacc-8-core/archive/core-8.1.0.tar.gz), [Javadocs](https://repo1.maven.org/maven2/org/javacc/core/8.1.0/core-8.1.0-javadoc.jar)
 
-* JavaCC C++ 8.0.1 - [Binaries](https://repo1.maven.org/maven2/org/javacc/generator/cpp/8.0.1/cpp-8.0.1.jar), [Source (zip)](https://github.com/javacc/javacc-8-cpp/archive/cpp-8.0.1.zip), [Source (tar.gz)](https://github.com/javacc/javacc-8-cpp/archive/cpp-8.0.1.tar.gz), [Javadocs](https://repo1.maven.org/maven2/org/javacc/generator/cpp/8.0.1/cpp-8.0.1-javadoc.jar)
+* JavaCC C++ 8.1.0 - [Binaries](https://repo1.maven.org/maven2/org/javacc/generator/cpp/8.1.0/cpp-8.1.0.jar), [Source (zip)](https://github.com/javacc/javacc-8-cpp/archive/cpp-8.1.0.zip), [Source (tar.gz)](https://github.com/javacc/javacc-8-cpp/archive/cpp-8.1.0.tar.gz), [Javadocs](https://repo1.maven.org/maven2/org/javacc/generator/cpp/8.1.0/cpp-8.1.0-javadoc.jar)
 
-* JavaCC C# 8.0.1 - [Binaries](https://repo1.maven.org/maven2/org/javacc/generator/csharp/8.0.1/csharp-8.0.1.jar), [Source (zip)](https://github.com/javacc/javacc-8-csharp/archive/csharp-8.0.1.zip), [Source (tar.gz)](https://github.com/javacc/javacc-8-csharp/archive/csharp-8.0.1.tar.gz), [Javadocs](https://repo1.maven.org/maven2/org/javacc/generator/csharp/8.0.1/csharp-8.0.1-javadoc.jar)
+* JavaCC C# 8.1.0 - [Binaries](https://repo1.maven.org/maven2/org/javacc/generator/csharp/8.1.0/csharp-8.1.0.jar), [Source (zip)](https://github.com/javacc/javacc-8-csharp/archive/csharp-8.1.0.zip), [Source (tar.gz)](https://github.com/javacc/javacc-8-csharp/archive/csharp-8.1.0.tar.gz), [Javadocs](https://repo1.maven.org/maven2/org/javacc/generator/csharp/8.1.0/csharp-8.1.0-javadoc.jar)
 
-* JavaCC Java 8.0.1 - [Binaries](https://repo1.maven.org/maven2/org/javacc/generator/java/8.0.1/java-8.0.1.jar), [Source (zip)](https://github.com/javacc/javacc-8-java/archive/java-8.0.1.zip), [Source (tar.gz)](https://github.com/javacc/javacc-8-java/archive/java-8.0.1.tar.gz), [Javadocs](https://repo1.maven.org/maven2/org/javacc/generator/java/8.0.1/java-8.0.1-javadoc.jar)
+* JavaCC Java 8.1.0 - [Binaries](https://repo1.maven.org/maven2/org/javacc/generator/java/8.1.0/java-8.1.0.jar), [Source (zip)](https://github.com/javacc/javacc-8-java/archive/java-8.1.0.zip), [Source (tar.gz)](https://github.com/javacc/javacc-8-java/archive/java-8.1.0.tar.gz), [Javadocs](https://repo1.maven.org/maven2/org/javacc/generator/java/8.1.0/java-8.1.0-javadoc.jar)
 
 All JavaCC v8 *releases* are available via [GitHub](https://github.com/javacc/javacc-8/releases) and [Maven](https://mvnrepository.com/artifact/org/javacc) including checksums and cryptographic signatures.
 
