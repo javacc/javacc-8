@@ -110,8 +110,8 @@ jobs:
 
     # JDK 8 & 11 not found on windows
     - name: Set up JDK 8 for windows
-      if: matrix.os == 'macos-latest'
-      uses: actions/windows-java@v4
+      if: matrix.os == 'windows-latest'
+      uses: actions/setup-java@v4
       with:
         distribution: 'temurin'
         java-version: '17'
