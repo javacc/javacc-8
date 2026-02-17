@@ -2,7 +2,7 @@
 See LICENSE.
 -->
 
-Java Compiler Compiler (JavaCC) is the most popular parser generator for use with Java applications,  and it allows generating C+= and C# parsers since version 8..
+Java Compiler Compiler (JavaCC) is the most popular parser generator for use with Java applications,  and it allows generating C+= and C# parsers since version 8.
 
 A parser generator is a tool that reads a grammar specification (in plain text) and converts it to a program (of some programming language) that can recognize matches to the grammar.
 

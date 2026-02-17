@@ -35,7 +35,8 @@ THE POSSIBILITY OF SUCH DAMAGE.
 
   <groupId>org.javacc</groupId>
   <artifactId>base</artifactId>
-  <version>8.1.0</version>
+  <!--  <version>8.1.0</version>-->
+  <version>8.1.1-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>JavaCC Base</name>
@@ -68,8 +69,9 @@ THE POSSIBILITY OF SUCH DAMAGE.
 
     <central.publishing.maven.plugin.version>0.7.0</central.publishing.maven.plugin.version>
 
-    <javacc-maven-plugin.version>3.0.3</javacc-maven-plugin.version>
-    <!--    <javacc-maven-plugin.version>3.8.0</javacc-maven-plugin.version>-->
+    <!--    <javacc-maven-plugin.version>3.0.3</javacc-maven-plugin.version>-->
+    <javacc-maven-plugin.version>3.8.0</javacc-maven-plugin.version>
+    <!--        <javacc-maven-plugin.version>3.8.1-SNAPSHOT</javacc-maven-plugin.version>-->
     <junit.version>4.13.2</junit.version>
 
     <!-- versions 3.1.0 & 3.2.0 show problems -->
@@ -730,7 +732,7 @@ THE POSSIBILITY OF SUCH DAMAGE.
             <extensions>true</extensions>
             <configuration>
               <!-- centralBaseUrl is the default https://central.sonatype.com -->
-              <!-- deploymentName is the default Deployment -->
+              <deploymentName>${project.artifactId}</deploymentName>
               <!-- outputDirectory is the default central-publishing -->
               <!-- outputFilename is the default central-bundle.zip -->
               <!-- outputDirectory is the default central-publishing -->
