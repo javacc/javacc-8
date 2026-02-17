@@ -90,6 +90,13 @@ jobs:
 #        path: javacc-8-js
 #        ref: release
 
+    - name: Cache Maven packages
+      uses: actions/cache@v4
+      with:
+         path: ~/.m2
+         key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+         restore-keys: ${{ runner.os }}-maven-
+
     - name: Display the toolchains configured JDKs
       run: mvn --file javacc-8/pom.xml -ntp --show-version toolchains:display-discovered-jdk-toolchains
 
@@ -120,13 +127,6 @@ jobs:
     - name: Setup MSVC for windows only
       if: matrix.os != 'windows-latest'
       uses: ilammy/msvc-dev-cmd@v1
-
-    - name: Cache Maven packages
-      uses: actions/cache@v4
-      with:
-         path: ~/.m2
-         key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-         restore-keys: ${{ runner.os }}-maven-
 
     # -B: batch mode; -e: produce execution error messages;
     # -X: debug mode; -N: non-recursive (don't build submodules)
