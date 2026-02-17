@@ -99,12 +99,22 @@ jobs:
         java-version: '11'
         cache: 'maven'
 
-    - name: Set up JDK 8 for windows & ubuntu
-      if: matrix.os != 'macos-latest'
+    # JDK 8 found on ubuntu
+    - name: Set up JDK 8 for ubuntu
+      if: matrix.os == 'ubuntu-latest'
       uses: actions/setup-java@v4
       with:
         distribution: 'temurin'
         java-version: '8'
+        cache: 'maven'
+
+    # JDK 8 & 11 not found on windows
+    - name: Set up JDK 8 for windows
+      if: matrix.os == 'macos-latest'
+      uses: actions/windows-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: '17'
         cache: 'maven'
 
     - name: Setup MSVC for windows only
