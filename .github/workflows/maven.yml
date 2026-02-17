@@ -109,7 +109,7 @@ jobs:
         cache: 'maven'
 
     # JDK 8 & 11 not found on windows
-    - name: Set up JDK 8 for windows
+    - name: Set up JDK 17 for windows
       if: matrix.os == 'windows-latest'
       uses: actions/setup-java@v4
       with:
