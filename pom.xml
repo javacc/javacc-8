@@ -103,7 +103,9 @@ THE POSSIBILITY OF SUCH DAMAGE.
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-    <toolchain.jdk.version>[1.8,11]</toolchain.jdk.version>
+    <!-- for misconfigured toolchains 11.0.29-7\x64 / 11.0.30-7\x64 at GitHub windows -->
+    <!--    <toolchain.jdk.version>[1.8,11]</toolchain.jdk.version>-->
+    <toolchain.jdk.version>[1.8,17]</toolchain.jdk.version>
     <!--    <toolchain.jdk.version>[11,)</toolchain.jdk.version>-->
     <maven.compiler.release>8</maven.compiler.release>
     <!--    <toolchain.jdk.version>8</toolchain.jdk.version>-->
